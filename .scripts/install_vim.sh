@@ -1,4 +1,4 @@
-BASEDIR=$PWD/..
+BASEDIR=..
 vimrc_file="$HOME/.vimrc"
 vim_home="$HOME/.vim/"
 
@@ -12,7 +12,7 @@ then
     mv $vim_home $HOME/.vim-backup/
 fi
 
-cp $BASEDIR/.vimrc $vimrc_file
+cp $BASEDIR/.vimrc $HOME/
 cp $BASEDIR/.vim $HOME/ -r
 vim +'PlugInstall --sync' +qa
 sh $BASEDIR/.scripts/vim_patch_mru.vim
