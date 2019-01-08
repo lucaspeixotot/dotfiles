@@ -27,7 +27,7 @@ font pango:monospace 8
 # font, it doesn’t scale on retina/hidpi displays.
 
 # setting terminal
-set $term --no-startup-id st
+set $term --no-startup-id $TERMINAL
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -225,7 +225,7 @@ mode "$mode_gaps_outer" {
 }
 
 # ranger config
-bindsym $mod+r exec $term -e ranger
+bindsym $mod+r exec $term -e $FILE_MANAGER
 
 # background config
 #exec_always feh --bg-scale $HOME/.config/wallpapers/Etc/1397537322009.jpg
@@ -255,7 +255,7 @@ exec_always xrandr --output HDMI1 --auto --right-of eDP1
 exec --no-startup-id nm-applet
 
 # compton
-#exec_always --no-startup-id compton &
+exec_always --no-startup-id compton &
 
 # Screenshots
 #

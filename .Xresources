@@ -20,7 +20,7 @@
 *.color14: #8ec07c
 *.color15: #ebdbb2
 
-*.alpha: 200
+*.alpha: 220
 
 !! Programming color
 !*.foreground: #d6dbe5
