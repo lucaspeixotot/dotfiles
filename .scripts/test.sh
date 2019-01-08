@@ -1,0 +1,2 @@
+BASEDIR=$PWD/..
+echo $BASEDIR

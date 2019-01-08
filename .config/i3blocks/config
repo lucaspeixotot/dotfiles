@@ -35,13 +35,13 @@ interval=10
 label=
 interval=60
 
-[rofi-calendar]
-interval=3600
-label= 
+#[rofi-calendar]
+#interval=3600
+#label=
 
 [datetime]
-label=
+label=
 interval=1
 
-[shutdown-menu]
-full_text=
+#[shutdown-menu]
+#full_text=
