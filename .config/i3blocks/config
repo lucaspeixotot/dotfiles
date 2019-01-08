@@ -11,17 +11,17 @@ markup=none
 #markup=pango
 #label=
 
-[volume-pulseaudio]
-interval=once
-signal=1
+#[volume-pulseaudio]
+#interval=once
+#signal=1
 
 [disk]
 label=
 interval=60
 
-[cpu_usage]
-label=CPU
-interval=10
+[mem_usage]
+label=MEM
+interval=5
 
 [battery]
 label=
