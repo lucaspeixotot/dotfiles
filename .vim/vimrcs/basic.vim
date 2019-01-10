@@ -59,6 +59,9 @@ nmap <leader>w :w!<cr>
 " Fast quit
 map <leader>q :q<cr>
 
+" Fast savind and quit
+map <leader>zz :wq!<cr>
+
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null

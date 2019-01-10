@@ -19,13 +19,12 @@ fi
 # set PATH so it includes user's private bin directories
 PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
+# NNN Exports
+export EDITOR=vim
+export NNN_COPIER=$HOME/.config/nnn/copier.sh
+
 # Export global variables
 export TERMINAL=st
 export FILE_MANAGER=nnn
 
-
-# Initializing things
-
-[ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
-
-exec i3
+setxkbmap -model abnt2 -layout br -variant abnt2

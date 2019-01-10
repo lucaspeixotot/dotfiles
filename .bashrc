@@ -118,13 +118,10 @@ fi
 
 ############################# HERE THE FUNNY BEINGS
 
-# NNN Exports
-export EDITOR=vim
-export NNN_COPIER=$HOME/.config/nnn/copier.sh
-
 # Aliases
 alias v="vim"
 alias vrc="vim $HOME/.vimrc"
 alias brc="vim $HOME/.bashrc"
 alias xrc="vim $HOME/.Xresources"
+alias bprofile="vim $HOME/.bash_profile"
 alias n="nnn"
