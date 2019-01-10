@@ -11,9 +11,9 @@ markup=none
 #markup=pango
 #label=
 
-#[volume-pulseaudio]
-#interval=once
-#signal=1
+[volume-pulseaudio]
+interval=once
+signal=1
 
 [disk]
 label=
