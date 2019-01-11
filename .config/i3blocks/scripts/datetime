@@ -3,8 +3,8 @@ FORMAT="${BLOCK_INSTANCE:-%H:%M:%S}"
 DATETIME=$(date "+${FORMAT}")
 
 day_name=$(date | cut -d' ' -f1)
-day_number=$(date | cut -d' ' -f4)
+day_number=$(date | cut -d' ' -f3)
 month=$(date | cut -d' ' -f2)
-year=$(date | cut -d' ' -f7)
+year=$(date | cut -d' ' -f6)
 
 echo $day_name.$day_number.$month.$year at ${DATETIME}

@@ -21,4 +21,11 @@ Plug 'yegappan/mru'
 " Git info
 Plug 'tpope/vim-fugitive'
 
+" Ctags
+
+" Clang
+Plug 'rhysd/vim-clang-format'
+Plug 'kana/vim-operator-user'
+
+
 call plug#end()

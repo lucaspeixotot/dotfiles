@@ -120,8 +120,15 @@ fi
 
 # Aliases
 alias v="vim"
-alias vrc="vim $HOME/.vimrc"
+alias vrc="vim $HOME/.vim/vimrcs"
 alias brc="vim $HOME/.bashrc"
 alias xrc="vim $HOME/.Xresources"
 alias bprofile="vim $HOME/.bash_profile"
 alias n="nnn"
+
+export ZEPHYR_BASE=$HOME/Projects/zephyr/
+export ZEPHYR_TOOLCHAIN_VARIANT=zephyr
+export ZEPHYR_SDK_INSTALL_DIR=/opt/zephyr-sdk/
+export SCRIPTS_DIR=$HOME/.config/scripts/
+export PATH=$PATH:$SCRIPTS_DIR
+source $ZEPHYR_BASE/zephyr-env.sh
