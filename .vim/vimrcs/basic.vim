@@ -323,6 +323,11 @@ if has("autocmd")
     autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
 endif
 
+inoremap ( ()<Esc>:let leavechar=")"<CR>i
+inoremap [ []<Esc>:let leavechar="]"<CR>i
+inoremap { {}<Esc>:let leavechar="}"<CR>i
+imap <C-j> <Esc>:exec "normal f" . leavechar<CR>a
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
@@ -403,3 +408,5 @@ function! VisualSelection(direction, extra_filter) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
+
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
