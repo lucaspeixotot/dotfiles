@@ -192,6 +192,8 @@ set ffs=unix,dos,mac
 set nobackup
 set nowb
 set noswapfile
+set undofile " Maintain undo history between sessions 
+set undodir=~/.vim/undodir
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -323,10 +325,10 @@ if has("autocmd")
     autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
 endif
 
-inoremap ( ()<Esc>:let leavechar=")"<CR>i
-inoremap [ []<Esc>:let leavechar="]"<CR>i
-inoremap { {}<Esc>:let leavechar="}"<CR>i
-imap <C-j> <Esc>:exec "normal f" . leavechar<CR>a
+"inoremap ( ()<Esc>:let leavechar=")"<CR>i
+"inoremap [ []<Esc>:let leavechar="]"<CR>i
+"inoremap { {}<Esc>:let leavechar="}"<CR>i
+"imap <C-j> <Esc>:exec "normal f" . leavechar<CR>a
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

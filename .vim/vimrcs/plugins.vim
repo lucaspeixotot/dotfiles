@@ -6,8 +6,8 @@ Plug 'itchyny/lightline.vim'
 " Elegant buftab line
 Plug 'ap/vim-buftabline'
 
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
+" Smart Parens
+Plug 'jiangmiao/auto-pairs'
 
 " Smart commenter
 Plug 'scrooloose/nerdcommenter'
@@ -36,5 +36,9 @@ Plug 'ajh17/VimCompletesMe'
 
 " Ctags
 Plug 'ludovicchabant/vim-gutentags'
+
+" Markdown
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 
 call plug#end()

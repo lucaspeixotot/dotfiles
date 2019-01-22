@@ -16,8 +16,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+#HISTSIZE=1000
+#HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -118,6 +118,9 @@ fi
 
 ############################# HERE THE FUNNY BEINGS
 
+HISTSIZE= HISTFILESIZE= # Infinite history.
+export PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 5)\]\W\[$(tput setaf 1)\]]\[$(tput setaf 7)\]\\$ \[$(tput sgr0)\]"
+
 # Aliases
 alias v="vim"
 alias vrc="vim $HOME/.vim/vimrcs"
@@ -126,9 +129,4 @@ alias xrc="vim $HOME/.Xresources"
 alias bprofile="vim $HOME/.bash_profile"
 alias n="nnn"
 
-export ZEPHYR_BASE=$HOME/Projects/zephyr/
-export ZEPHYR_TOOLCHAIN_VARIANT=zephyr
-export ZEPHYR_SDK_INSTALL_DIR=/opt/zephyr-sdk/
-export SCRIPTS_DIR=$HOME/.config/scripts/
-export PATH=$PATH:$SCRIPTS_DIR
 source $ZEPHYR_BASE/zephyr-env.sh

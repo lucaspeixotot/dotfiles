@@ -119,16 +119,16 @@ set $ws9 "9"
 set $ws10 "10"
 
 # switch to workspace
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
-bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws10
+bindsym $mod+1 workspace $ws1; move workspace to output primary
+bindsym $mod+2 workspace $ws2; move workspace to output primary
+bindsym $mod+3 workspace $ws3; move workspace to output primary
+bindsym $mod+4 workspace $ws4; move workspace to output primary
+bindsym $mod+5 workspace $ws5; move workspace to output primary
+bindsym $mod+6 workspace $ws6; move workspace to output primary
+bindsym $mod+7 workspace $ws7; move workspace to output primary
+bindsym $mod+8 workspace $ws8; move workspace to output primary
+bindsym $mod+9 workspace $ws9; move workspace to output primary
+bindsym $mod+0 workspace $ws10; move workspace to output primary
 
 workspace_auto_back_and_forth yes
 
@@ -145,8 +145,8 @@ bindsym $mod+Shift+9 move container to workspace $ws9; workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10; workspace $ws10
 
 
-bindsym $mod+Shift+p move workspace to output right
-bindsym $mod+Shift+n move workspace to output left
+bindsym $mod+Shift+greater move workspace to output right
+bindsym $mod+Shift+less move workspace to output left
 
 # reload the configuration file
 bindsym $mod+Ctrl+c reload
@@ -300,7 +300,8 @@ exec --no-startup-id pulseaudio --start
 #
 
 # multi-monitor
-exec_always xrandr --output HDMI1 --auto --right-of eDP1
+bindsym $mod+Ctrl+m exec $term -e set_monitor.bash
+#xrandr --output HDMI1 --auto --right-of eDP1
 
 # network-manager
 exec_always --no-startup-id nm-applet
@@ -330,3 +331,9 @@ mode "$shutdown_menu" {
     bindsym Escape mode "default"
 }
 bindsym $mod+Ctrl+F1 mode "$shutdown_menu"
+
+# Layout manager
+bindsym  $mod+Ctrl+l exec $HOME/.config/scripts/layout_manager.sh
+
+# Settings keyboard layout
+exec_always setxkbmap -model abnt2 -layout br -variant abnt2

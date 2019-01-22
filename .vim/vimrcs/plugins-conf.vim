@@ -97,3 +97,16 @@ let g:rainbow_conf = {
 	\	}
 	\}
 let g:rainbow_active = 1
+
+
+" Syntax Checking -------------------------------------------------------------
+
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+
+
+"let g:syntastic_cpp_check_header = 1
+
+"let g:syntastic_cpp_config_file = '/home/lucas/Projects/ble_mesh_pwm_led/server-side/.syntastic_cpp_config'

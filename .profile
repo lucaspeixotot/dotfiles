@@ -24,7 +24,14 @@ export EDITOR=vim
 export NNN_COPIER=$HOME/.config/nnn/copier.sh
 
 # Export global variables
-export TERMINAL=st
-export FILE_MANAGER=nnn
+export TERMINAL=urxvt
+export FILE_MANAGER=ranger
+
+export ZEPHYR_BASE=$HOME/Projects/zephyr/
+export ZEPHYR_TOOLCHAIN_VARIANT=zephyr
+export ZEPHYR_SDK_INSTALL_DIR=/opt/zephyr-sdk/
+export SCRIPTS=$HOME/.config/scripts
+export PATH=$PATH:$SCRIPTS/
+
 
 setxkbmap -model abnt2 -layout br -variant abnt2
