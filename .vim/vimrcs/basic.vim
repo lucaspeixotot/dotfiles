@@ -151,6 +151,9 @@ endif
 " Add a bit extra margin to the left
 set foldcolumn=1
 
+" Split windows left
+set splitbelow splitright
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts

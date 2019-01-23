@@ -6,6 +6,7 @@ cp $HOME/.config/i3blocks $BASEDIR/.config -r
 cp $HOME/.config/ranger $BASEDIR/.config -r
 cp $HOME/.config/nnn $BASEDIR/.config -r
 cp $HOME/.config/compton.conf $BASEDIR/.config
+cp $HOME/.config/scripts $BASEDIR/.config -r
 
 cp $HOME/.vimrc $BASEDIR/
 cp $HOME/.vim/vimrcs $BASEDIR/.vim/ -r
