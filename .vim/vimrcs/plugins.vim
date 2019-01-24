@@ -41,4 +41,17 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
+" Syntax c/c++ highlight
+"Plug 'jeaye/color_coded'
+
+" nerdtree alternative
+"Plug 'ipod825/vim-netranger'
+
+" Vim polyglot
+Plug 'sheerun/vim-polyglot'
+
+" Onedark
+Plug 'joshdick/onedark.vim'
+
+
 call plug#end()

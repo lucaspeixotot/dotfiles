@@ -6,7 +6,8 @@ map <leader>mru :MRU<CR>
 
 " Lightline --------------------------------------------------------------------
 let g:lightline = {
-      \ 'colorscheme': 'powerline',
+    \ 'colorscheme': 'onedark',
+      "\ 'colorscheme': 'powerline',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]

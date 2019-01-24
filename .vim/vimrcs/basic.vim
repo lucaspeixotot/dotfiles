@@ -159,18 +159,20 @@ set splitbelow splitright
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
-syntax enable 
-set background=dark
+syntax on 
+"set background=dark
 
 " Enable 256 colors palette in Gnome Terminal
 if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-try
-    colorscheme desert
-catch
-endtry
+"try
+    "colorscheme desert
+"catch
+"endtry
+colorscheme onedark
+
 
 
 " Set extra options when running in GUI mode

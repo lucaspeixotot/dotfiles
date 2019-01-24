@@ -10,6 +10,8 @@ cp $HOME/.config/scripts $BASEDIR/.config -r
 
 cp $HOME/.vimrc $BASEDIR/
 cp $HOME/.vim/vimrcs $BASEDIR/.vim/ -r
+cp $HOME/.vim/colors $BASEDIR/.vim/ -r
+cp $HOME/.vim/autoload $BASEDIR/.vim/ -r
 
 cp $HOME/.bashrc $BASEDIR
 cp $HOME/.profile $BASEDIR
