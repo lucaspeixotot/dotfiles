@@ -1,0 +1,128 @@
+// vim:ts=4:sw=4:et
+{
+    // tabbed split container with 3 children
+    "border": "normal",
+    "floating": "auto_off",
+    "layout": "tabbed",
+    "percent": 0.7,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "pixel",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 340,
+               "width": 564,
+               "x": 0,
+               "y": 0
+            },
+            "name": "main.c (~/Projects/bluetooth_mesh_self_provision/src) - VIM",
+            "percent": 0.333333333333333,
+            "swallows": [
+               {
+               // "class": "^St$",
+               // "instance": "^st$",
+               // "title": "^main\\.c\\ \\(\\~\\/Projects\\/bluetooth_mesh_self_provision\\/src\\)\\ \\-\\ VIM$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "pixel",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 340,
+               "width": 564,
+               "x": 0,
+               "y": 0
+            },
+            "name": "main.c (~/Documents/zephyr-study-content/bluetooth-mesh-develop-study-guide/code/solution/Switch/src) - VIM",
+            "percent": 0.333333333333333,
+            "swallows": [
+               {
+               // "class": "^St$",
+               // "instance": "^st$",
+               // "title": "^main\\.c\\ \\(\\~\\/Documents\\/zephyr\\-study\\-content\\/bluetooth\\-mesh\\-develop\\-study\\-guide\\/code\\/solution\\/Switch\\/src\\)\\ \\-\\ VIM$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "pixel",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 340,
+               "width": 564,
+               "x": 0,
+               "y": 0
+            },
+            "name": "ic_bt.c (~/Projects/ble_mesh_pwm_led/client-side/src) - VIM",
+            "percent": 0.333333333333333,
+            "swallows": [
+               {
+               // "class": "^St$",
+               // "instance": "^st$",
+               // "title": "^ic_bt\\.c\\ \\(\\~\\/Projects\\/ble_mesh_pwm_led\\/client\\-side\\/src\\)\\ \\-\\ VIM$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+
+{
+    // splith split container with 2 children
+    "border": "normal",
+    "floating": "auto_off",
+    "layout": "splith",
+    "percent": 0.3,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "pixel",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 340,
+               "width": 564,
+               "x": 0,
+               "y": 0
+            },
+            "name": "st",
+            "percent": 0.5,
+            "swallows": [
+               {
+               // "class": "^St$",
+               // "instance": "^st$",
+               // "title": "^st$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "pixel",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 340,
+               "width": 564,
+               "x": 0,
+               "y": 0
+            },
+            "name": "st",
+            "percent": 0.5,
+            "swallows": [
+               {
+               // "class": "^St$",
+               // "instance": "^st$",
+               // "title": "^st$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+

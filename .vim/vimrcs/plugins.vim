@@ -33,13 +33,13 @@ Plug 'luochen1990/rainbow'
 
 " Auto complete
 Plug 'ajh17/VimCompletesMe'
+"Plug 'justmao945/vim-clang'
+"Plug  'maralla/completor.vim'
+"Plug 'Rip-Rip/clang_complete'
+"Plug 'lifepillar/vim-mucomplete'
 
 " Ctags
 Plug 'ludovicchabant/vim-gutentags'
-
-" Markdown
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
 
 " Syntax c/c++ highlight
 "Plug 'jeaye/color_coded'
@@ -52,6 +52,12 @@ Plug 'sheerun/vim-polyglot'
 
 " Onedark
 Plug 'joshdick/onedark.vim'
+
+" fzf
+Plug 'junegunn/fzf.vim'
+
+" Doxygen
+Plug 'vim-scripts/DoxygenToolkit.vim'
 
 
 call plug#end()

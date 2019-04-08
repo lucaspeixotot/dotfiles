@@ -50,29 +50,6 @@ autocmd FileType c,cpp,objc ClangFormatAutoEnable
 map <Leader>C :ClangFormatAutoToggle<CR>
 
 
-" Ctags ------------------------------------------------------------------------
-
-let g:ctags_enable=0
-function PrintCtags()
-    echom g:ctags_enable
-endfunction
-
-function GenerateCtags()
-    if g:ctags_enable == 0
-        Disctags_handler.sh $PWD &
-        let g:ctags_enable = !g:ctags_enable
-    else
-        !ctags_stop.sh
-        let g:ctags_enable = !g:ctags_enable
-    endif
-endfunction
-
-"map <Leader>ct :call GenerateCtags()<cr>
-"map <Leader>pt :call PrintCtags()<cr>
-
-
-"autocmd BufWritePre *.c,*.h,*.cc,*.cpp call CtagsOnSave()
-"
 " rainbow ------------------------------------------------------------------------
 
 let g:rainbow_conf = {
@@ -99,15 +76,12 @@ let g:rainbow_conf = {
 	\}
 let g:rainbow_active = 1
 
-
-" Syntax Checking -------------------------------------------------------------
-
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
+" fzf ------------------------------------------------------------------------
+map <C-p> :Files<cr>
 
 
-"let g:syntastic_cpp_check_header = 1
+" doxygen ------------------------------------------------------------------------
+let g:DoxygenToolkit_authorName="Lucas Peixoto (lucaspeixotoac@gmail.com)"
+let g:DoxygenToolkit_licenseTag="My own license"
 
-"let g:syntastic_cpp_config_file = '/home/lucas/Projects/ble_mesh_pwm_led/server-side/.syntastic_cpp_config'
+

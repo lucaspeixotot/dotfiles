@@ -130,3 +130,5 @@ alias bprofile="vim $HOME/.bash_profile"
 alias n="nnn"
 
 source $ZEPHYR_BASE/zephyr-env.sh
+
+export QSYS_ROOTDIR="/home/lucas/intelFPGA_lite/18.1/quartus/sopc_builder/bin"
