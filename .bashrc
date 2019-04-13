@@ -128,7 +128,11 @@ alias brc="vim $HOME/.bashrc"
 alias xrc="vim $HOME/.Xresources"
 alias bprofile="vim $HOME/.bash_profile"
 alias n="nnn"
+alias cninja="cmake -GNinja .."
 
 source $ZEPHYR_BASE/zephyr-env.sh
 
 export QSYS_ROOTDIR="/home/lucas/intelFPGA_lite/18.1/quartus/sopc_builder/bin"
+
+export ZEPHYR_TOOLCHAIN_VARIANT=zephyr
+export ZEPHYR_SDK_INSTALL_DIR=/home/lucas/Projects/zephyr-sdk

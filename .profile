@@ -29,7 +29,7 @@ export FILE_MANAGER=nnn
 
 export ZEPHYR_BASE=$HOME/Projects/zephyr/
 export ZEPHYR_TOOLCHAIN_VARIANT=zephyr
-export ZEPHYR_SDK_INSTALL_DIR=/opt/zephyr-sdk/
+export ZEPHYR_SDK_INSTALL_DIR=/home/lucas/Projects/zephyr-sdk
 export SCRIPTS=$HOME/.config/scripts
 export PATH=$PATH:$SCRIPTS/
 
@@ -40,6 +40,9 @@ export QUARTUS_HOME=$HOME/intelFPGA_lite/18.1/quartus/bin/
 export MODELSIM_HOME=$HOME/intelFPGA_lite/18.1/modelsim_ase/bin/
 export PATH=$PATH:$QUARTUS_HOME:$MODELSIM_HOME
 
+
+export ANACONDA_HOME=/home/lucas/anaconda2/bin/
+export PATH=$PATH:$ANACONDA_HOME
 
 setxkbmap -model abnt2 -layout br -variant abnt2
 

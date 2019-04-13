@@ -74,6 +74,7 @@ URxvt*foreground: #d6dbe5
 ! http://pod.tst.eu/http://cvs.schmorp.de/rxvt-unicode/doc/rxvt.1.pod
 !-------------------------------------------------------------------------------
 URxvt.termName: rxvt-unicode-256color
+!URxvt.termName: xterm-256color
 
 URxvt.depth:                32
 URxvt.geometry:             90x30
@@ -109,10 +110,22 @@ URxvt.url-select.underline: true
 !! keyboard-select:
 URxvt.keysym.M-Escape:  perl:keyboard-select:activate
 !! resize-font
-URxvt.resize-font.smaller:      C-9
-URxvt.resize-font.bigger:       C-0
+URxvt.resize-font.smaller:      M-9
+URxvt.resize-font.bigger:       M-0
 URxvt.keysym.M-c: perl:clipboard:copy
 URxvt.keysym.M-v: perl:clipboard:paste
+!! tabbed
+!URxvt.tabbed.new-button: true
+!URXvt.tabbed.reopen-on-close: yes
+!URxvt.keysym.Control-Shift-t: perl:tabbedex:new_tab
+!URxvt.keysym.Shifft-Right: perl:tabbedex:next_tab
+!URxvt.keysym.Shift-Left: perl:tabbedex:prev_tab
+!URxvt.tabbed.no-tabbedex-keys: true
+
+!URxvt.tabbed.tabbar-fg: 2
+!URxvt.tabbed.tabbar-bg: 0
+!URxvt.tabbed.tab-fg: 3
+!URxvt.tabbed.tab-bg: 0
 
 ! Cursor
 URxvt.cursorBlink:          true
