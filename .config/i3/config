@@ -291,8 +291,8 @@ bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN
 bindsym $mod+Ctrl+p exec --no-startup-id pavucontrol
 
 # Sreen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightness
+bindsym XF86MonBrightnessUp exec light -A 5 # increase screen brightness
+bindsym XF86MonBrightnessDown exec light -U 5 # decrease screen brightness
 exec --no-startup-id pulseaudio --start
 
 # Touchpad controls
@@ -311,8 +311,9 @@ exec_always --no-startup-id nm-applet
 
 # Screenshots
 #
-bindsym --release Print exec scrot -m "$HOME/Pictures/screenshots/%Hh%Mmin%Ssec-%d.%m.%Y_$wx$h.png"
-bindsym --release Shift+Print exec scrot -s "$HOME/Pictures/screenshots/%Hh%Mmin%Ssec-%d.%m.%Y_$wx$h.png"
+bindsym --release $mod+Print exec scrot -m "$HOME/Pictures/screenshots/%Hh%Mmin%Ssec-%d.%m.%Y_$wx$h.png"
+#bindsym --release Shift+Print exec scrot -s "$HOME/Pictures/screenshots/%Hh%Mmin%Ssec-%d.%m.%Y_$wx$h.png" 
+bindsym Shift+Print --release exec "scrot -s /tmp/screenshot-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
 bindsym --release $mod+Shift+Print exec scrot -u -d 4 "$HOME/Pictures/screenshots/%Hh%Mmin%Ssec-%d.%m.%Y_$wx$h.png"
 
 # Shutdown menu
@@ -337,3 +338,12 @@ bindsym  $mod+Ctrl+l exec $HOME/.config/scripts/layout_manager.sh
 
 # Settings keyboard layout
 exec_always setxkbmap -model abnt2 -layout br -variant abnt2
+
+bindsym $mod+x border toggle
+
+
+# Floating windows
+for_window [class="Yad"] floating enable
+for_window [class="Thunar"] floating enable
+for_window [class="Gnome-calculator"] floating enable
+for_window [title="Figure*"] floating enable
