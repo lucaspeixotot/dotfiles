@@ -1,0 +1,76 @@
+---------------- Central -----------------
+- AT&F1 (Set all parameters to factory defaults) *RODAR SOMENTE UMA VEZ
+
+- AT+LETIO=4 (LE secure connections pairing with encryption)
+- AT&W
+- AT+RESET
+
+- AT+BIOCAP=2 (Keyboard only)
+- AT+BMITM=1 (Active MAN IN THE MIDDLE)
+- AT+BNAME=BLE+CENTRAL %12a (Set module name)
+- AT%B8 (Set baud rate to 115200bps)
+- AT+LECONINTMIN=3200 (Set connection interval min)
+- AT+LECONINTMAX=3200 (Set connection interval max)
+- AT+LEROLE=1 (Set to central)
+- AT+LESCANDURATION=120 (Set scan duration)
+- AT+LESCAN (Scan for new connections)
+- ATD (Connect to some peripheral)
+-------------- security section ----------------
+The modules will receive a "SSPPIN <BT addr>, tx ?" event and
+will send the same passkey with BSSPPIN command.
+
+AT+BSSPPIN <Bt addr>,tx,<passkey>
+exemplo: AT+BSSPPIN 008025007C08D,t2,123456
+
+After that the modules will receive:
+
+- OK
+- RING
+- CONNECT connAddr
+-------------- security section ----------------
+AT+LESRVD=connAddr (search for services on peripheral)
+AT+LEWRITE=connAddr,charHnd, value (write something in peripheral)
+AT+LEWRITECMD=connAddr,charHnd, value (write something in peripheral without response)
+AT+LEREAD (read something in peripheral)
+
+
+---------------- Peripheral -----------------
+
+- AT&F1 (Set all parameters to factory defaults) *RODAR SOMENTE UMA VEZ
+
+- AT+LETIO=4 (Set connection interval min)
+- AT&W
+- AT+RESET
+
+- AT+BIOCAP=2 (keyboard only)
+- AT+BMITM=1 (active MAN IN THE MIDDLE)
+- AT+BNAME=BLE+PERIPHERAL %12a (set module name)
+- AT%B8 (set baud rate to 115200bps)
+- AT+LECONINTMIN=3200 (set connection interval min)
+- AT+LECONINTMAX=3200 (set connection interval max)
+- AT+LEROLE=0 (set to peripheral)
+- AT+LESRVSETOPEN=1 (open definition of service set 1)
+- AT+LEATTRIB (define services)
+- AT+LESRVSETSAVE (save service set previous defined by LESRVSETOPEN)
+- AT+LESRVBOOTSET=1 (load services in boot load)
+- AT+LESRVBOOTMODE=2 (load services in boot load)
+- AT+BPAIRMODE=1 (active for new connections)
+
+- waiting for new connections...
+-------------- security section ----------------
+The modules will receive a "SSPPIN <BT addr>, tx ?" event and
+will send the same passkey with BSSPPIN command.
+
+AT+BSSPPIN <Bt addr>,tx,<passkey>
+exemplo: AT+BSSPPIN 008025007C08D,t2,123456
+
+After that the modules will receive:
+
+- OK
+- RING
+- CONNECT connAddr
+-------------- security section ----------------
+- waiting for read and write commands...
+- send ATH to disconnect.
+- Send AT+SYSTEMOFF=1 to sleep and wake up by GPIO.
+
