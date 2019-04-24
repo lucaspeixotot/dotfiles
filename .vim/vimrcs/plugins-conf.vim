@@ -1,12 +1,14 @@
 " Nerd tree configuration ------------------------------------------------------
 map <leader>nd :NERDTreeToggle<CR>
+let g:NERDTreeDirArrowExpandable="+"
+let g:NERDTreeDirArrowCollapsible="~"
 
 " MRU configuration ------------------------------------------------------------
 map <leader>mru :MRU<CR>
 
 " Lightline --------------------------------------------------------------------
 let g:lightline = {
-    \ 'colorscheme': 'onedark',
+    \ 'colorscheme': 'palenight',
       "\ 'colorscheme': 'powerline',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
@@ -84,4 +86,6 @@ map <C-p> :Files<cr>
 let g:DoxygenToolkit_authorName="Lucas Peixoto (lucaspeixotoac@gmail.com)"
 let g:DoxygenToolkit_licenseTag="My own license"
 
+" palenight ------------------------------------------------------------------------
+let g:palenight_terminal_italics=1
 

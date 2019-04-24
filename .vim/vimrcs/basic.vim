@@ -42,6 +42,7 @@ augroup END
 
 set mouse=a
 
+
 " Enable filetype plugins
 filetype plugin on
 filetype indent on
@@ -171,7 +172,10 @@ endif
     "colorscheme desert
 "catch
 "endtry
-colorscheme onedark
+"colorscheme onedark
+
+colorscheme palenight
+
 
 
 
@@ -238,6 +242,7 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
 map <c-space> ?
+nnoremap <Leader>s :/\<<C-r><C-w>\><CR>
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>

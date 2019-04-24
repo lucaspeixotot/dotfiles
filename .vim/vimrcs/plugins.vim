@@ -59,5 +59,7 @@ Plug 'junegunn/fzf.vim'
 " Doxygen
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
+" Palenight
+Plug 'drewtempelmeyer/palenight.vim'
 
 call plug#end()
