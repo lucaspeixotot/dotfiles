@@ -143,6 +143,8 @@ set novisualbell
 set t_vb=
 set tm=500
 
+set colorcolumn=72
+
 " Properly disable sound on errors on MacVim
 if has("gui_macvim")
     autocmd GUIEnter * set vb t_vb=
@@ -243,6 +245,7 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 map <space> /
 map <c-space> ?
 nnoremap <Leader>s :/\<<C-r><C-w>\><CR>
+map <leader>n :cnext<CR>
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
