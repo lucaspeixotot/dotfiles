@@ -46,7 +46,7 @@ let g:clang_format#style_options = {
             \ "SpaceInEmptyParentheses": "false" }
 
 " map to <Leader>cf in C++ code
-autocmd FileType c,cpp,objc ClangFormatAutoEnable
+"autocmd FileType c,cpp,objc ClangFormatAutoEnable
 
 " Toggle auto formatting:
 map <Leader>C :ClangFormatAutoToggle<CR>
