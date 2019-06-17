@@ -30,6 +30,11 @@
 
 ;; line number
 (global-linum-mode t)
+(global-visual-line-mode t)  
+
+;; (add-hook 'prog-mode-hook '(lambda ()
+;;     (setq truncate-lines nil
+;;           word-wrap t)))
 
 ;; c config
 (setq-default c-basic-offset 4
@@ -37,6 +42,8 @@
 
 ;; office code pro
 (set-frame-font "Office Code Pro-10" nil t)
+;; (set-frame-font "Hack-10" nil t)
+(setq popup-use-optimized-column-computation nil)
 
 ;; smooth scroll
 (setq scroll-step           5
@@ -65,8 +72,23 @@
     (compile "ctags -R -e .")
     ))
   )
-
 (add-hook 'after-save-hook (lambda () (compile-tags)))
+(setq tags-revert-without-query 1)
+
+;; history
+(setq savehist-file "~/.emacs.d/savehist")
+(setq history-length 1000)
+(savehist-mode 1)
+(setq history-length t)
+(setq history-delete-duplicates t)
+(setq savehist-save-minibuffer-history 1)
+(setq savehist-additional-variables
+      '(kill-ring
+        search-ring
+        regexp-search-ring))
+(setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+(setq undo-tree-auto-save-history t)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Package configs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'package)
@@ -82,6 +104,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
+
+
 
 ;; Vim mode
 (use-package evil
@@ -137,19 +161,22 @@
     (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
     (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
     (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle) 
+    (evil-define-key 'normal neotree-mode-map (kbd "v") 'neotree-enter-vertical-split) 
+    (evil-define-key 'normal neotree-mode-map (kbd "s") 'neotree-enter-horizontal-split) 
+    (add-hook 'neotree-mode-hook
+        (lambda ()
+            (visual-line-mode -1)
+            (setq truncate-lines t)))
   )
 
-;;key-chord
-(use-package key-chord
+(use-package evil-escape
   :ensure t
   :init
-  (setq key-chord-two-keys-delay 0.3)
-  (key-chord-mode 1)
-  (key-chord-define evil-normal-state-map "fd" 'evil-force-normal-state)
-  (key-chord-define evil-visual-state-map "fd" 'evil-change-to-previous-state)
-  (key-chord-define evil-insert-state-map "fd" 'evil-normal-state)
-  (key-chord-define evil-replace-state-map "fd" 'evil-normal-state)
-  )
+  (evil-escape-mode t)
+  :config
+  (setq-default evil-escape-key-sequence "fd")
+  (setq-default evil-escape-delay 0.1)
+)
 
 ;; doom themes
 (use-package doom-themes
@@ -206,32 +233,46 @@
   :ensure t)
 
 ;; fill column indicator
-(use-package fill-column-indicator
-  :ensure t
-  :init
-  (define-globalized-minor-mode
-    global-fci-mode fci-mode (lambda () (fci-mode 1)))
-  (global-fci-mode 1)
-  (setq fci-rule-width 4))
+;; (use-package fill-column-indicator
+;;   :ensure t
+;;   :init
+;;   (define-globalized-minor-mode
+;;     global-fci-mode fci-mode (lambda () (fci-mode 1)))
+;;   (global-fci-mode 1)
+;;   (setq fci-rule-width 4))
 
 ;; telephone-line
-(use-package telephone-line
-  :ensure t
-  :init
-  (setq telephone-line-lhs
-      '((evil   . (telephone-line-evil-tag-segment))
-        (accent . (telephone-line-vc-segment
-                   telephone-line-erc-modified-channels-segment
-                   telephone-line-process-segment))
-        (nil    . (telephone-line-minor-mode-segment
-                   telephone-line-buffer-segment))))
-(setq telephone-line-rhs
-      '((nil    . (telephone-line-misc-info-segment))
-        (accent . (telephone-line-major-mode-segment))
-        (evil   . (telephone-line-airline-position-segment))))
-    :config
-    (telephone-line-mode 1)
-   )
+;; (use-package telephone-line
+;;   :ensure t
+;;   :init
+;;   (setq telephone-line-lhs
+;;       '((evil   . (telephone-line-evil-tag-segment))
+;;         (accent . (telephone-line-vc-segment
+;;                    telephone-line-erc-modified-channels-segment
+;;                    telephone-line-process-segment))
+;;         (nil    . (telephone-line-minor-mode-segment
+;;                    telephone-line-buffer-segment))))
+;; (setq telephone-line-rhs
+;;       '((nil    . (telephone-line-misc-info-segment))
+;;         (accent . (telephone-line-major-mode-segment))
+;;         (evil   . (telephone-line-airline-position-segment))))
+;;     :config
+;;     (telephone-line-mode 1)
+;;    )
+
+;; powerline
+;; (use-package powerline
+;;   :ensure t
+;;   :config
+;;   (powerline-default-theme))
+
+;; powerline evil
+;; (use-package powerline-evil
+;;   :ensure t
+;;   :config
+;;   (powerline-evil-vim-theme)
+;; )
+
 
 ;; dimmer-mode
 (use-package dimmer
@@ -261,7 +302,50 @@
     "p" '(projectile-command-map :which-key "open projectile menu")
     ;; comment a region
     "c" '(comment-line :which-key "comment a region")
+    "orc" '((find-file "~/.emacs.d/init.el") :which-key "open rc emacs file")
   ))
+
+(use-package auto-complete
+  :ensure t
+  :init
+  (ac-config-default)
+  :config
+    (define-key ac-complete-mode-map "\C-n" 'ac-next)
+    (define-key ac-complete-mode-map "\C-p" 'ac-previous)
+  )
+
+(use-package anzu
+  :ensure t
+  :config
+  (global-anzu-mode +1))
+
+;; diminish
+(use-package diminish
+  :ensure t
+  :config
+  (diminish 'projectile-mode)
+  (diminish 'undo-tree-mode)
+  (diminish 'eldoc-mode)
+  (diminish 'flymake-mode)
+  (diminish 'irony-mode)
+  (diminish 'company-mode)
+  (diminish 'counsel-company)
+  (diminish 'smartparens-mode)
+  (diminish 'which-key-mode)
+  (diminish 'abbrev-mode)
+  (diminish 'visual-line-mode)
+  (diminish 'anzu-mode)
+  (diminish 'magit-mode)
+  )
+
+;; magit
+(use-package magit
+  :ensure t)
+
+;; evilmagit
+(use-package evil-magit
+  :ensure t)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; CUSTOM SET VARIABLES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -272,7 +356,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (counsel-etags dimmer telephone-line fill-column-indicator ag smartparens cmake-font-lock projectile rainbow-delimiters color-identifiers-mode doom-themes neotree helm key-chord evil-escape-mode general evil use-package)))
+    (evil-magit anzu column-marker doxygen evil-escape powerline counsel-etags dimmer telephone-line fill-column-indicator ag smartparens cmake-font-lock projectile rainbow-delimiters color-identifiers-mode doom-themes neotree helm key-chord evil-escape-mode general evil use-package)))
  '(projectile-mode t nil (projectile))
  '(show-paren-mode t))
 (custom-set-faces
