@@ -6,7 +6,6 @@ Xft.autohint:  false
 Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 
-
 XTerm*background:        #222D31
 XTerm*foreground:        #d8d8d8
 XTerm*pointerColor:      #1ABB9B
