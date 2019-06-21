@@ -62,17 +62,17 @@
 (show-paren-mode 1)
 
 ;; generate tags
-(defun compile-tags ()
-  ;; "compile etags for the current project"
-  ;; (interactive)
-  (when (projectile-project-root)
-    (save-window-excursion
-    (cd (projectile-project-root))
-    ;; (compile "find . -regex '.*/.*\.\(c\|cpp\|h\|hpp\)$' -print | etags -")
-    (compile "ctags -R -e .")
-    ))
-  )
-(add-hook 'after-save-hook (lambda () (compile-tags)))
+;; (defun compile-tags ()
+;;   ;; "compile etags for the current project"
+;;   ;; (interactive)
+;;   (when (projectile-project-root)
+;;     (save-window-excursion
+;;     (cd (projectile-project-root))
+;;     ;; (compile "find . -regex '.*/.*\.\(c\|cpp\|h\|hpp\)$' -print | etags -")
+;;     (compile "ctags -R -e .")
+;;     ))
+;;   )
+;; (add-hook 'after-save-hook (lambda () (compile-tags)))
 (setq tags-revert-without-query 1)
 
 ;; history
@@ -88,6 +88,12 @@
         regexp-search-ring))
 (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
 (setq undo-tree-auto-save-history t)
+
+;; recentf
+(recentf-mode 1)
+(setq-default recent-save-file "~/.emacs.d/recentf") 
+(run-at-time nil (* 1 60) 'recentf-save-list)
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Package configs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -118,13 +124,34 @@
   (define-key evil-normal-state-map (kbd "C-l") #'evil-window-right)
  )
 
+;; org bullets
+(use-package org-bullets
+  :ensure t
+  :hook ((org-mode) . (lambda () (org-bullets-mode 1)))
+  )
+
+(use-package evil-org
+  :ensure t
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme)))
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
 ;; Helm
 (use-package helm
   :ensure t
   :init
   (setq helm-mode-fuzzy-match t)
   (setq helm-completion-in-region-fuzzy-match t)
-  (setq helm-candidate-number-list 50))
+  (setq helm-candidate-number-list 50)
+  :config
+  (setq helm-ff-file-name-history-use-recentf t)
+
+  )
 
 ;; Which Key
 (use-package which-key
@@ -177,6 +204,10 @@
   (setq-default evil-escape-key-sequence "fd")
   (setq-default evil-escape-delay 0.1)
 )
+
+(use-package evil-nerd-commenter
+  :ensure t
+  )
 
 ;; doom themes
 (use-package doom-themes
@@ -241,6 +272,12 @@
 ;;   (global-fci-mode 1)
 ;;   (setq fci-rule-width 4))
 
+;; fill column
+(use-package hl-fill-column
+  :ensure t
+  :hook ((text-mode prog-mode conf-mode) . hl-fill-column-mode)
+  )
+
 ;; telephone-line
 ;; (use-package telephone-line
 ;;   :ensure t
@@ -272,6 +309,13 @@
 ;;   :config
 ;;   (powerline-evil-vim-theme)
 ;; )
+(use-package doom-modeline
+      :ensure t
+      :hook (after-init . doom-modeline-mode)
+      :config
+      (setq doom-modeline-buffer-file-name-style 'relative-to-project)
+      (setq doom-modeline-vcs-max-length 20)
+)
 
 
 ;; dimmer-mode
@@ -283,6 +327,10 @@
   (dimmer-mode 1)
   )
 
+(use-package buffer-move
+  :ensure t
+  )
+
 ;; Custom keybinding
 (use-package general
   :ensure t
@@ -291,9 +339,16 @@
     :prefix "SPC"
     :non-normal-prefix "M-SPC"
     "SPC" '(helm-M-x :which-key "M-x")
+    ;; file
     "ff"  '(helm-find-files :which-key "find files")
     ;; Buffers
     "bb"  '(helm-buffers-list :which-key "buffers list")
+    "bp"  '(switch-to-prev-buffer :which-key "switch to previous buffer")
+    "bn"  '(switch-to-next-buffer :which-key "switch to next buffer")
+    "bh"  '(buf-move-left :which-key "move buffer to left")
+    "bj"  '(buf-move-down :which-key "move buffer to down")
+    "bk"  '(buf-move-up :which-key "move buffer to up")
+    "bl"  '(buf-move-right :which-key "move buffer to right")
     ;; Window
     "nt"  '(neotree-project-dir :which-key "open/close neotree")
     "q"  '(delete-window :which-key "delete window")
@@ -301,18 +356,37 @@
     ;; projectile
     "p" '(projectile-command-map :which-key "open projectile menu")
     ;; comment a region
-    "c" '(comment-line :which-key "comment a region")
-    "orc" '((find-file "~/.emacs.d/init.el") :which-key "open rc emacs file")
+    "cc" '(evilnc-comment-or-uncomment-lines :which-key "comment a region")
   ))
 
-(use-package auto-complete
+;; (use-package auto-complete
+;;   :ensure t
+;;   :init
+;;   (ac-config-default)
+;;   :config
+;;     (define-key ac-complete-mode-map "\C-n" 'ac-next)
+;;     (define-key ac-complete-mode-map "\C-p" 'ac-previous)
+;;   )
+
+(use-package company
   :ensure t
   :init
-  (ac-config-default)
-  :config
-    (define-key ac-complete-mode-map "\C-n" 'ac-next)
-    (define-key ac-complete-mode-map "\C-p" 'ac-previous)
-  )
+ (setq company-minimum-prefix-length 2
+        company-tooltip-limit 14
+        company-dabbrev-downcase nil
+        company-dabbrev-ignore-case nil
+        company-dabbrev-code-other-buffers t
+        company-tooltip-align-annotations t
+        company-require-match 'never
+        company-global-modes
+        '(not erc-mode message-mode help-mode gud-mode eshell-mode)
+        company-backends '(company-capf)
+        company-frontends
+        '(company-pseudo-tooltip-frontend
+          company-echo-metadata-frontend))
+  (global-company-mode +1) 
+
+)
 
 (use-package anzu
   :ensure t
@@ -356,7 +430,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (evil-magit anzu column-marker doxygen evil-escape powerline counsel-etags dimmer telephone-line fill-column-indicator ag smartparens cmake-font-lock projectile rainbow-delimiters color-identifiers-mode doom-themes neotree helm key-chord evil-escape-mode general evil use-package)))
+    (evil-org org-bullets hl-fill-column buffer-move doom-modeline evil-nerd-commenter evil-magit anzu column-marker doxygen evil-escape powerline counsel-etags dimmer telephone-line fill-column-indicator ag smartparens cmake-font-lock projectile rainbow-delimiters color-identifiers-mode doom-themes neotree helm key-chord evil-escape-mode general evil use-package)))
  '(projectile-mode t nil (projectile))
  '(show-paren-mode t))
 (custom-set-faces
