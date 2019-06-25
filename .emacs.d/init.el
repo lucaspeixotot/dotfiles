@@ -25,12 +25,29 @@
 ;; yes and no alias
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+(defun find-config ()
+  "Edit config.org"
+  (interactive)
+  (find-file "~/.emacs.d/init.el"))
+
 ;; enable C-u for evil mode
 (setq evil-want-C-u-scroll t)
 
 ;; line number
-(global-linum-mode t)
-(global-visual-line-mode t)  
+;; (global-linum-mode t)
+(global-visual-line-mode t) 
+
+(defun enable-linum-relative ()
+  (interactive)
+  (linum-mode -1)
+  (linum-relative-mode 1)
+  )
+
+(defun disable-linum-relative ()
+  (interactive)
+  (linum-mode 1)
+  (linum-relative-mode -1)
+  )
 
 ;; (add-hook 'prog-mode-hook '(lambda ()
 ;;     (setq truncate-lines nil
@@ -93,7 +110,7 @@
 ;; recentf
 (recentf-mode 1)
 (setq-default recent-save-file "~/.emacs.d/recentf") 
-(run-at-time nil (* 1 60) 'recentf-save-list)
+(run-at-time nil (* 10 60) 'recentf-save-list)
 
 
 
@@ -328,6 +345,8 @@
       :config
       (setq doom-modeline-buffer-file-name-style 'relative-to-project)
       (setq doom-modeline-vcs-max-length 20)
+      (setq doom-modeline-github-interval (* 1 60))
+
 )
 
 
@@ -344,36 +363,6 @@
   :ensure t
   )
 
-;; Custom keybinding
-(use-package general
-  :ensure t
-  :config (general-define-key
-    :states '(normal visual insert emacs)
-    :prefix "SPC"
-    :non-normal-prefix "M-SPC"
-    "SPC" '(helm-M-x :which-key "M-x")
-    ;; file
-    "ff"  '(helm-find-files :which-key "find files")
-    ;; Buffers
-    "bb"  '(helm-buffers-list :which-key "buffers list")
-    "bp"  '(switch-to-prev-buffer :which-key "switch to previous buffer")
-    "bn"  '(switch-to-next-buffer :which-key "switch to next buffer")
-    "bh"  '(buf-move-left :which-key "move buffer to left")
-    "bj"  '(buf-move-down :which-key "move buffer to down")
-    "bk"  '(buf-move-up :which-key "move buffer to up")
-    "bl"  '(buf-move-right :which-key "move buffer to right")
-    ;; Window
-    "nt"  '(neotree-project-dir :which-key "open/close neotree")
-    "q"  '(delete-window :which-key "delete window")
-    "w"  '(save-buffer :which-key "save current buffer")
-    ;; projectile
-    "p" '(projectile-command-map :which-key "open projectile menu")
-    ;; comment a region
-    "cc" '(evilnc-comment-or-uncomment-lines :which-key "comment a region")
-    ;;doxygen
-    "dh" '(gendoxy-header :which-key "this generate doxygen syntax for header files")
-    "dt" '(gendoxy-tag :which-key "this generate doxy syntax for functions and structs")
-  ))
 
 ;; (use-package auto-complete
 ;;   :ensure t
@@ -387,22 +376,34 @@
 (use-package company
   :ensure t
   :init
- (setq company-minimum-prefix-length 2
-        company-tooltip-limit 14
+  (setq company-idle-delay 0
+        company-echo-delay 0
+        company-selection-wrap-around t
         company-dabbrev-downcase nil
         company-dabbrev-ignore-case nil
         company-dabbrev-code-other-buffers t
-        company-tooltip-align-annotations t
         company-require-match 'never
         company-global-modes
-        '(not erc-mode message-mode help-mode gud-mode eshell-mode)
-        company-backends '(company-capf)
-        company-frontends
-        '(company-pseudo-tooltip-frontend
-          company-echo-metadata-frontend))
-  (global-company-mode +1) 
-
+        (global-company-mode +1))
 )
+
+(use-package company-irony
+  :ensure t
+  :config
+  (require 'company)
+  (add-to-list 'company-backends 'company-irony)
+  )
+
+(use-package irony
+  :ensure t
+  :config
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  )
+
 
 (use-package anzu
   :ensure t
@@ -436,6 +437,49 @@
 (use-package evil-magit
   :ensure t)
 
+(use-package linum-relative
+  :ensure t
+  :config
+  (setq linum-relative-backend 'display-line-numbers-mode)
+  (linum-relative-in-helm-p)
+  :init
+  (linum-relative-global-mode 1)
+  )
+
+;; Custom keybinding
+(use-package general
+  :ensure t
+  :config (general-define-key
+    :states '(normal visual insert emacs)
+    :prefix "SPC"
+    :non-normal-prefix "M-SPC"
+    "SPC" '(helm-M-x :which-key "M-x")
+    ;; file
+    "ff"  '(helm-find-files :which-key "find files")
+    ;; Buffers
+    "bb"  '(helm-buffers-list :which-key "buffers list")
+    "bp"  '(switch-to-prev-buffer :which-key "switch to previous buffer")
+    "bn"  '(switch-to-next-buffer :which-key "switch to next buffer")
+    "bh"  '(buf-move-left :which-key "move buffer to left")
+    "bj"  '(buf-move-down :which-key "move buffer to down")
+    "bk"  '(buf-move-up :which-key "move buffer to up")
+    "bl"  '(buf-move-right :which-key "move buffer to right")
+    ;; Window
+    "nt"  '(neotree-project-dir :which-key "open/close neotree")
+    "q"  '(delete-window :which-key "delete window")
+    "w"  '(save-buffer :which-key "save current buffer")
+    ;; projectile
+    "p" '(projectile-command-map :which-key "open projectile menu")
+    ;; comment a region
+    "cc" '(evilnc-comment-or-uncomment-lines :which-key "comment a region")
+    ;;doxygen
+    "dh" '(gendoxy-header :which-key "this generate doxygen syntax for header files")
+    "dt" '(gendoxy-tag :which-key "this generate doxy syntax for functions and structs")
+    ;;emacs rc
+    "erc" '(find-config :which-key "find and open init.el config file")
+    "ll" '(enable-linum-relative :which-key "enable linum relative number")
+    "lo" '(disable-linum-relative :which-key "disable linum relative number")
+  ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; CUSTOM SET VARIABLES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -446,13 +490,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-<<<<<<< HEAD
-    (gendoxy evil-magit anzu column-marker doxygen evil-escape powerline counsel-etags dimmer telephone-line fill-column-indicator ag smartparens cmake-font-lock projectile rainbow-delimiters color-identifiers-mode doom-themes neotree helm key-chord evil-escape-mode general evil use-package)))
-=======
-    (evil-org org-bullets hl-fill-column buffer-move doom-modeline evil-nerd-commenter evil-magit anzu column-marker doxygen evil-escape powerline counsel-etags dimmer telephone-line fill-column-indicator ag smartparens cmake-font-lock projectile rainbow-delimiters color-identifiers-mode doom-themes neotree helm key-chord evil-escape-mode general evil use-package)))
->>>>>>> 8047e04cb79bdb3c10036fe17125dec26dbdf5a7
- '(projectile-mode t nil (projectile))
- '(show-paren-mode t))
+    (linum-relative nlinum-relative icicles icy-mode which-key use-package telephone-line smartparens rainbow-delimiters projectile powerline-evil org-bullets neotree key-chord hl-fill-column highlight-numbers helm ggtags general fill-column-indicator evil-org evil-nerd-commenter evil-magit evil-escape doom-themes doom-modeline dimmer diminish counsel-etags company-irony color-identifiers-mode cmake-font-lock buffer-move auto-complete anzu ag))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
