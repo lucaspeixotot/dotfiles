@@ -93,6 +93,9 @@
 
 (setq tags-revert-without-query 1)
 
+;; highlight line
+(global-hl-line-mode 1)
+
 ;; history
 (setq savehist-file "~/.emacs.d/savehist")
 (setq history-length 1000)
@@ -284,6 +287,21 @@
   (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
   (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
   )
+
+(defun my-fancy-newline ()
+  "Add two newlines and put the cursor at the right indentation
+between them if a newline is attempted when the cursor is between
+two curly braces, otherwise do a regular newline and indent"
+  (interactive)
+  (if (and (equal (char-before) 123) ; {
+           (equal (char-after) 125)) ; }
+      (progn (newline-and-indent)
+             (split-line)
+             (indent-for-tab-command))
+    (newline-and-indent)))
+
+;; I set mine to C-j, you do you, don't let me tell you how to live your life.
+(global-set-key (kbd "RET") 'my-fancy-newline)
 
 ;; smart parens
 (use-package smartparens
