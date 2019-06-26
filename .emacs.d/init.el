@@ -163,16 +163,34 @@
   (evil-org-agenda-set-keys))
 
 ;; Helm
-(use-package helm
-  :ensure t
-  :init
-  (setq helm-mode-fuzzy-match t)
-  (setq helm-completion-in-region-fuzzy-match t)
-  (setq helm-candidate-number-list 50)
-  :config
-  (setq helm-ff-file-name-history-use-recentf t)
+;; (use-package helm
+;;   :ensure t
+;;   :init
+;;   (setq helm-mode-fuzzy-match t)
+;;   (setq helm-completion-in-region-fuzzy-match t)
+;;   (setq helm-candidate-number-list 50)
+;;   :config
+;;   (setq helm-ff-file-name-history-use-recentf t)
 
+;;   )
+
+;; ivy
+(use-package ivy
+  :ensure t
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
   )
+
+;;counsel
+(use-package counsel
+  :ensure t
+  )
+
+;; swiper
+(use-package swiper
+  :ensure t)
 
 ;; Which Key
 (use-package which-key
@@ -453,9 +471,9 @@
     :states '(normal visual insert emacs)
     :prefix "SPC"
     :non-normal-prefix "M-SPC"
-    "SPC" '(helm-M-x :which-key "M-x")
+    "SPC" '(counsel-M-x :which-key "M-x")
     ;; file
-    "ff"  '(helm-find-files :which-key "find files")
+    "ff"  '(counsel-find-file :which-key "find files")
     ;; Buffers
     "bb"  '(helm-buffers-list :which-key "buffers list")
     "bp"  '(switch-to-prev-buffer :which-key "switch to previous buffer")
