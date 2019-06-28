@@ -120,14 +120,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Package configs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'load-path (expand-file-name "custom-packages" user-emacs-directory))
 (load "gendoxy.el")
+(load "dts-mode.el")
+(load "kconfig-mode.el")
 
 (require 'package)
 (setq package-enable-at-startup nil)
+(package-initialize)
 (setq package-archives '(("org"   . "http://orgmode.org/elpa/")
                          ("gnu"   . "http://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")
 			 ("melpa-stable" . "http://stable.melpa.org/packages/")))
-(package-initialize)
+;; (package-refresh-contents)
+
 
 ;; Bootstrap `use-package`
 (unless (package-installed-p 'use-package)
@@ -146,7 +150,11 @@
   (define-key evil-normal-state-map (kbd "C-j") #'evil-window-down)
   (define-key evil-normal-state-map (kbd "C-k") #'evil-window-up)
   (define-key evil-normal-state-map (kbd "C-l") #'evil-window-right)
+  (define-key evil-normal-state-map (kbd "C-]") 'evil-jump-to-tag)
+  ;; (define-key evil-normal-state-map (kbd "C-] C-v") 'xref-find-definitions-other-window)
+
  )
+
 
 ;; org bullets
 (use-package org-bullets
@@ -166,16 +174,15 @@
   (evil-org-agenda-set-keys))
 
 ;; Helm
-;; (use-package helm
-;;   :ensure t
-;;   :init
-;;   (setq helm-mode-fuzzy-match t)
-;;   (setq helm-completion-in-region-fuzzy-match t)
-;;   (setq helm-candidate-number-list 50)
-;;   :config
-;;   (setq helm-ff-file-name-history-use-recentf t)
-
-;;   )
+(use-package helm
+  :ensure t
+  :init
+  :config
+  (setq helm-mode-fuzzy-match t)
+  (setq helm-completion-in-region-fuzzy-match t)
+  (setq helm-candidate-number-list 50)
+  (setq helm-ff-file-name-history-use-recentf t)
+  )
 
 ;; ivy
 (use-package ivy
@@ -186,14 +193,15 @@
   (setq enable-recursive-minibuffers t)
   )
 
-;;counsel
+;; counsel
 (use-package counsel
   :ensure t
   )
 
 ;; swiper
 (use-package swiper
-  :ensure t)
+  :ensure t
+  )
 
 ;; Which Key
 (use-package which-key
@@ -526,7 +534,7 @@ two curly braces, otherwise do a regular newline and indent"
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (linum-relative nlinum-relative icicles icy-mode which-key use-package telephone-line smartparens rainbow-delimiters projectile powerline-evil org-bullets neotree key-chord hl-fill-column highlight-numbers helm ggtags general fill-column-indicator evil-org evil-nerd-commenter evil-magit evil-escape doom-themes doom-modeline dimmer diminish counsel-etags company-irony color-identifiers-mode cmake-font-lock buffer-move auto-complete anzu ag))))
+    (swiper counsel linum-relative nlinum-relative icicles icy-mode which-key use-package telephone-line smartparens rainbow-delimiters projectile powerline-evil org-bullets neotree key-chord hl-fill-column highlight-numbers helm ggtags general fill-column-indicator evil-org evil-nerd-commenter evil-magit evil-escape doom-themes doom-modeline dimmer diminish counsel-etags company-irony color-identifiers-mode cmake-font-lock buffer-move auto-complete anzu ag))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
