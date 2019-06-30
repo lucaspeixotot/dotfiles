@@ -132,6 +132,10 @@
      (setq display-time-format "%a %H:%M - %d %b %Y")
      (display-time-mode t)
    #+END_SRC
+** VC git branch update
+   #+BEGIN_SRC emacs-lisp
+  (setq auto-revert-check-vc-info t) 
+   #+END_SRC
 * Package config
 ** Initializing unofficial packages
    #+BEGIN_SRC emacs-lisp
@@ -625,6 +629,7 @@
          "gf" '(magit-fetch :which-key "magit fetch")
          "gF" '(magit-pull :which-key "magit pull")
          "gp" '(magit-push :which-key "magit push")
+         "gbb" '(magit-branch :which-key "magit branch menu")
          "gbc" '(magit-checkout :which-key "magit checkout")
          "gbn" '(magit-branch-create :which-key "magit new branch")
        ))
