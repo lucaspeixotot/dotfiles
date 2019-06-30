@@ -562,6 +562,14 @@
        (add-hook 'c++-mode-hook 'clang-format-buffer-smart-on-save)
        )
    #+END_SRC
+** window-numbering
+   #+BEGIN_SRC emacs-lisp
+     (use-package winum
+       :ensure t
+       :config
+       (winum-mode)
+       )
+   #+END_SRC
 ** General Config
    #+BEGIN_SRC emacs-lisp
      (use-package general
@@ -570,10 +578,20 @@
          :states '(normal visual insert emacs)
          :prefix "SPC"
          :non-normal-prefix "M-SPC"
+         ;; Emacs console
          "SPC" '(helm-M-x :which-key "M-x")
-         ;; shell
+         ;; Selecting windows
+         "1" '(winum-select-window-1 :which-key "select window 1")
+         "2" '(winum-select-window-2 :which-key "select window 2")
+         "3" '(winum-select-window-3 :which-key "select window 3")
+         "4" '(winum-select-window-4 :which-key "select window 4")
+         "5" '(winum-select-window-5 :which-key "select window 5")
+         "6" '(winum-select-window-6 :which-key "select window 6")
+         "7" '(winum-select-window-7 :which-key "select window 7")
+         "8" '(winum-select-window-8 :which-key "select window 8")
+         ;; Shell
          (kbd "RET") '(ansi-term :which-key "open terminal")
-         ;; file
+         ;; File
          "ff"  '(counsel-find-file :which-key "find files")
          ;; Buffers
          "bb"  '(helm-buffers-list :which-key "buffers list")
@@ -588,16 +606,16 @@
          "nt"  '(neotree-project-dir :which-key "open/close neotree")
          "q"  '(delete-window :which-key "delete window")
          "w"  '(save-buffer :which-key "save current buffer")
-         ;; projectile
+         ;; Projectile
          "p" '(projectile-command-map :which-key "open projectile menu")
-         ;; comment a region
+         ;; Comment a region
          "cc" '(evilnc-comment-or-uncomment-lines :which-key "comment a region")
-         ;;doxygen
+         ;; Doxygen
          "dh" '(gendoxy-header :which-key "this generate doxygen syntax for header files")
          "dt" '(gendoxy-tag :which-key "this generate doxy syntax for functions and structs")
-         ;;emacs rc
+         ;; Emacs rc
          "erc" '(find-config :which-key "find and open init.el config file")
-         ;; popup kill ring
+         ;; Popup kill ring
          "y" '(popup-kill-ring :which-key "popup for kill ring")
        ))
    #+END_SRC
