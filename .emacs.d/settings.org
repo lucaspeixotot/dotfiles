@@ -61,7 +61,7 @@
    #+END_SRC
 ** Smooth scroll
    #+BEGIN_SRC emacs-lisp
-     (setq scroll-step           5
+     (setq scroll-step           1
            scroll-conservatively 10000)
    #+END_SRC
 ** Highlight C functions
