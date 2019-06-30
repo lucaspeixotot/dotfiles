@@ -106,6 +106,30 @@
   (setq-default recent-save-file "~/.emacs.d/recentf") 
   (run-at-time nil (* 10 60) 'recentf-save-list)
 #+END_SRC
+** Shell
+   #+BEGIN_SRC emacs-lisp
+     (defvar my-term-shell "/bin/bash")
+     (defadvice ansi-term (before force-bash)
+       (interactive (list my-term-shell)))
+     (ad-activate 'ansi-term)
+   #+END_SRC
+** Show lines and columns in modeline
+   #+BEGIN_SRC emacs-lisp
+   (line-number-mode 1)
+   (column-number-mode 1)
+   #+END_SRC
+** Function to kill current buffer
+   #+BEGIN_SRC emacs-lisp
+     (defun kill-current-buffer ()
+       (interactive)
+       (kill-buffer (current-buffer)))
+   #+END_SRC
+** Clock
+   #+BEGIN_SRC emacs-lisp
+     (setq display-time-day-and-date t)
+     (setq display-time-24hr-format t)
+     (display-time-mode t)
+   #+END_SRC
 * Package config
 ** Initializing unofficial packages
    #+BEGIN_SRC emacs-lisp
@@ -132,7 +156,7 @@
        (package-install 'use-package))
      (require 'use-package)
    #+END_SRC
-** Evil mode
+** Evil
 *** Initializing evil
    #+BEGIN_SRC emacs-lisp
        (use-package evil
@@ -143,6 +167,7 @@
        (define-key evil-normal-state-map (kbd "C-j") #'evil-window-down)
        (define-key evil-normal-state-map (kbd "C-k") #'evil-window-up)
        (define-key evil-normal-state-map (kbd "C-l") #'evil-window-right)
+       ;; (define-key evil-normal-state-map "/" 'swiper)
      )
    #+END_SRC
 *** Evil org
@@ -186,7 +211,8 @@
       (use-package evil-mc
         :ensure t
         :config
-        (evil-mc-mode t))
+        (global-evil-mc-mode 1) 
+        )
     #+END_SRC
 ** Org
 *** Org bullets
@@ -365,16 +391,15 @@
    #+BEGIN_SRC emacs-lisp
      (use-package company
        :ensure t
-       :init
-       (setq company-idle-delay 0
-             company-echo-delay 0
-             company-selection-wrap-around t
-             company-dabbrev-downcase nil
-             company-dabbrev-ignore-case nil
-             company-dabbrev-code-other-buffers t
-             company-require-match 'never
-             company-global-modes
-             (global-company-mode +1))
+       :config
+       (setq company-idle-delay 0)
+       (setq company-minimum-prefix-length 3)
+       (add-hook 'after-init-hook 'global-company-mode)
+     )
+
+     (with-eval-after-load 'company
+       (define-key company-active-map (kbd "C-n") #'company-select-next)
+       (define-key company-active-map (kbd "C-p") #'company-select-previous)
      )
 
      (use-package company-irony
@@ -390,10 +415,13 @@
        (add-hook 'c++-mode-hook 'irony-mode)
        (add-hook 'c-mode-hook 'irony-mode)
        (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-       (define-key company-active-map (kbd "C-n") 'company-select-next)
-       (define-key company-active-map (kbd "C-p") 'company-select-previous)
        )
-   
+
+     (with-eval-after-load 'company
+       (add-hook 'c++-mode-hook 'company-mode)
+       (add-hook 'c-mode-hook 'company-mode)
+       )
+
    #+END_SRC
 ** Diminish
    #+BEGIN_SRC emacs-lisp
@@ -431,7 +459,7 @@
      (use-package dimmer
        :ensure t
        :init
-       (setq dimmer-fraction 0.2)
+       (setq dimmer-fraction 0.3)
        :config
        (dimmer-mode 1)
        )
@@ -470,6 +498,70 @@
        :ensure t
        )
    #+END_SRC
+** Beacon
+   #+BEGIN_SRC emacs-lisp
+     (use-package beacon
+       :ensure t
+       :init
+       (beacon-mode 1)
+       :config
+       (setq beacon-blink-duration 0.1)
+       (setq beacon-size 20)
+       (setq beacon-blink-delay 0.1)
+     )
+   #+END_SRC
+** Dashboard
+   #+BEGIN_SRC emacs-lisp
+     (use-package page-break-lines
+       :ensure t
+       :config
+       (global-page-break-lines-mode t)
+       )
+
+     (use-package dashboard
+       :ensure t
+       :config
+       (dashboard-setup-startup-hook)
+       (setq dashboard-items '((recents . 10)
+                               (projects . 10)))
+       (setq dashboard-banner-logo-title "Peixoto's Emacs!")
+       (setq dashboard-set-heading-icons t) 
+       (setq dashboard-set-file-icons t)
+       (setq dashboard-show-shortcuts nil)
+       )
+   #+END_SRC
+** Popup kill ring
+   #+BEGIN_SRC emacs-lisp
+     (use-package popup-kill-ring
+       :ensure t
+       )
+   #+END_SRC
+** Pretty mode
+   #+BEGIN_SRC emacs-lisp
+     (use-package pretty-mode
+       :ensure t
+       :config
+       (add-hook 'prog-mode-hook 'pretty-mode)
+       )
+   #+END_SRC
+** Clang format
+   #+BEGIN_SRC emacs-lisp
+     (defun clang-format-buffer-smart ()
+       "Reformat buffer if .clang-format exists in the projectile root."
+       (when (f-exists? (expand-file-name ".clang-format" (projectile-project-root)))
+         (clang-format-buffer)))
+
+     (defun clang-format-buffer-smart-on-save ()
+       "Add auto-save hook for clang-format-buffer-smart."
+       (add-hook 'before-save-hook 'clang-format-buffer-smart nil t))
+
+     (use-package clang-format
+       :ensure t
+       :config
+       (add-hook 'c-mode-hook 'clang-format-buffer-smart-on-save)
+       (add-hook 'c++-mode-hook 'clang-format-buffer-smart-on-save)
+       )
+   #+END_SRC
 ** General Config
    #+BEGIN_SRC emacs-lisp
      (use-package general
@@ -478,7 +570,9 @@
          :states '(normal visual insert emacs)
          :prefix "SPC"
          :non-normal-prefix "M-SPC"
-         "SPC" '(counsel-M-x :which-key "M-x")
+         "SPC" '(helm-M-x :which-key "M-x")
+         ;; shell
+         (kbd "RET") '(ansi-term :which-key "open terminal")
          ;; file
          "ff"  '(counsel-find-file :which-key "find files")
          ;; Buffers
@@ -489,6 +583,7 @@
          "bj"  '(buf-move-down :which-key "move buffer to down")
          "bk"  '(buf-move-up :which-key "move buffer to up")
          "bl"  '(buf-move-right :which-key "move buffer to right")
+         "bK"  '(kill-current-buffer :which-key "kill buffer")
          ;; Window
          "nt"  '(neotree-project-dir :which-key "open/close neotree")
          "q"  '(delete-window :which-key "delete window")
@@ -502,5 +597,7 @@
          "dt" '(gendoxy-tag :which-key "this generate doxy syntax for functions and structs")
          ;;emacs rc
          "erc" '(find-config :which-key "find and open init.el config file")
+         ;; popup kill ring
+         "y" '(popup-kill-ring :which-key "popup for kill ring")
        ))
    #+END_SRC
