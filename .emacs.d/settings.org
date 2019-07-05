@@ -143,6 +143,8 @@
    (load "gendoxy.el")
    (load "dts-mode.el")
    (load "kconfig-mode.el")
+   (load "move-lines.el")
+   (move-lines-binding)
    #+END_SRC
 ** Setting packages archives and enable use-package
    #+BEGIN_SRC emacs-lisp
