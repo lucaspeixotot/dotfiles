@@ -607,6 +607,35 @@
        (define-key evil-normal-state-map (kbd "gl") 'avy-goto-line)
        )
    #+END_SRC
+** Speed type
+   #+BEGIN_SRC emacs-lisp
+     (use-package speed-type
+       :ensure t
+       )
+   #+END_SRC
+** Undo tree
+   #+BEGIN_SRC emacs-lisp
+     (use-package undo-tree
+       :ensure t
+       :diminish undo-tree-mode
+       :init
+       (progn
+         (global-undo-tree-mode)
+         (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/tmp/undo"))
+               undo-tree-auto-save-history t
+               undo-tree-visualizer-timestamps t
+               undo-tree-visualizer-diff t)))
+   #+END_SRC
+** Wttrin
+   #+BEGIN_SRC emacs-lisp
+     (use-package wttrin
+       :ensure t
+       :config
+       (setq wttrin-default-cities '("Maceió"))
+       (setq wttrin-default-accept-language '("Accept-Language" . "en-US"))
+
+       )
+   #+END_SRC
 ** General Config
    #+BEGIN_SRC emacs-lisp
      (use-package general
