@@ -115,6 +115,7 @@
    #+END_SRC
 ** Show lines and columns in modeline
    #+BEGIN_SRC emacs-lisp
+   (global-linum-mode 1)
    (line-number-mode 1)
    (column-number-mode 1)
    #+END_SRC
@@ -135,6 +136,10 @@
 ** VC git branch update
    #+BEGIN_SRC emacs-lisp
   (setq auto-revert-check-vc-info t) 
+   #+END_SRC
+** Save place
+   #+BEGIN_SRC emacs-lisp
+     (save-place-mode t)
    #+END_SRC
 * Package config
 ** Initializing unofficial packages
@@ -468,10 +473,10 @@
      (use-package linum-relative
        :ensure t
        :config
-       (setq linum-relative-backend 'display-line-numbers-mode)
-       (linum-relative-in-helm-p)
-       :init
-       (linum-relative-global-mode 1)
+       ;; (setq linum-relative-backend 'display-line-numbers-mode)
+       ;; (linum-relative-in-helm-p)
+       ;; :init
+       ;; (linum-relative-global-mode 1)
        )
    #+END_SRC
 ** Dimmer window
@@ -589,6 +594,17 @@
        :ensure t
        :config
        (winum-mode)
+       )
+   #+END_SRC
+** Avy
+   #+BEGIN_SRC emacs-lisp
+     (use-package avy
+       :ensure t
+       :config
+       (avy-setup-default)
+       (setq avy-timeout-seconds 0.5)
+       (define-key evil-normal-state-map (kbd "x") 'avy-goto-char-timer)
+       (define-key evil-normal-state-map (kbd "gl") 'avy-goto-line)
        )
    #+END_SRC
 ** General Config
