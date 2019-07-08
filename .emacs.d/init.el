@@ -10,7 +10,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (speed-type winum pretty-mode beacon which-key use-package telephone-line smartparens rainbow-delimiters projectile powerline-evil org-bullets nlinum-relative neotree linum-relative key-chord hl-fill-column highlight-numbers helm ggtags general fill-column-indicator evil-org evil-nerd-commenter evil-mc evil-magit evil-escape doom-themes doom-modeline dimmer diminish counsel-etags company-irony color-identifiers-mode cmake-font-lock buffer-move auto-complete anzu ag))))
+    (yasnippet-snippets speed-type winum pretty-mode beacon which-key use-package telephone-line smartparens rainbow-delimiters projectile powerline-evil org-bullets nlinum-relative neotree linum-relative key-chord hl-fill-column highlight-numbers helm ggtags general fill-column-indicator evil-org evil-nerd-commenter evil-mc evil-magit evil-escape doom-themes doom-modeline dimmer diminish counsel-etags company-irony color-identifiers-mode cmake-font-lock buffer-move auto-complete anzu ag))))
  
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -18,3 +18,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'upcase-region 'disabled nil)

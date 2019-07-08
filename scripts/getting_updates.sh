@@ -7,6 +7,7 @@ cp ~/.Xresources $BASEDIR
 cp ~/.emacs.d/init.el $BASEDIR/.emacs.d/
 cp ~/.emacs.d/settings.org $BASEDIR/.emacs.d/
 cp ~/.emacs.d/custom-packages $BASEDIR/.emacs.d/ -r
+cp ~/.emacs.d/snippets $BASEDIR/.emacs.d/ -r
 rm $BASEDIR/.emacs.d/README.org
 ln -s $BASEDIR/.emacs.d/settings.org $BASEDIR/.emacs.d/README.org
 
