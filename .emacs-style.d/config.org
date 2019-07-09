@@ -1,0 +1,243 @@
+* Base config
+** Setting name and email
+   #+BEGIN_SRC emacs-lisp
+   (setq user-full-name "Lucas Peixoto")
+   (setq user-mail-address "lucaspeixotoac@gmail.com")
+   #+END_SRC
+** Minimal UI
+   #+BEGIN_SRC emacs-lisp
+   (scroll-bar-mode -1)
+   (tool-bar-mode   -1)
+   (tooltip-mode    -1)
+   (menu-bar-mode   -1)
+   #+END_SRC
+** Fix undo tree bug
+   #+BEGIN_SRC emacs-lisp
+   (setq undo-tree-enable-undo-in-region nil)
+   #+END_SRC
+** Yes and no alias
+   #+BEGIN_SRC emacs-lisp
+   (defalias 'yes-or-no-p 'y-or-n-p)
+   #+END_SRC
+** Function to open config file
+   #+BEGIN_SRC emacs-lisp
+     (defun find-config ()
+       "Edit config.org"
+       (interactive)
+       (find-file "~/.emacs-style.d/config.org"))
+   #+END_SRC
+** Setting font
+   #+BEGIN_SRC emacs-lisp
+   (set-frame-font "Office Code Pro-10" nil t)
+   (setq popup-use-optimized-column-computation nil)
+   #+END_SRC
+** Lines and columns
+   #+BEGIN_SRC emacs-lisp
+   (global-linum-mode 1)
+   (line-number-mode 1)
+   (column-number-mode 1)
+   (setq-default fill-column 80)
+   #+END_SRC
+** Kill current buffer function
+   #+BEGIN_SRC emacs-lisp
+     (defun kill-current-buffer ()
+       (interactive)
+       (kill-buffer (current-buffer)))
+   #+END_SRC
+** Datetime in modeline
+   #+BEGIN_SRC emacs-lisp
+     (setq display-time-day-and-date t)
+     (setq display-time-24hr-format t)
+     (setq display-time-default-load-average nil) 
+     (setq display-time-format "%a %H:%M - %d %b %Y")
+     (display-time-mode t)
+   #+END_SRC
+** Save the last location in open file
+   #+BEGIN_SRC emacs-lisp
+     (save-place-mode t)
+   #+END_SRC
+** Auto update git branch
+   #+BEGIN_SRC emacs-lisp
+  (setq auto-revert-check-vc-info t) 
+   #+END_SRC
+** Identation
+** Parentheses
+   #+BEGIN_SRC emacs-lisp
+   (show-paren-mode 1)
+   #+END_SRC
+
+* Packages config
+** Setting use-package and repositories
+   #+BEGIN_SRC emacs-lisp
+     (require 'package)
+     (setq package-enable-at-startup nil)
+     (package-initialize)
+     (setq package-archives '(("org"   . "http://orgmode.org/elpa/")
+                              ("gnu"   . "http://elpa.gnu.org/packages/")
+                              ("melpa" . "https://melpa.org/packages/")
+                              ("melpa-stable" . "http://stable.melpa.org/packages/")))
+     ;; (package-refresh-contents)
+
+
+     ;; Bootstrap `use-package`
+     (unless (package-installed-p 'use-package)
+       (package-refresh-contents)
+       (package-install 'use-package))
+     (require 'use-package)
+   #+END_SRC
+** All the icons
+   #+BEGIN_SRC emacs-lisp
+     (use-package all-the-icons
+       :ensure t
+       )
+   #+END_SRC
+** Which keybindind
+   #+BEGIN_SRC emacs-lisp
+     (use-package which-key
+       :ensure t
+       :init
+       (setq which-key-separator " ")
+       (setq which-key-prefix-prefix "+")
+       :config
+       (which-key-mode))
+   #+END_SRC
+** Hydra
+   #+BEGIN_SRC emacs-lisp
+     (use-package hydra
+       :ensure t
+       :preface
+       (defvar-local me/ongoing-hydra-body nil)
+       (defun me/ongoing-hydra ()
+	 (interactive)
+	 (if me/ongoing-hydra-body
+	     (funcall me/ongoing-hydra-body)
+	   (user-error "me/ongoing-hydra: me/ongoing-hydra-body is not set")))
+       :bind
+       (("C-c a" . hydra-avy/body)
+       ("C-c v" . hydra-vi/body)
+       )
+       :custom
+       (hydra-default-hint nil))
+   #+END_SRC
+*** Hydra-vi
+    #+BEGIN_SRC emacs-lisp
+      (defhydra hydra-vi (:post (progn
+				  (message
+				   "Thank you, come again.")))
+	"vi"
+	("l" forward-char)
+	("h" backward-char)
+	("j" next-line)
+	("k" previous-line)
+	("q" nil "quit"))
+    #+END_SRC
+** Themes and appearence
+*** Modeline
+    #+BEGIN_SRC emacs-lisp
+      (use-package doom-modeline
+            :ensure t
+            :hook (after-init . doom-modeline-mode)
+            :config
+            (setq doom-modeline-buffer-file-name-style 'relative-to-project)
+            (setq doom-modeline-vcs-max-length 20)
+            (setq doom-modeline-github-interval (* 1 60))
+
+      )
+    #+END_SRC
+*** Doom themes
+   #+BEGIN_SRC emacs-lisp
+     (use-package doom-themes
+       :ensure t
+       :config
+       (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+             doom-themes-enable-italic t) ; if nil, italics is universally disabled
+       (load-theme 'doom-one t)
+       )
+   #+END_SRC
+*** Rainbow
+    #+BEGIN_SRC emacs-lisp
+      (use-package rainbow-delimiters
+	:ensure t
+	:config
+	(add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+    #+END_SRC
+*** Anzu
+   #+BEGIN_SRC emacs-lisp
+     (use-package anzu
+       :ensure t
+       :config
+       (global-anzu-mode +1))
+   #+END_SRC
+*** Beacon
+   #+BEGIN_SRC emacs-lisp
+     (use-package beacon
+       :ensure t
+       :init
+       (beacon-mode 1)
+       :config
+       (setq beacon-blink-duration 0.1)
+       (setq beacon-size 20)
+       (setq beacon-blink-delay 0.1)
+     )
+   #+END_SRC
+*** Pretty mode
+   #+BEGIN_SRC emacs-lisp
+     (use-package pretty-mode
+       :ensure t
+       :config
+       (add-hook 'c-mode-hook 'pretty-mode)
+       (add-hook 'c++-mode-hook 'pretty-mode)
+       )
+   #+END_SRC
+** Org
+*** Org bullets
+    #+BEGIN_SRC emacs-lisp
+      (use-package org-bullets
+        :ensure t
+        :hook ((org-mode) . (lambda () (org-bullets-mode 1)))
+        )
+    #+END_SRC
+*** Org basic config
+    #+BEGIN_SRC emacs-lisp
+      (add-hook 'org-mode-hook 'auto-fill-mode)
+    #+END_SRC
+** CMAKE mode
+   #+BEGIN_SRC emacs-lisp
+     (use-package cmake-font-lock
+       :ensure t
+       :config
+       (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
+       (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
+       )
+   
+   #+END_SRC
+** Avy
+   #+BEGIN_SRC emacs-lisp
+     (use-package avy
+       :ensure t
+       :config
+       (avy-setup-default)
+       (setq avy-timeout-seconds 0.5)
+       (defhydra hydra-avy (:exit t :hint nil)
+       "
+      Line^^       Region^^        Goto
+     ----------------------------------------------------------
+      [_y_] yank   [_Y_] yank      [_c_] timed char  [_C_] char
+      [_m_] move   [_M_] move      [_w_] word        [_W_] any word
+      [_k_] kill   [_K_] kill      [_l_] line        [_L_] end of line"
+       ("c" avy-goto-char-timer)
+       ("C" avy-goto-char)
+       ("w" avy-goto-word-1)
+       ("W" avy-goto-word-0)
+       ("l" avy-goto-line)
+       ("L" avy-goto-end-of-line)
+       ("m" avy-move-line)
+       ("M" avy-move-region)
+       ("k" avy-kill-whole-line)
+       ("K" avy-kill-region)
+       ("y" avy-copy-line)
+       ("Y" avy-copy-region))
+       )
+   #+END_SRC
+
+
