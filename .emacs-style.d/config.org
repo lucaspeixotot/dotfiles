@@ -127,7 +127,7 @@
        (kill-word 1)
        )
 
-     (global-set-key (kbd "C-c w w") 'kill-whole-word)
+     (global-set-key (kbd "C-c f w") 'kill-whole-word)
    #+END_SRC
 ** Copy whole line
    #+BEGIN_SRC emacs-lisp
@@ -140,7 +140,7 @@
 	   (point-at-eol))))
        )
 
-     (global-set-key (kbd "C-c w l") 'copy-whole-line)
+     (global-set-key (kbd "C-c f l") 'copy-whole-line)
    #+END_SRC
 * Packages config
 ** Setting use-package and repositories
@@ -198,6 +198,7 @@
        :bind
        (("C-c a" . hydra-avy/body)
        ("C-c v" . hydra-vi/body)
+       ("C-c b" . hydra-buf/body)
        )
        :custom
        (hydra-default-hint nil))
@@ -415,5 +416,77 @@
 ** Magit
    #+BEGIN_SRC emacs-lisp
      (use-package magit
-       :ensure t)
+       :ensure t
+       :bind(
+	     ("C-c g" . magit-status)
+       )
+     )
    #+END_SRC
+** Neotree
+   #+BEGIN_SRC emacs-lisp
+     (defun neotree-project-dir ()
+       "Open NeoTree using the git root."
+       (interactive)
+       (let ((project-dir (projectile-project-root))
+	     (file-name (buffer-file-name)))
+	 (neotree-toggle)
+	 (if project-dir
+	     (if (neo-global--window-exists-p)
+		 (progn
+		     (neotree-dir project-dir)
+		     (neotree-find file-name)))
+	   (message "Could not find git project root."))))
+
+     (use-package neotree
+       :ensure t
+       :config
+       (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+       (add-hook 'neotree-mode-hook
+		 (lambda ()
+		   (visual-line-mode -1)
+		   (setq truncate-lines t)))
+       (global-set-key (kbd "C-c n") 'neotree-project-dir)
+       )
+   #+END_SRC
+** Buffer move
+   #+BEGIN_SRC emacs-lisp
+     (use-package buffer-move
+       :ensure t
+       :config
+       (defhydra hydra-buf (:exit t :hint nil)
+	 "
+	 Goto^^                   Move^^        Action^^
+	 -----------------------------------------------------
+	 [_p_] previous buffer    [_h_] left    [_k_] Kill current buffer
+	 [_n_] next buffer        [_j_] down
+                                [_k_] up
+                                [_l_] right
+"
+	 ("p" switch-to-prev-buffer)
+	 ("n" switch-to-next-buffer)
+	 ("h" buf-move-left)
+	 ("j" buf-move-down)
+	 ("k" buf-move-up)
+	 ("l" buf-move-right)
+	 ("k" kill-current-buffer)
+	 )
+       )
+   #+END_SRC
+** Projectile
+   #+BEGIN_SRC emacs-lisp
+     (use-package projectile
+       :ensure t
+       :init
+       :config
+       (projectile-mode +1)
+       (global-set-key (kbd "C-c p") 'projectile-command-map))
+   #+END_SRC
+** AG search
+   #+BEGIN_SRC emacs-lisp
+     (use-package ag
+       :ensure t
+       :config
+       (setq ag-highlight-search t) 
+       )
+   #+END_SRC
+   
