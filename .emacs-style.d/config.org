@@ -19,12 +19,24 @@
    #+BEGIN_SRC emacs-lisp
    (defalias 'yes-or-no-p 'y-or-n-p)
    #+END_SRC
-** Function to open config file
+** Open/load config file
    #+BEGIN_SRC emacs-lisp
+
+
+     (setq EMACS_DIR "~/.emacs-style.d/")
+     (setq CONFIG_FILE "config.org")
+
      (defun find-config ()
        "Edit config.org"
        (interactive)
-       (find-file "~/.emacs-style.d/config.org"))
+       (find-file (concat EMACS_DIR CONFIG_FILE)))
+     (defun reload-config()
+       "Reload config.org"
+       (interactive)
+       (load-file (concat EMACS_DIR CONFIG_FILE)))
+
+     (global-set-key (kbd "C-c e") 'find-config)
+     (global-set-key (kbd "C-c r") 'reload-config)
    #+END_SRC
 ** Setting font
    #+BEGIN_SRC emacs-lisp
@@ -43,6 +55,8 @@
      (defun kill-current-buffer ()
        (interactive)
        (kill-buffer (current-buffer)))
+
+     (global-set-key (kbd "C-x k" ) 'kill-current-buffer)
    #+END_SRC
 ** Datetime in modeline
    #+BEGIN_SRC emacs-lisp
@@ -65,25 +79,94 @@
    #+BEGIN_SRC emacs-lisp
    (show-paren-mode 1)
    #+END_SRC
+** Bash terminal
+    #+BEGIN_SRC emacs-lisp
+      (defvar my-term-shell "/bin/bash")
+      (defadvice ansi-term (before force-bash)
+	(interactive (list my-term-shell)))
+      (ad-activate 'ansi-term)
 
+      (global-set-key (kbd "C-c t") 'ansi-term)
+   #+END_SRC
+** Smoth scroll
+   #+BEGIN_SRC emacs-lisp
+     (setq scroll-conservatively 100)
+   #+END_SRC
+** Highlight cursor line
+   #+BEGIN_SRC emacs-lisp
+     (global-hl-line-mode t)
+   #+END_SRC
+** Window splitting
+   #+BEGIN_SRC emacs-lisp
+     (defun split-and-follow-horizontally ()
+       (interactive)
+       (split-window-below)
+       (balance-windows)
+       (other-window 1)
+       )
+
+     (defun split-and-follow-vertically ()
+       (interactive)
+       (split-window-right)
+       (balance-windows)
+       (other-window 1)
+       )
+
+     (global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
+     (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
+   #+END_SRC
+** Detect subword
+   #+BEGIN_SRC emacs-lisp
+     (global-subword-mode 1)
+   #+END_SRC
+** Kill whole word
+   #+BEGIN_SRC emacs-lisp
+     (defun kill-whole-word ()
+       (interactive)
+       (backward-word)
+       (kill-word 1)
+       )
+
+     (global-set-key (kbd "C-c w w") 'kill-whole-word)
+   #+END_SRC
+** Copy whole line
+   #+BEGIN_SRC emacs-lisp
+     (defun copy-whole-line ()
+       (interactive)
+       (save-excursion
+	 (kill-new
+	  (buffer-substring
+	   (point-at-bol)
+	   (point-at-eol))))
+       )
+
+     (global-set-key (kbd "C-c w l") 'copy-whole-line)
+   #+END_SRC
 * Packages config
 ** Setting use-package and repositories
    #+BEGIN_SRC emacs-lisp
-     (require 'package)
-     (setq package-enable-at-startup nil)
-     (package-initialize)
-     (setq package-archives '(("org"   . "http://orgmode.org/elpa/")
-                              ("gnu"   . "http://elpa.gnu.org/packages/")
-                              ("melpa" . "https://melpa.org/packages/")
-                              ("melpa-stable" . "http://stable.melpa.org/packages/")))
-     ;; (package-refresh-contents)
+	  (require 'package)
+	  (setq package-enable-at-startup nil)
+	  (package-initialize)
+	  (setq package-archives '(("org"   . "http://orgmode.org/elpa/")
+				   ("gnu"   . "http://elpa.gnu.org/packages/")
+				   ("melpa" . "https://melpa.org/packages/")
+				   ("melpa-stable" . "http://stable.melpa.org/packages/")))
+	  ;; (package-refresh-contents)
 
 
-     ;; Bootstrap `use-package`
-     (unless (package-installed-p 'use-package)
-       (package-refresh-contents)
-       (package-install 'use-package))
-     (require 'use-package)
+	  ;; Bootstrap `use-package`
+	  (unless (package-installed-p 'use-package)
+	    (package-refresh-contents)
+	    (package-install 'use-package))
+	  (require 'use-package)
+
+   #+END_SRC
+** Custom packages
+   #+BEGIN_SRC emacs-lisp
+   (add-to-list 'load-path (expand-file-name "custom_packages" user-emacs-directory))
+   (load "emacs-surround.el")
+   (require 'doxymacs)
    #+END_SRC
 ** All the icons
    #+BEGIN_SRC emacs-lisp
@@ -225,10 +308,10 @@
       [_y_] yank   [_Y_] yank      [_c_] timed char  [_C_] char
       [_m_] move   [_M_] move      [_w_] word        [_W_] any word
       [_k_] kill   [_K_] kill      [_l_] line        [_L_] end of line"
-       ("c" avy-goto-char-timer)
-       ("C" avy-goto-char)
-       ("w" avy-goto-word-1)
-       ("W" avy-goto-word-0)
+       ("C" avy-goto-char-timer)
+       ("c" avy-goto-char)
+       ("w" avy-goto-word-0)
+       ("W" avy-goto-word-1)
        ("l" avy-goto-line)
        ("L" avy-goto-end-of-line)
        ("m" avy-move-line)
@@ -239,5 +322,98 @@
        ("Y" avy-copy-region))
        )
    #+END_SRC
+** Smartparens
+   #+BEGIN_SRC emacs-lisp
+     (defun my-fancy-newline ()
+       "Add two newlines and put the cursor at the right indentation
+     between them if a newline is attempted when the cursor is between
+     two curly braces, otherwise do a regular newline and indent"
+       (interactive)
+       (if (and (equal (char-before) 123) ; {
+                (equal (char-after) 125)) ; }
+           (progn (newline-and-indent)
+                  (split-line)
+                  (indent-for-tab-command))
+         (newline-and-indent)))
 
+     ;; I set mine to C-j, you do you, don't let me tell you how to live your life.
+     (global-set-key (kbd "RET") 'my-fancy-newline)
 
+     ;; smart parens
+     (use-package smartparens
+       :ensure t
+       :config
+       (add-hook 'prog-mode-hook #'smartparens-mode)
+       )
+   #+END_SRC
+** IDO
+   #+BEGIN_SRC emacs-lisp
+     (setq ido-enable-flex-matching nil)
+     (setq ido-create-new-buffer 'always)
+     (setq ido-everywhere t)
+     (ido-mode 1)
+
+     (defun bind-ido-keys ()
+       "Keybindings for ido mode."
+       (define-key ido-completion-map (kbd "C-n") 'ido-next-match) 
+       (define-key ido-completion-map (kbd "C-p")   'ido-prev-match))
+
+     (add-hook 'ido-setup-hook #'bind-ido-keys)
+   #+END_SRC
+** Buffers
+*** Switch buffer
+    #+BEGIN_SRC emacs-lisp
+    (global-set-key (kbd "C-x C-b") 'ibuffer)
+    (global-set-key (kbd "C-x b") 'ido-switch-buffer)
+    #+END_SRC
+** Smex
+   #+BEGIN_SRC emacs-lisp
+     (use-package smex
+       :ensure t
+       :init
+       (smex-initialize)
+       :config
+       (global-set-key (kbd "M-x") 'smex)
+       )
+   #+END_SRC
+** Switch-window
+   #+BEGIN_SRC emacs-lisp
+     (use-package switch-window
+       :ensure t
+       :config
+       (setq switch-window-input-style 'minibuffer)
+       (setq switch-window-increase 4)
+       (setq switch-window-threshold 2)
+       (setq switch-window-shortcut-style 'qwerty)
+       (setq switch-window-qwerty-shortcuts
+	     '("a" "s" "d" "f" "h" "j" "k" "l"))
+       :bind
+       ([remap other-window] . switch-window)
+       )
+   #+END_SRC
+** Expand region
+   #+BEGIN_SRC emacs-lisp
+     (use-package expand-region
+       :ensure t
+       :config
+       (global-set-key (kbd "C-=") 'er/expand-region)
+       )
+
+   #+END_SRC
+** Emacs surround
+   #+BEGIN_SRC emacs-lisp
+       (global-set-key (kbd "C-q") 'emacs-surround)
+   #+END_SRC
+** Doxymacs
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'c-mode-common-hook 'doxymacs-mode) 
+     (defun my-doxymacs-font-lock-hook ()
+       (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
+	   (doxymacs-font-lock)))
+     (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
+   #+END_SRC
+** Magit
+   #+BEGIN_SRC emacs-lisp
+     (use-package magit
+       :ensure t)
+   #+END_SRC
