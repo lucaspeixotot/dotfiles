@@ -9,8 +9,6 @@
  ;; If there is more than one, they won't work right.
  '(hydra-default-hint nil)
  '(package-selected-packages
-   (quote
-    (winum ag projectile buffer-move neotree magit emacs-surround sudo-edit switch-window smex smartparens avy cmake-font-lock pretty-mode beacon anzu hydra rainbow-delimiters doom-modeline org-bullets which-key use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

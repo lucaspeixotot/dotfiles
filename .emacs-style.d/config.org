@@ -127,7 +127,7 @@
        (kill-word 1)
        )
 
-     (global-set-key (kbd "C-c f w") 'kill-whole-word)
+     (global-set-key (kbd "C-c f k") 'kill-whole-word)
    #+END_SRC
 ** Copy whole line
    #+BEGIN_SRC emacs-lisp
@@ -141,6 +141,20 @@
        )
 
      (global-set-key (kbd "C-c f l") 'copy-whole-line)
+   #+END_SRC
+** Indentation
+   #+BEGIN_SRC emacs-lisp
+     (setq-default indent-tabs-mode nil)
+     (setq c-basic-offset 4)
+   #+END_SRC
+** Kill all buffers
+   #+BEGIN_SRC emacs-lisp
+     (defun kill-all-buffers ()
+       (interactive)
+       (mapc 'kill-buffer (buffer-list))
+       )
+
+     (global-set-key (kbd "C-M-S-k") 'kill-all-buffers)
    #+END_SRC
 * Packages config
 ** Setting use-package and repositories
@@ -273,6 +287,14 @@
        (add-hook 'c++-mode-hook 'pretty-mode)
        )
    #+END_SRC
+*** Highlight numbers
+    #+BEGIN_SRC emacs-lisp
+      (use-package highlight-numbers
+	:ensure t
+	:config
+	(add-hook 'prog-mode-hook 'highlight-numbers-mode))
+
+    #+END_SRC
 ** Org
 *** Org bullets
     #+BEGIN_SRC emacs-lisp
@@ -306,7 +328,7 @@
        "
       Line^^       Region^^        Goto
      ----------------------------------------------------------
-      [_y_] yank   [_Y_] yank      [_c_] timed char  [_C_] char
+      [_y_] yank   [_Y_] yank      [_C_] timed char  [_c_] char
       [_m_] move   [_M_] move      [_w_] word        [_W_] any word
       [_k_] kill   [_K_] kill      [_l_] line        [_L_] end of line"
        ("C" avy-goto-char-timer)
@@ -503,4 +525,77 @@
 	     ("C-c 6" . winum-select-window-6))
        )
 
+** Undo tree
+   #+BEGIN_SRC emacs-lisp
+     (use-package undo-tree
+       :ensure t
+       :init
+       (global-undo-tree-mode))
+   #+END_SRC
+** Ivy/Counsel/Swiper
+   #+BEGIN_SRC emacs-lisp
+	;; ivy 
+     (use-package ivy
+       :ensure t
+       :config
+       (ivy-mode 1)
+       (setq ivy-use-virtual-buffers t)
+       (setq enable-recursive-minibuffers t)
+       )
+
+     ;; counsel
+     (use-package counsel
+       :ensure t
+       :bind
+       (("M-x" . counsel-M-x))
+       )
+
+     ;; swiper
+     (use-package swiper
+       :ensure t
+       :bind
+       (("C-s" . swiper))
+       )
+
+   #+END_SRC
+** Auto complete
+   #+BEGIN_SRC emacs-lisp
+     (use-package auto-complete
+       :ensure t
+       :init
+       (ac-config-default)
+       (global-auto-complete-mode t))
+   #+END_SRC
+** Yasnippet
+   #+BEGIN_SRC emacs-lisp
+     (use-package yasnippet
+       :ensure t
+       :config
+       (yas-global-mode 1))
+
+     (use-package yasnippet-snippets
+       :ensure t)
+   #+END_SRC
+** Clangformat
+   #+BEGIN_SRC emacs-lisp
+     (defun clang-format-buffer-smart ()
+       "Reformat buffer if .clang-format exists in the projectile root."
+       (when (f-exists? (expand-file-name ".clang-format" (projectile-project-root)))
+         (clang-format-buffer)))
+
+     (defun clang-format-buffer-smart-on-save ()
+       "Add auto-save hook for clang-format-buffer-smart."
+       (add-hook 'before-save-hook 'clang-format-buffer-smart nil t))
+
+     (use-package clang-format
+       :ensure t
+       :config
+       (add-hook 'c-mode-hook 'clang-format-buffer-smart-on-save)
+       (add-hook 'c++-mode-hook 'clang-format-buffer-smart-on-save)
+       )
+   #+END_SRC
+** DTS mode
+   #+BEGIN_SRC emacs-lisp
+     (use-package dts-mode
+       :ensure t)
    #+END_SRC
