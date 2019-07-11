@@ -160,6 +160,9 @@
    #+BEGIN_SRC emacs-lisp
      ;; backup in one place. flat, no tree structure
      (setq backup-directory-alist '(("" . "~/.emacs-style.d/backup")))
+
+     (setq auto-save-file-name-transforms
+       `((".*" "~/.emacs-style/backup-save-file" t)))
    #+END_SRC
 * Packages config
 ** Setting use-package and repositories
