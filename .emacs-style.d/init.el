@@ -10,7 +10,7 @@
  '(hydra-default-hint nil)
  '(package-selected-packages
    (quote
-    (ag projectile buffer-move neotree magit emacs-surround sudo-edit switch-window smex smartparens avy cmake-font-lock pretty-mode beacon anzu hydra rainbow-delimiters doom-modeline org-bullets which-key use-package))))
+    (dts-mode clang-format yasnippet-snippets yasnippet counsel ivy ag projectile buffer-move neotree magit emacs-surround sudo-edit switch-window smex smartparens avy cmake-font-lock pretty-mode beacon anzu hydra rainbow-delimiters doom-modeline org-bullets which-key use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
