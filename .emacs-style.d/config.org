@@ -156,6 +156,11 @@
 
      (global-set-key (kbd "C-M-S-k") 'kill-all-buffers)
    #+END_SRC
+** Backup files
+   #+BEGIN_SRC emacs-lisp
+     ;; backup in one place. flat, no tree structure
+     (setq backup-directory-alist '(("" . "~/.emacs-style.d/backup")))
+   #+END_SRC
 * Packages config
 ** Setting use-package and repositories
    #+BEGIN_SRC emacs-lisp
@@ -321,7 +326,7 @@
    #+BEGIN_SRC emacs-lisp
      (use-package avy
        :ensure t
-       :config
+       :init
        (avy-setup-default)
        (setq avy-timeout-seconds 0.5)
        (defhydra hydra-avy (:exit t :hint nil)
@@ -343,6 +348,8 @@
        ("K" avy-kill-region)
        ("y" avy-copy-line)
        ("Y" avy-copy-region))
+       :bind
+       (("M-s" . avy-goto-word-1))
        )
    #+END_SRC
 ** Smartparens
