@@ -524,7 +524,7 @@
 	     ("C-c 5" . winum-select-window-5)
 	     ("C-c 6" . winum-select-window-6))
        )
-
+   #+END_SRC
 ** Undo tree
    #+BEGIN_SRC emacs-lisp
      (use-package undo-tree
