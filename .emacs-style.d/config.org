@@ -168,6 +168,15 @@
    #+BEGIN_SRC emacs-lisp
    (add-hook 'prog-mode-hook 'flyspell-prog-mode)
    #+END_SRC
+** Setting PATH env
+   #+BEGIN_SRC emacs-lisp
+     (let ((path (shell-command-to-string ". ~/.bashrc; echo -n $PATH")))
+       (setenv "PATH" path)
+       (setq exec-path 
+             (append
+              (split-string-and-unquote path ":")
+              exec-path)))
+   #+END_SRC
 * Packages config
 ** Setting use-package and repositories
    #+BEGIN_SRC emacs-lisp
@@ -529,7 +538,7 @@
    #+BEGIN_SRC emacs-lisp
      (use-package winum
        :ensure t
-       :config
+       :init
        (winum-mode)
        :bind(("C-c 1" . winum-select-window-1)
 	     ("C-c 2" . winum-select-window-2)
@@ -584,8 +593,12 @@
    #+BEGIN_SRC emacs-lisp
      (use-package yasnippet
        :ensure t
-       :config
-       (yas-global-mode 1))
+       :init
+       (yas-global-mode 1)
+       ;; :config
+       ;; (define-key yas-keymap (kbd "C-n") 'yas-next-field)
+       ;; (define-key yas-keymap (kbd "C-p") 'yas-prev-field)
+       )
 
      (use-package yasnippet-snippets
        :ensure t)
@@ -638,5 +651,16 @@
        (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
        (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
        (define-key mc/keymap (kbd "<return>") nil)
+       )
+   #+END_SRC
+** Ansicolor
+   #+BEGIN_SRC emacs-lisp
+     (use-package ansi-color
+       :ensure t
+       :config
+       (defun colorize-compilation-buffer ()
+         (let ((inhibit-read-only t))
+           (ansi-color-apply-on-region (point-min) (point-max))))
+       (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
        )
    #+END_SRC

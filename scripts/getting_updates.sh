@@ -14,6 +14,7 @@ ln -s $BASEDIR/.emacs.d/settings.org $BASEDIR/.emacs.d/README.org
 cp ~/.emacs-style.d/init.el $BASEDIR/.emacs-style.d/
 cp ~/.emacs-style.d/config.org $BASEDIR/.emacs-style.d/
 cp ~/.emacs-style.d/custom_packages $BASEDIR/.emacs-style.d/ -r
+cp ~/.emacs-style.d/snippets $BASEDIR/.emacs-style.d/ -r
 rm $BASEDIR/.emacs-style.d/README.org
 ln -s $BASEDIR/.emacs-style.d/config.org $BASEDIR/.emacs-style.d/README.org
 
