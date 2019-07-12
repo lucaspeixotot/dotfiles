@@ -48,7 +48,7 @@
    (global-linum-mode 1)
    (line-number-mode 1)
    (column-number-mode 1)
-   (setq-default fill-column 80)
+   (setq-default fill-column 70)
    #+END_SRC
 ** Kill current buffer function
    #+BEGIN_SRC emacs-lisp
@@ -162,7 +162,11 @@
      (setq backup-directory-alist '(("" . "~/.emacs-style.d/backup")))
 
      (setq auto-save-file-name-transforms
-       `((".*" "~/.emacs-style/backup-save-file" t)))
+       `((".*" "~/.emacs-style.d/backup-save-file" t)))
+   #+END_SRC
+** Flyspell
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'prog-mode-hook 'flyspell-prog-mode)
    #+END_SRC
 * Packages config
 ** Setting use-package and repositories
@@ -352,7 +356,7 @@
        ("y" avy-copy-line)
        ("Y" avy-copy-region))
        :bind
-       (("M-s" . avy-goto-word-1))
+       (("M-s" . avy-goto-char))
        )
    #+END_SRC
 ** Smartparens
@@ -608,4 +612,31 @@
    #+BEGIN_SRC emacs-lisp
      (use-package dts-mode
        :ensure t)
+   #+END_SRC
+** ZZZ to char
+   #+BEGIN_SRC emacs-lisp
+     (use-package zzz-to-char
+       :ensure t
+       :config
+       (global-set-key (kbd "M-z") #'zzz-to-char)
+
+       )
+   #+END_SRC
+** Move-text
+   #+BEGIN_SRC emacs-lisp
+     (use-package move-text
+       :ensure t
+       :config
+       (move-text-default-bindings))
+   #+END_SRC
+** Multiple cursors
+   #+BEGIN_SRC emacs-lisp
+     (use-package multiple-cursors
+       :ensure t
+       :config
+       (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+       (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+       (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+       (define-key mc/keymap (kbd "<return>") nil)
+       )
    #+END_SRC
