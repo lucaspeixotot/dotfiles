@@ -123,7 +123,6 @@
    #+BEGIN_SRC emacs-lisp
      (defun kill-whole-word ()
        (interactive)
-       (backward-word)
        (kill-word 1)
        )
 
@@ -176,6 +175,16 @@
              (append
               (split-string-and-unquote path ":")
               exec-path)))
+
+     (setenv "PATH"
+       (concat
+        (getenv "PATH")
+       )
+     )
+   #+END_SRC
+** Latex basic config
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'tex-mode-hook 'auto-fill-mode)
    #+END_SRC
 * Packages config
 ** Setting use-package and repositories
@@ -663,4 +672,17 @@
            (ansi-color-apply-on-region (point-min) (point-max))))
        (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
        )
+   #+END_SRC
+** AUCTeX
+   #+BEGIN_SRC emacs-lisp
+         (use-package auctex
+           :ensure t
+           )
+   #+END_SRC
+** Latex preview pane
+   #+BEGIN_SRC emacs-lisp
+     (use-package latex-preview-pane
+       :ensure t
+       :config
+       (latex-preview-pane-enable))
    #+END_SRC

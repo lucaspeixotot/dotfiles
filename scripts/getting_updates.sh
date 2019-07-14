@@ -2,6 +2,9 @@ BASEDIR=..
 
 # Updating Xresources
 cp ~/.Xresources $BASEDIR
+cp ~/.bashrc $BASEDIR
+cp ~/.profile $BASEDIR
+cp ~/.env_variables $BASEDIR
 
 # Updating Emacs
 cp ~/.emacs.d/init.el $BASEDIR/.emacs.d/
