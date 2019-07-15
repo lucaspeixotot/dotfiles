@@ -433,18 +433,43 @@
    #+END_SRC
 ** Switch-window
    #+BEGIN_SRC emacs-lisp
-     (use-package switch-window
-       :ensure t
-       :config
-       (setq switch-window-input-style 'minibuffer)
-       (setq switch-window-increase 4)
-       (setq switch-window-threshold 2)
-       (setq switch-window-shortcut-style 'qwerty)
-       (setq switch-window-qwerty-shortcuts
-	     '("a" "s" "d" "f" "h" "j" "k" "l"))
-       :bind
-       ([remap other-window] . switch-window)
-       )
+     ;; (use-package switch-window
+     ;;   :ensure t
+     ;;   :config
+     ;;   (setq switch-window-input-style 'minibuffer)
+     ;;   (setq switch-window-increase 4)
+     ;;   (setq switch-window-threshold 2)
+     ;;   (setq switch-window-shortcut-style 'qwerty)
+     ;;   (setq switch-window-qwerty-shortcuts
+     ;; 	'("a" "s" "d" "f" "h" "j" "k" "l"))
+     ;;   :bind
+     ;;   ([remap other-window] . switch-window)
+     ;;   )
+   #+END_SRC
+** Ace window
+   #+BEGIN_SRC emacs-lisp
+          (use-package ace-window
+            :ensure t
+            :config
+            (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+            (setq aw-background nil)
+            (defvar aw-dispatch-alist
+              '((?x aw-delete-window "Delete Window")
+                (?m aw-swap-window "Swap Windows")
+                (?M aw-move-window "Move Window")
+                (?c aw-copy-window "Copy Window")
+                (?j aw-switch-buffer-in-window "Select Buffer")
+                (?n aw-flip-window)
+                (?u aw-switch-buffer-other-window "Switch Buffer Other Window")
+                (?c aw-split-window-fair "Split Fair Window")
+                (?v aw-split-window-vert "Split Vert Window")
+                (?b aw-split-window-horz "Split Horz Window")
+                (?o delete-other-windows "Delete Other Windows")
+                (?? aw-show-dispatch-help))
+              "List of actions for `aw-dispatch-default'.")
+           :bind
+           ([remap other-window] . ace-window)
+     )
    #+END_SRC
 ** Expand region
    #+BEGIN_SRC emacs-lisp
@@ -779,4 +804,12 @@
   
        )
 
+   #+END_SRC
+** Imenu
+   #+BEGIN_SRC emacs-lisp
+     (use-package imenu-anywhere
+       :ensure t
+       :config
+       (global-set-key (kbd "M-o") #'ivy-imenu-anywhere)
+       )
    #+END_SRC
