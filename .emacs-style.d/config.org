@@ -186,6 +186,54 @@
    #+BEGIN_SRC emacs-lisp
      (add-hook 'tex-mode-hook 'auto-fill-mode)
    #+END_SRC
+** Jump to char like f/F vim but better
+   #+BEGIN_SRC emacs-lisp
+     (defvar jump-to-last-char nil)
+     (defvar jump-to-last-count nil)
+
+     (defun jump-to-char-repate-forward ()
+       "Repate the last jump-to-char forward"
+       (interactive)
+       (forward-char)
+       (jump-to-char-fun jump-to-last-char (abs jump-to-last-count)))
+
+     (defun jump-to-char-repate-backwards ()
+       "Repate the last jump-to-char backward"
+       (interactive)
+       (jump-to-char-fun jump-to-last-char (- (abs jump-to-last-count))))
+
+     (defun jump-to-char-fun (char count)
+       "Jump to char function"
+       (if (search-forward (string char) nil t count)
+           (when (> count 0)
+             (backward-char))
+         (message "Search Failed: %s" (char-to-string char)))
+       (setq jump-to-last-char char)
+       (setq jump-to-last-count count) 
+       (unless defining-kbd-macro 
+         (set-temporary-overlay-map
+          (let ((map (make-sparse-keymap)))
+            (define-key map (kbd ";") 'jump-to-char-repate-forward)
+            (define-key map (kbd ",") 'jump-to-char-repate-backwards)
+            map))))
+
+     (defun jump-to-char (arg)
+       "Jump to char"
+       (interactive "p")
+       (message nil)
+       (let ((char (read-char "jump-to-char: ")))
+         (jump-to-char-fun char arg)))
+
+     (defun jump-to-char-backward (arg)
+       "Jump to char backwards"
+       (interactive "p")
+       (jump-to-char (- arg)))
+
+
+     (global-set-key (kbd "C-c f") 'jump-to-char)
+     (global-set-key (kbd "C-c F" ) 'jump-to-char-backward)
+   #+END_SRC
+
 * Packages config
 ** Setting use-package and repositories
    #+BEGIN_SRC emacs-lisp
@@ -708,19 +756,6 @@
        (add-hook 'tex-mode-hook 'latex-preview-pane-enable)
        )
    #+END_SRC
-** Iy
-   #+BEGIN_SRC emacs-lisp
-     (use-package iy-go-to-char
-       :ensure t
-       :init
-       (add-to-list 'mc/cursor-specific-vars 'iy-go-to-char-start-pos)
-       :config
-       (global-set-key (kbd "C-c f") 'iy-go-to-char)
-       (global-set-key (kbd "C-c F") 'iy-go-to-char-backward)
-       (global-set-key (kbd "C-c ;") 'iy-go-to-or-up-to-continue)
-       (global-set-key (kbd "C-c ,") 'iy-go-to-or-up-to-continue-backward)
-       )
-   #+END_SRC
 ** Key-chord
    #+BEGIN_SRC emacs-lisp
      (use-package key-chord
@@ -730,7 +765,7 @@
        :config
        (key-chord-define-global "ça"  'avy-goto-char)
        (key-chord-define-global "çl"  'avy-goto-line)       
-       (key-chord-define-global "çf"  'iy-go-to-char)       
+       (key-chord-define-global "çf"  'jump-to-char)       
      )
    #+END_SRC
 ** Increment/decrement number
@@ -810,6 +845,60 @@
      (use-package imenu-anywhere
        :ensure t
        :config
-       (global-set-key (kbd "M-o") #'ivy-imenu-anywhere)
+       ;; (global-set-key (kbd "M-i") #'ivy-imenu-anywhere)
        )
+
+     (defun ido-imenu ()
+       "Update the imenu index and then use ido to select a symbol to navigate to.
+     Symbols matching the text at point are put first in the completion list."
+       (interactive)
+       (imenu--make-index-alist)
+       (let ((name-and-pos '())
+             (symbol-names '()))
+         (flet ((addsymbols
+                 (symbol-list)
+                 (when (listp symbol-list)
+                   (dolist (symbol symbol-list)
+                     (let ((name nil) (position nil))
+                       (cond
+                        ((and (listp symbol) (imenu--subalist-p symbol))
+                         (addsymbols symbol))
+
+                        ((listp symbol)
+                         (setq name (car symbol))
+                         (setq position (cdr symbol)))
+
+                        ((stringp symbol)
+                         (setq name symbol)
+                         (setq position
+                               (get-text-property 1 'org-imenu-marker symbol))))
+
+                       (unless (or (null position) (null name))
+                         (add-to-list 'symbol-names name)
+                         (add-to-list 'name-and-pos (cons name position))))))))
+           (addsymbols imenu--index-alist))
+         ;; If there are matching symbols at point, put them at the beginning
+         ;; of `symbol-names'.
+         (let ((symbol-at-point (thing-at-point 'symbol)))
+           (when symbol-at-point
+             (let* ((regexp (concat (regexp-quote symbol-at-point) "$"))
+                    (matching-symbols
+                     (delq nil (mapcar
+                                (lambda (symbol)
+                                  (if (string-match regexp symbol) symbol))
+                                symbol-names))))
+               (when matching-symbols
+                 (sort matching-symbols (lambda (a b) (> (length a) (length b))))
+                 (mapc
+                  (lambda (symbol)
+                    (setq symbol-names (cons symbol (delete symbol symbol-names))))
+                  matching-symbols)))))
+         (let* ((selected-symbol (ido-completing-read "Symbol? " symbol-names))
+                (position (cdr (assoc selected-symbol name-and-pos))))
+           (push-mark)
+           (if (overlayp position)
+               (goto-char (overlay-start position))
+             (goto-char position)))))
+
+     (global-set-key (kbd "M-i") 'ido-imenu)
    #+END_SRC
