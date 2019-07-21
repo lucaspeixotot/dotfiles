@@ -86,7 +86,7 @@
 	(interactive (list my-term-shell)))
       (ad-activate 'ansi-term)
 
-      (global-set-key (kbd "C-c t") 'ansi-term)
+      (global-set-key (kbd "C-t") 'shell)
    #+END_SRC
 ** Smoth scroll
    #+BEGIN_SRC emacs-lisp
@@ -157,11 +157,9 @@
    #+END_SRC
 ** Backup files
    #+BEGIN_SRC emacs-lisp
-     ;; backup in one place. flat, no tree structure
-     (setq backup-directory-alist '(("" . "~/.emacs-style.d/backup")))
-
-     (setq auto-save-file-name-transforms
-       `((".*" "~/.emacs-style.d/backup-save-file" t)))
+     (setq make-backup-files nil) ; stop creating backup~ files
+     (setq auto-save-default nil) ; stop creating #autosave# files
+     (setq create-lockfiles nil)
    #+END_SRC
 ** Flyspell
    #+BEGIN_SRC emacs-lisp
@@ -663,14 +661,6 @@
        )
 
    #+END_SRC
-** Auto complete
-   #+BEGIN_SRC emacs-lisp
-     (use-package auto-complete
-       :ensure t
-       :init
-       (ac-config-default)
-       (global-auto-complete-mode t))
-   #+END_SRC
 ** Yasnippet
    #+BEGIN_SRC emacs-lisp
      (use-package yasnippet
@@ -763,9 +753,9 @@
        :init
        (key-chord-mode 1)
        :config
-       (key-chord-define-global "ça"  'avy-goto-char)
-       (key-chord-define-global "çl"  'avy-goto-line)       
-       (key-chord-define-global "çf"  'jump-to-char)       
+       (key-chord-define-global "xa"  'avy-goto-char)
+       (key-chord-define-global "xl"  'avy-goto-line)       
+       (key-chord-define-global "xf"  'jump-to-char)       
      )
    #+END_SRC
 ** Increment/decrement number
@@ -901,4 +891,59 @@
              (goto-char position)))))
 
      (global-set-key (kbd "M-i") 'ido-imenu)
+   #+END_SRC
+** Company
+   #+BEGIN_SRC emacs-lisp
+     (use-package company
+       :ensure t
+       :config
+       (setq company-idle-delay 0)
+       (setq company-minimum-prefix-length 3))
+
+     (with-eval-after-load 'company
+       (define-key company-active-map (kbd "C-n") #'company-select-next)
+       (define-key company-active-map (kbd "C-p") #'company-select-previous)
+       (add-hook 'c-mode-hook 'company-mode)
+       (add-hook 'c++-mode-hook 'company-mode)
+       )
+
+
+   #+END_SRC
+** LSP
+   #+BEGIN_SRC emacs-lisp
+     (use-package lsp-mode
+       :ensure t
+       :hook
+       (
+        (c-mode . lsp-deferred)
+        (c++-mode . lsp-deferred)
+        )
+       )
+
+     (use-package lsp-ui 
+       :ensure t
+       :hook (
+              (lsp-mode . lsp-ui-mode)
+              (c-mode . flycheck-mode)
+              (c++mode . flycheck-mode))
+       :commands lsp-ui-mode)
+
+
+     (use-package company-lsp
+       :ensure t
+       :commands company-lsp
+       :config (push 'company-lsp company-backends)) ;; add company-lsp as a backend
+
+     (use-package flycheck
+       :ensure t       
+       )
+
+     (use-package ccls
+       :ensure t
+       :config
+       (setq ccls-executable "/usr/bin/ccls")
+       (setq lsp-prefer-flymake nil)
+       (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+       :hook ((c-mode c++-mode objc-mode) .
+              (lambda () (require 'ccls) (lsp))))
    #+END_SRC
