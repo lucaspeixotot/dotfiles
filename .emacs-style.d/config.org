@@ -604,7 +604,8 @@
        :init
        :config
        (projectile-mode +1)
-       (global-set-key (kbd "C-c p") 'projectile-command-map))
+       ;(global-set-key (kbd "C-c p") 'projectile-command-map)
+       )
    #+END_SRC
 ** AG search
    #+BEGIN_SRC emacs-lisp
@@ -637,7 +638,7 @@
    #+END_SRC
 ** Ivy/Counsel/Swiper
    #+BEGIN_SRC emacs-lisp
-	;; ivy 
+        ;; ivy 
      (use-package ivy
        :ensure t
        :config
@@ -651,6 +652,15 @@
        :ensure t
        :bind
        (("M-x" . counsel-M-x))
+       )
+
+     (use-package counsel-projectile
+       :ensure t
+       :init
+       (counsel-projectile-mode t)
+       :config
+       (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  
        )
 
      ;; swiper
