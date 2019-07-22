@@ -604,6 +604,7 @@
        :init
        :config
        (projectile-mode +1)
+       (setq projectile-indexing-method 'native)
        ;(global-set-key (kbd "C-c p") 'projectile-command-map)
        )
    #+END_SRC
