@@ -958,3 +958,11 @@
        :hook ((c-mode c++-mode objc-mode) .
               (lambda () (require 'ccls) (lsp))))
    #+END_SRC
+** Goto line
+   #+BEGIN_SRC emacs-lisp
+     (use-package goto-line-preview
+       :ensure t
+       :init
+       (global-set-key [remap goto-line] 'goto-line-preview
+                       ))
+   #+END_SRC
