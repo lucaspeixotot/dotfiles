@@ -279,7 +279,7 @@ mode "resize" {
 
 # Autostart applications
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec --no-startup-id nitrogen --restore; sleep 1; compton -b
+exec --no-startup-id nitrogen --restore
 #exec --no-startup-id manjaro-hello
 exec --no-startup-id nm-applet
 exec --no-startup-id xfce4-power-manager
@@ -327,18 +327,18 @@ set_from_resource $term_color15    color15
 
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
 bar {
-	i3bar_command i3bar
-	status_command i3status
-	position top
+    i3bar_command i3bar
+    status_command i3status
+    position top
 
 ## please set your primary output first. Example: 'xrandr --output eDP1 --primary'
 #	tray_output primary
 #	tray_output eDP1
 
-	bindsym button4 nop
-	bindsym button5 nop
+    bindsym button4 nop
+    bindsym button5 nop
 #   font xft:URWGothic-Book 11
-	strip_workspace_numbers yes
+    strip_workspace_numbers yes
 
     colors {
         background #222D31
@@ -423,3 +423,11 @@ mode "$mode_gaps_outer" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
+
+
+for_window [class="^.*"] border pixel 0
+gaps inner 10
+gaps outer 2
+#exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+#exec --no-startup-id $SCRIPTS/wallpaper.sh
+

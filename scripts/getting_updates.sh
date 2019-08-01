@@ -21,6 +21,9 @@ cp ~/.emacs-style.d/snippets $BASEDIR/.emacs-style.d/ -r
 rm $BASEDIR/.emacs-style.d/README.org
 ln -s $BASEDIR/.emacs-style.d/config.org $BASEDIR/.emacs-style.d/README.org
 
+# Update I3
+cp ~/.i3 $BASEDIR -r
+
 
 
 echo "The files were updated succesfully."
