@@ -107,4 +107,4 @@ prompt_dir() {
 }
 
 alias emacsterminal="emacs -nw"
-alias magit='emacsclient -n -e \(magit-status\)'
+alias magit="emacsclient -t -e '(magit)'"
