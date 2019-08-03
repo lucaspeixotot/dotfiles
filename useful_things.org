@@ -1,0 +1,9 @@
+* Termite
+** Links
+   [[https://github.com/adi1090x/termite-style][Termite style]] - This can be used for change the termite settings
+   easily.
+
+* Zsh
+** Links
+   [[https://github.com/robbyrussell/oh-my-zsh/wiki/Themes][Wiki-themes]] - This link have the examples of the oh-my-zsh themes
+   [[https://github.com/robbyrussell/oh-my-zsh/wiki/Cheatsheet][Zsh cheatsheet]] - This link have multiples keybindings in zsh

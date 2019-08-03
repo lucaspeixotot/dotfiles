@@ -235,21 +235,21 @@
 * Packages config
 ** Setting use-package and repositories
    #+BEGIN_SRC emacs-lisp
-	  (require 'package)
-	  (setq package-enable-at-startup nil)
-	  (package-initialize)
-	  (setq package-archives '(("org"   . "http://orgmode.org/elpa/")
-				   ("gnu"   . "http://elpa.gnu.org/packages/")
-				   ("melpa" . "https://melpa.org/packages/")
-				   ("melpa-stable" . "http://stable.melpa.org/packages/")))
-	  ;; (package-refresh-contents)
+     (require 'package)
+     (setq package-enable-at-startup nil)
+     (package-initialize)
+     (setq package-archives '(("org"   . "http://orgmode.org/elpa/")
+                              ("gnu"   . "http://elpa.gnu.org/packages/")
+                              ("melpa" . "https://melpa.org/packages/")
+                              ("melpa-stable" . "http://stable.melpa.org/packages/")))
+     ;; (package-refresh-contents)
 
 
-	  ;; Bootstrap `use-package`
-	  (unless (package-installed-p 'use-package)
-	    (package-refresh-contents)
-	    (package-install 'use-package))
-	  (require 'use-package)
+     ;; Bootstrap `use-package`
+     (unless (package-installed-p 'use-package)
+       (package-refresh-contents)
+       (package-install 'use-package))
+     (require 'use-package)
 
    #+END_SRC
 ** Custom packages
@@ -325,7 +325,7 @@
        :config
        (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
              doom-themes-enable-italic t) ; if nil, italics is universally disabled
-       (load-theme 'doom-one t)
+         (load-theme 'doom-one t)
        )
    #+END_SRC
 *** Rainbow
@@ -603,9 +603,11 @@
        :ensure t
        :init
        :config
-       (projectile-mode +1)
-       ;; (setq projectile-indexing-method 'native)
-       ;(global-set-key (kbd "C-c p") 'projectile-command-map)
+       (projectile-global-mode)
+       (setq projectile-enable-caching nil)
+       ;; (setq projectile-git-command "find . -type f -print0")
+       (setq projectile-git-command "fd . -H")
+       (setq projectile-indexing-method 'hybrid)
        )
    #+END_SRC
 ** AG search
