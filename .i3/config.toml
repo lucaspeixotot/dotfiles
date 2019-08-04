@@ -25,10 +25,10 @@ format_swap = "{SUp}%"
 
 
 
-[[block]]
-block = "weather"
-format = "{weather} ({location}) {temp}°, {wind} m/s {direction}"
-service = { name = "openweathermap", api_key = "ee4921b00547badb4ea1f98789ef5e1a", city_id = "3395981", units = "metric" }
+#[[block]]
+#block = "weather"
+#format = "{weather} ({location}) {temp}°, {wind} m/s {direction}"
+#service = { name = "openweathermap", api_key = "ee4921b00547badb4ea1f98789ef5e1a", city_id = "3395981", units = "metric" }
 
 [[block]]
 block = "battery"
