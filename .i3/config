@@ -440,7 +440,7 @@ mode "$mode_gaps_outer" {
 }
 
 
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 2
 gaps inner 10
 gaps outer 2
 #exec_always --no-startup-id $HOME/.config/polybar/launch.sh

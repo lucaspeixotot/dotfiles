@@ -766,7 +766,7 @@
        :init
        (key-chord-mode 1)
        :config
-       (key-chord-define-global "xa"  'avy-goto-char)
+       (key-chord-define-global "xa"  'avy-goto-char-timer)
        (key-chord-define-global "xl"  'avy-goto-line)
        (key-chord-define-global "xf"  'jump-to-char)
        (key-chord-define-global "yy"  'copy-whole-line)
