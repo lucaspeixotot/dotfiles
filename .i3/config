@@ -293,6 +293,8 @@ exec --no-startup-id start_conky_maia
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
 exec_always /home/lucas/.config/scripts/set_monitor.bash
+exec_always setxkbmap -layout br -option ctrl:nocaps
+
 
 # Color palette used for the terminal ( ~/.Xresources file )
 # Colors are gathered based on the documentation:

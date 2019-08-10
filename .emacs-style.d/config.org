@@ -620,17 +620,17 @@
    #+END_SRC
 ** Winum
    #+BEGIN_SRC emacs-lisp
-     (use-package winum
-       :ensure t
-       :init
-       (winum-mode)
-       :bind(("C-c 1" . winum-select-window-1)
-	     ("C-c 2" . winum-select-window-2)
-	     ("C-c 3" . winum-select-window-3)
-	     ("C-c 4" . winum-select-window-4)
-	     ("C-c 5" . winum-select-window-5)
-	     ("C-c 6" . winum-select-window-6))
-       )
+     ;; (use-package winum
+     ;;   :ensure t
+     ;;   :init
+     ;;   (winum-mode)
+     ;;   :bind(("C-c 1" . winum-select-window-1)
+     ;; 	("C-c 2" . winum-select-window-2)
+     ;; 	("C-c 3" . winum-select-window-3)
+     ;; 	("C-c 4" . winum-select-window-4)
+     ;; 	("C-c 5" . winum-select-window-5)
+     ;; 	("C-c 6" . winum-select-window-6))
+     ;;   )
    #+END_SRC
 ** Undo tree
    #+BEGIN_SRC emacs-lisp
