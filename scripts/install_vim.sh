@@ -15,5 +15,5 @@ fi
 cp $BASEDIR/.vimrc $HOME/
 cp $BASEDIR/.vim $HOME/ -r
 vim +'PlugInstall --sync' +qa
-sh $BASEDIR/.scripts/vim_patch_mru.sh
+sh $BASEDIR/scripts/vim_patch_mru.sh
 echo "Vim installed."

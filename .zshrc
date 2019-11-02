@@ -8,9 +8,7 @@ export ZSH="/home/lucas/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-#ZSH_THEME="robbyrussell"
-ZSH_THEME="agnoster"
-
+ZSH_THEME="robbyrussell"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -101,10 +99,9 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+export PATH=$PATH:/snap/bin
+export PATH=$PATH:~/.local/bin
 
-prompt_dir() {
-  prompt_segment blue $CURRENT_FG '%2~'
-}
-
-alias emacsterminal="emacs -nw"
-alias magit="emacsclient -t -e '(magit)'"
+export ZEPHYR_TOOLCHAIN_VARIANT=zephyr
+export ZEPHYR_SDK_INSTALL_DIR=$HOME/Programs/zephyr-sdk-0.10.0
+export FREERTOS_PATH=/home/lucas/Documents/freeRTOS/FreeRTOSv10.2.1

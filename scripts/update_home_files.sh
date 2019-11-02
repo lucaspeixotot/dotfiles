@@ -8,3 +8,4 @@ cp $BASEDIR/.env_variables $HOME
 cp $BASEDIR/.bash_profile $HOME
 cp $BASEDIR/.i3 $HOME -r
 cp $BASEDIR/.zshrc $HOME
+cp $BASEDIR/.inputrc $HOME

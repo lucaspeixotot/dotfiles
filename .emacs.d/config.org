@@ -23,7 +23,7 @@
    #+BEGIN_SRC emacs-lisp
 
 
-     (setq EMACS_DIR "~/.emacs-style.d/")
+     (setq EMACS_DIR "~/.emacs.d/")
      (setq CONFIG_FILE "config.org")
 
      (defun find-config ()
@@ -48,7 +48,7 @@
    (global-linum-mode 1)
    (line-number-mode 1)
    (column-number-mode 1)
-   (setq-default fill-column 70)
+   (setq-default fill-column 80)
    #+END_SRC
 ** Kill current buffer function
    #+BEGIN_SRC emacs-lisp
