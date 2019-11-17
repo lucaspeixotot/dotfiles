@@ -25,6 +25,7 @@
 
      (setq EMACS_DIR "~/.emacs.d/")
      (setq CONFIG_FILE "config.org")
+     (setq INIT_FILE "init.el")
 
      (defun find-config ()
        "Edit config.org"
@@ -33,10 +34,10 @@
      (defun reload-config()
        "Reload config.org"
        (interactive)
-       (load-file (concat EMACS_DIR CONFIG_FILE)))
+       (load-file (concat EMACS_DIR INIT_FILE)))
 
-     (global-set-key (kbd "C-c e") 'find-config)
-     (global-set-key (kbd "C-c r") 'reload-config)
+     (global-set-key (kbd "C-c cfg") 'find-config)
+     (global-set-key (kbd "C-c rcfg") 'reload-config)
    #+END_SRC
 ** Setting font
    #+BEGIN_SRC emacs-lisp
@@ -258,6 +259,7 @@
    (load "emacs-surround.el")
    (load "xcscope.el")
    (require 'doxymacs)
+   (global-set-key (kbd "C-x cs") 'cscope-find-functions-calling-this-function) 
    #+END_SRC
 ** All the icons
    #+BEGIN_SRC emacs-lisp
