@@ -983,3 +983,18 @@
   :config (smart-hungry-delete-add-default-hooks)
   )
 #+END_SRC
+** Emacs Dashboard
+#+BEGIN_SRC emacs-lisp
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
+  (setq dashboard-banner-logo-title "Welcome to Peixoto's Emacs!")
+  (setq dashboard-startup-banner "/home/lucaspeixotot/Pictures/gnu.png")
+  (setq dashboard-center-content t)
+  (setq dashboard-items '((recents  . 10)
+                          (bookmarks . 5)
+                          (projects . 10)
+                          (agenda . 5)
+                          (registers . 5)))
+#+END_SRC
