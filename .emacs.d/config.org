@@ -360,12 +360,12 @@
    #+END_SRC
 *** Pretty mode
    #+BEGIN_SRC emacs-lisp
-     (use-package pretty-mode
-       :ensure t
-       :config
-       (add-hook 'c-mode-hook 'pretty-mode)
-       (add-hook 'c++-mode-hook 'pretty-mode)
-       )
+     ;; (use-package pretty-mode
+     ;;   :ensure t
+     ;;   :config
+     ;;   (add-hook 'c-mode-hook 'pretty-mode)
+     ;;   (add-hook 'c++-mode-hook 'pretty-mode)
+     ;;   )
    #+END_SRC
 *** Highlight numbers
     #+BEGIN_SRC emacs-lisp
