@@ -27,17 +27,13 @@ font xft:URWGothic-Book 11
 floating_modifier $mod
 
 # start a terminal
-set $term --no-startup-id gnome-terminal
-bindsym $mod+Return exec $term
+bindsym $mod+Return exec --no-startup-id $TERMINAL
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start program launcher
 bindsym $mod+d exec --no-startup-id dmenu_run
-
-# launch categorized menu
-bindsym $mod+z exec --no-startup-id morc_menu
 
 ################################################################################################
 ## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
@@ -56,9 +52,8 @@ bindsym $mod+Ctrl+m exec --no-startup-id pavucontrol
  bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
 
 # Start Applications
-bindsym $mod+Ctrl+b exec terminal -e 'bmenu'
-bindsym $mod+F2 exec firefox-esr
-bindsym $mod+F3 exec nemo
+bindsym $mod+F2 exec $BROWSER
+bindsym $mod+F3 exec $FILE_MANAGER
 #bindsym $mod+F4 exec terminal -e 'ranger'
 #bindsym $mod+Shift+F3 exec gksu pcmanfm
 #bindsym $mod+F5 exec terminal -e 'mocp'
@@ -387,8 +382,7 @@ mode "$mode_gaps_outer" {
 for_window [class="^.*"] border pixel 2
 gaps inner 10
 gaps outer 2
-#exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec_always --no-startup-id nm-applet
 exec_always --no-startup-id xrandr --output HDMI1 --right-of eDP1 --auto
-#exec --no-startup-id $SCRIPTS/wallpaper.sh
+exec_always --no-startup-id feh --bg-scale ~/Pictures/debian-wallpaper.jpg
 

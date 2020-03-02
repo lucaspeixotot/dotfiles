@@ -8,9 +8,9 @@ export ZSH="/home/lucas/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-#ZSH_THEME="robbyrussell"
-#ZSH_THEME="amuse"
-ZSH_THEME="mortalscumbag"
+ZSH_THEME="robbyrussell"
+# ZSH_THEME="amuse"
+# ZSH_THEME="mortalscumbag"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -103,6 +103,7 @@ source $ZSH/oh-my-zsh.sh
 
 export PATH=$PATH:/snap/bin
 export PATH=$PATH:~/.local/bin
+export PATH=$PATH:/usr/sbin
 
 export ZEPHYR_TOOLCHAIN_VARIANT=zephyr
 export ZEPHYR_SDK_INSTALL_DIR=$HOME/Programs/zephyr-sdk-0.10.0

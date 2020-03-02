@@ -5,9 +5,9 @@ cp ~/.Xresources $BASEDIR
 cp ~/.xinitrc $BASEDIR
 cp ~/.bashrc $BASEDIR
 cp ~/.profile $BASEDIR
-cp ~/.bash_profile $BASEDIR
 cp ~/.env_variables $BASEDIR
 cp ~/.zshrc $BASEDIR
+cp ~/.xsessionrc $BASEDIR
 
 
 # Update I3

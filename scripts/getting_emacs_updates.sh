@@ -1,3 +1,5 @@
+BASEDIR=..
+
 cp ~/.emacs.d/init.el $BASEDIR/.emacs.d/
 cp ~/.emacs.d/config.org $BASEDIR/.emacs.d/
 cp ~/.emacs.d/custom_packages $BASEDIR/.emacs.d/ -r
