@@ -57,39 +57,11 @@ XTerm*selectToClipboard: true
 Xcursor.theme: xcursor-breeze
 Xcursor.size:                     0
 
-!! Fonts
-!Default
-!URxvt.font:                       9x15,xft:TerminessTTFNerdFontMono
-
-! Fira
-!URxvt.font: xft:Fira Mono:size=10,style=medium
-!URxvt.letterSpace: -3
-
-! Nerdfont
-!URxvt.font:                       xft:TerminessTTFNerdFontMono:size=12
-!terminal.font:                    xft:TerminessTTFNerdFontMono:size=12
-
 !Office code pro
 URxvt*font: xft:Office Code Pro:size=10:minspace=False, xft:TerminessTTFNerdFontMono:size=12, xft:DejaVu Sans:pixelsize=18
 URxvt*boldFont: xft:Office Code Pro:bold:size=10:minspace=False, xft:TerminessTTFNerdFontMono:size=12, xft:DejaVu Sans:pixelsize=18
 URxvt*italicFont: xft:Office Code Pro:italic:size=10:minspace=False,xft:TerminessTTFNerdFontMono:size=12, xft:DejaVu Sans:pixelsize=18
 URxvt*boldItalicFont: xft:Office Code Pro:bolditalic:size=10:minspace=False,xft:TerminessTTFNerdFontMono:size=12, xft:DejaVu Sans:pixelsize=18
-
-!Source code pro
-
-!URxvt*font: xft:Source Code Pro:size=11
-!URxvt*boldFont: xft:Source Code Pro:bold:size=11
-!URxvt*italicFont: xft:Source Code Pro:italic:size=11
-!URxvt*boldItalicFont: xft:Source Code Pro:bolditalic:size=11
-
-!Test symbols
-!URxvt.font: xft:DejaVu Sans:pixelsize=14,xft:Symbola,xft:Noto Emoji:minspace=False
-!URxvt*letterSpace:                5
-
-! alternative font settings with 'terminus':
-! URxvt.font:      -xos4-terminus-medium-r-normal--16-160-72-72-c-80-iso10646-1
-! URxvt.bold.font: -xos4-terminus-bold-r-normal--16-160-72-72-c-80-iso10646-1
-!! terminus names see end of file!
 
 URxvt.depth:                      32
 URxvt.background:                 [100]#222D31
@@ -221,7 +193,7 @@ URxvt.keysym.M-v: perl:clipboard:paste
 ! URxvt*answerbackString:           string
 ! URxvt*secondaryScreen:            boolean
 ! URxvt*secondaryScroll:            boolean
-! URxvt*perl-lib:                   string
+URxvt*perl-lib:                   /home/lucas/.config/urxvt-perl/
 ! URxvt*perl-eval:                  perl-eval
 ! URxvt*perl-ext-common:            string
 ! URxvt*perl-ext:                   string

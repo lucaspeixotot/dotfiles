@@ -9,9 +9,14 @@ cp ~/.env_variables $BASEDIR
 cp ~/.zshrc $BASEDIR
 cp ~/.xsessionrc $BASEDIR
 
-
 # Update I3
 cp ~/.config/i3 $BASEDIR/.config/ -r
+
+# Update urxvt perl
+cp ~/.config/urxvt-perl $BASEDIR/urxvt-perl -r
+
+# Update Polybar config
+cp ~/.config/polybar $BASEDIR/polybar -r
 
 echo "The files were updated succesfully."
 

@@ -111,3 +111,4 @@ export ZEPHYR_TOOLCHAIN_VARIANT=zephyr
 export ZEPHYR_SDK_INSTALL_DIR=$HOME/Programs/zephyr-sdk-0.11.1
 export FREERTOS_PATH=/home/lucas/Documents/freeRTOS/FreeRTOSv10.2.1
 export MCUBOOT_FOLDER=/home/lucas/zephyrprojects/mcuboot
+alias python=python3
