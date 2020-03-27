@@ -1,5 +1,5 @@
 export BROWSER=firefox-esr
 export FILE_MANAGER=nemo
-export TERMINAL=gnome-terminal
+export TERMINAL=urxvt
 export WALLPAPER=~/Pictures/debian-wallpaper.jpg
 
