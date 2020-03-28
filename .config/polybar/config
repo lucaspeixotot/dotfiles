@@ -61,7 +61,7 @@ font-2 = FontAwesome5Brands:style=Regular:size=10;4
 ;font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 ;font-2 = siji:pixelsize=10;1
 
-modules-left = powermenu i3
+modules-left = i3
 modules-center = date
 modules-right = filesystem pulseaudio xbacklight memory cpu eth wlan battery 
 
