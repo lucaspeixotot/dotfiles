@@ -366,5 +366,5 @@ mode "$mode_gaps_outer" {
 
 exec_always --no-startup-id nm-applet
 exec_always --no-startup-id xrandr --output HDMI1 --right-of eDP1 --auto
-exec_always --no-startup-id feh --bg-scale /home/lucas/Pictures/debian-wallpaper.jpg
+# exec_always --no-startup-id feh --bg-scale /home/lucas/Pictures/debian-wallpaper.jpg
 exec_always --no-startup-id ~/.config/i3/polybar.sh &

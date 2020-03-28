@@ -5,7 +5,6 @@ cp ~/.Xresources $BASEDIR
 cp ~/.xinitrc $BASEDIR
 cp ~/.bashrc $BASEDIR
 cp ~/.profile $BASEDIR
-cp ~/.env_variables $BASEDIR
 cp ~/.zshrc $BASEDIR
 cp ~/.xsessionrc $BASEDIR
 
@@ -17,6 +16,10 @@ cp ~/.config/urxvt-perl $BASEDIR/.config/ -r
 
 # Update Polybar config
 cp ~/.config/polybar $BASEDIR/.config/ -r
+
+# Update env and scripts
+cp ~/.config/scripts $BASEDIR/.config/ -r
+cp ~/.config/env $BASEDIR/.config/
 
 echo "The files were updated succesfully."
 
