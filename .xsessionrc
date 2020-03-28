@@ -2,4 +2,7 @@ export BROWSER=firefox-esr
 export FILE_MANAGER=nemo
 export TERMINAL=urxvt
 export WALLPAPER=~/Pictures/debian-wallpaper.jpg
+PATH=$PATH:/snap/bin
+PATH=$PATH:/home/lucas/.local/bin
+
 

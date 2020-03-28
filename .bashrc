@@ -112,8 +112,5 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH=$PATH:/snap/bin
-export PATH=$PATH:~/.local/bin
-
 export ZEPHYR_TOOLCHAIN_VARIANT=zephyr
 export ZEPHYR_SDK_INSTALL_DIR=$HOME/Programs/zephyr-sdk-0.10.0

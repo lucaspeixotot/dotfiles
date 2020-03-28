@@ -1,3 +1,1 @@
-export PATH=$PATH:/snap/bin
-export PATH=$PATH:~/.local/bin
-
+exec i3

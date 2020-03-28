@@ -102,9 +102,9 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 
-export PATH=$PATH:/snap/bin
-export PATH=$PATH:~/.local/bin
-export PATH=$PATH:/usr/sbin
+#export PATH=$PATH:/snap/bin
+#export PATH=$PATH:~/.local/bin
+#export PATH=$PATH:/usr/sbin
 
 export ZEPHYR_BASE=~/zprojects/zephyr
 export ZEPHYR_TOOLCHAIN_VARIANT=zephyr

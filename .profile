@@ -30,5 +30,5 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-export PATH=$PATH:/snap/bin
-export PATH=$PATH:~/.local/bin
+PATH=$PATH:/snap/bin
+PATH=$PATH:/home/lucas/.local/bin
