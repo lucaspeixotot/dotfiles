@@ -3,4 +3,5 @@
 if [ -r ~/.config/env ]; then . ~/.config/env; fi
 
 setbg ~/.config/wallpapers/Landscapes &
+compton &
 

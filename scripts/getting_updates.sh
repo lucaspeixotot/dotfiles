@@ -21,6 +21,9 @@ cp ~/.config/polybar $BASEDIR/.config/ -r
 cp ~/.config/scripts $BASEDIR/.config/ -r
 cp ~/.config/env $BASEDIR/.config/
 
+# Update compton config
+cp ~/.config/compton.conf $BASEDIR/.config/
+
 echo "The files were updated succesfully."
 
 
