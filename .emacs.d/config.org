@@ -185,6 +185,11 @@
    #+BEGIN_SRC emacs-lisp
      (add-hook 'tex-mode-hook 'auto-fill-mode)
    #+END_SRC
+** Bookmarks
+#+BEGIN_SRC emacs-lisp
+  (setq bookmark-default-file "~/.emacs.d/my-bookmarks")
+  (setq bookmark-save-flag 1)
+#+END_SRC
 ** Jump to char like f/F vim but better
    #+BEGIN_SRC emacs-lisp
      (defvar jump-to-last-char nil)
@@ -571,6 +576,7 @@
      (use-package neotree
        :ensure t
        :config
+       (setq neo-window-fixed-size nil)
        (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
        (add-hook 'neotree-mode-hook
 		 (lambda ()
@@ -993,3 +999,28 @@
      (use-package rjsx-mode
        :ensure t)
    #+END_SRC
+** Docker-compose
+   #+BEGIN_SRC emacs-lisp
+   (use-package docker-compose-mode
+   :ensure t)   
+   #+END_SRC
+** Dashboard
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :ensure t
+    :config
+    (dashboard-setup-startup-hook)
+    (setq dashboard-banner-logo-title "Welcome to Peixoto's Emacs!!")
+    (setq dashboard-items '((recents  . 10)
+                            (projects . 10)
+                            (bookmarks . 5)))
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-footer t)
+    (setq dashboard-footer-messages '("Emacs is written in Lisp, which is the only computer language that is beautiful."))
+    (setq dashboard-footer-icon (all-the-icons-octicon "dashboard"
+                                                       :height 1.1
+                                                       :v-adjust -0.05
+                                                       :face 'font-lock-keyword-face))
+    )
+#+END_SRC
