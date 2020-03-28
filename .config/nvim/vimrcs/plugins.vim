@@ -1,4 +1,4 @@
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 " Elegant status line
 Plug 'itchyny/lightline.vim'
@@ -31,9 +31,6 @@ Plug 'kana/vim-operator-user'
 " Rainbow parenthesis
 Plug 'luochen1990/rainbow'
 
-" Auto complete
-Plug 'ajh17/VimCompletesMe'
-
 " Ctags
 Plug 'ludovicchabant/vim-gutentags'
 
@@ -43,16 +40,17 @@ Plug 'sheerun/vim-polyglot'
 " Onedark
 Plug 'joshdick/onedark.vim'
 
-" fzf
-Plug 'junegunn/fzf.vim'
-
 " Doxygen
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
 " Palenight
 Plug 'drewtempelmeyer/palenight.vim'
 
-" Magit
-Plug 'jreybert/vimagit'
+" VIM lsp requirements
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 call plug#end()
