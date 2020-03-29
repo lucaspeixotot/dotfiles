@@ -33,7 +33,9 @@ bindsym $mod+Return exec --no-startup-id $TERMINAL
 bindsym $mod+Shift+q kill
 
 # start program launcher
-bindsym $mod+d exec rofi -show run
+#bindsym $mod+d exec rofi -show run
+bindsym $mod+d exec dmenu_run -b -i
+
 
 ################################################################################################
 ## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
@@ -53,7 +55,7 @@ bindsym $mod+Ctrl+m exec --no-startup-id pavucontrol
 
 # Start Applications
 bindsym $mod+F2 exec $BROWSER
-bindsym $mod+F3 exec $FILE_MANAGER
+bindsym $mod+F3 exec --no-startup-id $TERMINAL -e $FILE_MANAGER
 bindsym Print exec --no-startup-id scrot '%Y-%m-%d-%H:%M:%S_$wx$h_screenshot.png' -e 'mv $f ~/Pictures'
 bindsym $mod+Print --release exec --no-startup-id i3-scrot -w
 bindsym $mod+Shift+Print --release exec --no-startup-id scrot -s '%Y-%m-%d-%H:%M:%S_$wx$h_screenshot.png' -e 'mv $f ~/Pictures/'

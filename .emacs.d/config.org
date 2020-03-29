@@ -61,11 +61,11 @@
    #+END_SRC
 ** Datetime in modeline
    #+BEGIN_SRC emacs-lisp
-     (setq display-time-day-and-date t)
-     (setq display-time-24hr-format t)
-     (setq display-time-default-load-average nil) 
-     (setq display-time-format "%a %H:%M - %d %b %Y")
-     (display-time-mode t)
+     ;; (setq display-time-day-and-date t)
+     ;; (setq display-time-24hr-format t)
+     ;; (setq display-time-default-load-average nil) 
+     ;; (setq display-time-format "%a %H:%M - %d %b %Y")
+     ;; (display-time-mode t)
    #+END_SRC
 ** Save the last location in open file
    #+BEGIN_SRC emacs-lisp

@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-if [ -r ~/.config/env ]; then . ~/.config/env; fi
+[ -r ~/.config/env ] && . ~/.config/env
 
 setbg ~/.config/wallpapers/Landscapes &
 compton &
