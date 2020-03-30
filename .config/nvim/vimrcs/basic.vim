@@ -31,15 +31,8 @@
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sets how many lines of history VIM has to remember
-set history=500
-set number relativenumber
-
-augroup numbertoggle
-  autocmd!
-  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-augroup END
-
+set history=1000
+set number
 set mouse=a
 
 " Enable filetype plugins
@@ -59,16 +52,22 @@ set autoread
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-let mapleader = ","
+"let mapleader = ","
+let g:mapleader = ","
+let g:localleader = "\<Space>"
+
 
 " Fast saving
 nmap <leader>w :w!<cr>
 
 " Fast quit
-map <leader>q :q<cr>
+nmap <leader>q :q<cr>
+
+" Fast open file
+nmap <leader>e :e<space>
 
 " Fast savind and quit
-map <leader>zz :wq!<cr>
+nmap <leader>zz :wq!<cr>
 
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
@@ -109,6 +108,7 @@ set showcmd
 
 " A buffer becomes hidden when it is abandoned
 set hidden
+set nocompatible
 
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
@@ -226,8 +226,8 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
-map <c-space> ?
-nnoremap <Leader>s :/\<<C-r><C-w>\><CR>
+"map <c-space> ?
+"nnoremap <Leader>s :/\<<C-r><C-w>\><CR>
 map <leader>n :cnext<CR>
 
 " Disable highlight when <leader><cr> is pressed
@@ -238,6 +238,12 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
+
+" My ace jump window
+for key in range(0, 9)
+	execute 'nnoremap <leader>'.key key.'<C-w>w'
+endfor
+
 
 " Init kernel config
 map <leader>kc :call InitKernelConfig()<cr>
