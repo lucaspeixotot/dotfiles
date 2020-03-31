@@ -87,7 +87,7 @@
 	(interactive (list my-term-shell)))
       (ad-activate 'ansi-term)
 
-      (global-set-key (kbd "C-t") 'shell)
+      (global-set-key (kbd "C-c t") 'shell)
    #+END_SRC
 ** Smoth scroll
    #+BEGIN_SRC emacs-lisp
@@ -238,7 +238,13 @@
      (global-set-key (kbd "C-c f") 'jump-to-char)
      (global-set-key (kbd "C-c F" ) 'jump-to-char-backward)
    #+END_SRC
-
+** Highlight FIXME, TODO and BUG in prog mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'prog-mode-hook
+                 (lambda ()
+                  (font-lock-add-keywords nil
+                   '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))
+#+END_SRC
 * Packages config
 ** Setting use-package and repositories
    #+BEGIN_SRC emacs-lisp
@@ -384,16 +390,213 @@
 
     #+END_SRC
 ** Org
+*** Defining org variables
+#+BEGIN_SRC emacs-lisp
+      ;; Defining variables
+      (defvar peixoto-org-dir)
+      (defvar peixoto-org-files-alist)
+      (defvar peixoto-org-refile-targets)
+      (defvar peixoto-org-agenda-files)
+      (defvar peixoto-org-capture-templates-alist)
+      (defvar peixoto-org-project-file)
+#+END_SRC
+*** Setting variables and help functions
+#+BEGIN_SRC emacs-lisp
+  (setq peixoto-org-dir "~/.config/org")
+
+  (setq peixoto-org-files-alist
+        '((work-calendar    "calendars/work.org")
+          (ekonomi          "ekonomi.org.gpg")
+          (journal          "journal.org.gpg")
+          (private          "private.org")
+          (refile           "refile.org")
+          (notes            "notes.org")))
+
+  ;; Help functions
+  (defun string-join (sl delim)
+    (mapconcat 'identity sl delim))
+  (defun peixoto-org-file (key)
+    "Return file path for org file matching KEY. KEY must be in `peixoto-org-files-alist'."
+    (cadr (assoc key peixoto-org-files-alist)))
+
+  (defun peixoto-projectile-root-last-dir ()
+    (nth
+     (- (length (split-string (projectile-project-root) "/")) 2)
+     (split-string (projectile-project-root) "/"))
+    )
+
+  (defun peixoto--org-capture-project-notes-file ()
+    (concat (projectile-project-root)
+            "."
+            (peixoto-projectile-root-last-dir)
+            "-project.org"))
+
+
+  ;; (nth (length '(split-string "~/.config/work/home")) (split-string "~/.config/work/home/" "/"))
+
+  (defun peixoto--org-remove-file-if-match (&rest regexes)
+    "Return a list of org file entries from `peixoto-org-files-alist' not matching REGEXES."
+    (let ((regex (string-join regexes "\\|")))
+      (cl-remove-if (lambda (file) (string-match regex file))
+                    (mapcar 'cadr peixoto-org-files-alist))))
+
+
+  ;; Setting custom variables
+  (setq peixoto-org-agenda-files
+        (peixoto--org-remove-file-if-match "\\.org\\.gpg"))
+
+  (setq peixoto-org-capture-templates-alist
+        `(("t" "TODO with link" entry (file ,(peixoto-org-file 'refile))
+           ,(concat "* TODO %?\n"
+                    "%U\n"
+                    "%a")
+           :clock-in t :clock-resume t :empty-lines 1)
+
+          ("T" "TODO" entry (file ,(peixoto-org-file 'refile))
+           ,(concat "* TODO %?\n"
+                    "%U")
+           :clock-in t :clock-resume t :empty-lines 1)
+
+          ("j" "Journal" entry (file+datetree ,(peixoto-org-file 'journal))
+           ,(concat "* %^{Titel}\n"
+                    "%U, %^{Location|Stockholm, Sverige}\n\n"
+                    "%?")
+           :empty-lines 1)
+
+          ("l" "Link" entry (file ,(peixoto-org-file 'refile))
+           ,(concat "* %? %^L %^G \n"
+                    "%U")
+           :prepend t)
+
+          ("L" "Browser Link" entry (file ,(peixoto-org-file 'refile))
+           ,(concat "* TODO %a\n"
+                    "%U")
+           :prepend t :immediate-finish t :empty-lines 1)
+
+          ("p" "Browser Link and Selection" entry (file ,(peixoto-org-file 'refile))
+           ,(concat "* TODO %^{Title}\n"
+                    "Source: %u, %c\n"
+                    "#+BEGIN_QUOTE\n"
+                    "%i\n"
+                    "#+END_QUOTE\n\n\n%?")
+           :prepend t :empty-lines 1)
+
+          ("d" "Project todo" entry (file+headline peixoto--org-capture-project-notes-file "Todos")
+           ,(concat "* TODO %^{Title}\n"
+                    "%U\n\n"
+                    "%?")
+           :empty-lines 1)
+
+          ("D" "Project todo with link" entry (file+headline peixoto--org-capture-project-notes-file "Todos")
+           ,(concat "* TODO %^{Title}\n"
+                    "%U\n\n"
+                    "Link: %a\n\n"
+                    "%?")
+           :empty-lines 1)
+
+          ("m" "Project note" entry (file+headline peixoto--org-capture-project-notes-file "Notes")
+           ,(concat "* %^{Title}\n"
+                    "%U\n\n"
+                    "%?")
+           :empty-lines 1)
+
+          ("n" "Project note with link" entry (file+headline peixoto--org-capture-project-notes-file "Notes")
+           ,(concat "* %^{Title}\n"
+                    "%U\n\n"
+                    "Link: %a\n\n"
+                    "%?")
+           :empty-lines 1)
+
+          ("N" "Project note with link + quote" entry (file+headline peixoto--org-capture-project-notes-file "Notes")
+           ,(concat "* %^{Title}\n"
+                    "%U\n\n"
+                    "Link: %a\n"
+                    "#+BEGIN_QUOTE\n"
+                    "%i\n"
+                    "#+END_QUOTE\n\n"
+                    "%?")
+           :empty-lines 1)))
+#+END_SRC
+*** Org basic config
+    #+BEGIN_SRC emacs-lisp
+      (use-package org
+        :bind (("C-c o c" . org-capture)
+               ("C-c o a" . org-agenda)
+               ("C-c l" . org-store-link)
+               :map org-mode-map
+               ("H-." . org-time-stamp-inactive))
+        :config
+        (add-hook 'org-mode-hook 'auto-fill-mode)
+        (setq org-default-notes-file (peixoto-org-file 'notes))
+        (setq org-directory peixoto-org-dir)
+        (setq org-latex-listings t)
+        (setq org-cycle-separator-lines 1)
+        (setq org-src-fontify-natively t)
+        (setq org-adapt-indentation nil)
+        (setq org-fontify-quote-and-verse-blocks t)
+        (setq org-fontify-done-headline t)
+        (setq org-fontify-whole-heading-line t)
+        (setq org-hide-leading-stars t)
+        (setq org-indent-indentation-per-level 2)
+        (setq org-checkbox-hierarchical-statistics nil)
+        (setq org-log-done 'time)
+        (setq org-outline-path-complete-in-steps nil)
+        (setq org-html-htmlize-output-type 'css)
+        (setq org-export-initial-scope 'subtree)
+        (setq org-catch-invisible-edits 'show-and-error)
+        (setq org-capture-templates peixoto-org-capture-templates-alist)
+        (setq org-clock-in-switch-to-state "DOING")
+        )
+#+END_SRC
+*** Org agenda config
+#+BEGIN_SRC emacs-lisp
+  (require 'org-agenda)
+  (dolist (agenda-command
+           '(("z" "Two week agenda"
+              ((todo ""
+                     ((org-agenda-overriding-header "TODOs")
+                      (org-agenda-prefix-format "  ")
+                      (org-agenda-sorting-strategy '(priority-down deadline-up))
+                      (org-agenda-max-entries 20)))
+               (agenda ""
+                       ((org-agenda-start-day "0d")
+                        (org-agenda-span 14)
+                        (org-agenda-start-on-weekday nil)))))))
+    (add-to-list 'org-agenda-custom-commands agenda-command))
+
+  (setq org-agenda-files peixoto-org-agenda-files
+        org-agenda-dim-blocked-tasks nil
+        org-deadline-warning-days -7
+        org-agenda-block-separator "")
+
+  (defvar peixoto--project-agenda-buffer-name "*Project Agenda*")
+
+  (defun peixoto/project-todo-list ()
+    (interactive)
+    (let ((project-notes-file (expand-file-name ".project-notes.org"
+                                                (projectile-project-root))))
+      (if (file-exists-p project-notes-file)
+          (progn
+            (setq org-agenda-files `(,project-notes-file))
+            (org-todo-list)
+            (rename-buffer peixoto--project-agenda-buffer-name 'unique))
+        (message "Could not locate any project notes file"))))
+
+  (defun peixoto/reset-org-agenda-files ()
+    (interactive)
+    (when (string-equal peixoto--project-agenda-buffer-name
+                        (buffer-name (current-buffer)))
+      (setq org-agenda-files peixoto-org-agenda-files)))
+
+  ;; Reset org-agenda-files when the project TODO list buffer is closed
+  (add-hook 'kill-buffer-hook #'peixoto/reset-org-agenda-files)
+    #+END_SRC
 *** Org bullets
     #+BEGIN_SRC emacs-lisp
       (use-package org-bullets
         :ensure t
         :hook ((org-mode) . (lambda () (org-bullets-mode 1)))
         )
-    #+END_SRC
-*** Org basic config
-    #+BEGIN_SRC emacs-lisp
-      (add-hook 'org-mode-hook 'auto-fill-mode)
     #+END_SRC
 ** CMAKE mode
    #+BEGIN_SRC emacs-lisp
@@ -1024,4 +1227,31 @@
                                                        :v-adjust -0.05
                                                        :face 'font-lock-keyword-face))
     )
+#+END_SRC
+** Org-Projectile
+#+BEGIN_SRC emacs-lisp
+  (defvar created-property-string "
+    :PROPERTIES:
+    :CREATED: %U
+    :END:")
+
+  (use-package org-projectile
+    :bind (("C-c o p" . org-projectile-project-todo-completing-read)
+           ("C-c o c" . org-capture))
+    :config
+    (progn
+    (setq org-projectile-projects-file
+          "~/.emacs.d/org-projectile/projects.org")
+    (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+    (push (org-projectile-project-todo-entry :capture-template "* TODO %?\n %i\n %t\n %a" :capture-heading "Create linked org-projectile TODO"  :capture-character "c") org-capture-templates)
+    (push (org-projectile-project-todo-entry) org-capture-templates)  
+    )
+
+    :ensure t
+    )
+#+END_SRC
+** Magit-todos
+#+BEGIN_SRC emacs-lisp
+(use-package magit-todos
+:ensure t)
 #+END_SRC
