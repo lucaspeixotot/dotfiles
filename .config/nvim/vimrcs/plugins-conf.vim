@@ -91,6 +91,10 @@ let g:lightline = {
             \ }
       \ }
 
+let s:palette = g:lightline#colorscheme#palenight#palette
+let s:palette.inactive.left = s:palette.normal.left
+unlet s:palette
+
 " #########################################################
 " #
 " Clang 
@@ -214,6 +218,8 @@ endif
 " Asyncomplete
 " #
 " #########################################################
+"set completeopt-=preview
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " #########################################################
 " #
