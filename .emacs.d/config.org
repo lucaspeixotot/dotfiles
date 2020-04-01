@@ -573,8 +573,7 @@
 
   (defun peixoto/project-todo-list ()
     (interactive)
-    (let ((project-notes-file (expand-file-name ".project-notes.org"
-                                                (projectile-project-root))))
+    (let ((project-notes-file (peixoto--org-capture-project-notes-file)))
       (if (file-exists-p project-notes-file)
           (progn
             (setq org-agenda-files `(,project-notes-file))
