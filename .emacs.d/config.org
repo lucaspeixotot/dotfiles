@@ -517,12 +517,59 @@
                     "%?")
            :empty-lines 1)))
 #+END_SRC
+*** Org agenda config
+#+BEGIN_SRC emacs-lisp
+  (require 'org-agenda)
+  (dolist (agenda-command
+           '(("z" "Two week agenda"
+              ((todo ""
+                     ((org-agenda-overriding-header "TODOs")
+                      (org-agenda-prefix-format "  ")
+                      (org-agenda-sorting-strategy '(priority-down deadline-up))
+                      (org-agenda-max-entries 20)))
+               (agenda ""
+                       ((org-agenda-start-day "0d")
+                        (org-agenda-span 14)
+                        (org-agenda-start-on-weekday nil)))))))
+    (add-to-list 'org-agenda-custom-commands agenda-command))
+
+  (setq org-agenda-files peixoto-org-agenda-files
+        org-agenda-dim-blocked-tasks nil
+        org-deadline-warning-days 7
+        org-agenda-block-separator ""
+        org-agenda-skip-scheduled-if-deadline-is-shown t
+        org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled)
+        )
+
+  (defvar peixoto--project-agenda-buffer-name "*Project Agenda*")
+
+  (defun peixoto/project-todo-list ()
+    (interactive)
+    (let ((project-notes-file (peixoto--org-capture-project-notes-file)))
+      (if (file-exists-p project-notes-file)
+          (progn
+            (setq org-agenda-files `(,project-notes-file))
+            (org-todo-list)
+            (rename-buffer peixoto--project-agenda-buffer-name 'unique))
+        (message "Could not locate any project notes file"))))
+
+  (defun peixoto/reset-org-agenda-files ()
+    (interactive)
+    (when (string-equal peixoto--project-agenda-buffer-name
+                        (buffer-name (current-buffer)))
+      (setq org-agenda-files peixoto-org-agenda-files)))
+
+  ;; Reset org-agenda-files when the project TODO list buffer is closed
+  (add-hook 'kill-buffer-hook #'peixoto/reset-org-agenda-files)
+    #+END_SRC
 *** Org basic config
     #+BEGIN_SRC emacs-lisp
       (use-package org
         :bind (("C-c o c" . org-capture)
                ("C-c o a" . org-agenda)
-               ("C-c l" . org-store-link)
+               ("C-c o l" . org-store-link)
+               ("C-c o p" . peixoto/project-todo-list)
+               ("C-c o r" . peixotoreset-org-agenda-files)
                :map org-mode-map
                ("H-." . org-time-stamp-inactive))
         :config
@@ -546,50 +593,14 @@
         (setq org-catch-invisible-edits 'show-and-error)
         (setq org-capture-templates peixoto-org-capture-templates-alist)
         (setq org-clock-in-switch-to-state "DOING")
+        (setq org-todo-keywords
+        '((sequence "TODO(t)" "DOING(s)" "|" "DONE(d)")
+          (sequence "|" "CANCELED(c)")))
+        (setq org-todo-keyword-faces
+        '(("DOING" . "yellow")
+        ("CANCELED" . (:foreground "blue" :weight bold))))
         )
 #+END_SRC
-*** Org agenda config
-#+BEGIN_SRC emacs-lisp
-  (require 'org-agenda)
-  (dolist (agenda-command
-           '(("z" "Two week agenda"
-              ((todo ""
-                     ((org-agenda-overriding-header "TODOs")
-                      (org-agenda-prefix-format "  ")
-                      (org-agenda-sorting-strategy '(priority-down deadline-up))
-                      (org-agenda-max-entries 20)))
-               (agenda ""
-                       ((org-agenda-start-day "0d")
-                        (org-agenda-span 14)
-                        (org-agenda-start-on-weekday nil)))))))
-    (add-to-list 'org-agenda-custom-commands agenda-command))
-
-  (setq org-agenda-files peixoto-org-agenda-files
-        org-agenda-dim-blocked-tasks nil
-        org-deadline-warning-days -7
-        org-agenda-block-separator "")
-
-  (defvar peixoto--project-agenda-buffer-name "*Project Agenda*")
-
-  (defun peixoto/project-todo-list ()
-    (interactive)
-    (let ((project-notes-file (peixoto--org-capture-project-notes-file)))
-      (if (file-exists-p project-notes-file)
-          (progn
-            (setq org-agenda-files `(,project-notes-file))
-            (org-todo-list)
-            (rename-buffer peixoto--project-agenda-buffer-name 'unique))
-        (message "Could not locate any project notes file"))))
-
-  (defun peixoto/reset-org-agenda-files ()
-    (interactive)
-    (when (string-equal peixoto--project-agenda-buffer-name
-                        (buffer-name (current-buffer)))
-      (setq org-agenda-files peixoto-org-agenda-files)))
-
-  ;; Reset org-agenda-files when the project TODO list buffer is closed
-  (add-hook 'kill-buffer-hook #'peixoto/reset-org-agenda-files)
-    #+END_SRC
 *** Org bullets
     #+BEGIN_SRC emacs-lisp
       (use-package org-bullets
@@ -1226,31 +1237,4 @@
                                                        :v-adjust -0.05
                                                        :face 'font-lock-keyword-face))
     )
-#+END_SRC
-** Org-Projectile
-#+BEGIN_SRC emacs-lisp
-  (defvar created-property-string "
-    :PROPERTIES:
-    :CREATED: %U
-    :END:")
-
-  (use-package org-projectile
-    :bind (("C-c o p" . org-projectile-project-todo-completing-read)
-           ("C-c o c" . org-capture))
-    :config
-    (progn
-    (setq org-projectile-projects-file
-          "~/.emacs.d/org-projectile/projects.org")
-    (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
-    (push (org-projectile-project-todo-entry :capture-template "* TODO %?\n %i\n %t\n %a" :capture-heading "Create linked org-projectile TODO"  :capture-character "c") org-capture-templates)
-    (push (org-projectile-project-todo-entry) org-capture-templates)  
-    )
-
-    :ensure t
-    )
-#+END_SRC
-** Magit-todos
-#+BEGIN_SRC emacs-lisp
-(use-package magit-todos
-:ensure t)
 #+END_SRC
