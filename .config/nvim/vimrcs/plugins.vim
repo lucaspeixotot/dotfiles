@@ -41,11 +41,11 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'drewtempelmeyer/palenight.vim'
 
 " VIM lsp requirements
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+"Plug 'prabirshrestha/async.vim'
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'mattn/vim-lsp-settings'
+"Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " Expand region
 Plug 'terryma/vim-expand-region'
