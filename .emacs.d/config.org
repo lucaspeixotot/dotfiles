@@ -273,6 +273,8 @@
    (load "htmlize.el")
    (require 'doxymacs)
    (require 'dockerfile-mode)
+   (require 'py-yapf)
+   (add-hook 'python-mode-hook 'py-yapf-enable-on-save)
    (global-set-key (kbd "C-x cs") 'cscope-find-functions-calling-this-function) 
    #+END_SRC
 ** All the icons
@@ -1157,6 +1159,7 @@
        (
         (c-mode . lsp-deferred)
         (c++-mode . lsp-deferred)
+        (python-mode . lsp-deferred)
         )
        )
 
@@ -1165,7 +1168,8 @@
        :hook (
               (lsp-mode . lsp-ui-mode)
               (c-mode . flycheck-mode)
-              (c++mode . flycheck-mode))
+              (c++mode . flycheck-mode)
+              (python-mode . flycheck-mode))
        :commands lsp-ui-mode)
 
 
@@ -1197,13 +1201,13 @@
    #+END_SRC
 ** Delete hungry
 #+BEGIN_SRC emacs-lisp
-(use-package smart-hungry-delete
-  :ensure t
-  :bind (("<backspace>" . smart-hungry-delete-backward-char)
-		 ("C-d" . smart-hungry-delete-forward-char))
-  :defer nil ;; dont defer so we can add our functions to hooks 
-  :config (smart-hungry-delete-add-default-hooks)
-  )
+  ;; (use-package smart-hungry-delete
+  ;;   :ensure t
+  ;;   :bind (("<backspace>" . smart-hungry-delete-backward-char)
+  ;; 		 ("C-d" . smart-hungry-delete-forward-char))
+  ;;   :defer nil ;; dont defer so we can add our functions to hooks 
+  ;;   :config (smart-hungry-delete-add-default-hooks)
+  ;;   )
 #+END_SRC
 ** JS2-mode
    #+BEGIN_SRC emacs-lisp
