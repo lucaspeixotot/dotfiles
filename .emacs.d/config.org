@@ -49,7 +49,7 @@
    (global-linum-mode 1)
    (line-number-mode 1)
    (column-number-mode 1)
-   (setq-default fill-column 80)
+   (setq-default fill-column 72)
    #+END_SRC
 ** Kill current buffer function
    #+BEGIN_SRC emacs-lisp
@@ -1240,5 +1240,21 @@
                                                        :height 1.1
                                                        :v-adjust -0.05
                                                        :face 'font-lock-keyword-face))
+    )
+#+END_SRC
+** Python
+#+BEGIN_SRC emacs-lisp
+  (use-package sphinx-doc
+    :ensure t
+    :config
+    (add-hook 'python-mode-hook (lambda ()
+                                      (sphinx-doc-mode t)))
+    )
+
+  (use-package python-docstring
+    :ensure t
+    :config
+    (add-hook 'python-mode-hook (lambda ()
+                                  (python-docstring-mode t)))
     )
 #+END_SRC
