@@ -1,3 +1,5 @@
+#!/bin/bash sh
+
 BASEDIR=..
 
 cp ~/.emacs.d/init.el $BASEDIR/.emacs.d/

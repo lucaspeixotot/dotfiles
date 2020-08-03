@@ -1,16 +1,4 @@
-BASEDIR=..
-
-# Updating dotfiles
-cp ~/.Xresources $BASEDIR
-cp ~/.xinitrc $BASEDIR
-cp ~/.bashrc $BASEDIR
-cp ~/.profile $BASEDIR
-cp ~/.zshrc $BASEDIR
-cp ~/.xsessionrc $BASEDIR
-if [ $? -eq 0 ]
-then
-    echo "The home files were updated successfully!"
-fi
+#!/bin/bash sh
 
 # Update I3
 cp ~/.config/i3 $BASEDIR/.config/ -r
@@ -44,7 +32,10 @@ then
     echo "Compton was updated successfully!"
 fi
 
+cp ~/.config/nvim $BASEDIR/.config/
+if [ $? -eq 0 ]
+then
+    echo "Neovim was updated successfully!"
+fi
+
 echo "The files were updated succesfully."
-
-
-

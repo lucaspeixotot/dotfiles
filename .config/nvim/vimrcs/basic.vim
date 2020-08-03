@@ -31,14 +31,21 @@
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sets how many lines of history VIM has to remember
-set history=1000
-set number
+set history=500
+set number relativenumber
+
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
+
 set mouse=a
+
 
 " Enable filetype plugins
 filetype plugin on
 filetype indent on
-set title
 
 " Esc Scape
 nnoremap fd <Esc>
@@ -52,22 +59,16 @@ set autoread
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-"let mapleader = ","
-let g:mapleader = ","
-let g:localleader = "\<Space>"
-
+let mapleader = ","
 
 " Fast saving
 nmap <leader>w :w!<cr>
 
 " Fast quit
-nmap <leader>q :q<cr>
-
-" Fast open file
-nmap <leader>e :e<space>
+map <leader>q :q<cr>
 
 " Fast savind and quit
-nmap <leader>zz :wq!<cr>
+map <leader>zz :wq!<cr>
 
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
@@ -108,7 +109,6 @@ set showcmd
 
 " A buffer becomes hidden when it is abandoned
 set hidden
-set nocompatible
 
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
@@ -135,7 +135,7 @@ set magic
 " Show matching brackets when text indicator is over them
 set showmatch 
 " How many tenths of a second to blink when matching brackets
-set mat=1
+set mat=2
 
 " No annoying sound on errors
 set noerrorbells
@@ -144,6 +144,12 @@ set t_vb=
 set tm=500
 
 set colorcolumn=72
+
+" Properly disable sound on errors on MacVim
+if has("gui_macvim")
+    autocmd GUIEnter * set vb t_vb=
+endif
+
 
 " Add a bit extra margin to the left
 set foldcolumn=1
@@ -155,17 +161,25 @@ set splitbelow splitright
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enable syntax highlighting
+syntax on 
+"set background=dark
 
 " Enable 256 colors palette in Gnome Terminal
-if $TERM == 'xterm-256color'
+if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-if $TERM == 'rxvt-unicode-256color'
-    set t_Co=256
-endif
+"try
+    "colorscheme desert
+"catch
+"endtry
+"colorscheme onedark
 
 colorscheme palenight
+
+
+
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -181,6 +195,7 @@ set encoding=utf8
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -189,7 +204,7 @@ set nobackup
 set nowb
 set noswapfile
 set undofile " Maintain undo history between sessions 
-set undodir=~/.config/nvim/undodir
+set undodir=~/.vim/undodir
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -213,6 +228,7 @@ set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
 
+
 """"""""""""""""""""""""""""""
 " => Visual mode related
 """"""""""""""""""""""""""""""
@@ -221,13 +237,14 @@ set wrap "Wrap lines
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
-"map <c-space> ?
-"nnoremap <Leader>s :/\<<C-r><C-w>\><CR>
+map <c-space> ?
+nnoremap <Leader>s :/\<<C-r><C-w>\><CR>
 map <leader>n :cnext<CR>
 
 " Disable highlight when <leader><cr> is pressed
@@ -238,15 +255,6 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
-
-" My ace jump window
-for key in range(0, 9)
-	execute 'nnoremap <leader>'.key key.'<C-w>w'
-endfor
-
-
-" Init kernel config
-map <leader>kc :call InitKernelConfig()<cr>
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>:tabclose<cr>gT
@@ -264,6 +272,16 @@ map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove 
 map <leader>t<leader> :tabnext 
 
+" Let 'tl' toggle between this and the last accessed tab
+let g:lasttab = 1
+nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+au TabLeave * let g:lasttab = tabpagenr()
+
+
+" Opens a new tab with the current buffer's path
+" Super useful when editing files in the same directory
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
@@ -277,6 +295,7 @@ endtry
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+
 """"""""""""""""""""""""""""""
 " => Status line
 """"""""""""""""""""""""""""""
@@ -285,6 +304,7 @@ set laststatus=2
 
 " Format the status line
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
@@ -297,6 +317,13 @@ nmap <M-j> mz:m+<cr>`z
 nmap <M-k> mz:m-2<cr>`z
 vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+if has("mac") || has("macunix")
+  nmap <D-j> <M-j>
+  nmap <D-k> <M-k>
+  vmap <D-j> <M-j>
+  vmap <D-k> <M-k>
+endif
 
 " Delete trailing white space on save, useful for some filetypes ;)
 fun! CleanExtraSpaces()
@@ -311,6 +338,12 @@ if has("autocmd")
     autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
 endif
 
+"inoremap ( ()<Esc>:let leavechar=")"<CR>i
+"inoremap [ []<Esc>:let leavechar="]"<CR>i
+"inoremap { {}<Esc>:let leavechar="}"<CR>i
+"imap <C-j> <Esc>:exec "normal f" . leavechar<CR>a
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -322,6 +355,21 @@ map <leader>sn ]s
 map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Misc
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Remove the Windows ^M - when the encodings gets messed up
+noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+
+" Quickly open a markdown buffer for scribble
+map <leader>x :e ~/buffer.md<cr>
+
+" Toggle paste mode on and off
+map <leader>pp :setlocal paste!<cr>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
@@ -359,10 +407,6 @@ function! CmdLine(str)
     call feedkeys(":" . a:str)
 endfunction 
 
-function! InitKernelConfig()
-    source $HOME/.vim/vimrcs/kernel-config.vim
-endfunction
-
 function! VisualSelection(direction, extra_filter) range
     let l:saved_reg = @"
     execute "normal! vgvy"
@@ -381,6 +425,3 @@ function! VisualSelection(direction, extra_filter) range
 endfunction
 
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
-" Enable syntax highlighting
-syntax on 
