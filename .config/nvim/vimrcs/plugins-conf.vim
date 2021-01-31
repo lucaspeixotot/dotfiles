@@ -88,3 +88,47 @@ let g:DoxygenToolkit_licenseTag="My own license"
 " palenight ------------------------------------------------------------------------
 let g:palenight_terminal_italics=1
 
+" vim-go --------------------------------------------------
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_types = 1
+let g:go_auto_sameids = 1
+let g:go_fmt_command = "goimports"
+let g:go_auto_type_info = 1
+let g:go_doc_keywordprg_enabled = 0
+
+
+
+" Ale --------------------------------------------------
+let g:ale_sign_error = '*'
+let g:ale_sign_warning = '!'
+let g:ale_completion_enabled = 0
+
+
+" Deoplete-go -----------------------------------------
+
+" Enable deoplete on startup
+let g:deoplete#enable_at_startup = 1
+
+call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
+
+" deoplete
+imap <expr> <tab>   pumvisible() ? "\<c-n>" : "\<tab>"
+imap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
+imap <expr> <cr>    pumvisible() ? deoplete#close_popup() : "\<cr>"
+
+" easymotion
+map  <Leader>f <Plug>(easymotion-bd-f)
+nmap <Leader>f <Plug>(easymotion-overwin-f)
+
+" s{char}{char} to move to {char}{char}
+nmap <Leader>s <Plug>(easymotion-overwin-f2)
+
+" Move to line
+map <Leader>l <Plug>(easymotion-bd-jk)
+nmap <Leader>l <Plug>(easymotion-overwin-line)

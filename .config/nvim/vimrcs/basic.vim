@@ -32,16 +32,15 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sets how many lines of history VIM has to remember
 set history=500
-set number relativenumber
 
-augroup numbertoggle
-  autocmd!
-  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-augroup END
+" Enable lines
+set number 
 
+" Enable mouse
 set mouse=a
 
+" Prevent preview in autocomplete
+set completeopt-=preview
 
 " Enable filetype plugins
 filetype plugin on
@@ -170,16 +169,7 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-"try
-    "colorscheme desert
-"catch
-"endtry
-"colorscheme onedark
-
 colorscheme palenight
-
-
-
 
 " Set extra options when running in GUI mode
 if has("gui_running")

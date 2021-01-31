@@ -1,10 +1,41 @@
 call plug#begin('~/.vim/plugged')
 
+
+" ########## Visual ##########
+
 " Elegant status line
 Plug 'itchyny/lightline.vim'
 
 " Elegant buftab line
 Plug 'ap/vim-buftabline'
+
+" Rainbow parenthesis
+Plug 'luochen1990/rainbow'
+
+" Palenight
+Plug 'drewtempelmeyer/palenight.vim'
+
+" Onedark
+Plug 'joshdick/onedark.vim'
+
+" ########## C/C++ ##########
+
+" Ctags
+Plug 'ludovicchabant/vim-gutentags'
+
+" Clang
+Plug 'rhysd/vim-clang-format'
+Plug 'kana/vim-operator-user'
+
+" Doxygen
+Plug 'vim-scripts/DoxygenToolkit.vim'
+
+" ########## Util ##########
+
+" Vim go
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+" ########## Util ##########
 
 " Smart Parens
 Plug 'jiangmiao/auto-pairs'
@@ -24,42 +55,20 @@ Plug 'yegappan/mru'
 " Git info
 Plug 'tpope/vim-fugitive'
 
-" Clang
-Plug 'rhysd/vim-clang-format'
-Plug 'kana/vim-operator-user'
-
-" Rainbow parenthesis
-Plug 'luochen1990/rainbow'
-
-" Auto complete
-Plug 'ajh17/VimCompletesMe'
-"Plug 'justmao945/vim-clang'
-"Plug  'maralla/completor.vim'
-"Plug 'Rip-Rip/clang_complete'
-"Plug 'lifepillar/vim-mucomplete'
-
-" Ctags
-Plug 'ludovicchabant/vim-gutentags'
-
-" Syntax c/c++ highlight
-"Plug 'jeaye/color_coded'
-
-" nerdtree alternative
-"Plug 'ipod825/vim-netranger'
-
 " Vim polyglot
 Plug 'sheerun/vim-polyglot'
-
-" Onedark
-Plug 'joshdick/onedark.vim'
 
 " fzf
 Plug 'junegunn/fzf.vim'
 
-" Doxygen
-Plug 'vim-scripts/DoxygenToolkit.vim'
+" Ale
+Plug 'dense-analysis/ale'
 
-" Palenight
-Plug 'drewtempelmeyer/palenight.vim'
+" Deoplete
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+" Avy
+Plug 'easymotion/vim-easymotion'
+
 
 call plug#end()
