@@ -6,11 +6,14 @@ call plug#begin('~/.vim/plugged')
 " Elegant status line
 Plug 'itchyny/lightline.vim'
 
-" Elegant buftab line
-Plug 'ap/vim-buftabline'
-
 " Rainbow parenthesis
 Plug 'luochen1990/rainbow'
+
+
+" ########## Colorschemes ##########
+
+" Ayu 
+Plug 'ayu-theme/ayu-vim' " or other package manager
 
 " Palenight
 Plug 'drewtempelmeyer/palenight.vim'
@@ -18,10 +21,23 @@ Plug 'drewtempelmeyer/palenight.vim'
 " Onedark
 Plug 'joshdick/onedark.vim'
 
+"" Material
+"Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+
+" Seoul256
+Plug 'junegunn/seoul256.vim'
+
+" Nord
+Plug 'arcticicestudio/nord-vim'
+
+" Dracula
+Plug 'dracula/vim', { 'as': 'dracula' }
+
+
 " ########## C/C++ ##########
 
-" Ctags
-Plug 'ludovicchabant/vim-gutentags'
+"" Ctags
+"Plug 'ludovicchabant/vim-gutentags'
 
 " Clang
 Plug 'rhysd/vim-clang-format'
@@ -59,6 +75,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'sheerun/vim-polyglot'
 
 " fzf
+Plug 'junegunn/fzf', { 'dir': '~/.fzf' }
 Plug 'junegunn/fzf.vim'
 
 " Ale
@@ -69,6 +86,10 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Avy
 Plug 'easymotion/vim-easymotion'
+
+" Neosnippet
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 
 
 call plug#end()

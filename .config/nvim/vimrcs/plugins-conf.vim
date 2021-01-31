@@ -7,14 +7,30 @@ let g:NERDTreeDirArrowCollapsible="~"
 map <leader>mru :MRU<CR>
 
 " Lightline --------------------------------------------------------------------
+let i = 1
+while i <= 9
+    execute 'nmap <Leader>' . i . ' :' . i . 'wincmd w<CR>'
+    let i = i + 1
+endwhile
+
+function! WindowNumber()
+    let str=tabpagewinnr(tabpagenr())
+    return str
+endfunction
+
 let g:lightline = {
-    \ 'colorscheme': 'palenight',
+    \ 'colorscheme': 'dracula',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
+      \   'left': [ [ 'winnumber', 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
       \ },
+      \ 'inactive': {
+      \   'left': [ [ 'winnumber'], [ 'filename' ]
+      \              ]
+      \ },
       \ 'component_function': {
-      \   'gitbranch': 'fugitive#head'
+      \   'gitbranch': 'fugitive#head',
+      \   'winnumber': 'WindowNumber'
       \ },
       \ }
 
@@ -54,7 +70,7 @@ map <Leader>C :ClangFormatAutoToggle<CR>
 " rainbow ------------------------------------------------------------------------
 
 let g:rainbow_conf = {
-	\	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+    \	'guifgs': ['royalblue1', 'darkorange1', 'seagreen3', 'lightcyan3'],
 	\	'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
 	\	'operators': '_,_',
 	\	'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
@@ -78,7 +94,15 @@ let g:rainbow_conf = {
 let g:rainbow_active = 1
 
 " fzf ------------------------------------------------------------------------
-map <C-p> :Files<cr>
+
+" Search for files in current directory
+map <leader>pf :Files<cr>
+
+" Search for files by line in current directory
+map <leader>ps :Ag<cr>
+
+" Search for buffer
+map <leader>bf :Buffers<cr>
 
 
 " doxygen ------------------------------------------------------------------------
@@ -97,8 +121,10 @@ let g:go_highlight_methods = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_types = 1
-let g:go_auto_sameids = 1
 let g:go_fmt_command = "goimports"
+let g:go_fmt_options = {
+    \ 'golines': '-m 100 --base-formater goimports',
+    \ }
 let g:go_auto_type_info = 1
 let g:go_doc_keywordprg_enabled = 0
 
@@ -132,3 +158,38 @@ nmap <Leader>s <Plug>(easymotion-overwin-f2)
 " Move to line
 map <Leader>l <Plug>(easymotion-bd-jk)
 nmap <Leader>l <Plug>(easymotion-overwin-line)
+
+" Ayu -----------------------------------------
+"let ayucolor="light"  " for light version of theme
+let ayucolor="dark" " for mirage version of theme
+"let ayucolor="dark"   " for dark version of theme
+
+" Material -----------------------------------------
+"let g:material_terminal_italics = 1
+"let g:material_theme_style = 'palenight-community'
+
+colorscheme dracula
+
+"highlight MatchParen gui=underline guibg=none guifg=NONE
+
+" neosnippet
+
+" Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
