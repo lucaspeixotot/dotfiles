@@ -22,7 +22,7 @@ let g:lightline = {
     \ 'colorscheme': 'dracula',
       \ 'active': {
       \   'left': [ [ 'winnumber', 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
       \ },
       \ 'inactive': {
       \   'left': [ [ 'winnumber'], [ 'filename' ]
@@ -33,6 +33,28 @@ let g:lightline = {
       \   'winnumber': 'WindowNumber'
       \ },
       \ }
+
+let g:lightline.component_expand = {
+      \  'linter_checking': 'lightline#ale#checking',
+      \  'linter_infos': 'lightline#ale#infos',
+      \  'linter_warnings': 'lightline#ale#warnings',
+      \  'linter_errors': 'lightline#ale#errors',
+      \  'linter_ok': 'lightline#ale#ok',
+      \ }
+
+let g:lightline.component_type = {
+      \     'linter_checking': 'right',
+      \     'linter_infos': 'right',
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \     'linter_ok': 'right',
+      \ }
+
+let g:lightline.active = {
+      \   'right': [ [ 'lineinfo', 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ],
+      \              [ 'percent' ],
+      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \}
 
 
 " Clang ------------------------------------------------------------------------
@@ -117,6 +139,8 @@ let g:go_highlight_build_constraints = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
+let g:go_highlight_function_parameters = 1
+let g:go_highlight_variable_assignments = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_structs = 1
@@ -134,6 +158,7 @@ let g:go_doc_keywordprg_enabled = 0
 let g:ale_sign_error = '*'
 let g:ale_sign_warning = '!'
 let g:ale_completion_enabled = 0
+let g:ale_close_preview_on_insert=1
 
 
 " Deoplete-go -----------------------------------------

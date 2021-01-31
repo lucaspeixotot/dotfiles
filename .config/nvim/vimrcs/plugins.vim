@@ -80,6 +80,7 @@ Plug 'junegunn/fzf.vim'
 
 " Ale
 Plug 'dense-analysis/ale'
+Plug 'maximbaz/lightline-ale'
 
 " Deoplete
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
