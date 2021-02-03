@@ -1,15 +1,15 @@
 " Nerd tree configuration ------------------------------------------------------
-map <leader>nd :NERDTreeToggle<CR>
+noremap <leader>nd :NERDTreeToggle<CR>
 let g:NERDTreeDirArrowExpandable="+"
 let g:NERDTreeDirArrowCollapsible="~"
 
 " MRU configuration ------------------------------------------------------------
-map <leader>mru :MRU<CR>
+noremap <leader>mru :MRU<CR>
 
 " Lightline --------------------------------------------------------------------
 let i = 1
 while i <= 9
-    execute 'nmap <Leader>' . i . ' :' . i . 'wincmd w<CR>'
+    execute 'nnoremap <Leader>' . i . ' :' . i . 'wincmd w<CR>'
     let i = i + 1
 endwhile
 
@@ -86,7 +86,7 @@ let g:clang_format#style_options = {
 "autocmd FileType c,cpp,objc ClangFormatAutoEnable
 
 " Toggle auto formatting:
-map <Leader>C :ClangFormatAutoToggle<CR>
+noremap <Leader>C :ClangFormatAutoToggle<CR>
 
 
 " rainbow ------------------------------------------------------------------------
@@ -118,13 +118,30 @@ let g:rainbow_active = 1
 " fzf ------------------------------------------------------------------------
 
 " Search for files in current directory
-map <leader>pf :Files<cr>
+noremap <leader>pf :Files<cr>
 
 " Search for files by line in current directory
-map <leader>ps :Ag<cr>
+noremap <leader>ps :Ag<cr>
 
 " Search for buffer
-map <leader>bf :Buffers<cr>
+noremap <leader>bf :Buffers<cr>
+
+function! s:ag_with_opts(arg, bang)
+  let tokens  = split(a:arg)
+  let ag_opts = join(filter(copy(tokens), 'v:val =~ "^-"'))
+  let query   = join(filter(copy(tokens), 'v:val !~ "^-"'))
+  call fzf#vim#ag(query, fzf#vim#with_preview(), a:bang)
+endfunction
+
+function! s:rg_with_opts(arg, bang)
+  let tokens  = split(a:arg)
+  let ag_opts = join(filter(copy(tokens), 'v:val =~ "^-"'))
+  let query   = join(filter(copy(tokens), 'v:val !~ "^-"'))
+  call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(query), 1, fzf#vim#with_preview(), a:bang)
+endfunction
+
+command! -nargs=* -bang Ag call s:ag_with_opts(<q-args>, <bang>0)
+"command! -bang -nargs=* Rg call s:rg_with_opts(<q-args>, <bang>0)
 
 
 " doxygen ------------------------------------------------------------------------
@@ -151,17 +168,18 @@ let g:go_fmt_options = {
     \ }
 let g:go_auto_type_info = 1
 let g:go_doc_keywordprg_enabled = 0
+let g:go_addtags_transform = 'snakecase'
 
 
 
-" Ale --------------------------------------------------
+" Ale ------------------------------------------------------------------
 let g:ale_sign_error = '*'
 let g:ale_sign_warning = '!'
 let g:ale_completion_enabled = 0
 let g:ale_close_preview_on_insert=1
 
 
-" Deoplete-go -----------------------------------------
+" Deoplete-go ----------------------------------------------------------
 
 " Enable deoplete on startup
 let g:deoplete#enable_at_startup = 1
@@ -169,11 +187,11 @@ let g:deoplete#enable_at_startup = 1
 call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 
 " deoplete
-imap <expr> <tab>   pumvisible() ? "\<c-n>" : "\<tab>"
-imap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
-imap <expr> <cr>    pumvisible() ? deoplete#close_popup() : "\<cr>"
+inoremap <expr> <tab>   pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
+inoremap <expr> <cr>    pumvisible() ? deoplete#close_popup() : "\<cr>"
 
-" easymotion
+" Easymotion -----------------------------------------------------------
 map  <Leader>f <Plug>(easymotion-bd-f)
 nmap <Leader>f <Plug>(easymotion-overwin-f)
 
@@ -181,10 +199,10 @@ nmap <Leader>f <Plug>(easymotion-overwin-f)
 nmap <Leader>s <Plug>(easymotion-overwin-f2)
 
 " Move to line
-map <Leader>l <Plug>(easymotion-bd-jk)
+nmap <Leader>l <Plug>(easymotion-bd-jk)
 nmap <Leader>l <Plug>(easymotion-overwin-line)
 
-" Ayu -----------------------------------------
+" Ayu ------------------------------------------------------------------
 "let ayucolor="light"  " for light version of theme
 let ayucolor="dark" " for mirage version of theme
 "let ayucolor="dark"   " for dark version of theme
@@ -195,9 +213,7 @@ let ayucolor="dark" " for mirage version of theme
 
 colorscheme dracula
 
-"highlight MatchParen gui=underline guibg=none guifg=NONE
-
-" neosnippet
+" neosnippet -----------------------------------------------------------
 
 " Plugin key-mappings.
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.

@@ -60,20 +60,24 @@ set autoread
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-let mapleader = ","
+let mapleader = "\<Space>"
 
 " Fast saving
-nmap <leader>w :w!<cr>
+nnoremap <leader>w :w!<cr>
 
 " Fast quit
-map <leader>q :q<cr>
+noremap <leader>q :q<cr>
 
 " Fast savind and quit
-map <leader>zz :wq!<cr>
+noremap <leader>zz :wq!<cr>
 
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null
+
+" Add emacs C-a and C-e behavior in insert mode
+inoremap <C-e> <C-o>$
+inoremap <C-a> <C-o>^
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -234,41 +238,36 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-nmap <space> /
-nmap <c-space> ?
-nmap <Leader><space> :/\<<C-r><C-w>\><CR>
-
 " Disable highlight when <leader><cr> is pressed
-nmap <silent> <leader><cr> :noh<cr>
+nnoremap <silent> <leader><cr> :noh<cr>
 
 " Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+noremap <C-j> <C-W>j
+noremap <C-k> <C-W>k
+noremap <C-h> <C-W>h
+noremap <C-l> <C-W>l
 
 " Make adjusting split sizes a bit more easily
-nmap <silent> <C-Left> :vertical resize +3<cr>
-nmap <silent> <C-Right> :vertical resize -3<cr>
-nmap <silent> <C-Up> :resize +3<cr>
-nmap <silent> <C-Down> :resize -3<cr>
+nnoremap <silent> <C-Left> :vertical resize +3<cr>
+nnoremap <silent> <C-Right> :vertical resize -3<cr>
+nnoremap <silent> <C-Up> :resize +3<cr>
+nnoremap <silent> <C-Down> :resize -3<cr>
 
 " Close the current buffer
-map <leader>bd :Bclose<cr>:tabclose<cr>gT
+noremap <leader>bd :Bclose<cr>:tabclose<cr>gT
 
 " Close all the buffers
-map <leader>ba :bufdo bd<cr>
+noremap <leader>ba :bufdo bd<cr>
 
 " Go to next buffer
-map <leader>bl :bnext<cr>
+noremap <leader>bh :bnext<cr>
 
 " Go to previous buffer
-map <leader>bh :bprevious<cr>
+noremap <leader>bl :bprevious<cr>
 
 
 " Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
+noremap <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Specify the behavior when switching between buffers 
 try
@@ -280,6 +279,22 @@ endtry
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+""""""""""""""""""""""""""""""
+" => Replace
+""""""""""""""""""""""""""""""
+nnoremap <leader>rc :%s///gc<Left><Left><Left>
+nnoremap <leader>rg :%s///g<Left><Left>
+xnoremap <leader>rc :%s///gc<Left><Left><Left>
+xnoremap <leader>rg :%s///g<Left><Left>
+
+nnoremap <silent> s* :let @/='\<'.expand('<cword>').'\>'<cr>cgn
+xnoremap <silent> s* "sy:let @/=@s<cr>cfg
+
+nnoremap <leader>R
+    \ :let @s='\<'.expand('<cword>').'\>'<cr>
+    \ :Grepper -cword -noprompt<cr>
+    \ :cfdo %s/<C-r>s// \| update
+    \ <Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
 """"""""""""""""""""""""""""""
 " => Status line
@@ -304,16 +319,16 @@ tnoremap fd <C-\><C-n>
 map 0 ^
 
 " Move a line of text using ALT+[jk] or Command+[jk] on mac
-nmap <M-j> mz:m+<cr>`z
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+nnoremap <M-j> mz:m+<cr>`z
+nnoremap <M-k> mz:m-2<cr>`z
+vnoremap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vnoremap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 if has("mac") || has("macunix")
-  nmap <D-j> <M-j>
-  nmap <D-k> <M-k>
-  vmap <D-j> <M-j>
-  vmap <D-k> <M-k>
+  nnoremap <D-j> <M-j>
+  nnoremap <D-k> <M-k>
+  vnoremap <D-j> <M-j>
+  vnoremap <D-k> <M-k>
 endif
 
 " Delete trailing white space on save, useful for some filetypes ;)
@@ -329,10 +344,6 @@ if has("autocmd")
     autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
 endif
 
-"inoremap ( ()<Esc>:let leavechar=")"<CR>i
-"inoremap [ []<Esc>:let leavechar="]"<CR>i
-"inoremap { {}<Esc>:let leavechar="}"<CR>i
-"imap <C-j> <Esc>:exec "normal f" . leavechar<CR>a
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
