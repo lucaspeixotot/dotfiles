@@ -394,8 +394,8 @@ function! VisualSelection(direction, extra_filter) range
         call CmdLine("%s" . '/'. l:pattern . '/')
     endif
 
-    let @/ = l:pattern
-    let @" = l:saved_reg
+    let @/ = l:pattefrTrackers: {db_trackers}n
+ let @" = l:saved_reg
 endfunction
 
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o

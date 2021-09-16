@@ -6,6 +6,12 @@ let g:NERDTreeDirArrowCollapsible="~"
 " MRU configuration ------------------------------------------------------------
 noremap <leader>mru :MRU<CR>
 
+" Fugitive ---------------------------------------------------------------------
+" Fugitive Conflict Resolution
+nnoremap <leader>gd :Gvdiff<CR>
+nnoremap gdh :diffget //2<CR>
+nnoremap gdl :diffget //3<CR>
+
 " Lightline --------------------------------------------------------------------
 let i = 1
 while i <= 9
@@ -181,19 +187,19 @@ let g:ale_close_preview_on_insert=1
 
 " Deoplete-go ----------------------------------------------------------
 
-" Enable deoplete on startup
-let g:deoplete#enable_at_startup = 1
+"" Enable deoplete on startup
+"let g:deoplete#enable_at_startup = 1
 
-call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
+"call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 
-" deoplete
-inoremap <expr> <tab>   pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
-inoremap <expr> <cr>    pumvisible() ? deoplete#close_popup() : "\<cr>"
+"" deoplete
+"inoremap <expr> <tab>   pumvisible() ? "\<c-n>" : "\<tab>"
+"inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
+"inoremap <expr> <cr>    pumvisible() ? deoplete#close_popup() : "\<cr>"
 
 " Easymotion -----------------------------------------------------------
-map  <Leader>f <Plug>(easymotion-bd-f)
-nmap <Leader>f <Plug>(easymotion-overwin-f)
+"map  <Leader>f <Plug>(easymotion-bd-f)
+"nmap <Leader>f <Plug>(easymotion-overwin-f)
 
 " s{char}{char} to move to {char}{char}
 nmap <Leader>s <Plug>(easymotion-overwin-f2)
@@ -234,3 +240,32 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
+
+" Coc ------------------------------------------------------------------
+
+" Code action on <leader>a
+vmap <leader>a <Plug>(coc-codeaction-selected)<CR>
+nmap <leader>a <Plug>(coc-codeaction-selected)<CR>
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Format action on <leader>f
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+" Goto definition
+nmap <silent> gd <Plug>(coc-definition)
+" Open definition in a split window
+nmap <silent> gv :vsp<CR><Plug>(coc-definition)<C-W>L
+" GoTo code navigation.
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+autocmd FileType python let b:coc_root_patterns = ['.git', '.env', 'venv', '.venv', 'setup.cfg', 'setup.py', 'pyproject.toml', 'pyrightconfig.json']
+
+

@@ -1,5 +1,7 @@
 #!/bin/bash sh
 
+BASEDIR=..
+
 # Update I3
 cp ~/.config/i3 $BASEDIR/.config/ -r
 if [ $? -eq 0 ]
@@ -32,7 +34,7 @@ then
     echo "Compton was updated successfully!"
 fi
 
-cp ~/.config/nvim $BASEDIR/.config/
+cp ~/.config/nvim $BASEDIR/.config/ -r
 if [ $? -eq 0 ]
 then
     echo "Neovim was updated successfully!"
