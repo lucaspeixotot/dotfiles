@@ -78,10 +78,6 @@ Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf' }
 Plug 'junegunn/fzf.vim'
 
-" Ale
-Plug 'dense-analysis/ale'
-Plug 'maximbaz/lightline-ale'
-
 "" Deoplete
 "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
@@ -95,5 +91,12 @@ Plug 'easymotion/vim-easymotion'
 " Neosnippet
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+
+Plug 'josa42/vim-lightline-coc'
+
+"Plug 'neovim/nvim-lspconfig'
+"Plug 'hrsh7th/nvim-compe'
 
 call plug#end()

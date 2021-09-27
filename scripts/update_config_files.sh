@@ -40,4 +40,10 @@ then
     echo "Neovim was updated successfully!"
 fi
 
+cp ~/.config/coc $BASEDIR/.config/ -r
+if [ $? -eq 0 ]
+then
+    echo "Coc was updated successfully!"
+fi
+
 echo "The files were updated succesfully."

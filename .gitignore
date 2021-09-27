@@ -1,3 +1,4 @@
 .config/ranger/bookmarks
 .vim/plugged/
 tags
+node_modules

@@ -7,10 +7,6 @@ let g:NERDTreeDirArrowCollapsible="~"
 noremap <leader>mru :MRU<CR>
 
 " Fugitive ---------------------------------------------------------------------
-" Fugitive Conflict Resolution
-nnoremap <leader>gd :Gvdiff<CR>
-nnoremap gdh :diffget //2<CR>
-nnoremap gdl :diffget //3<CR>
 
 " Lightline --------------------------------------------------------------------
 let i = 1
@@ -24,11 +20,18 @@ function! WindowNumber()
     return str
 endfunction
 
+function! CocCurrentFunction()
+    return get(b:, 'coc_current_function', '')
+endfunction
+
 let g:lightline = {
     \ 'colorscheme': 'dracula',
       \ 'active': {
-      \   'left': [ [ 'winnumber', 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+      \   'left': [ [ 'winnumber', 'mode', 'coc_info', 'coc_hints', 'coc_errors', 'coc_warnings', 'coc_ok', 'paste' ],
+      \             [ 'cocstatus', 'currentfunction', 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+      \   'right': [ [ 'lineinfo', 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ],
+      \              [ 'percent' ],
+      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
       \ },
       \ 'inactive': {
       \   'left': [ [ 'winnumber'], [ 'filename' ]
@@ -36,7 +39,9 @@ let g:lightline = {
       \ },
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head',
-      \   'winnumber': 'WindowNumber'
+      \   'winnumber': 'WindowNumber',
+      \   'currentfunction': 'CocCurrentFunction',
+      \   'cocstatus': 'coc#status'
       \ },
       \ }
 
@@ -46,6 +51,8 @@ let g:lightline.component_expand = {
       \  'linter_warnings': 'lightline#ale#warnings',
       \  'linter_errors': 'lightline#ale#errors',
       \  'linter_ok': 'lightline#ale#ok',
+      \  'status': 'lightline#coc#status',
+      \  'linter_hints': 'lightline#coc#hints',
       \ }
 
 let g:lightline.component_type = {
@@ -54,13 +61,10 @@ let g:lightline.component_type = {
       \     'linter_warnings': 'warning',
       \     'linter_errors': 'error',
       \     'linter_ok': 'right',
+      \     'linter_hints': 'hints',
       \ }
 
-let g:lightline.active = {
-      \   'right': [ [ 'lineinfo', 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ],
-      \              [ 'percent' ],
-      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
-      \}
+call lightline#coc#register()
 
 
 " Clang ------------------------------------------------------------------------
@@ -268,4 +272,12 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 autocmd FileType python let b:coc_root_patterns = ['.git', '.env', 'venv', '.venv', 'setup.cfg', 'setup.py', 'pyproject.toml', 'pyrightconfig.json']
 
-
+" treesiter ------------------------------------------------------------------
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+  },
+}
+EOF
