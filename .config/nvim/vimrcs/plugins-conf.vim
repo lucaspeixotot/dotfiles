@@ -257,7 +257,8 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>pr <Plug>(coc-rename)
+nmap <leader>pe :CocList diagnostics<cr>
 
 " Format action on <leader>f
 vmap <leader>f  <Plug>(coc-format-selected)
@@ -270,6 +271,8 @@ nmap <silent> gv :vsp<CR><Plug>(coc-definition)<C-W>L
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+nmap <silent> ge :CocDiagnostics 5<cr>
+nmap <silent> go :CocList outline<cr>
 autocmd FileType python let b:coc_root_patterns = ['.git', '.env', 'venv', '.venv', 'setup.cfg', 'setup.py', 'pyproject.toml', 'pyrightconfig.json']
 
 " treesiter ------------------------------------------------------------------

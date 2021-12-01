@@ -63,7 +63,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 
 " Smart nerd tree
-Plug 'scrooloose/nerdtree'
+"Plug 'scrooloose/nerdtree'
 
 " Open last files
 Plug 'yegappan/mru'
@@ -98,5 +98,8 @@ Plug 'josa42/vim-lightline-coc'
 
 "Plug 'neovim/nvim-lspconfig'
 "Plug 'hrsh7th/nvim-compe'
+
+Plug 'preservim/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 call plug#end()

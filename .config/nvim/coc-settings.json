@@ -12,6 +12,6 @@
     "java.format.enabled": true,
     "java.import.maven.enabled": true,
     "java.maven.downloadSources": true,
-    "java.saveActions.organizeImports": true,
+    "java.saveActions.organizeImports": false,
     "sh.enable": true
 }

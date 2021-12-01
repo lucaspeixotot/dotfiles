@@ -85,6 +85,11 @@ inoremap <C-a> <C-o>^
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
+set cursorline
+hi cursorline cterm=none term=none
+autocmd WinEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
+highlight CursorLine guibg=#303000 ctermbg=234
 
 " Avoid garbled characters in Chinese language windows OS
 let $LANG='en' 
@@ -381,6 +386,29 @@ function! CmdLine(str)
     call feedkeys(":" . a:str)
 endfunction 
 
+set updatetime=300
+set shortmess+=c
+
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+
 function! VisualSelection(direction, extra_filter) range
     let l:saved_reg = @"
     execute "normal! vgvy"
@@ -399,3 +427,4 @@ function! VisualSelection(direction, extra_filter) range
 endfunction
 
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+

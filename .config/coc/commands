@@ -1,0 +1,7 @@
+java.updateLanguageServer
+java.open.serverLog
+workspace.showOutput
+java.clean.workspace
+java.projectConfiguration.update
+workspace.renameCurrentFile
+pyright.version
