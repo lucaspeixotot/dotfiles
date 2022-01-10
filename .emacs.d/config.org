@@ -6,14 +6,20 @@
    #+END_SRC
 ** Minimal UI
    #+BEGIN_SRC emacs-lisp
-   (scroll-bar-mode -1)
-   (tool-bar-mode   -1)
-   (tooltip-mode    -1)
-   (menu-bar-mode   -1)
+     (scroll-bar-mode -1)
+     (tool-bar-mode   -1)
+     (tooltip-mode    -1)
+     (menu-bar-mode   -1)
+     (set-fringe-mode 10)        ; Give some breathing room
    #+END_SRC
 ** Fix undo tree bug
    #+BEGIN_SRC emacs-lisp
    (setq undo-tree-enable-undo-in-region nil)
+   #+END_SRC
+** Save undo tree for a file
+   #+BEGIN_SRC emacs-lisp
+     (setq undo-tree-auto-save-history t)
+     (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo-tree")))
    #+END_SRC
 ** Yes and no alias
    #+BEGIN_SRC emacs-lisp
@@ -21,8 +27,6 @@
    #+END_SRC
 ** Open/load config file
    #+BEGIN_SRC emacs-lisp
-
-
      (setq EMACS_DIR "~/.emacs.d/")
      (setq CONFIG_FILE "config.org")
      (setq INIT_FILE "init.el")
@@ -36,20 +40,20 @@
        (interactive)
        (load-file (concat EMACS_DIR INIT_FILE)))
 
-     (global-set-key (kbd "C-c cfg") 'find-config)
-     (global-set-key (kbd "C-c rcfg") 'reload-config)
+     ;; (global-set-key (kbd "C-c cfg") 'find-config)
+     ;; (global-set-key (kbd "C-c rcfg") 'reload-config)
    #+END_SRC
 ** Setting font
    #+BEGIN_SRC emacs-lisp
-   (set-frame-font "Office Code Pro-10" nil t)
-   (setq popup-use-optimized-column-computation nil)
+     (set-frame-font "Source Code Pro-13" nil t)
+     (setq popup-use-optimized-column-computation nil)
    #+END_SRC
 ** Lines and columns
    #+BEGIN_SRC emacs-lisp
    (global-linum-mode 1)
    (line-number-mode 1)
    (column-number-mode 1)
-   (setq-default fill-column 72)
+   (setq-default fill-column 80)
    #+END_SRC
 ** Kill current buffer function
    #+BEGIN_SRC emacs-lisp
@@ -57,15 +61,7 @@
        (interactive)
        (kill-buffer (current-buffer)))
 
-     (global-set-key (kbd "C-x k" ) 'kill-current-buffer)
-   #+END_SRC
-** Datetime in modeline
-   #+BEGIN_SRC emacs-lisp
-     ;; (setq display-time-day-and-date t)
-     ;; (setq display-time-24hr-format t)
-     ;; (setq display-time-default-load-average nil) 
-     ;; (setq display-time-format "%a %H:%M - %d %b %Y")
-     ;; (display-time-mode t)
+     ;; (global-set-key (kbd "C-x k" ) 'kill-current-buffer)
    #+END_SRC
 ** Save the last location in open file
    #+BEGIN_SRC emacs-lisp
@@ -75,7 +71,6 @@
    #+BEGIN_SRC emacs-lisp
   (setq auto-revert-check-vc-info t) 
    #+END_SRC
-** Identation
 ** Parentheses
    #+BEGIN_SRC emacs-lisp
    (show-paren-mode 1)
@@ -87,7 +82,7 @@
 	(interactive (list my-term-shell)))
       (ad-activate 'ansi-term)
 
-      (global-set-key (kbd "C-c t") 'shell)
+      ;; (global-set-key (kbd "C-c t") 'shell)
    #+END_SRC
 ** Smoth scroll
    #+BEGIN_SRC emacs-lisp
@@ -97,64 +92,14 @@
    #+BEGIN_SRC emacs-lisp
      (global-hl-line-mode t)
    #+END_SRC
-** Window splitting
-   #+BEGIN_SRC emacs-lisp
-     (defun split-and-follow-horizontally ()
-       (interactive)
-       (split-window-below)
-       (balance-windows)
-       (other-window 1)
-       )
-
-     (defun split-and-follow-vertically ()
-       (interactive)
-       (split-window-right)
-       (balance-windows)
-       (other-window 1)
-       )
-
-     (global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
-     (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
-   #+END_SRC
 ** Detect subword
    #+BEGIN_SRC emacs-lisp
      (global-subword-mode 1)
-   #+END_SRC
-** Kill whole word
-   #+BEGIN_SRC emacs-lisp
-     (defun kill-whole-word ()
-       (interactive)
-       (kill-word 1)
-       )
-
-     (global-set-key (kbd "C-c m k") 'kill-whole-word)
-   #+END_SRC
-** Copy whole line
-   #+BEGIN_SRC emacs-lisp
-     (defun copy-whole-line ()
-       (interactive)
-       (save-excursion
-	 (kill-new
-	  (buffer-substring
-	   (point-at-bol)
-	   (point-at-eol))))
-       )
-
-     (global-set-key (kbd "C-c m l") 'copy-whole-line)
    #+END_SRC
 ** Indentation
    #+BEGIN_SRC emacs-lisp
      (setq-default indent-tabs-mode nil)
      (setq c-basic-offset 4)
-   #+END_SRC
-** Kill all buffers
-   #+BEGIN_SRC emacs-lisp
-     (defun kill-all-buffers ()
-       (interactive)
-       (mapc 'kill-buffer (buffer-list))
-       )
-
-     (global-set-key (kbd "C-M-S-k") 'kill-all-buffers)
    #+END_SRC
 ** Backup files
    #+BEGIN_SRC emacs-lisp
@@ -162,14 +107,9 @@
      (setq auto-save-default nil) ; stop creating #autosave# files
      (setq create-lockfiles nil)
    #+END_SRC
-** Flyspell
-   #+BEGIN_SRC emacs-lisp
-   (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-   (global-set-key (kbd "C-M-9") 'flyspell-check-previous-highlighted-word)
-   #+END_SRC
 ** Setting PATH env
    #+BEGIN_SRC emacs-lisp
-     (let ((path (shell-command-to-string ". ~/.bashrc; echo -n $PATH")))
+     (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
        (setenv "PATH" path)
        (setq exec-path 
              (append
@@ -182,62 +122,11 @@
        )
      )
    #+END_SRC
-** Latex basic config
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'tex-mode-hook 'auto-fill-mode)
-   #+END_SRC
 ** Bookmarks
 #+BEGIN_SRC emacs-lisp
   (setq bookmark-default-file "~/.emacs.d/my-bookmarks")
   (setq bookmark-save-flag 1)
 #+END_SRC
-** Jump to char like f/F vim but better
-   #+BEGIN_SRC emacs-lisp
-     (defvar jump-to-last-char nil)
-     (defvar jump-to-last-count nil)
-
-     (defun jump-to-char-repate-forward ()
-       "Repate the last jump-to-char forward"
-       (interactive)
-       (forward-char)
-       (jump-to-char-fun jump-to-last-char (abs jump-to-last-count)))
-
-     (defun jump-to-char-repate-backwards ()
-       "Repate the last jump-to-char backward"
-       (interactive)
-       (jump-to-char-fun jump-to-last-char (- (abs jump-to-last-count))))
-
-     (defun jump-to-char-fun (char count)
-       "Jump to char function"
-       (if (search-forward (string char) nil t count)
-           (when (> count 0)
-             (backward-char))
-         (message "Search Failed: %s" (char-to-string char)))
-       (setq jump-to-last-char char)
-       (setq jump-to-last-count count) 
-       (unless defining-kbd-macro 
-         (set-temporary-overlay-map
-          (let ((map (make-sparse-keymap)))
-            (define-key map (kbd ";") 'jump-to-char-repate-forward)
-            (define-key map (kbd ",") 'jump-to-char-repate-backwards)
-            map))))
-
-     (defun jump-to-char (arg)
-       "Jump to char"
-       (interactive "p")
-       (message nil)
-       (let ((char (read-char "jump-to-char: ")))
-         (jump-to-char-fun char arg)))
-
-     (defun jump-to-char-backward (arg)
-       "Jump to char backwards"
-       (interactive "p")
-       (jump-to-char (- arg)))
-
-
-     (global-set-key (kbd "C-c f") 'jump-to-char)
-     (global-set-key (kbd "C-c F" ) 'jump-to-char-backward)
-   #+END_SRC
 ** Highlight FIXME, TODO and BUG in prog mode
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook
@@ -245,102 +134,202 @@
                   (font-lock-add-keywords nil
                    '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))
 #+END_SRC
+** Disable line numbers for some nodes
+  #+BEGIN_SRC emacs-lisp
+    ;; Disable line numbers for some modes
+    (dolist (mode '(org-mode-hook
+                    term-mode-hook
+                    shell-mode-hook
+                    eshell-mode-hook))
+      (add-hook mode (lambda () (display-line-numbers-mode 0))))
+  #+END_SRC
 * Packages config
-** Setting use-package and repositories
+** Org
    #+BEGIN_SRC emacs-lisp
-     (require 'package)
-     (setq package-enable-at-startup nil)
-     (package-initialize)
-     (setq package-archives '(("org"   . "http://orgmode.org/elpa/")
-                              ("gnu"   . "http://elpa.gnu.org/packages/")
-                              ("melpa" . "https://melpa.org/packages/")
-                              ("melpa-stable" . "http://stable.melpa.org/packages/")))
-     ;; (package-refresh-contents)
-
-
-     ;; Bootstrap `use-package`
-     (unless (package-installed-p 'use-package)
-       (package-refresh-contents)
-       (package-install 'use-package))
-     (require 'use-package)
-
+   (use-package org)
    #+END_SRC
-** Custom packages
+** Evil
    #+BEGIN_SRC emacs-lisp
-   (add-to-list 'load-path (expand-file-name "custom_packages" user-emacs-directory))
-   (load "emacs-surround.el")
-   (load "xcscope.el")
-   (load "htmlize.el")
-   (require 'doxymacs)
-   (require 'dockerfile-mode)
-   (require 'py-yapf)
-   (add-hook 'python-mode-hook 'py-yapf-enable-on-save)
-   (global-set-key (kbd "C-x cs") 'cscope-find-functions-calling-this-function) 
+     (use-package evil-leader
+       :init
+       (setq evil-want-C-u-scroll t)
+       (setq evil-want-keybinding nil)
+       (global-evil-leader-mode))
+     (use-package evil
+       :init
+       (setq evil-want-integration nil) ;; required by evil-collection
+       (setq evil-search-module 'isearch)
+       (setq evil-ex-complete-emacs-commands nil)
+       (setq evil-vsplit-window-right t) ;; like vim's 'splitright'
+       (setq evil-split-window-below t) ;; like vim's 'splitbelow'
+       (setq evil-shift-round nil)
+       (setq evil-want-C-u-scroll t)
+       :config
+       (evil-mode)
+       )
+
+     ;; vim-like keybindings everywhere in emacs
+     (use-package evil-collection
+       :after evil
+       :config
+       (evil-collection-init))
+
+     (use-package evil-commentary)
+   #+END_SRC
+** Selectrum
+   #+BEGIN_SRC emacs-lisp
+   (use-package selectrum
+   :config
+   (selectrum-mode +1))
+   #+END_SRC
+** Consult 
+   #+BEGIN_SRC emacs-lisp
+     (use-package consult
+       :hook (completion-list-mode . consult-preview-at-point-mode)
+       :init
+       ;; Optionally configure the register formatting. This improves the register
+       ;; preview for `consult-register', `consult-register-load',
+       ;; `consult-register-store' and the Emacs built-ins.
+       (setq register-preview-delay 0
+             register-preview-function #'consult-register-format)
+
+       ;; Optionally tweak the register preview window.
+       ;; This adds thin lines, sorting and hides the mode line of the window.
+       (advice-add #'register-preview :override #'consult-register-window)
+
+       ;; Optionally replace `completing-read-multiple' with an enhanced version.
+       (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
+
+       ;; Use Consult to select xref locations with preview
+       (setq xref-show-xrefs-function #'consult-xref
+             xref-show-definitions-function #'consult-xref)
+       :config
+       ;; Optionally configure preview. The default value
+       ;; is 'any, such that any key triggers the preview.
+       ;; (setq consult-preview-key 'any)
+       ;; (setq consult-preview-key (kbd "M-."))
+       ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
+       ;; For some commands and buffer sources it is useful to configure the
+       ;; :preview-key on a per-command basis using the `consult-customize' macro.
+       (consult-customize
+        consult-theme
+        :preview-key '(:debounce 0.2 any)
+        consult-ripgrep consult-git-grep consult-grep
+        consult-bookmark consult-recent-file consult-xref
+        consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
+        :preview-key (kbd "M-."))
+
+       ;; Optionally configure the narrowing key.
+       ;; Both < and C-+ work reasonably well.
+       (setq consult-narrow-key "<") ;; (kbd "C-+")
+
+       ;; Optionally make narrowing help available in the minibuffer.
+       ;; You may want to use `embark-prefix-help-command' or which-key instead.
+       ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+
+       ;; Optionally configure a function which returns the project root directory.
+       ;; There are multiple reasonable alternatives to chose from.
+       ;;;; 1. project.el (project-roots)
+       ;;(setq consult-project-root-function
+       ;;      (lambda ()
+       ;;        (when-let (project (project-current))
+       ;;          (car (project-roots project)))))
+       ;;;; 2. projectile.el (projectile-project-root)
+       (autoload 'projectile-project-root "projectile")
+       (setq consult-project-root-function #'projectile-project-root)
+       ;;;; 3. vc.el (vc-root-dir)
+       ;; (setq consult-project-root-function #'vc-root-dir)
+       ;;;; 4. locate-dominating-file
+       ;; (setq consult-project-root-function (lambda () (locate-dominating-file "." ".git")))  
+       )
+   #+END_SRC
+** Marginalia
+   #+BEGIN_SRC emacs-lisp
+     (use-package marginalia
+       ;; The :init configuration is always executed (Not lazy!)
+       :init
+
+       ;; Must be in the :init section of use-package such that the mode gets
+       ;; enabled right away. Note that this forces loading the package.
+       (marginalia-mode))
+   #+END_SRC
+** Embark
+   #+BEGIN_SRC emacs-lisp
+     (use-package embark
+       :bind
+       ;; (("C-." . embark-act)         ;; pick some comfortable binding
+       ;;  ("C-;" . embark-dwim)        ;; good alternative: M-.
+       ;;  ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+       :init
+       ;; Optionally replace the key help with a completing-read interface
+       (setq prefix-help-command #'embark-prefix-help-command)
+       :config
+       ;; Hide the mode line of the Embark live/completions buffers
+       (add-to-list 'display-buffer-alist
+                    '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                      nil
+                      (window-parameters (mode-line-format . none)))))
+
+     ;; Consult users will also want the embark-consult package.
+     (use-package embark-consult
+       :after (embark consult)
+       :demand t ; only necessary if you have the hook below
+       ;; if you want to have consult previews as you move around an
+       ;; auto-updating embark collect buffer
+       :hook
+       (embark-collect-mode . consult-preview-at-point-mode))
+   #+END_SRC
+** Prescient
+  #+BEGIN_SRC emacs-lisp
+    (use-package selectrum-prescient
+      :config
+      (setq selectrum-prescient-enable-filtering nil)
+      (selectrum-prescient-mode +1)
+      (prescient-persist-mode +1)
+      )
+  #+END_SRC
+** Ordeless
+   #+BEGIN_SRC emacs-lisp
+     (use-package orderless
+       :custom (completion-styles '(orderless))
+       :config
+       ;; Persist history over Emacs restarts
+       (savehist-mode)
+
+       ;; Optional performance optimization
+       ;; by highlighting only the visible candidates.
+       (setq orderless-skip-highlighting (lambda () selectrum-is-active))
+       (setq selectrum-highlight-candidates-function #'orderless-highlight-matches) 
+       )
    #+END_SRC
 ** All the icons
    #+BEGIN_SRC emacs-lisp
-     (use-package all-the-icons
-       :ensure t
-       )
+     (use-package all-the-icons)
    #+END_SRC
 ** Which keybindind
    #+BEGIN_SRC emacs-lisp
      (use-package which-key
-       :ensure t
        :init
        (setq which-key-separator " ")
        (setq which-key-prefix-prefix "+")
        :config
        (which-key-mode))
    #+END_SRC
-** Hydra
-   #+BEGIN_SRC emacs-lisp
-     (use-package hydra
-       :ensure t
-       :preface
-       (defvar-local me/ongoing-hydra-body nil)
-       (defun me/ongoing-hydra ()
-	 (interactive)
-	 (if me/ongoing-hydra-body
-	     (funcall me/ongoing-hydra-body)
-	   (user-error "me/ongoing-hydra: me/ongoing-hydra-body is not set")))
-       :bind
-       (("C-c a" . hydra-avy/body)
-       ("C-c v" . hydra-vi/body)
-       ("C-c b" . hydra-buf/body)
-       )
-       :custom
-       (hydra-default-hint nil))
-   #+END_SRC
-*** Hydra-vi
-    #+BEGIN_SRC emacs-lisp
-      (defhydra hydra-vi (:post (progn
-				  (message
-				   "Thank you, come again.")))
-	"vi"
-	("l" forward-char)
-	("h" backward-char)
-	("j" next-line)
-	("k" previous-line)
-	("q" nil "quit"))
-    #+END_SRC
 ** Themes and appearence
 *** Modeline
     #+BEGIN_SRC emacs-lisp
       (use-package doom-modeline
-            :ensure t
             :hook (after-init . doom-modeline-mode)
             :config
             (setq doom-modeline-buffer-file-name-style 'relative-to-project)
             (setq doom-modeline-vcs-max-length 20)
             (setq doom-modeline-github-interval (* 1 60))
-
       )
     #+END_SRC
 *** Doom themes
    #+BEGIN_SRC emacs-lisp
      (use-package doom-themes
-       :ensure t
        :config
        (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
              doom-themes-enable-italic t) ; if nil, italics is universally disabled
@@ -351,21 +340,18 @@
 *** Rainbow
     #+BEGIN_SRC emacs-lisp
       (use-package rainbow-delimiters
-	:ensure t
 	:config
 	(add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
     #+END_SRC
 *** Anzu
    #+BEGIN_SRC emacs-lisp
      (use-package anzu
-       :ensure t
        :config
        (global-anzu-mode +1))
    #+END_SRC
 *** Beacon
    #+BEGIN_SRC emacs-lisp
      (use-package beacon
-       :ensure t
        :init
        (beacon-mode 1)
        :config
@@ -374,280 +360,19 @@
        (setq beacon-blink-delay 0.1)
      )
    #+END_SRC
-*** Pretty mode
-   #+BEGIN_SRC emacs-lisp
-     ;; (use-package pretty-mode
-     ;;   :ensure t
-     ;;   :config
-     ;;   (add-hook 'c-mode-hook 'pretty-mode)
-     ;;   (add-hook 'c++-mode-hook 'pretty-mode)
-     ;;   )
-   #+END_SRC
 *** Highlight numbers
     #+BEGIN_SRC emacs-lisp
       (use-package highlight-numbers
-	:ensure t
 	:config
 	(add-hook 'prog-mode-hook 'highlight-numbers-mode))
-
     #+END_SRC
-** Org
-*** Defining org variables
-#+BEGIN_SRC emacs-lisp
-      ;; Defining variables
-      (defvar peixoto-org-dir)
-      (defvar peixoto-org-files-alist)
-      (defvar peixoto-org-refile-targets)
-      (defvar peixoto-org-agenda-files)
-      (defvar peixoto-org-capture-templates-alist)
-      (defvar peixoto-org-project-file)
-#+END_SRC
-*** Setting variables and help functions
-#+BEGIN_SRC emacs-lisp
-  (setq peixoto-org-dir "~/.config/org")
-
-  (setq peixoto-org-files-alist
-        '((work-calendar    "calendars/work.org")
-          (ekonomi          "ekonomi.org.gpg")
-          (journal          "journal.org.gpg")
-          (private          "private.org")
-          (refile           "refile.org")
-          (notes            "notes.org")))
-
-  ;; Help functions
-  (defun string-join (sl delim)
-    (mapconcat 'identity sl delim))
-  (defun peixoto-org-file (key)
-    "Return file path for org file matching KEY. KEY must be in `peixoto-org-files-alist'."
-    (cadr (assoc key peixoto-org-files-alist)))
-
-  (defun peixoto-projectile-root-last-dir ()
-    (nth
-     (- (length (split-string (projectile-project-root) "/")) 2)
-     (split-string (projectile-project-root) "/"))
-    )
-
-  (defun peixoto--org-capture-project-notes-file ()
-    (concat (projectile-project-root)
-            "."
-            (peixoto-projectile-root-last-dir)
-            "-project.org"))
-
-
-  ;; (nth (length '(split-string "~/.config/work/home")) (split-string "~/.config/work/home/" "/"))
-
-  (defun peixoto--org-remove-file-if-match (&rest regexes)
-    "Return a list of org file entries from `peixoto-org-files-alist' not matching REGEXES."
-    (let ((regex (string-join regexes "\\|")))
-      (cl-remove-if (lambda (file) (string-match regex file))
-                    (mapcar 'cadr peixoto-org-files-alist))))
-
-
-  ;; Setting custom variables
-  (setq peixoto-org-agenda-files
-        (peixoto--org-remove-file-if-match "\\.org\\.gpg"))
-
-  (setq peixoto-org-capture-templates-alist
-        `(("t" "TODO with link" entry (file ,(peixoto-org-file 'refile))
-           ,(concat "* TODO %?\n"
-                    "%U\n"
-                    "%a")
-           :clock-in t :clock-resume t :empty-lines 1)
-
-          ("T" "TODO" entry (file ,(peixoto-org-file 'refile))
-           ,(concat "* TODO %?\n"
-                    "%U")
-           :clock-in t :clock-resume t :empty-lines 1)
-
-          ("j" "Journal" entry (file+datetree ,(peixoto-org-file 'journal))
-           ,(concat "* %^{Titel}\n"
-                    "%U, %^{Location|Stockholm, Sverige}\n\n"
-                    "%?")
-           :empty-lines 1)
-
-          ("l" "Link" entry (file ,(peixoto-org-file 'refile))
-           ,(concat "* %? %^L %^G \n"
-                    "%U")
-           :prepend t)
-
-          ("L" "Browser Link" entry (file ,(peixoto-org-file 'refile))
-           ,(concat "* TODO %a\n"
-                    "%U")
-           :prepend t :immediate-finish t :empty-lines 1)
-
-          ("p" "Browser Link and Selection" entry (file ,(peixoto-org-file 'refile))
-           ,(concat "* TODO %^{Title}\n"
-                    "Source: %u, %c\n"
-                    "#+BEGIN_QUOTE\n"
-                    "%i\n"
-                    "#+END_QUOTE\n\n\n%?")
-           :prepend t :empty-lines 1)
-
-          ("d" "Project todo" entry (file+headline peixoto--org-capture-project-notes-file "Todos")
-           ,(concat "* TODO %^{Title}\n"
-                    "%U\n\n"
-                    "%?")
-           :empty-lines 1)
-
-          ("D" "Project todo with link" entry (file+headline peixoto--org-capture-project-notes-file "Todos")
-           ,(concat "* TODO %^{Title}\n"
-                    "%U\n\n"
-                    "Link: %a\n\n"
-                    "%?")
-           :empty-lines 1)
-
-          ("m" "Project note" entry (file+headline peixoto--org-capture-project-notes-file "Notes")
-           ,(concat "* %^{Title}\n"
-                    "%U\n\n"
-                    "%?")
-           :empty-lines 1)
-
-          ("n" "Project note with link" entry (file+headline peixoto--org-capture-project-notes-file "Notes")
-           ,(concat "* %^{Title}\n"
-                    "%U\n\n"
-                    "Link: %a\n\n"
-                    "%?")
-           :empty-lines 1)
-
-          ("N" "Project note with link + quote" entry (file+headline peixoto--org-capture-project-notes-file "Notes")
-           ,(concat "* %^{Title}\n"
-                    "%U\n\n"
-                    "Link: %a\n"
-                    "#+BEGIN_QUOTE\n"
-                    "%i\n"
-                    "#+END_QUOTE\n\n"
-                    "%?")
-           :empty-lines 1)))
-#+END_SRC
-*** Org agenda config
-#+BEGIN_SRC emacs-lisp
-  (require 'org-agenda)
-  (dolist (agenda-command
-           '(("z" "Two week agenda"
-              ((todo ""
-                     ((org-agenda-overriding-header "TODOs")
-                      (org-agenda-prefix-format "  ")
-                      (org-agenda-sorting-strategy '(priority-down deadline-up))
-                      (org-agenda-max-entries 20)))
-               (agenda ""
-                       ((org-agenda-start-day "0d")
-                        (org-agenda-span 14)
-                        (org-agenda-start-on-weekday nil)))))))
-    (add-to-list 'org-agenda-custom-commands agenda-command))
-
-  (setq org-agenda-files peixoto-org-agenda-files
-        org-agenda-dim-blocked-tasks nil
-        org-deadline-warning-days 7
-        org-agenda-block-separator ""
-        org-agenda-skip-scheduled-if-deadline-is-shown t
-        org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled)
-        )
-
-  (defvar peixoto--project-agenda-buffer-name "*Project Agenda*")
-
-  (defun peixoto/project-todo-list ()
-    (interactive)
-    (let ((project-notes-file (peixoto--org-capture-project-notes-file)))
-      (if (file-exists-p project-notes-file)
-          (progn
-            (setq org-agenda-files `(,project-notes-file))
-            (org-todo-list)
-            (rename-buffer peixoto--project-agenda-buffer-name 'unique))
-        (message "Could not locate any project notes file"))))
-
-  (defun peixoto/reset-org-agenda-files ()
-    (interactive)
-    (when (string-equal peixoto--project-agenda-buffer-name
-                        (buffer-name (current-buffer)))
-      (setq org-agenda-files peixoto-org-agenda-files)))
-
-  ;; Reset org-agenda-files when the project TODO list buffer is closed
-  (add-hook 'kill-buffer-hook #'peixoto/reset-org-agenda-files)
-    #+END_SRC
-*** Org basic config
-    #+BEGIN_SRC emacs-lisp
-      (use-package org
-        :bind (("C-c o c" . org-capture)
-               ("C-c o a" . org-agenda)
-               ("C-c o l" . org-store-link)
-               ("C-c o p" . peixoto/project-todo-list)
-               ("C-c o r" . peixotoreset-org-agenda-files)
-               :map org-mode-map
-               ("H-." . org-time-stamp-inactive))
-        :config
-        (add-hook 'org-mode-hook 'auto-fill-mode)
-        (setq org-default-notes-file (peixoto-org-file 'notes))
-        (setq org-directory peixoto-org-dir)
-        (setq org-latex-listings t)
-        (setq org-cycle-separator-lines 1)
-        (setq org-src-fontify-natively t)
-        (setq org-adapt-indentation nil)
-        (setq org-fontify-quote-and-verse-blocks t)
-        (setq org-fontify-done-headline t)
-        (setq org-fontify-whole-heading-line t)
-        (setq org-hide-leading-stars t)
-        (setq org-indent-indentation-per-level 2)
-        (setq org-checkbox-hierarchical-statistics nil)
-        (setq org-log-done 'time)
-        (setq org-outline-path-complete-in-steps nil)
-        (setq org-html-htmlize-output-type 'css)
-        (setq org-export-initial-scope 'subtree)
-        (setq org-catch-invisible-edits 'show-and-error)
-        (setq org-capture-templates peixoto-org-capture-templates-alist)
-        (setq org-clock-in-switch-to-state "DOING")
-        (setq org-todo-keywords
-        '((sequence "TODO(t)" "DOING(s)" "|" "DONE(d)")
-          (sequence "|" "CANCELED(c)")))
-        (setq org-todo-keyword-faces
-        '(("DOING" . "yellow")
-        ("CANCELED" . (:foreground "blue" :weight bold))))
-        )
-#+END_SRC
-*** Org bullets
-    #+BEGIN_SRC emacs-lisp
-      (use-package org-bullets
-        :ensure t
-        :hook ((org-mode) . (lambda () (org-bullets-mode 1)))
-        )
-    #+END_SRC
-** CMAKE mode
-   #+BEGIN_SRC emacs-lisp
-     (use-package cmake-font-lock
-       :ensure t
-       :config
-       (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
-       (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
-       )
-   
-   #+END_SRC
 ** Avy
    #+BEGIN_SRC emacs-lisp
      (use-package avy
-       :ensure t
        :init
        (avy-setup-default)
        (setq avy-timeout-seconds 0.5)
-       (defhydra hydra-avy (:exit t :hint nil)
-       "
-      Line^^       Region^^        Goto
-     ----------------------------------------------------------
-      [_y_] yank   [_Y_] yank      [_C_] timed char  [_c_] char
-      [_m_] move   [_M_] move      [_w_] word        [_W_] any word
-      [_k_] kill   [_K_] kill      [_l_] line        [_L_] end of line"
-       ("C" avy-goto-char-timer)
-       ("c" avy-goto-char)
-       ("w" avy-goto-word-0)
-       ("W" avy-goto-word-1)
-       ("l" avy-goto-line)
-       ("L" avy-goto-end-of-line)
-       ("m" avy-move-line)
-       ("M" avy-move-region)
-       ("k" avy-kill-whole-line)
-       ("K" avy-kill-region)
-       ("y" avy-copy-line)
-       ("Y" avy-copy-region))
        :bind
-       (("M-s" . avy-goto-char))
        )
    #+END_SRC
 ** Smartparens
@@ -665,64 +390,17 @@
          (newline-and-indent)))
 
      ;; I set mine to C-j, you do you, don't let me tell you how to live your life.
-     (global-set-key (kbd "RET") 'my-fancy-newline)
+     ;;(global-set-key (kbd "RET") 'my-fancy-newline)
 
      ;; smart parens
      (use-package smartparens
-       :ensure t
        :config
        (add-hook 'prog-mode-hook #'smartparens-mode)
        )
    #+END_SRC
-** IDO
-   #+BEGIN_SRC emacs-lisp
-     (setq ido-enable-flex-matching nil)
-     (setq ido-create-new-buffer 'always)
-     (setq ido-everywhere t)
-     (ido-mode 1)
-
-     (defun bind-ido-keys ()
-       "Keybindings for ido mode."
-       (define-key ido-completion-map (kbd "C-n") 'ido-next-match) 
-       (define-key ido-completion-map (kbd "C-p")   'ido-prev-match))
-
-     (add-hook 'ido-setup-hook #'bind-ido-keys)
-   #+END_SRC
-** Buffers
-*** Switch buffer
-    #+BEGIN_SRC emacs-lisp
-    (global-set-key (kbd "C-x C-b") 'ibuffer)
-    (global-set-key (kbd "C-x b") 'ido-switch-buffer)
-    #+END_SRC
-** Smex
-   #+BEGIN_SRC emacs-lisp
-     (use-package smex
-       :ensure t
-       :init
-       (smex-initialize)
-       :config
-       (global-set-key (kbd "M-x") 'smex)
-       )
-   #+END_SRC
-** Switch-window
-   #+BEGIN_SRC emacs-lisp
-     ;; (use-package switch-window
-     ;;   :ensure t
-     ;;   :config
-     ;;   (setq switch-window-input-style 'minibuffer)
-     ;;   (setq switch-window-increase 4)
-     ;;   (setq switch-window-threshold 2)
-     ;;   (setq switch-window-shortcut-style 'qwerty)
-     ;;   (setq switch-window-qwerty-shortcuts
-     ;; 	'("a" "s" "d" "f" "h" "j" "k" "l"))
-     ;;   :bind
-     ;;   ([remap other-window] . switch-window)
-     ;;   )
-   #+END_SRC
 ** Ace window
    #+BEGIN_SRC emacs-lisp
           (use-package ace-window
-            :ensure t
             :config
             (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
             (setq aw-background nil)
@@ -744,35 +422,9 @@
            ([remap other-window] . ace-window)
      )
    #+END_SRC
-** Expand region
-   #+BEGIN_SRC emacs-lisp
-     (use-package expand-region
-       :ensure t
-       :config
-       (global-set-key (kbd "C-=") 'er/expand-region)
-       )
-
-   #+END_SRC
-** Emacs surround
-   #+BEGIN_SRC emacs-lisp
-       (global-set-key (kbd "C-q") 'emacs-surround)
-   #+END_SRC
-** Doxymacs
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'c-mode-common-hook 'doxymacs-mode) 
-     (defun my-doxymacs-font-lock-hook ()
-       (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
-	   (doxymacs-font-lock)))
-     (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
-   #+END_SRC
 ** Magit
    #+BEGIN_SRC emacs-lisp
-     (use-package magit
-       :ensure t
-       :bind(
-	     ("C-c g" . magit-status)
-       )
-     )
+     (use-package magit)
    #+END_SRC
 ** Neotree
    #+BEGIN_SRC emacs-lisp
@@ -790,7 +442,6 @@
 	   (message "Could not find git project root."))))
 
      (use-package neotree
-       :ensure t
        :config
        (setq neo-window-fixed-size nil)
        (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
@@ -798,123 +449,34 @@
 		 (lambda ()
 		   (visual-line-mode -1)
 		   (setq truncate-lines t)))
-       (global-set-key (kbd "C-c n") 'neotree-project-dir)
-       )
-   #+END_SRC
-** Buffer move
-   #+BEGIN_SRC emacs-lisp
-     (use-package buffer-move
-       :ensure t
-       :config
-       (defhydra hydra-buf (:exit t :hint nil)
-	 "
-	 Goto^^                   Move^^        Action^^
-	 -----------------------------------------------------
-	 [_p_] previous buffer    [_h_] left    [_K_] Kill current buffer
-	 [_n_] next buffer        [_j_] down
-                                [_k_] up
-                                [_l_] right
-"
-	 ("p" switch-to-prev-buffer)
-	 ("n" switch-to-next-buffer)
-	 ("h" buf-move-left)
-	 ("j" buf-move-down)
-	 ("k" buf-move-up)
-	 ("l" buf-move-right)
-	 ("K" kill-current-buffer)
-	 )
+       ;;(global-set-key (kbd "C-c n") 'neotree-project-dir)
        )
    #+END_SRC
 ** Projectile
    #+BEGIN_SRC emacs-lisp
      (use-package projectile
-       :ensure t
-       :init
        :config
        (projectile-global-mode)
        (setq projectile-enable-caching nil)
-       ;; (setq projectile-git-command "find . -type f -print0")
-       ;; (setq projectile-git-command "fd . -H")
        (setq projectile-indexing-method 'hybrid)
        )
    #+END_SRC
 ** AG search
    #+BEGIN_SRC emacs-lisp
      (use-package ag
-       :ensure t
        :config
        (setq ag-highlight-search t) 
        )
    #+END_SRC
-** Winum
-   #+BEGIN_SRC emacs-lisp
-     ;; (use-package winum
-     ;;   :ensure t
-     ;;   :init
-     ;;   (winum-mode)
-     ;;   :bind(("C-c 1" . winum-select-window-1)
-     ;; 	("C-c 2" . winum-select-window-2)
-     ;; 	("C-c 3" . winum-select-window-3)
-     ;; 	("C-c 4" . winum-select-window-4)
-     ;; 	("C-c 5" . winum-select-window-5)
-     ;; 	("C-c 6" . winum-select-window-6))
-     ;;   )
-   #+END_SRC
 ** Undo tree
    #+BEGIN_SRC emacs-lisp
      (use-package undo-tree
-       :ensure t
+       :after evil
+       :diminish
        :init
-       (global-undo-tree-mode))
-   #+END_SRC
-** Ivy/Counsel/Swiper
-   #+BEGIN_SRC emacs-lisp
-        ;; ivy 
-     (use-package ivy
-       :ensure t
+       (global-undo-tree-mode)
        :config
-       (ivy-mode 1)
-       (setq ivy-use-virtual-buffers t)
-       (setq enable-recursive-minibuffers t)
-       )
-
-     ;; counsel
-     (use-package counsel
-       :ensure t
-       :bind
-       (("M-x" . counsel-M-x))
-       )
-
-     (use-package counsel-projectile
-       :ensure t
-       :init
-       (counsel-projectile-mode t)
-       :config
-       (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  
-       )
-
-     ;; swiper
-     (use-package swiper
-       :ensure t
-       :bind
-       (("C-s" . swiper))
-       )
-
-   #+END_SRC
-** Yasnippet
-   #+BEGIN_SRC emacs-lisp
-     (use-package yasnippet
-       :ensure t
-       :init
-       (yas-global-mode 1)
-       ;; :config
-       ;; (define-key yas-keymap (kbd "C-n") 'yas-next-field)
-       ;; (define-key yas-keymap (kbd "C-p") 'yas-prev-field)
-       )
-
-     (use-package yasnippet-snippets
-       :ensure t)
+       (evil-set-undo-system 'undo-tree))
    #+END_SRC
 ** Clangformat
    #+BEGIN_SRC emacs-lisp
@@ -928,50 +490,14 @@
        (add-hook 'before-save-hook 'clang-format-buffer-smart nil t))
 
      (use-package clang-format
-       :ensure t
        :config
        (add-hook 'c-mode-hook 'clang-format-buffer-smart-on-save)
        (add-hook 'c++-mode-hook 'clang-format-buffer-smart-on-save)
        )
    #+END_SRC
-** DTS mode
-   #+BEGIN_SRC emacs-lisp
-     (use-package dts-mode
-       :ensure t)
-   #+END_SRC
-** ZZZ to char
-   #+BEGIN_SRC emacs-lisp
-     (use-package zzz-to-char
-       :ensure t
-       :config
-       (global-set-key (kbd "M-z") #'zzz-to-char)
-
-       )
-   #+END_SRC
-** Move-text
-   #+BEGIN_SRC emacs-lisp
-     (use-package move-text
-       :ensure t
-       :config
-       (global-set-key (kbd "M-n") 'move-text-down)
-       (global-set-key (kbd "M-p") 'move-text-up)
-       )
-   #+END_SRC
-** Multiple cursors
-   #+BEGIN_SRC emacs-lisp
-     (use-package multiple-cursors
-       :ensure t
-       :config
-       (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-       (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-       (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-       (define-key mc/keymap (kbd "<return>") nil)
-       )
-   #+END_SRC
 ** Ansicolor
    #+BEGIN_SRC emacs-lisp
      (use-package ansi-color
-       :ensure t
        :config
        (defun colorize-compilation-buffer ()
          (let ((inhibit-read-only t))
@@ -979,260 +505,9 @@
        (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
        )
    #+END_SRC
-** Latex preview pane
-   #+BEGIN_SRC emacs-lisp
-     (use-package latex-preview-pane
-       :ensure t
-       :config
-       (add-hook 'tex-mode-hook 'latex-preview-pane-enable)
-       )
-   #+END_SRC
-** Key-chord
-   #+BEGIN_SRC emacs-lisp
-     (use-package key-chord
-       :ensure t
-       :init
-       (key-chord-mode 1)
-       :config
-       (key-chord-define-global "xa"  'avy-goto-char-2)
-       (key-chord-define-global "xl"  'avy-goto-line)
-       (key-chord-define-global "xf"  'jump-to-char)
-       (key-chord-define-global "yy"  'copy-whole-line)
-     )
-   #+END_SRC
-** Increment/decrement number
-   #+BEGIN_SRC emacs-lisp
-     (use-package thingatpt
-       :ensure t
-       :config
-       (defun thing-at-point-goto-end-of-integer ()
-         "Go to end of integer at point."
-         (let ((inhibit-changing-match-data t))
-           ;; Skip over optional sign
-           (when (looking-at "[+-]")
-             (forward-char 1))
-           ;; Skip over digits
-           (skip-chars-forward "[[:digit:]]")
-           ;; Check for at least one digit
-           (unless (looking-back "[[:digit:]]")
-             (error "No integer here"))))
-       (put 'integer 'beginning-op 'thing-at-point-goto-end-of-integer)
-
-       (defun thing-at-point-goto-beginning-of-integer ()
-         "Go to end of integer at point."
-         (let ((inhibit-changing-match-data t))
-           ;; Skip backward over digits
-           (skip-chars-backward "[[:digit:]]")
-           ;; Check for digits and optional sign
-           (unless (looking-at "[+-]?[[:digit:]]")
-             (error "No integer here"))
-           ;; Skip backward over optional sign
-           (when (looking-back "[+-]")
-             (backward-char 1))))
-       (put 'integer 'beginning-op 'thing-at-point-goto-beginning-of-integer)
-
-       (defun thing-at-point-bounds-of-integer-at-point ()
-         "Get boundaries of integer at point."
-         (save-excursion
-           (let (beg end)
-             (thing-at-point-goto-beginning-of-integer)
-             (setq beg (point))
-             (thing-at-point-goto-end-of-integer)
-             (setq end (point))
-             (cons beg end))))
-       (put 'integer 'bounds-of-thing-at-point 'thing-at-point-bounds-of-integer-at-point)
-
-       (defun thing-at-point-integer-at-point ()
-         "Get integer at point."
-         (let ((bounds (bounds-of-thing-at-point 'integer)))
-           (string-to-number (buffer-substring (car bounds) (cdr bounds)))))
-       (put 'integer 'thing-at-point 'thing-at-point-integer-at-point)
-
-       (defun increment-integer-at-point (&optional inc)
-         "Increment integer at point by one.
-
-     With numeric prefix arg INC, increment the integer by INC amount."
-         (interactive "p")
-         (let ((inc (or inc 1))
-               (n (thing-at-point 'integer))
-               (bounds (bounds-of-thing-at-point 'integer)))
-           (delete-region (car bounds) (cdr bounds))
-           (insert (int-to-string (+ n inc)))))
-
-       (defun decrement-integer-at-point (&optional dec)
-         "Decrement integer at point by one.
-
-     With numeric prefix arg DEC, decrement the integer by DEC amount."
-         (interactive "p")
-         (increment-integer-at-point (- (or dec 1))))
-  
-       (global-set-key (kbd "C-c +") #'increment-integer-at-point)
-       (global-set-key (kbd "C-c -") #'decrement-integer-at-point)
-  
-       )
-
-   #+END_SRC
-** Imenu
-   #+BEGIN_SRC emacs-lisp
-     (use-package imenu-anywhere
-       :ensure t
-       :config
-       ;; (global-set-key (kbd "M-i") #'ivy-imenu-anywhere)
-       )
-
-     (defun ido-imenu ()
-       "Update the imenu index and then use ido to select a symbol to navigate to.
-     Symbols matching the text at point are put first in the completion list."
-       (interactive)
-       (imenu--make-index-alist)
-       (let ((name-and-pos '())
-             (symbol-names '()))
-         (flet ((addsymbols
-                 (symbol-list)
-                 (when (listp symbol-list)
-                   (dolist (symbol symbol-list)
-                     (let ((name nil) (position nil))
-                       (cond
-                        ((and (listp symbol) (imenu--subalist-p symbol))
-                         (addsymbols symbol))
-
-                        ((listp symbol)
-                         (setq name (car symbol))
-                         (setq position (cdr symbol)))
-
-                        ((stringp symbol)
-                         (setq name symbol)
-                         (setq position
-                               (get-text-property 1 'org-imenu-marker symbol))))
-
-                       (unless (or (null position) (null name))
-                         (add-to-list 'symbol-names name)
-                         (add-to-list 'name-and-pos (cons name position))))))))
-           (addsymbols imenu--index-alist))
-         ;; If there are matching symbols at point, put them at the beginning
-         ;; of `symbol-names'.
-         (let ((symbol-at-point (thing-at-point 'symbol)))
-           (when symbol-at-point
-             (let* ((regexp (concat (regexp-quote symbol-at-point) "$"))
-                    (matching-symbols
-                     (delq nil (mapcar
-                                (lambda (symbol)
-                                  (if (string-match regexp symbol) symbol))
-                                symbol-names))))
-               (when matching-symbols
-                 (sort matching-symbols (lambda (a b) (> (length a) (length b))))
-                 (mapc
-                  (lambda (symbol)
-                    (setq symbol-names (cons symbol (delete symbol symbol-names))))
-                  matching-symbols)))))
-         (let* ((selected-symbol (ido-completing-read "Symbol? " symbol-names))
-                (position (cdr (assoc selected-symbol name-and-pos))))
-           (push-mark)
-           (if (overlayp position)
-               (goto-char (overlay-start position))
-             (goto-char position)))))
-
-     (global-set-key (kbd "M-i") 'ido-imenu)
-   #+END_SRC
-** Company
-   #+BEGIN_SRC emacs-lisp
-     (use-package company
-       :ensure t
-       :config
-       (setq company-idle-delay 0)
-       (setq company-minimum-prefix-length 3))
-
-     (with-eval-after-load 'company
-       (define-key company-active-map (kbd "C-n") #'company-select-next)
-       (define-key company-active-map (kbd "C-p") #'company-select-previous)
-       (add-hook 'c-mode-hook 'company-mode)
-       (add-hook 'c++-mode-hook 'company-mode)
-       )
-
-
-   #+END_SRC
-** Flycheck
-#+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    :ensure t
-    :config
-    (setq flycheck-python-flake8-executable "flake8")
-    (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc)) 
-    (add-to-list 'flycheck-checkers 'python-flake8)
-    )
-
-#+END_SRC
-** LSP
-   #+BEGIN_SRC emacs-lisp
-     (use-package lsp-mode
-       :ensure t
-       :hook
-       (
-        (c-mode . lsp-deferred)
-        (c++-mode . lsp-deferred)
-        (python-mode . lsp-deferred)
-        )
-       )
-
-     (use-package lsp-ui 
-       :ensure t
-       :hook (
-              (lsp-mode . lsp-ui-mode)
-              (c-mode . flycheck-mode)
-              (c++mode . flycheck-mode)
-              (python-mode . flycheck-mode)
-              )
-       :commands lsp-ui-mode)
-
-
-     (use-package company-lsp
-       :ensure t
-       :commands company-lsp
-       :config (push 'company-lsp company-backends)) ;; add company-lsp as a backend
-
-     (use-package ccls
-       :ensure t
-       :config
-       (setq ccls-executable "/usr/bin/ccls")
-       (setq lsp-prefer-flymake nil)
-       :hook ((c-mode c++-mode objc-mode) .
-              (lambda () (require 'ccls) (lsp))))
-   #+END_SRC
-** Goto line
-   #+BEGIN_SRC emacs-lisp
-     (use-package goto-line-preview
-       :ensure t
-       :init
-       (global-set-key [remap goto-line] 'goto-line-preview
-                       ))
-   #+END_SRC
-** Delete hungry
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package smart-hungry-delete
-  ;;   :ensure t
-  ;;   :bind (("<backspace>" . smart-hungry-delete-backward-char)
-  ;; 		 ("C-d" . smart-hungry-delete-forward-char))
-  ;;   :defer nil ;; dont defer so we can add our functions to hooks 
-  ;;   :config (smart-hungry-delete-add-default-hooks)
-  ;;   )
-#+END_SRC
-** JS2-mode
-   #+BEGIN_SRC emacs-lisp
-     (use-package js2-mode
-       :ensure t)
-
-     (use-package rjsx-mode
-       :ensure t)
-   #+END_SRC
-** Docker-compose
-   #+BEGIN_SRC emacs-lisp
-   (use-package docker-compose-mode
-   :ensure t)   
-   #+END_SRC
 ** Dashboard
 #+BEGIN_SRC emacs-lisp
   (use-package dashboard
-    :ensure t
     :config
     (dashboard-setup-startup-hook)
     (setq dashboard-banner-logo-title "Welcome to Peixoto's Emacs!!")
@@ -1249,27 +524,31 @@
                                                        :face 'font-lock-keyword-face))
     )
 #+END_SRC
-** Python
-#+BEGIN_SRC emacs-lisp
-  (use-package sphinx-doc
-    :ensure t
-    :config
-    (add-hook 'python-mode-hook (lambda ()
-                                      (sphinx-doc-mode t)))
-    )
+** General
+   #+BEGIN_SRC emacs-lisp
+     (use-package general
+       :config
+       ;; Evil
+       ;;; Evil leader definition
+       (setq my-leader "SPC")
+       (setq my-local-leader "SPC m")
+       (general-create-definer my-leader-def
+                               :prefix my-leader)
 
-  (use-package python-docstring
-    :ensure t
-    :config
-    (add-hook 'python-mode-hook (lambda ()
-                                  (python-docstring-mode t)))
-    )
+       (general-create-definer my-local-leader-def
+                               :prefix my-local-leader)
 
-  ;; (use-package flymake-python-pyflakes
-  ;;   :ensure t
-  ;;   :config
-  ;;   (setq flymake-python-pyflakes-executable "flake8")
-  ;;   (add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
-  ;;   )
+       ;;; Evil normal state keybindings
+       (general-def 'normal
+         "gl" 'avy-goto-line
+         "ga" 'avy-goto-subword-1
+         "gc" 'evil-commentary)
 
-#+END_SRC
+       ;;; Evil normal state keybindings with LEADER
+       (my-leader-def 'normal 'override
+         "xcr" 'reload-config
+         "xcf" 'find-config
+         "q" 'delete-window
+         "w" 'save-buffer)
+     )
+   #+END_SRC 
