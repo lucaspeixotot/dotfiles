@@ -654,6 +654,7 @@
          (general-chord "ji") 'xref-find-definitions
          (general-chord "jr") 'xref-find-references
          (general-chord "jd") 'lsp-find-declarations
+         (general-chord "zd") 'zzz-up-to-char
          )
         )
                                    #+END_SRC
