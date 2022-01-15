@@ -45,7 +45,7 @@
    #+END_SRC
 ** Setting font
    #+BEGIN_SRC emacs-lisp
-     (set-frame-font "Source Code Pro-13" nil t)
+     (set-frame-font "Source Code Pro-8" nil t)
      (setq popup-use-optimized-column-computation nil)
    #+END_SRC
 ** Lines and columns
@@ -99,6 +99,7 @@
 ** Indentation
    #+BEGIN_SRC emacs-lisp
      (setq-default indent-tabs-mode nil)
+     (setq tab-width 4)
      (setq c-basic-offset 4)
    #+END_SRC
 ** Backup files
@@ -107,6 +108,14 @@
      (setq auto-save-default nil) ; stop creating #autosave# files
      (setq create-lockfiles nil)
    #+END_SRC
+** Cache
+  #+BEGIN_SRC emacs-lisp
+    (setq user-cache-directory (concat EMACS_DIR "cache"))
+    (setq backup-directory-alist `(("." . ,(expand-file-name "backups" user-cache-directory)))
+          url-history-file (expand-file-name "url/history" user-cache-directory)
+          auto-save-list-file-prefix (expand-file-name "auto-save-list/.saves-" user-cache-directory)
+          projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-cache-directory))
+  #+END_SRC
 ** Setting PATH env
    #+BEGIN_SRC emacs-lisp
      (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
@@ -166,6 +175,13 @@
        (setq evil-want-C-u-scroll t)
        :config
        (evil-mode)
+       (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+       (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+       (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+       (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+       (evil-set-initial-state 'messages-buffer-mode 'normal)
+       (evil-set-initial-state 'dashboard-mode 'normal)
        )
 
      ;; vim-like keybindings everywhere in emacs
@@ -242,6 +258,9 @@
        ;;;; 4. locate-dominating-file
        ;; (setq consult-project-root-function (lambda () (locate-dominating-file "." ".git")))  
        )
+
+     (use-package consult-projectile
+       :straight (consult-projectile :type git :host gitlab :repo "OlMon/consult-projectile" :branch "master"))
    #+END_SRC
 ** Marginalia
    #+BEGIN_SRC emacs-lisp
@@ -424,42 +443,19 @@
    #+END_SRC
 ** Magit
    #+BEGIN_SRC emacs-lisp
-     (use-package magit)
-   #+END_SRC
-** Neotree
-   #+BEGIN_SRC emacs-lisp
-     (defun neotree-project-dir ()
-       "Open NeoTree using the git root."
-       (interactive)
-       (let ((project-dir (projectile-project-root))
-	     (file-name (buffer-file-name)))
-	 (neotree-toggle)
-	 (if project-dir
-	     (if (neo-global--window-exists-p)
-		 (progn
-		     (neotree-dir project-dir)
-		     (neotree-find file-name)))
-	   (message "Could not find git project root."))))
-
-     (use-package neotree
-       :config
-       (setq neo-window-fixed-size nil)
-       (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-       (add-hook 'neotree-mode-hook
-		 (lambda ()
-		   (visual-line-mode -1)
-		   (setq truncate-lines t)))
-       ;;(global-set-key (kbd "C-c n") 'neotree-project-dir)
-       )
+     (use-package magit
+       :custom
+       (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
    #+END_SRC
 ** Projectile
    #+BEGIN_SRC emacs-lisp
      (use-package projectile
-       :config
-       (projectile-global-mode)
+       :diminish projectile-mode
+       :config 
        (setq projectile-enable-caching nil)
        (setq projectile-indexing-method 'hybrid)
-       )
+       (projectile-mode)
+     )
    #+END_SRC
 ** AG search
    #+BEGIN_SRC emacs-lisp
@@ -528,6 +524,12 @@
    #+BEGIN_SRC emacs-lisp
      (use-package general
        :config
+       (general-define-key
+        :keymaps 'lsp-mode-map
+        "<f5>"    'dap-debug
+        "M-<f5>"  'dap-hydra
+        "M-9"     'lsp-treemacs-errors-list
+       )
        ;; Evil
        ;;; Evil leader definition
        (setq my-leader "SPC")
@@ -546,9 +548,212 @@
 
        ;;; Evil normal state keybindings with LEADER
        (my-leader-def 'normal 'override
+         "0"   'treemacs-select-window
+         "1"   'winum-select-window-1
+         "2"   'winum-select-window-2
+         "3"   'winum-select-window-3
+         "4"   'winum-select-window-4
+         "5"   'winum-select-window-5
+         "6"   'winum-select-window-6
+         "7"   'winum-select-window-7
+         "8"   'winum-select-window-8
+         "9"   'winum-select-window-9
+         "p"  'projectile-command-map
+         "lo"  'lsp-organize-imports
+         "lr"  'lsp-rename
+         "xt1" 'treemacs-delete-other-windows
+         "xtt" 'treemacs
+         "xtd" 'treemacs-select-directory
+         "xtf" 'treemacs-find-file
+         "xtg" 'treemacs-find-tag
          "xcr" 'reload-config
          "xcf" 'find-config
+         "x1"  'delete-other-windows
+         "hz"  'hydra-text-scale/body
          "q" 'delete-window
-         "w" 'save-buffer)
+         "w" 'save-buffer
+       )
      )
    #+END_SRC 
+** Hydra
+#+BEGIN_SRC emacs-lisp
+  (use-package hydra)
+  (defhydra hydra-text-scale (:timeout 10)
+     "scale text"
+     ("j" text-scale-increase "in")
+     ("k" text-scale-decrease "out")
+     ("f" nil "finished" :exit t))
+#+END_SRC
+
+** Forge
+  #+BEGIN_SRC emacs-lisp
+    (use-package forge)
+  #+END_SRC
+
+** Winum
+  #+BEGIN_SRC emacs-lisp
+    (use-package winum
+      :config
+      (winum-mode))
+  #+END_SRC
+** Treemacs
+  #+BEGIN_SRC emacs-lisp
+    (use-package treemacs
+      :defer t
+      :init
+      :after (lsp-mode)
+      :config
+      (progn
+        (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
+              treemacs-deferred-git-apply-delay        0.5
+              treemacs-directory-name-transformer      #'identity
+              treemacs-display-in-side-window          t
+              treemacs-eldoc-display                   'simple
+              treemacs-file-event-delay                5000
+              treemacs-file-extension-regex            treemacs-last-period-regex-value
+              treemacs-file-follow-delay               0.2
+              treemacs-file-name-transformer           #'identity
+              treemacs-follow-after-init               t
+              treemacs-expand-after-init               t
+              treemacs-find-workspace-method           'find-for-file-or-pick-first
+              treemacs-git-command-pipe                ""
+              treemacs-goto-tag-strategy               'refetch-index
+              treemacs-indentation                     2
+              treemacs-indentation-string              " "
+              treemacs-is-never-other-window           nil
+              treemacs-max-git-entries                 5000
+              treemacs-missing-project-action          'ask
+              treemacs-move-forward-on-expand          nil
+              treemacs-no-png-images                   nil
+              treemacs-no-delete-other-windows         t
+              treemacs-project-follow-cleanup          nil
+              treemacs-persist-file                    (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+              treemacs-position                        'left
+              treemacs-read-string-input               'from-child-frame
+              treemacs-recenter-distance               0.1
+              treemacs-recenter-after-file-follow      nil
+              treemacs-recenter-after-tag-follow       nil
+              treemacs-recenter-after-project-jump     'always
+              treemacs-recenter-after-project-expand   'on-distance
+              treemacs-litter-directories              '("/node_modules" "/.venv" "/.cask")
+              treemacs-show-cursor                     nil
+              treemacs-show-hidden-files               t
+              treemacs-silent-filewatch                nil
+              treemacs-silent-refresh                  nil
+              treemacs-sorting                         'alphabetic-asc
+              treemacs-select-when-already-in-treemacs 'move-back
+              treemacs-space-between-root-nodes        t
+              treemacs-tag-follow-cleanup              t
+              treemacs-tag-follow-delay                1.5
+              treemacs-text-scale                      nil
+              treemacs-user-mode-line-format           nil
+              treemacs-user-header-line-format         nil
+              treemacs-wide-toggle-width               70
+              treemacs-width                           35
+              treemacs-width-increment                 1
+              treemacs-width-is-initially-locked       t
+              treemacs-workspace-switch-cleanup        nil)
+
+        ;; The default width and height of the icons is 22 pixels. If you are
+        ;; using a Hi-DPI display, uncomment this to double the icon size.
+        ;;(treemacs-resize-icons 44)
+
+        (treemacs-follow-mode t)
+        (treemacs-filewatch-mode t)
+        (treemacs-fringe-indicator-mode 'always)
+
+        (pcase (cons (not (null (executable-find "git")))
+                     (not (null treemacs-python-executable)))
+          (`(t . t)
+           (treemacs-git-mode 'deferred))
+          (`(t . _)
+           (treemacs-git-mode 'simple)))
+
+        (treemacs-hide-gitignored-files-mode nil))
+     )
+
+    (use-package lsp-treemacs
+      :after (lsp-mode treemacs)
+      :ensure t
+      :commands lsp-treemacs-errors-list
+      :bind (:map lsp-mode-map
+         ("M-9" . lsp-treemacs-errors-list)))
+
+    (use-package treemacs-evil
+      :after (treemacs evil)
+      :ensure t)
+
+    (use-package treemacs-projectile
+      :after (treemacs projectile)
+      :ensure t)
+
+    (use-package treemacs-icons-dired
+      :hook (dired-mode . treemacs-icons-dired-enable-once)
+      :ensure t)
+
+    (use-package treemacs-magit
+      :after (treemacs magit)
+      :ensure t)
+  #+END_SRC
+** Exec path from shell
+  #+BEGIN_SRC emacs-lisp
+    (use-package exec-path-from-shell
+        :config
+        (exec-path-from-shell-initialize)
+    )
+  #+END_SRC
+** Company
+  #+BEGIN_SRC emacs-lisp
+    (use-package company)
+  #+END_SRC
+** Flycheck
+  #+BEGIN_SRC emacs-lisp
+    (use-package flycheck :init (global-flycheck-mode))
+  #+END_SRC
+** Dap
+  #+BEGIN_SRC emacs-lisp
+    (use-package dap-mode
+      :ensure t
+      :after (lsp-mode)
+      :functions dap-hydra/nil
+      :config
+      :hook ((dap-mode . dap-ui-mode)
+        (dap-session-created . (lambda (&_rest) (dap-hydra)))
+        (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+  #+END_SRC
+** LSP
+  #+BEGIN_SRC emacs-lisp
+    (use-package lsp-mode
+    :ensure t
+    :hook (
+       (lsp-mode . lsp-enable-which-key-integration)
+       (java-mode . #'lsp-deferred)
+    )
+    :init (setq 
+        lsp-keymap-prefix "C-c l"              ; this is for which-key integration documentation, need to use lsp-mode-map
+        lsp-enable-file-watchers nil
+        read-process-output-max (* 1024 1024)  ; 1 mb
+        lsp-completion-provider :capf
+        lsp-idle-delay 0.500
+    )
+    :config 
+        (setq lsp-intelephense-multi-root nil) ; don't scan unnecessary projects
+        (with-eval-after-load 'lsp-intelephense
+        (setf (lsp--client-multi-root (gethash 'iph lsp-clients)) nil))
+    )
+
+    (use-package lsp-java 
+    :config
+    (add-hook 'java-mode-hook 'lsp)
+    (setq lsp-java-vmargs
+      (list
+         "-XX:+UseParallelGC"
+         "-XX:GCTimeRatio=4"
+         "-XX:AdaptiveSizePolicyWeight=90"
+         "-Dsun.zip.disableMemoryMapping=true"
+         "-Xmx1G"
+         "-Xms100m"
+         "-javaagent:/home/lucas/Downloads/lombok.jar"))
+    )
+  #+END_SRC
+
