@@ -12,6 +12,10 @@
      (menu-bar-mode   -1)
      (set-fringe-mode 10)        ; Give some breathing room
    #+END_SRC
+** Preserve screen position
+#+BEGIN_SRC emacs-lisp
+  (setq scroll-preserve-screen-position 1)
+#+END_SRC
 ** Fix undo tree bug
    #+BEGIN_SRC emacs-lisp
    (setq undo-tree-enable-undo-in-region nil)
@@ -39,9 +43,6 @@
        "Reload config.org"
        (interactive)
        (load-file (concat EMACS_DIR INIT_FILE)))
-
-     ;; (global-set-key (kbd "C-c cfg") 'find-config)
-     ;; (global-set-key (kbd "C-c rcfg") 'reload-config)
    #+END_SRC
 ** Setting font
    #+BEGIN_SRC emacs-lisp
@@ -60,8 +61,6 @@
      (defun kill-current-buffer ()
        (interactive)
        (kill-buffer (current-buffer)))
-
-     ;; (global-set-key (kbd "C-x k" ) 'kill-current-buffer)
    #+END_SRC
 ** Save the last location in open file
    #+BEGIN_SRC emacs-lisp
@@ -81,8 +80,6 @@
       (defadvice ansi-term (before force-bash)
 	(interactive (list my-term-shell)))
       (ad-activate 'ansi-term)
-
-      ;; (global-set-key (kbd "C-c t") 'shell)
    #+END_SRC
 ** Smoth scroll
    #+BEGIN_SRC emacs-lisp
@@ -152,6 +149,83 @@
                     eshell-mode-hook))
       (add-hook mode (lambda () (display-line-numbers-mode 0))))
   #+END_SRC
+** Window splitting
+  #+BEGIN_SRC emacs-lisp
+    (defun split-and-follow-horizontally ()
+      (interactive)
+      (split-window-below)
+      (balance-windows)
+      (other-window 1)
+      )
+
+    (defun split-and-follow-vertically ()
+      (interactive)
+      (split-window-right)
+      (balance-windows)
+      (other-window 1)
+      )
+  #+END_SRC
+** Kill whole word
+  #+BEGIN_SRC emacs-lisp
+    (defun kill-whole-word ()
+      (interactive)
+      (kill-word 1)
+      )
+  #+END_SRC
+** Copy whole line
+  #+BEGIN_SRC emacs-lisp
+   (defun copy-whole-line ()
+     (interactive)
+     (save-excursion
+	 (kill-new
+	  (buffer-substring
+	   (point-at-bol)
+	   (point-at-eol))))
+     )
+  #+END_SRC
+** Jump to char like vim
+  #+BEGIN_SRC emacs-lisp
+    (defvar jump-to-last-char nil)
+    (defvar jump-to-last-count nil)
+
+    (defun jump-to-char-repate-forward ()
+      "Repate the last jump-to-char forward"
+      (interactive)
+      (forward-char)
+      (jump-to-char-fun jump-to-last-char (abs jump-to-last-count)))
+
+    (defun jump-to-char-repate-backwards ()
+      "Repate the last jump-to-char backward"
+      (interactive)
+      (jump-to-char-fun jump-to-last-char (- (abs jump-to-last-count))))
+
+    (defun jump-to-char-fun (char count)
+      "Jump to char function"
+      (if (search-forward (string char) nil t count)
+          (when (> count 0)
+            (backward-char))
+        (message "Search Failed: %s" (char-to-string char)))
+      (setq jump-to-last-char char)
+      (setq jump-to-last-count count) 
+      (unless defining-kbd-macro 
+        (set-temporary-overlay-map
+         (let ((map (make-sparse-keymap)))
+           (define-key map (kbd ";") 'jump-to-char-repate-forward)
+           (define-key map (kbd ",") 'jump-to-char-repate-backwards)
+           map))))
+
+    (defun jump-to-char (arg)
+      "Jump to char"
+      (interactive "p")
+      (message nil)
+      (let ((char (read-char "jump-to-char: ")))
+        (jump-to-char-fun char arg)))
+
+    (defun jump-to-char-backward (arg)
+      "Jump to char backwards"
+      (interactive "p")
+      (jump-to-char (- arg)))
+  #+END_SRC
 * Packages config
 ** Org
    #+BEGIN_SRC emacs-lisp
@@ -159,46 +233,47 @@
    #+END_SRC
 ** Evil
    #+BEGIN_SRC emacs-lisp
-     (use-package evil-leader
-       :init
-       (setq evil-want-C-u-scroll t)
-       (setq evil-want-keybinding nil)
-       (global-evil-leader-mode))
-     (use-package evil
-       :init
-       (setq evil-want-integration nil) ;; required by evil-collection
-       (setq evil-search-module 'isearch)
-       (setq evil-ex-complete-emacs-commands nil)
-       (setq evil-vsplit-window-right t) ;; like vim's 'splitright'
-       (setq evil-split-window-below t) ;; like vim's 'splitbelow'
-       (setq evil-shift-round nil)
-       (setq evil-want-C-u-scroll t)
-       :config
-       (evil-mode)
-       (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-       (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-       (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-       (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+     ;; (use-package evil-leader
+     ;;   :init
+     ;;   (setq evil-want-C-u-scroll t)
+     ;;   (setq evil-want-keybinding nil)
+     ;;   (global-evil-leader-mode))
+     ;; (use-package evil
+     ;;   :init
+     ;;   (setq evil-want-integration nil) ;; required by evil-collection
+     ;;   (setq evil-search-module 'isearch)
+     ;;   (setq evil-ex-complete-emacs-commands nil)
+     ;;   (setq evil-vsplit-window-right t) ;; like vim's 'splitright'
+     ;;   (setq evil-split-window-below t) ;; like vim's 'splitbelow'
+     ;;   (setq evil-shift-round nil)
+     ;;   (setq evil-want-C-u-scroll t)
+     ;;   :config
+     ;;   (evil-mode)
+     ;;   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+     ;;   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+     ;;   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+     ;;   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
-       (evil-set-initial-state 'messages-buffer-mode 'normal)
-       (evil-set-initial-state 'dashboard-mode 'normal)
-       )
+     ;;   (evil-set-initial-state 'messages-buffer-mode 'normal)
+     ;;   (evil-set-initial-state 'dashboard-mode 'normal)
+     ;;   )
 
-     ;; vim-like keybindings everywhere in emacs
-     (use-package evil-collection
-       :after evil
-       :config
-       (evil-collection-init))
+     ;; ;; vim-like keybindings everywhere in emacs
+     ;; (use-package evil-collection
+     ;;   :after evil
+     ;;   :config
+     ;;   (evil-collection-init))
 
-     (use-package evil-commentary)
+     ;; (use-package evil-commentary)
    #+END_SRC
-** Selectrum
+** Completion system
+*** Selectrum
    #+BEGIN_SRC emacs-lisp
    (use-package selectrum
    :config
    (selectrum-mode +1))
    #+END_SRC
-** Consult 
+*** Consult 
    #+BEGIN_SRC emacs-lisp
      (use-package consult
        :hook (completion-list-mode . consult-preview-at-point-mode)
@@ -262,7 +337,7 @@
      (use-package consult-projectile
        :straight (consult-projectile :type git :host gitlab :repo "OlMon/consult-projectile" :branch "master"))
    #+END_SRC
-** Marginalia
+*** Marginalia
    #+BEGIN_SRC emacs-lisp
      (use-package marginalia
        ;; The :init configuration is always executed (Not lazy!)
@@ -272,7 +347,7 @@
        ;; enabled right away. Note that this forces loading the package.
        (marginalia-mode))
    #+END_SRC
-** Embark
+*** Embark
    #+BEGIN_SRC emacs-lisp
      (use-package embark
        :bind
@@ -299,7 +374,7 @@
        :hook
        (embark-collect-mode . consult-preview-at-point-mode))
    #+END_SRC
-** Prescient
+*** Prescient
   #+BEGIN_SRC emacs-lisp
     (use-package selectrum-prescient
       :config
@@ -308,7 +383,7 @@
       (prescient-persist-mode +1)
       )
   #+END_SRC
-** Ordeless
+*** Ordeless
    #+BEGIN_SRC emacs-lisp
      (use-package orderless
        :custom (completion-styles '(orderless))
@@ -322,20 +397,11 @@
        (setq selectrum-highlight-candidates-function #'orderless-highlight-matches) 
        )
    #+END_SRC
-** All the icons
+** Themes and appearence
+*** All the icons
    #+BEGIN_SRC emacs-lisp
      (use-package all-the-icons)
    #+END_SRC
-** Which keybindind
-   #+BEGIN_SRC emacs-lisp
-     (use-package which-key
-       :init
-       (setq which-key-separator " ")
-       (setq which-key-prefix-prefix "+")
-       :config
-       (which-key-mode))
-   #+END_SRC
-** Themes and appearence
 *** Modeline
     #+BEGIN_SRC emacs-lisp
       (use-package doom-modeline
@@ -385,7 +451,27 @@
 	:config
 	(add-hook 'prog-mode-hook 'highlight-numbers-mode))
     #+END_SRC
-** Avy
+*** Dashboard
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :config
+    (dashboard-setup-startup-hook)
+    (setq dashboard-banner-logo-title "Welcome to Peixoto's Emacs!!")
+    (setq dashboard-items '((recents  . 10)
+                            (projects . 10)
+                            (bookmarks . 5)))
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-footer t)
+    (setq dashboard-footer-messages '("Emacs is written in Lisp, which is the only computer language that is beautiful."))
+    (setq dashboard-footer-icon (all-the-icons-octicon "dashboard"
+                                                       :height 1.1
+                                                       :v-adjust -0.05
+                                                       :face 'font-lock-keyword-face))
+    )
+#+END_SRC
+** Navigation system
+*** Avy
    #+BEGIN_SRC emacs-lisp
      (use-package avy
        :init
@@ -394,30 +480,7 @@
        :bind
        )
    #+END_SRC
-** Smartparens
-   #+BEGIN_SRC emacs-lisp
-     (defun my-fancy-newline ()
-       "Add two newlines and put the cursor at the right indentation
-     between them if a newline is attempted when the cursor is between
-     two curly braces, otherwise do a regular newline and indent"
-       (interactive)
-       (if (and (equal (char-before) 123) ; {
-                (equal (char-after) 125)) ; }
-           (progn (newline-and-indent)
-                  (split-line)
-                  (indent-for-tab-command))
-         (newline-and-indent)))
-
-     ;; I set mine to C-j, you do you, don't let me tell you how to live your life.
-     ;;(global-set-key (kbd "RET") 'my-fancy-newline)
-
-     ;; smart parens
-     (use-package smartparens
-       :config
-       (add-hook 'prog-mode-hook #'smartparens-mode)
-       )
-   #+END_SRC
-** Ace window
+*** Ace window
    #+BEGIN_SRC emacs-lisp
           (use-package ace-window
             :config
@@ -441,13 +504,182 @@
            ([remap other-window] . ace-window)
      )
    #+END_SRC
-** Magit
+
+*** Hydra
+#+BEGIN_SRC emacs-lisp
+  (use-package hydra)
+  (defhydra hydra-text-scale (:timeout 10)
+    "scale text"
+    ("j" text-scale-increase "in")
+    ("k" text-scale-decrease "out")
+    ("f" nil "finished" :exit t))
+
+  (defhydra hydra-avy (:exit t :hint nil)
+    "
+   Line^^       Region^^        Goto
+  ----------------------------------------------------------
+   [_y_] yank   [_Y_] yank      [_C_] timed char  [_c_] char
+   [_m_] move   [_M_] move      [_w_] word        [_W_] any word
+   [_k_] kill   [_K_] kill      [_l_] line        [_L_] end of line"
+    ("C" avy-goto-char-timer)
+    ("c" avy-goto-char)
+    ("w" avy-goto-word-0)
+    ("W" avy-goto-word-1)
+    ("l" avy-goto-line)
+    ("L" avy-goto-end-of-line)
+    ("m" avy-move-line)
+    ("M" avy-move-region)
+    ("k" avy-kill-whole-line)
+    ("K" avy-kill-region)
+    ("y" avy-copy-line)
+    ("Y" avy-copy-region))
+
+  (defhydra hydra-vi (:post (progn
+                                    (message
+                                     "Thank you, come again.")))
+          "vi"
+          ("l" forward-char)
+          ("h" backward-char)
+          ("j" next-line)
+          ("k" previous-line)
+          ("a" beginning-of-line)
+          ("e" move-end-of-line)
+          ("d" scroll-up-command)
+          ("u" scroll-down-command)
+          ("b" backward-word)
+          ("f" forward-word)
+          ("q" nil "quit"))
+
+  (defhydra hydra-buf (:exit t :hint nil)
+           "
+           Goto^^                   Move^^        Action^^
+           -----------------------------------------------------
+           [_p_] previous buffer    [_h_] left    [_K_] Kill current buffer
+           [_n_] next buffer        [_j_] down
+                                    [_k_] up
+                                    [_l_] right
+  "
+           ("p" switch-to-prev-buffer)
+           ("n" switch-to-next-buffer)
+           ("h" buf-move-left)
+           ("j" buf-move-down)
+           ("k" buf-move-up)
+           ("l" buf-move-right)
+           ("K" kill-current-buffer)
+           )
+#+END_SRC
+*** Buffer Move
+#+BEGIN_SRC emacs-lisp
+  (use-package buffer-move)
+#+END_SRC
+*** Zzz
+#+BEGIN_SRC emacs-lisp
+  (use-package zzz-to-char
+    ;; (global-set-key (kbd "M-z") #'zzz-to-char)
+    )
+#+END_SRC
+*** Move-text
+#+BEGIN_SRC emacs-lisp
+  (use-package move-text
+    ;; (global-set-key (kbd "M-n") 'move-text-down)
+    ;; (global-set-key (kbd "M-p") 'move-text-up)
+    )
+#+END_SRC
+** Keybindings
+*** Key-chord
+#+BEGIN_SRC emacs-lisp
+  (use-package key-chord
+    :ensure t
+    :init
+    (key-chord-mode 1)
+    :config
+    ;; (key-chord-define-global "xa"  'avy-goto-char-2)
+    ;; (key-chord-define-global "xl"  'avy-goto-line)
+    ;; (key-chord-define-global "xf"  'jump-to-char)
+    ;; (key-chord-define-global "yy"  'copy-whole-line)
+  )
+#+END_SRC
+*** General
+   #+BEGIN_SRC emacs-lisp
+     (use-package general
+       :config
+       (general-define-key
+        :keymaps 'lsp-mode-map
+        "<f5>"    'dap-debug
+        "M-<f5>"  'dap-hydra
+        "M-9"     'lsp-treemacs-errors-list
+        )
+
+       (general-define-key
+        "M-0"   'treemacs-select-window
+        "M-1"   'winum-select-window-1
+        "M-2"   'winum-select-window-2
+        "M-3"   'winum-select-window-3
+        "M-4"   'winum-select-window-4
+        "M-5"   'winum-select-window-5
+        "M-6"   'winum-select-window-6
+        "M-7"   'winum-select-window-7
+        "M-8"   'winum-select-window-8
+        "C-="   'er/expand-region
+        "M-n"   'move-text-down
+        "M-p"   'move-text-up
+        )
+
+       (general-define-key
+        :prefix "C-x"
+        "b"  'ido-switch-buffer
+        "t1" 'treemacs-delete-other-windows
+        "tt" 'treemacs
+        "td" 'treemacs-select-directory
+        "tf" 'treemacs-find-file
+        "tg" 'treemacs-find-tag
+        "cr" 'reload-config
+        "cf" 'find-config
+
+        )
+
+       (general-define-key
+        :prefix "C-c"
+        "p"  'projectile-command-map
+        "hz" 'hydra-text-scale/body
+        "g"  'magit-status 
+        )
+
+        (general-define-key
+         (general-chord "xa") 'avy-goto-subword-1
+         (general-chord "xl") 'avy-goto-line
+         (general-chord "xf") 'avy-goto-chat-in-line
+         (general-chord "xn") 'hydra-vi/body
+         (general-chord "xb") 'hydra-buf/body
+         (general-chord "ji") 'xref-find-definitions
+         (general-chord "jr") 'xref-find-references
+         (general-chord "jd") 'lsp-find-declarations
+         )
+        )
+                                   #+END_SRC
+*** Which keybindind
+   #+BEGIN_SRC emacs-lisp
+          (use-package which-key
+            :init
+            (setq which-key-separator " ")
+            (setq which-key-prefix-prefix "+")
+            :config
+            (setq which-key-idle-delay 0.5)
+            (setq which-key-idle-secondary-delay 0.05)
+            (which-key-mode))
+   #+END_SRC
+** Projects and versioning
+*** Forge
+  #+BEGIN_SRC emacs-lisp
+    (use-package forge)
+  #+END_SRC
+*** Magit
    #+BEGIN_SRC emacs-lisp
      (use-package magit
        :custom
        (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
    #+END_SRC
-** Projectile
+*** Projectile
    #+BEGIN_SRC emacs-lisp
      (use-package projectile
        :diminish projectile-mode
@@ -457,24 +689,130 @@
        (projectile-mode)
      )
    #+END_SRC
-** AG search
+** Programming
+*** LSP
+  #+BEGIN_SRC emacs-lisp
+    (use-package lsp-mode
+    :ensure t
+    :hook (
+       (lsp-mode . lsp-enable-which-key-integration)
+       (java-mode . #'lsp-deferred)
+    )
+    :init (setq 
+        lsp-keymap-prefix "C-c l"              ; this is for which-key integration documentation, need to use lsp-mode-map
+        lsp-enable-file-watchers nil
+        read-process-output-max (* 1024 1024)  ; 1 mb
+        lsp-completion-provider :capf
+        lsp-idle-delay 0.500
+    )
+    :config 
+        (setq lsp-intelephense-multi-root nil) ; don't scan unnecessary projects
+        (with-eval-after-load 'lsp-intelephense
+        (setf (lsp--client-multi-root (gethash 'iph lsp-clients)) nil))
+    )
+
+    (use-package lsp-java 
+    :config
+    (add-hook 'java-mode-hook 'lsp)
+    (setq lsp-java-vmargs
+      (list
+         "-XX:+UseParallelGC"
+         "-XX:GCTimeRatio=4"
+         "-XX:AdaptiveSizePolicyWeight=90"
+         "-Dsun.zip.disableMemoryMapping=true"
+         "-Xmx1G"
+         "-Xms100m"
+         "-javaagent:/home/lucas/Downloads/lombok.jar"))
+    )
+  #+END_SRC
+*** Dap
+  #+BEGIN_SRC emacs-lisp
+    (use-package dap-mode
+      :ensure t
+      :after (lsp-mode)
+      :functions dap-hydra/nil
+      :config
+      :hook ((dap-mode . dap-ui-mode)
+        (dap-session-created . (lambda (&_rest) (dap-hydra)))
+        (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+  #+END_SRC
+*** Flycheck
+  #+BEGIN_SRC emacs-lisp
+    (use-package flycheck :init (global-flycheck-mode))
+  #+END_SRC
+*** Company
+  #+BEGIN_SRC emacs-lisp
+    (use-package company
+      :config
+      (setq company-idle-delay 0)
+      (setq company-minimum-prefix-length 3))
+
+    (with-eval-after-load 'company
+      (define-key company-active-map (kbd "C-n") #'company-select-next)
+      (define-key company-active-map (kbd "C-p") #'company-select-previous))
+  #+END_SRC
+** Miscelanous
+*** Exec path from shell
+  #+BEGIN_SRC emacs-lisp
+    (use-package exec-path-from-shell
+        :config
+        (exec-path-from-shell-initialize)
+    )
+  #+END_SRC
+*** Expand region
+  #+BEGIN_SRC emacs-lisp
+    (use-package expand-region)
+  #+END_SRC
+
+*** Undo tree
+   #+BEGIN_SRC emacs-lisp
+     (use-package undo-tree
+       :init
+       (global-undo-tree-mode))
+   #+END_SRC
+*** Smartparens
+   #+BEGIN_SRC emacs-lisp
+     (defun my-fancy-newline ()
+       "Add two newlines and put the cursor at the right indentation
+     between them if a newline is attempted when the cursor is between
+     two curly braces, otherwise do a regular newline and indent"
+       (interactive)
+       (if (and (equal (char-before) 123) ; {
+                (equal (char-after) 125)) ; }
+           (progn (newline-and-indent)
+                  (split-line)
+                  (indent-for-tab-command))
+         (newline-and-indent)))
+
+     ;; I set mine to C-j, you do you, don't let me tell you how to live your life.
+     (global-set-key (kbd "RET") 'my-fancy-newline)
+
+     ;; smart parens
+     (use-package smartparens
+       :config
+       (add-hook 'prog-mode-hook #'smartparens-mode)
+       )
+   #+END_SRC
+   
+*** Ansicolor
+   #+BEGIN_SRC emacs-lisp
+     (use-package ansi-color
+       :config
+       (defun colorize-compilation-buffer ()
+         (let ((inhibit-read-only t))
+           (ansi-color-apply-on-region (point-min) (point-max))))
+       (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+       )
+   #+END_SRC
+   
+*** AG search
    #+BEGIN_SRC emacs-lisp
      (use-package ag
        :config
        (setq ag-highlight-search t) 
        )
    #+END_SRC
-** Undo tree
-   #+BEGIN_SRC emacs-lisp
-     (use-package undo-tree
-       :after evil
-       :diminish
-       :init
-       (global-undo-tree-mode)
-       :config
-       (evil-set-undo-system 'undo-tree))
-   #+END_SRC
-** Clangformat
+*** Clangformat
    #+BEGIN_SRC emacs-lisp
      (defun clang-format-buffer-smart ()
        "Reformat buffer if .clang-format exists in the projectile root."
@@ -491,112 +829,15 @@
        (add-hook 'c++-mode-hook 'clang-format-buffer-smart-on-save)
        )
    #+END_SRC
-** Ansicolor
-   #+BEGIN_SRC emacs-lisp
-     (use-package ansi-color
-       :config
-       (defun colorize-compilation-buffer ()
-         (let ((inhibit-read-only t))
-           (ansi-color-apply-on-region (point-min) (point-max))))
-       (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
-       )
-   #+END_SRC
-** Dashboard
-#+BEGIN_SRC emacs-lisp
-  (use-package dashboard
-    :config
-    (dashboard-setup-startup-hook)
-    (setq dashboard-banner-logo-title "Welcome to Peixoto's Emacs!!")
-    (setq dashboard-items '((recents  . 10)
-                            (projects . 10)
-                            (bookmarks . 5)))
-    (setq dashboard-set-file-icons t)
-    (setq dashboard-set-heading-icons t)
-    (setq dashboard-set-footer t)
-    (setq dashboard-footer-messages '("Emacs is written in Lisp, which is the only computer language that is beautiful."))
-    (setq dashboard-footer-icon (all-the-icons-octicon "dashboard"
-                                                       :height 1.1
-                                                       :v-adjust -0.05
-                                                       :face 'font-lock-keyword-face))
-    )
-#+END_SRC
-** General
-   #+BEGIN_SRC emacs-lisp
-     (use-package general
-       :config
-       (general-define-key
-        :keymaps 'lsp-mode-map
-        "<f5>"    'dap-debug
-        "M-<f5>"  'dap-hydra
-        "M-9"     'lsp-treemacs-errors-list
-       )
-       ;; Evil
-       ;;; Evil leader definition
-       (setq my-leader "SPC")
-       (setq my-local-leader "SPC m")
-       (general-create-definer my-leader-def
-                               :prefix my-leader)
-
-       (general-create-definer my-local-leader-def
-                               :prefix my-local-leader)
-
-       ;;; Evil normal state keybindings
-       (general-def 'normal
-         "gl" 'avy-goto-line
-         "ga" 'avy-goto-subword-1
-         "gc" 'evil-commentary)
-
-       ;;; Evil normal state keybindings with LEADER
-       (my-leader-def 'normal 'override
-         "0"   'treemacs-select-window
-         "1"   'winum-select-window-1
-         "2"   'winum-select-window-2
-         "3"   'winum-select-window-3
-         "4"   'winum-select-window-4
-         "5"   'winum-select-window-5
-         "6"   'winum-select-window-6
-         "7"   'winum-select-window-7
-         "8"   'winum-select-window-8
-         "9"   'winum-select-window-9
-         "p"  'projectile-command-map
-         "lo"  'lsp-organize-imports
-         "lr"  'lsp-rename
-         "xt1" 'treemacs-delete-other-windows
-         "xtt" 'treemacs
-         "xtd" 'treemacs-select-directory
-         "xtf" 'treemacs-find-file
-         "xtg" 'treemacs-find-tag
-         "xcr" 'reload-config
-         "xcf" 'find-config
-         "x1"  'delete-other-windows
-         "hz"  'hydra-text-scale/body
-         "q" 'delete-window
-         "w" 'save-buffer
-       )
-     )
-   #+END_SRC 
-** Hydra
-#+BEGIN_SRC emacs-lisp
-  (use-package hydra)
-  (defhydra hydra-text-scale (:timeout 10)
-     "scale text"
-     ("j" text-scale-increase "in")
-     ("k" text-scale-decrease "out")
-     ("f" nil "finished" :exit t))
-#+END_SRC
-
-** Forge
-  #+BEGIN_SRC emacs-lisp
-    (use-package forge)
-  #+END_SRC
-
-** Winum
+   
+*** Winum
   #+BEGIN_SRC emacs-lisp
     (use-package winum
       :config
       (winum-mode))
   #+END_SRC
-** Treemacs
+
+*** Treemacs
   #+BEGIN_SRC emacs-lisp
     (use-package treemacs
       :defer t
@@ -679,9 +920,9 @@
       :bind (:map lsp-mode-map
          ("M-9" . lsp-treemacs-errors-list)))
 
-    (use-package treemacs-evil
-      :after (treemacs evil)
-      :ensure t)
+    ;; (use-package treemacs-evil
+    ;;   :after (treemacs evil)
+    ;;   :ensure t)
 
     (use-package treemacs-projectile
       :after (treemacs projectile)
@@ -695,65 +936,4 @@
       :after (treemacs magit)
       :ensure t)
   #+END_SRC
-** Exec path from shell
-  #+BEGIN_SRC emacs-lisp
-    (use-package exec-path-from-shell
-        :config
-        (exec-path-from-shell-initialize)
-    )
-  #+END_SRC
-** Company
-  #+BEGIN_SRC emacs-lisp
-    (use-package company)
-  #+END_SRC
-** Flycheck
-  #+BEGIN_SRC emacs-lisp
-    (use-package flycheck :init (global-flycheck-mode))
-  #+END_SRC
-** Dap
-  #+BEGIN_SRC emacs-lisp
-    (use-package dap-mode
-      :ensure t
-      :after (lsp-mode)
-      :functions dap-hydra/nil
-      :config
-      :hook ((dap-mode . dap-ui-mode)
-        (dap-session-created . (lambda (&_rest) (dap-hydra)))
-        (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
-  #+END_SRC
-** LSP
-  #+BEGIN_SRC emacs-lisp
-    (use-package lsp-mode
-    :ensure t
-    :hook (
-       (lsp-mode . lsp-enable-which-key-integration)
-       (java-mode . #'lsp-deferred)
-    )
-    :init (setq 
-        lsp-keymap-prefix "C-c l"              ; this is for which-key integration documentation, need to use lsp-mode-map
-        lsp-enable-file-watchers nil
-        read-process-output-max (* 1024 1024)  ; 1 mb
-        lsp-completion-provider :capf
-        lsp-idle-delay 0.500
-    )
-    :config 
-        (setq lsp-intelephense-multi-root nil) ; don't scan unnecessary projects
-        (with-eval-after-load 'lsp-intelephense
-        (setf (lsp--client-multi-root (gethash 'iph lsp-clients)) nil))
-    )
-
-    (use-package lsp-java 
-    :config
-    (add-hook 'java-mode-hook 'lsp)
-    (setq lsp-java-vmargs
-      (list
-         "-XX:+UseParallelGC"
-         "-XX:GCTimeRatio=4"
-         "-XX:AdaptiveSizePolicyWeight=90"
-         "-Dsun.zip.disableMemoryMapping=true"
-         "-Xmx1G"
-         "-Xms100m"
-         "-javaagent:/home/lucas/Downloads/lombok.jar"))
-    )
-  #+END_SRC
-
+  
