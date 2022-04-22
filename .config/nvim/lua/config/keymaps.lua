@@ -18,6 +18,7 @@ vim.g.maplocalleader = " "
 --   term_mode = "t",
 --   command_mode = "c",
 
+keymap("n", "<leader><cr>", ":nohl<cr>", opts)
 -- Normal --
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h", opts)
@@ -69,6 +70,27 @@ keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 -- keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>", opts)
 keymap("n", "<leader>ff", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
 keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", opts)
+keymap("n", "<leader>fb", "<cmd>lua require'telescope.builtin'.buffers(require('telescope.themes').get_dropdown({previewer = false }))<cr>", opts)
 
 keymap("n", "<leader>w", ":w<cr>", opts)
 keymap("n", "<leader>q", ":q<cr>", opts)
+
+
+-- Emacs insert mode --
+keymap("i", "<C-a>", "<ESC>I", opts)
+keymap("i", "<C-e>", "<ESC>A", opts)
+keymap("i", "<M-f>", "<ESC><Space>wi", opts)
+keymap("i", "<M-b>", "<ESC>bi", opts)
+keymap("i", "<M-d>", "<ESC>cW", opts)
+
+-- Nvimtree
+keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
+
+-- Bufferline
+keymap("n", "<leader>xb", ":BufferLinePick<cr>", opts)
+
+-- Java
+keymap("n", "<leader>jo", "<cmd>lua require'jdtls'.organize_imports()<cr>", opts)
+
+-- Formatting
+keymap("n", "<leader>cf", "<cmd> lua vim.lsp.buf.formatting_sync()<cr>", opts)
