@@ -50,6 +50,16 @@ return packer.startup(function(use)
     use "akinsho/bufferline.nvim"
     use "moll/vim-bbye"
     use "akinsho/toggleterm.nvim"
+    use {
+        'phaazon/hop.nvim',
+        branch = 'v1', -- optional but strongly recommended
+        config = function()
+            -- you can configure Hop the way you like here; see :h hop-config
+            require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+        end
+    }
+    use "tpope/vim-surround"
+    use "jalvesaq/Nvim-R"
 
     -- Colorscheme
     use 'folke/tokyonight.nvim'
@@ -94,7 +104,6 @@ return packer.startup(function(use)
 
     -- Git
     use "lewis6991/gitsigns.nvim"
-
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
