@@ -13,5 +13,17 @@ configs.setup {
     context_commentstring = {
         enable = true,
         enable_autocmd = false,
-    }
+    },
+    rainbow = {
+		enable = true,
+		colors = {
+			"Gold",
+			"Orchid",
+			"DodgerBlue",
+			-- "Cornsilk",
+			-- "Salmon",
+			-- "LawnGreen",
+		},
+		disable = { "html" },
+	}
 }

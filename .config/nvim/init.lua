@@ -19,3 +19,6 @@ require "config.toggleterm"
 require "config.hop"
 require "config.indent-blankline"
 require "config.fixcursorhold"
+require "config.symbols-outline"
+require "config.trouble"
+vim.cmd [[set laststatus=3]]

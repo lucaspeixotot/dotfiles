@@ -91,6 +91,11 @@ return packer.startup(function(use)
     use "williamboman/nvim-lsp-installer" -- simple to use language server installer
     use "mfussenegger/nvim-jdtls"
     use "jose-elias-alvarez/null-ls.nvim"
+    use "simrat39/symbols-outline.nvim"
+    use {
+        "folke/trouble.nvim",
+        requires = "kyazdani42/nvim-web-devicons"
+    }
 
     -- Telescope
     use "nvim-telescope/telescope.nvim"
@@ -107,6 +112,7 @@ return packer.startup(function(use)
 
     -- Git
     use "lewis6991/gitsigns.nvim"
+    use "https://github.com/rhysd/conflict-marker.vim"
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
