@@ -1,6 +1,7 @@
 require "config.basic"
 require "config.keymaps"
 require "config.plugins"
+require('impatient')
 require "config.colorscheme"
 require "config.lualine"
 require "config.cmp"
@@ -16,3 +17,5 @@ require "config.bufferline"
 require "config.lsp.null-ls"
 require "config.toggleterm"
 require "config.hop"
+require "config.indent-blankline"
+require "config.fixcursorhold"

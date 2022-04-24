@@ -19,7 +19,7 @@ end
 vim.cmd [[
   augroup packer_user_config
     autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
+    autocmd BufWritePost plugins.lua source <afile> | PackerInstall
   augroup end
 ]]
 
@@ -60,6 +60,9 @@ return packer.startup(function(use)
     }
     use "tpope/vim-surround"
     use "jalvesaq/Nvim-R"
+    use 'lewis6991/impatient.nvim'
+    use "lukas-reineke/indent-blankline.nvim"
+    use "antoinemadec/FixCursorHold.nvim"
 
     -- Colorscheme
     use 'folke/tokyonight.nvim'
