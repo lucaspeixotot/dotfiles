@@ -22,4 +22,5 @@ require "config.fixcursorhold"
 require "config.symbols-outline"
 require "config.trouble"
 require "config.winshift"
+require "config.nvim-window"
 vim.cmd [[set laststatus=3]]

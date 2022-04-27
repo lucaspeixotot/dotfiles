@@ -64,6 +64,7 @@ return packer.startup(function(use)
     use "lukas-reineke/indent-blankline.nvim"
     use "antoinemadec/FixCursorHold.nvim"
     use "sindrets/winshift.nvim"
+    use "https://gitlab.com/yorickpeterse/nvim-window.git"
 
     -- Colorscheme
     use 'folke/tokyonight.nvim'

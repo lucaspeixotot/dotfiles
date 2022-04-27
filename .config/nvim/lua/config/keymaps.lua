@@ -106,7 +106,7 @@ keymap('o', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hin
 keymap('', 't', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
 keymap('', 'T', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
 
-
+-- Win shift
 vim.cmd[[
 " Start Win-Move mode:
 "nnoremap <C-W><C-M> <Cmd>WinShift<CR>
@@ -122,3 +122,6 @@ nnoremap <C-M-J> <Cmd>WinShift down<CR>
 nnoremap <C-M-K> <Cmd>WinShift up<CR>
 nnoremap <C-M-L> <Cmd>WinShift right<CR>
 ]]
+
+-- Nvim-window
+keymap('n', '<leader>o', '<cmd>lua require("nvim-window").pick()<cr>', opts)

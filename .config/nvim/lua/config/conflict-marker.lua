@@ -4,9 +4,9 @@ vim.g.conflict_marker_common_ancestors = "^||||||| .*$"
 vim.g.conflict_marker_separator        = "^=======$"
 vim.g.conflict_marker_end              = "^>>>>>>> \\@="
 vim.cmd[[
-highlight ConflictMarkerBegin guibg=#2f7366
+highlight ConflictMarkerBegin guifg=#e06c75
 highlight ConflictMarkerOurs guibg=#2e5049
+highlight ConflictMarkerSeparator guifg=#e06c75
 highlight ConflictMarkerTheirs guibg=#344f69
-highlight ConflictMarkerEnd guibg=#2f628e
-highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
+highlight ConflictMarkerEnd guifg=#e06c75
 ]]
