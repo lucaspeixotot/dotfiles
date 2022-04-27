@@ -106,3 +106,6 @@ keymap('o', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hin
 keymap('', 't', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
 keymap('', 'T', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
 
+-- Nvim-window
+
+keymap('n', '<leader>o', '<cmd>lua require("nvim-window").pick()<cr>', opts)

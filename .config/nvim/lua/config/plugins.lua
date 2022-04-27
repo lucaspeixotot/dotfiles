@@ -63,6 +63,8 @@ return packer.startup(function(use)
     use 'lewis6991/impatient.nvim'
     use "lukas-reineke/indent-blankline.nvim"
     use "antoinemadec/FixCursorHold.nvim"
+    use "https://gitlab.com/yorickpeterse/nvim-window.git"
+
 
     -- Colorscheme
     use 'folke/tokyonight.nvim'

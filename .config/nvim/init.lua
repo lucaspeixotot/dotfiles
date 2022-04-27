@@ -21,4 +21,5 @@ require "config.indent-blankline"
 require "config.fixcursorhold"
 require "config.symbols-outline"
 require "config.trouble"
+require "config.nvim-window"
 vim.cmd [[set laststatus=3]]
