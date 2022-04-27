@@ -63,6 +63,7 @@ return packer.startup(function(use)
     use 'lewis6991/impatient.nvim'
     use "lukas-reineke/indent-blankline.nvim"
     use "antoinemadec/FixCursorHold.nvim"
+    use "sindrets/winshift.nvim"
 
     -- Colorscheme
     use 'folke/tokyonight.nvim'
@@ -113,6 +114,8 @@ return packer.startup(function(use)
     -- Git
     use "lewis6991/gitsigns.nvim"
     use "https://github.com/rhysd/conflict-marker.vim"
+
+
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

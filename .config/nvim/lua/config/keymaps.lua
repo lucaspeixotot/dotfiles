@@ -106,3 +106,19 @@ keymap('o', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hin
 keymap('', 't', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
 keymap('', 'T', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
 
+
+vim.cmd[[
+" Start Win-Move mode:
+"nnoremap <C-W><C-M> <Cmd>WinShift<CR>
+"nnoremap <C-W>m <Cmd>WinShift<CR>
+
+" Swap two windows:
+nnoremap <C-W>X <Cmd>WinShift swap<CR>
+
+" If you don't want to use Win-Move mode you can create mappings for calling the
+" move commands directly:
+nnoremap <C-M-H> <Cmd>WinShift left<CR>
+nnoremap <C-M-J> <Cmd>WinShift down<CR>
+nnoremap <C-M-K> <Cmd>WinShift up<CR>
+nnoremap <C-M-L> <Cmd>WinShift right<CR>
+]]
