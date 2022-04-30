@@ -47,9 +47,9 @@ return packer.startup(function(use)
     use "windwp/nvim-autopairs" -- Autopairs, integrates with both cmp and Treesitter
     use "numToStr/Comment.nvim" -- Easily comment stuff
     use "kyazdani42/nvim-tree.lua" -- Tree file manager
-    use "akinsho/bufferline.nvim"
-    use "moll/vim-bbye"
-    use "akinsho/toggleterm.nvim"
+    use "akinsho/bufferline.nvim" -- Bufferline stuff
+    use "moll/vim-bbye" -- Buffer stuff
+    use "akinsho/toggleterm.nvim" -- Neovim terminal
     use {
         'phaazon/hop.nvim',
         branch = 'v1', -- optional but strongly recommended
@@ -57,14 +57,14 @@ return packer.startup(function(use)
             -- you can configure Hop the way you like here; see :h hop-config
             require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
         end
-    }
-    use "tpope/vim-surround"
-    use "jalvesaq/Nvim-R"
-    use 'lewis6991/impatient.nvim'
-    use "lukas-reineke/indent-blankline.nvim"
+    } -- Like Avy emacs plugin
+    use "tpope/vim-surround" -- cs'" stuff
+    use "jalvesaq/Nvim-R" -- R support
+    use 'lewis6991/impatient.nvim' -- Improve startup time
+    use "lukas-reineke/indent-blankline.nvim" -- Fancy indent lines
     use "antoinemadec/FixCursorHold.nvim"
-    use "sindrets/winshift.nvim"
-    use "https://gitlab.com/yorickpeterse/nvim-window.git"
+    use "sindrets/winshift.nvim" -- Reorganize windows
+    use "https://gitlab.com/yorickpeterse/nvim-window.git" -- C-x o emacs jump window
 
     -- Colorscheme
     use 'folke/tokyonight.nvim'
@@ -91,13 +91,13 @@ return packer.startup(function(use)
     -- LSP
     use "neovim/nvim-lspconfig" -- enable LSP
     use "williamboman/nvim-lsp-installer" -- simple to use language server installer
-    use "mfussenegger/nvim-jdtls"
-    use "jose-elias-alvarez/null-ls.nvim"
-    use "simrat39/symbols-outline.nvim"
+    use "mfussenegger/nvim-jdtls" -- Java development improvement
+    use "jose-elias-alvarez/null-ls.nvim" -- Add linter and formatter for LSP
+    use "simrat39/symbols-outline.nvim" -- Symbols tree
     use {
         "folke/trouble.nvim",
         requires = "kyazdani42/nvim-web-devicons"
-    }
+    } -- Fancy error diagnostics
 
     -- Telescope
     use "nvim-telescope/telescope.nvim"
@@ -113,10 +113,8 @@ return packer.startup(function(use)
     use "nvim-treesitter/playground"
 
     -- Git
-    use "lewis6991/gitsigns.nvim"
-    use "https://github.com/rhysd/conflict-marker.vim"
-
-
+    use "lewis6991/gitsigns.nvim" -- Git signs before line number
+    use "https://github.com/rhysd/conflict-marker.vim" -- Fancy solve git conflict
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
