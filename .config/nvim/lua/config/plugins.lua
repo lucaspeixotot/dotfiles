@@ -51,7 +51,7 @@ return packer.startup(function(use)
     use "moll/vim-bbye" -- Buffer stuff
     use "akinsho/toggleterm.nvim" -- Neovim terminal
     use {
-        'phaazon/hop.nvim',
+        "phaazon/hop.nvim",
         branch = 'v1', -- optional but strongly recommended
         config = function()
             -- you can configure Hop the way you like here; see :h hop-config
@@ -60,11 +60,15 @@ return packer.startup(function(use)
     } -- Like Avy emacs plugin
     use "tpope/vim-surround" -- cs'" stuff
     use "jalvesaq/Nvim-R" -- R support
-    use 'lewis6991/impatient.nvim' -- Improve startup time
+    use "lewis6991/impatient.nvim" -- Improve startup time
     use "lukas-reineke/indent-blankline.nvim" -- Fancy indent lines
     use "antoinemadec/FixCursorHold.nvim"
     use "sindrets/winshift.nvim" -- Reorganize windows
     use "https://gitlab.com/yorickpeterse/nvim-window.git" -- C-x o emacs jump window
+    use "ThePrimeagen/harpoon" -- Better file navigation (avoid multiple fuzzy find files)
+    use "nkakouros-original/numbers.nvim" -- Relative lines
+    use "petertriho/nvim-scrollbar" -- add scrollbar with diagnostics
+    use "kevinhwang91/nvim-hlslens" -- add highlight to searches
 
     -- Colorscheme
     use 'folke/tokyonight.nvim'
@@ -111,6 +115,7 @@ return packer.startup(function(use)
     use "p00f/nvim-ts-rainbow"
     use "JoosepAlviste/nvim-ts-context-commentstring"
     use "nvim-treesitter/playground"
+    use "romgrk/nvim-treesitter-context"
 
     -- Git
     use "lewis6991/gitsigns.nvim" -- Git signs before line number
