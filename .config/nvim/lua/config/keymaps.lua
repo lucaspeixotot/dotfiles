@@ -36,7 +36,7 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 keymap("n", "<S-l>", ":bnext<CR>", opts)
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
 
--- Insert --
+-- Insert -
 -- Press jk fast to enter
 keymap("i", "fd", "<ESC>", opts)
 keymap("v", "fd", "<ESC>gV", opts)
@@ -99,6 +99,8 @@ keymap("n", "<leader>jo", "<cmd>lua require'jdtls'.organize_imports()<cr>", opts
 keymap("n", "<leader>cf", "<cmd> lua vim.lsp.buf.formatting_sync()<cr>", opts)
 
 -- Hop
+keymap('n', 'ga', "<cmd>lua require'hop'.hint_lines({multi_windows=true})<cr>", opts)
+keymap('n', 'gw', "<cmd>lua require'hop'.hint_char1({current_line_only = false, multi_windows=true})<cr>", opts)
 keymap('n', '<leader>al', "<cmd>lua require'hop'.hint_lines({multi_windows=true})<cr>", opts)
 keymap('n', '<leader>aa', "<cmd>lua require'hop'.hint_char2({current_line_only = false, multi_windows=true})<cr>", opts)
 keymap('n', '<leader>aw', "<cmd>lua require'hop'.hint_words({current_line_only = false, multi_windows=true})<cr>", opts)
@@ -146,4 +148,3 @@ keymap('n', '*', [[*<Cmd>lua require('hlslens').start()<CR>]], opts)
 keymap('n', '#', [[#<Cmd>lua require('hlslens').start()<CR>]], opts)
 keymap('n', 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], opts)
 keymap('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], opts)
-

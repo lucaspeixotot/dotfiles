@@ -27,4 +27,5 @@ require "config.numbers"
 require "config.nvim-scrollbar"
 require "config.hlslens"
 require "config.nvim-treesitter-context"
+require "config.neogen"
 vim.cmd [[set laststatus=3]]

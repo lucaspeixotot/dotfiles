@@ -69,6 +69,10 @@ return packer.startup(function(use)
     use "nkakouros-original/numbers.nvim" -- Relative lines
     use "petertriho/nvim-scrollbar" -- add scrollbar with diagnostics
     use "kevinhwang91/nvim-hlslens" -- add highlight to searches
+    use {
+        "danymat/neogen",
+        requires = "nvim-treesitter/nvim-treesitter",
+    }
 
     -- Colorscheme
     use 'folke/tokyonight.nvim'
