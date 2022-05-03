@@ -73,6 +73,7 @@ return packer.startup(function(use)
         "danymat/neogen",
         requires = "nvim-treesitter/nvim-treesitter",
     }
+    use "stevearc/aerial.nvim"
 
     -- Colorscheme
     use 'folke/tokyonight.nvim'
@@ -101,7 +102,6 @@ return packer.startup(function(use)
     use "williamboman/nvim-lsp-installer" -- simple to use language server installer
     use "mfussenegger/nvim-jdtls" -- Java development improvement
     use "jose-elias-alvarez/null-ls.nvim" -- Add linter and formatter for LSP
-    use "simrat39/symbols-outline.nvim" -- Symbols tree
     use {
         "folke/trouble.nvim",
         requires = "kyazdani42/nvim-web-devicons"
@@ -119,7 +119,6 @@ return packer.startup(function(use)
     use "p00f/nvim-ts-rainbow"
     use "JoosepAlviste/nvim-ts-context-commentstring"
     use "nvim-treesitter/playground"
-    use "romgrk/nvim-treesitter-context"
 
     -- Git
     use "lewis6991/gitsigns.nvim" -- Git signs before line number

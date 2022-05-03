@@ -99,11 +99,8 @@ keymap("n", "<leader>jo", "<cmd>lua require'jdtls'.organize_imports()<cr>", opts
 keymap("n", "<leader>cf", "<cmd> lua vim.lsp.buf.formatting_sync()<cr>", opts)
 
 -- Hop
-keymap('n', 'ga', "<cmd>lua require'hop'.hint_lines({multi_windows=true})<cr>", opts)
-keymap('n', 'gw', "<cmd>lua require'hop'.hint_char1({current_line_only = false, multi_windows=true})<cr>", opts)
-keymap('n', '<leader>al', "<cmd>lua require'hop'.hint_lines({multi_windows=true})<cr>", opts)
-keymap('n', '<leader>aa', "<cmd>lua require'hop'.hint_char2({current_line_only = false, multi_windows=true})<cr>", opts)
-keymap('n', '<leader>aw', "<cmd>lua require'hop'.hint_words({current_line_only = false, multi_windows=true})<cr>", opts)
+keymap('n', 'gs', "<cmd>lua require'hop'.hint_lines({multi_windows=true})<cr>", opts)
+keymap('n', 'ga', "<cmd>lua require'hop'.hint_char1({current_line_only = false, multi_windows=true})<cr>", opts)
 keymap('n', 'f', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
 keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
 keymap('o', 'f', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, inclusive_jump = true })<cr>", {})
