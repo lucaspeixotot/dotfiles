@@ -27,4 +27,5 @@ require "config.nvim-scrollbar"
 require "config.hlslens"
 require "config.neogen"
 require "config.aerial"
+-- require "config.tabnine"
 vim.cmd [[set laststatus=3]]

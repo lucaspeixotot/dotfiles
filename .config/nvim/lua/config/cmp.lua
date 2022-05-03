@@ -15,6 +15,8 @@ local check_backspace = function()
     return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
 end
 
+local compare = require('cmp.config.compare')
+
 --   פּ ﯟ   some other good icons
 local kind_icons = {
     Text = "",
@@ -101,6 +103,7 @@ cmp.setup {
             vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
             -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
             vim_item.menu = ({
+                -- cmp_tabnine = "[TN]",
                 nvim_lsp = "[LSP]",
                 luasnip = "[Snippet]",
                 buffer = "[Buffer]",
@@ -110,6 +113,7 @@ cmp.setup {
         end,
     },
     sources = {
+        -- { name = "cmp_tabnine" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
         { name = "buffer" },
@@ -124,6 +128,20 @@ cmp.setup {
             border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
         }
     },
+    -- sorting = {
+    --     priority_weight = 2,
+    --     comparators = {
+    --         require('cmp_tabnine.compare'),
+    --         compare.offset,
+    --         compare.exact,
+    --         compare.score,
+    --         compare.recently_used,
+    --         compare.kind,
+    --         compare.sort_text,
+    --         compare.length,
+    --         compare.order,
+    --     },
+    -- },
     experimental = {
         ghost_text = false,
         native_menu = false,
