@@ -107,6 +107,7 @@ return packer.startup(function(use)
         "folke/trouble.nvim",
         requires = "kyazdani42/nvim-web-devicons"
     } -- Fancy error diagnostics
+    use "jose-elias-alvarez/nvim-lsp-ts-utils"
 
     -- Telescope
     use "nvim-telescope/telescope.nvim"
