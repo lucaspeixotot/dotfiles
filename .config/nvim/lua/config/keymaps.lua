@@ -93,11 +93,6 @@ keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 -- Bufferline
 keymap("n", "<leader>xb", ":BufferLinePick<cr>", opts)
 
--- Java
-keymap("n", "<leader>jo", "<cmd>lua require'jdtls'.organize_imports()<cr>", opts)
-
--- Formatting
-keymap("n", "<leader>cf", "<cmd> lua vim.lsp.buf.formatting_sync()<cr>", opts)
 
 -- Hop
 keymap('n', 'gs', "<cmd>lua require'hop'.hint_lines({multi_windows=true})<cr>", opts)
@@ -149,3 +144,23 @@ keymap('n', '*', [[*<Cmd>lua require('hlslens').start()<CR>]], opts)
 keymap('n', '#', [[#<Cmd>lua require('hlslens').start()<CR>]], opts)
 keymap('n', 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], opts)
 keymap('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], opts)
+
+--- LSP
+keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+keymap("n", "<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+keymap("n", "<leader>cr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+keymap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+keymap("n", "<leader>cf", "<cmd> lua vim.lsp.buf.formatting_sync()<cr>", opts)
+-- vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>f", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+keymap("n", "[d", '<cmd>lua vim.diagnostic.goto_prev({ border = "rounded" })<CR>', opts)
+keymap("n","gl",'<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({ border = "rounded" })<CR>',opts)
+keymap("n", "]d", '<cmd>lua vim.diagnostic.goto_next({ border = "rounded" })<CR>', opts)
+keymap("n", "<leader>d", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+
+-- Java
+keymap("n", "<leader>jo", "<cmd>lua require'jdtls'.organize_imports()<cr>", opts)

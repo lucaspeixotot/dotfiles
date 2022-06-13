@@ -77,6 +77,7 @@ return packer.startup(function(use)
 
     -- Colorscheme
     use 'folke/tokyonight.nvim'
+    use 'norcalli/nvim-colorizer.lua'
 
     -- Statusline
     use {
