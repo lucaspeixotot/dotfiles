@@ -48,11 +48,11 @@ vim.keymap.set("n", "<leader>w", ":w<cr>")
 vim.keymap.set("n", "<leader>q", ":q<cr>")
 
 -- Emacs insert mode --
-vim.keymap.set("i", "<C-a>", "<ESC>I")
-vim.keymap.set("i", "<C-e>", "<ESC>A")
-vim.keymap.set("i", "<M-f>", "<ESC><Space>wi")
-vim.keymap.set("i", "<M-b>", "<ESC>bi")
-vim.keymap.set("i", "<M-d>", "<ESC>cW")
+-- vim.keymap.set("i", "<C-a>", "<ESC>I")
+-- vim.keymap.set("i", "<C-e>", "<ESC>A")
+-- vim.keymap.set("i", "<M-f>", "<ESC><Space>wi")
+-- vim.keymap.set("i", "<M-b>", "<ESC>bi")
+-- vim.keymap.set("i", "<M-d>", "<ESC>cW")
 
 -- Hop
 vim.keymap.set('n', 'gs', "<cmd>lua require'hop'.hint_lines({multi_windows=true})<cr>")

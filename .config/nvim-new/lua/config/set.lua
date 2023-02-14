@@ -1,3 +1,4 @@
+vim.g.mapleader = " "
 vim.opt.guicursor = ""
 
 vim.opt.cmdheight = 2                           -- more space in the neovim command line for displaying messages
@@ -26,4 +27,5 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 vim.opt.termguicolors = true
 vim.opt.colorcolumn = "80"
-vim.g.mapleader = " "
+vim.opt.laststatus = 3
+vim.cmd[[highlight WinSeparator guibg=None]]
