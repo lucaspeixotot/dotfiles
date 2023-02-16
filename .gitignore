@@ -2,3 +2,4 @@
 .vim/plugged/
 tags
 node_modules
+packer_compiled.lua
