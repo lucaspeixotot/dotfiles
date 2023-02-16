@@ -10,7 +10,7 @@ return require('packer').startup(function(use)
   use {
 	  'nvim-telescope/telescope.nvim', tag = '0.1.1',
 	  -- or                            , branch = '0.1.x',
-	  requires = { {'nvim-lua/plenary.nvim'} }
+	  requires = { {'nvim-lua/plenary.nvim'}, { "nvim-telescope/telescope-live-grep-args.nvim" } }
   }
 
   use({
@@ -87,5 +87,34 @@ return require('packer').startup(function(use)
 
   use {"windwp/nvim-autopairs"}
   use {"windwp/nvim-ts-autotag"}
+
+  use {'kevinhwang91/nvim-bqf', ft = 'qf'}
+
+  use { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
+
+  use { "SmiteshP/nvim-navic" }
+
+  use { "nvim-tree/nvim-web-devicons" }
+
+  use({
+      "utilyre/barbecue.nvim",
+      tag = "*",
+      config = function()
+          require("barbecue").setup()
+      end,
+  })
+
+  use {
+      "folke/trouble.nvim",
+      requires = "nvim-tree/nvim-web-devicons",
+      config = function()
+          require("trouble").setup {
+              -- your configuration comes here
+              -- or leave it empty to use the default settings
+              -- refer to the configuration section below
+          }
+      end
+  }
+
 end)
 

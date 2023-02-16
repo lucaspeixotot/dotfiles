@@ -27,5 +27,5 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 vim.opt.termguicolors = true
 vim.opt.colorcolumn = "80"
-vim.opt.laststatus = 3
+vim.cmd[[set laststatus=3]]
 vim.cmd[[highlight WinSeparator guibg=None]]
