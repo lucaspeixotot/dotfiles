@@ -95,3 +95,5 @@ nvim_tree.setup {
     --     tree_width = 30,
     -- },
 }
+
+vim.keymap.set('n', '<leader>pn', ':NvimTreeToggle<cr>')

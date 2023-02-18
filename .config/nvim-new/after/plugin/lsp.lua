@@ -29,7 +29,6 @@ lsp.setup_nvim_cmp({
 })
 
 lsp.on_attach(function(client, bufnr)
-	print("help")
   local opts = {buffer = bufnr, remap = false}
 
   vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
@@ -43,6 +42,14 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
   vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 
+  if client.server_capabilities.colorProvider then
+    -- Attach document colour support
+    require("document-color").buf_attach(bufnr)
+  end
+
 end)
 
 lsp.setup()
+
+vim.keymap.set('n', "<leader>pti", function() vim.lsp.buf.execute_command({command = "_typescript.organizeImports", arguments = {vim.fn.expand("%:p")}}) end)
+vim.keymap.set('n', "<leader>pf", function() vim.lsp.buf.format() end)
