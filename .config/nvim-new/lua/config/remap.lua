@@ -55,8 +55,8 @@ vim.keymap.set("n", "<leader>q", ":q<cr>")
 -- vim.keymap.set("i", "<M-d>", "<ESC>cW")
 
 -- Hop
-vim.keymap.set('n', 'gs', "<cmd>lua require'hop'.hint_lines({multi_windows=true})<cr>")
-vim.keymap.set('n', 'ga', "<cmd>lua require'hop'.hint_char1({current_line_only = false, multi_windows=true})<cr>")
+-- vim.keymap.set('n', 'S', "<cmd>lua require'hop'.hint_lines({multi_windows=true})<cr>")
+-- vim.keymap.set('n', 's', "<cmd>lua require'hop'.hint_char1({current_line_only = false, multi_windows=true})<cr>")
 
 -- Navigation
 vim.keymap.set('n', "J", "mzJ`z")

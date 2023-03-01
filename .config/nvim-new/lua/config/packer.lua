@@ -47,10 +47,10 @@ return require('packer').startup(function(use)
         }
     }
 
-    use {
-        'phaazon/hop.nvim',
-        branch = 'v2'
-    }
+    -- use {
+    --     'phaazon/hop.nvim',
+    --     branch = 'v2'
+    -- }
 
     use {
         'numToStr/Comment.nvim',
@@ -116,4 +116,6 @@ return require('packer').startup(function(use)
             })
         end
     })
+
+    use { 'echasnovski/mini.nvim', branch = 'stable' }
 end)
