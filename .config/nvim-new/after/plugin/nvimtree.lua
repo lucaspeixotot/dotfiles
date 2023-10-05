@@ -58,7 +58,7 @@ nvim_tree.setup {
     },
     update_focused_file = {
         enable = true,
-        update_cwd = true,
+        -- update_cwd = false,
         ignore_list = {},
     },
     git = {
@@ -78,6 +78,7 @@ nvim_tree.setup {
                 { key = { "l", "<CR>", "o" }, cb = tree_cb "edit" },
                 { key = "h", cb = tree_cb "close_node" },
                 { key = "v", cb = tree_cb "vsplit" },
+                { key = "s", cb = tree_cb "split" },
             },
         },
         number = false,

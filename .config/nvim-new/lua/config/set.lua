@@ -1,4 +1,5 @@
 vim.g.mapleader = " "
+vim.g.maplocalleader = ","
 vim.opt.guicursor = ""
 
 vim.opt.cmdheight = 2                           -- more space in the neovim command line for displaying messages
