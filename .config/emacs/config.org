@@ -30,6 +30,7 @@
   - [[#multi-vterm][Multi vterm]]
 - [[#org-mode][ORG MODE]]
 - [[#keybindings][Keybindings]]
+  - [[#key-chord][Key chord]]
   - [[#general][GENERAL]]
   - [[#which-key][WHICH-KEY]]
 - [[#better-movement][Better movement]]
@@ -58,7 +59,9 @@
   - [[#poetry][Poetry]]
   - [[#consult-eglot][Consult eglot]]
   - [[#magit][Magit]]
+  - [[#git-blamer][Git blamer]]
   - [[#doxygen][Doxygen]]
+  - [[#header-line-which-function][Header line which function]]
 - [[#misc][Misc]]
   - [[#sudo-edit][SUDO EDIT]]
   - [[#undo-fu][undo fu]]
@@ -396,53 +399,41 @@ Setup my dashboard window
 #+end_src
 
 * Keybindings
+** Key chord
+#+begin_src emacs-lisp
+(use-package key-chord
+:init
+(key-chord-mode t)
+:config
+(key-chord-define-global "uu"     'undo-fu-only-undo)
+(key-chord-define-global "rr"     'undo-fu-only-redo)
+(key-chord-define-global "xl"     'avy-goto-line)
+(key-chord-define-global "xa"     'avy-goto-char)
+)
+#+end_src
+
 ** GENERAL
 #+begin_src emacs-lisp
 (use-package general
   :config
   ;;           (general-evil-setup)
-  (general-create-definer cfg/leader-keys
+  (general-create-definer c-c-leader
     :prefix "C-c"
     )
 
   (general-define-key
    :keymaps 'override
    "M-h" 'eldoc-box-help-at-point
-;;   "M-x" 'helm-M-x
    "C-]" 'flymake-goto-next-error
    "C-}" 'flymake-goto-prev-error
    )
-  
-  (cfg/leader-keys
-    "g" '(:ignore t :wk "Git")
-    "g l" '(magit-log-current :wk "Log")
-    "g t" '(magit :wk "Magit toggle")
-    )
-  
-  (cfg/leader-keys
-    "a" '(:ignore t :wk "Avy")
-    "a l" '(avy-goto-line :wk "Go to line")
-    "a c" '(avy-goto-char :wk "Go to char")
-    )
 
-  (cfg/leader-keys
-;;    "i" '(helm-imenu :wk "Helm Imenu")
-    )
-
-  (cfg/leader-keys
+  (c-c-leader
     :keymaps 'override
-;;    "." '(helm-find-files :wk "Find file")
     "f c" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "Edit emacs config")
-;;    "f r" '(helm-recentf :wk "Find recent files")
     )
 
-  (cfg/leader-keys
-    "b" '(:ignore t :wk "buffer")
-;;    "b f" '(helm-buffers-list :wk "Buffer list")
-    "b k" '(kill-this-buffer :wk "Kill this buffer")
-    )
-
-  (cfg/leader-keys
+  (c-c-leader
     "e" '(:ignore t :wk "Evaluate")    
     "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
     "e d" '(eval-defun :wk "Evaluate defun containing or after point")
@@ -450,11 +441,11 @@ Setup my dashboard window
     "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
     "e r" '(eval-region :wk "Evaluate elisp in region")) 
 
-  (cfg/leader-keys
+  (c-c-leader
     "h" '(:ignore t :wk "Help")
     "h r" '(reload-init-file :wk "Reload emacs config"))
 
-  (cfg/leader-keys
+  (c-c-leader
     "t" '(:ignore t :wk "Toggle")
     "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
     "t t" '(visual-line-mode :wk "Toggle truncated lines")
@@ -464,7 +455,7 @@ Setup my dashboard window
     "t n" '(treemacs :wk "Toggle treemacs file viewer")
     )
 
-  (cfg/leader-keys
+  (c-c-leader
     "p" '(projectile-command-map :wk "Projectile"))
   )
 #+end_src
@@ -836,8 +827,8 @@ Basic projectile setup
 (use-package company-box
   :straight t
   :hook (company-mode . company-box-mode))
-
 #+end_src
+
 ** LANGUAGES
 *** C/C++
 #+begin_src emacs-lisp
@@ -852,13 +843,21 @@ Basic projectile setup
 (setq treesit-font-lock-level 4)
 (setq c-ts-mode-indent-offset 4)
   )
-
-;; (use-package flycheck-clang-analyzer
-;;   :straight t
-;;   :after flycheck
-;;   :config (flycheck-clang-analyzer-setup))
 #+end_src
+*** Python
+#+begin_src emacs-lisp
+(setq major-mode-remap-alist
+      '((python-mode . python-ts-mode)))
+(use-package python
+:interpreter ("python3" . python-ts-mode)
+:hook ((python-ts-mode . eglot-ensure))
+)
 
+(use-package pyenv
+  :straight (:host github :repo "aiguofer/pyenv.el")
+  :config
+  (global-pyenv-mode))
+#+end_src
 ** Treemacs
 #+begin_src emacs-lisp
 (use-package treemacs
@@ -1040,6 +1039,25 @@ Basic projectile setup
 )
 #+end_src
 
+
+** Git blamer
+#+begin_src emacs-lisp
+(use-package blamer
+  :straight t
+  :bind (("C-c i" . blamer-show-posframe-commit-info))
+  :defer 20
+  :custom
+  (blamer-idle-time 0.3)
+  (blamer-min-offset 70)
+  :custom-face
+  (blamer-face ((t :foreground "#7a88cf"
+                    :background nil
+                    :height 100
+                    :italic t)))
+  :config
+  (global-blamer-mode 1))
+#+end_src
+
 ** Doxygen
 #+begin_src emacs-lisp
 (require 'doxymacs)
@@ -1051,6 +1069,14 @@ Basic projectile setup
 #+end_src
 
 
+** Header line which function
+#+begin_src emacs-lisp
+(use-package breadcrumb
+:straight t
+:config
+(breakcrumb-mode t)
+)
+#+end_src
 * Misc
 
 ** SUDO EDIT
@@ -1104,4 +1130,5 @@ Basic projectile setup
         (add-hook 'pre-command-hook 'keycast--update t)
       (remove-hook 'pre-command-hook 'keycast--update)))
   (add-to-list 'global-mode-string '("" keycast-mode-line)))
+(keycast-mode t)
 #+end_src
