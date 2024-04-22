@@ -52,20 +52,21 @@
   - [[#projectile][PROJECTILE]]
   - [[#auto-complete][AUTO COMPLETE]]
   - [[#languages][LANGUAGES]]
-  - [[#treemacs][Treemacs]]
-  - [[#yasnippet][Yasnippet]]
-  - [[#eldoc][Eldoc]]
-  - [[#eldoc-box][Eldoc box]]
-  - [[#sideline][Sideline]]
-  - [[#sideline-flymake][Sideline flymake]]
-  - [[#poetry][Poetry]]
-  - [[#eglot][Eglot]]
-  - [[#consult-eglot][Consult eglot]]
-  - [[#magit][Magit]]
-  - [[#git-blamer][Git blamer]]
-  - [[#doxygen][Doxygen]]
-  - [[#header-line-which-function][Header line which function]]
-  - [[#perspective-workspaces][Perspective (workspaces)]]
+- [[#treemacs][Treemacs]]
+- [[#god-mod][God mod]]
+- [[#yasnippet][Yasnippet]]
+- [[#eldoc][Eldoc]]
+- [[#eldoc-box][Eldoc box]]
+- [[#sideline][Sideline]]
+- [[#sideline-flymake][Sideline flymake]]
+- [[#poetry][Poetry]]
+- [[#eglot][Eglot]]
+- [[#consult-eglot][Consult eglot]]
+- [[#magit][Magit]]
+- [[#git-blamer][Git blamer]]
+- [[#doxygen][Doxygen]]
+- [[#header-line-which-function][Header line which function]]
+- [[#perspective-workspaces][Perspective (workspaces)]]
 - [[#misc][Misc]]
   - [[#sudo-edit][SUDO EDIT]]
   - [[#undo-fu][undo fu]]
@@ -73,6 +74,7 @@
   - [[#dired][DIRED]]
   - [[#keycast][Keycast]]
   - [[#zap-to-char][Zap to char]]
+  - [[#ai][AI]]
 
 * Package manager
 ** Straight bootstrap script
@@ -123,9 +125,13 @@ Create a better experience scrolling on emacs
 ** GUI
 A few UI Tweaks
 #+begin_src emacs-lisp
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+(set-frame-parameter nil 'alpha-background 95)
+(add-to-list 'default-frame-alist '(alpha-background . 95))
+
 #+end_src
 
 #+begin_src emacs-lisp
@@ -134,33 +140,29 @@ A few UI Tweaks
 #+end_src
 ** FONT
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil
-  :font "JetBrains Mono"
-  :height 100
-  :weight 'medium)
-(set-face-attribute 'variable-pitch nil
-  :font "Ubuntu"
-  :height 120
-  :weight 'medium)
-(set-face-attribute 'fixed-pitch nil
-  :font "JetBrains Mono"
-  :height 110
-  :weight 'medium)
-;; Makes commented text and keywords italics.
-;; This is working in emacsclient but not emacs.
-;; Your font must have an italic face available.
-(set-face-attribute 'font-lock-comment-face nil
-  :slant 'italic)
-(set-face-attribute 'font-lock-keyword-face nil
-  :slant 'italic)
+  ;; (set-face-attribute 'default nil
+  ;;   :font "JetBrains Mono"
+  ;;   :height 100
+  ;;   :weight 'medium)
+  ;; (set-face-attribute 'fixed-pitch nil
+  ;;   :font "JetBrains Mono"
+  ;;   :height 110
+  ;;   :weight 'medium)
+  ;; Makes commented text and keywords italics.
+  ;; This is working in emacsclient but not emacs.
+  ;; Your font must have an italic face available.
+  (set-face-attribute 'font-lock-comment-face nil
+    :slant 'italic)
+  (set-face-attribute 'font-lock-keyword-face nil
+    :slant 'italic)
 
-;; This sets the default font on all graphical frames created after restarting Emacs.
-;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
-;; are not right unless I also add this method of setting the default font.
-(add-to-list 'default-frame-alist '(font . "JetBrains Mono-11"))
+  ;; This sets the default font on all graphical frames created after restarting Emacs.
+  ;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
+  ;; are not right unless I also add this method of setting the default font.
+  ;;(add-to-list 'default-frame-alist '(font . "JetBrains Mono-8"))
 
-;; Uncomment the following line if line spacing needs adjusting.
-(setq-default line-spacing 0.12)
+  ;; Uncomment the following line if line spacing needs adjusting.
+  (setq-default line-spacing 0.12)
 #+end_src
 ** Backup
 #+begin_src emacs-lisp
@@ -181,7 +183,7 @@ Use spaces as tabs and set the number of it.
 #+end_src
 
 ** Zooming
-Useful keybindgs to scale the text easily
+Useul keybindgs to scale the text easily
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
@@ -564,6 +566,8 @@ Setup my dashboard window
     "Jump to file system file"
     ("z" (find-file "~/.zshrc") "zshrc")
     ("c" (find-file "~/.emacs.d/config.org") "config.org")
+    ("i" (find-file "~/.config/i3/config") "i3 config")
+    ("p" (find-file "~/.config/polybar/config.ini") "polybar config")
     ("C" (reload-init-file) "reload init file")
     ("q" nil "quit")
     )
@@ -893,14 +897,21 @@ Basic projectile setup
 #+begin_src emacs-lisp
 (use-package company
   :straight t
-  :defer 2
+  :defer 0.1
   :custom
   (company-begin-commands '(self-insert-command))
-  (company-idle-delay .1)
-  (company-minimum-prefix-length 1)
-  (company-show-numbers t)
-  (company-tooltip-align-annotations 't)
-  (global-company-mode t))
+;;  (company-tooltip-align-annotations 't)
+  :config
+  (global-company-mode t)
+  (setq-default 
+   company-frontends '(company-preview-frontend)
+   company-idle-delay .05
+   company-minimum-prefix-length 2
+   company-require-match nil
+   company-show-numbers nil
+   )
+
+)
 
 (use-package company-box
   :straight t
@@ -934,7 +945,9 @@ Basic projectile setup
 (use-package pyenv
   :straight (:host github :repo "aiguofer/pyenv.el")
   :config
-  (global-pyenv-mode))
+  (global-pyenv-mode)
+  (setq pyenv-set-path nil)
+)
 #+end_src
 *** Golang
 #+begin_src emacs-lisp
@@ -960,7 +973,22 @@ Basic projectile setup
 
 
 #+end_src
-** Treemacs
+*** Yaml
+#+begin_src emacs-lisp
+(use-package yaml-ts-mode
+  :mode (("\\.yaml\\'" . yaml-ts-mode)
+	 ("\\.yml\\'" . yaml-ts-mode)
+	 )
+)
+#+end_src
+*** Dockerfile
+#+begin_src emacs-lisp
+(use-package dockerfile-ts-mode
+  :mode (("\\.Dockerfile\\'" . dockerfile-ts-mode))
+
+)
+#+end_src
+* Treemacs
 #+begin_src emacs-lisp
 (use-package treemacs
   :straight t
@@ -1048,7 +1076,7 @@ Basic projectile setup
         ("C-x t B"   . treemacs-bookmark)
         ("C-x t d"   . treemacs-select-directory)
         ("C-x t f"   . treemacs-project-follow-mode)
-        ("C-x t s"   . treemacs-select-window)
+        ("M-0"   . treemacs-select-window)
         ("C-x t t"   . treemacs)
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
@@ -1076,8 +1104,21 @@ Basic projectile setup
   :straight t
   :config (treemacs-set-scope-type 'Tabs))
 #+end_src
-
-** Yasnippet
+* God mod
+#+begin_src emacs-lisp
+(use-package god-mode
+  :straight t
+  :init
+  (global-set-key (kbd "<escape>") #'god-mode-all)
+  :config
+  (setq god-exempt-major-modes nil)
+  (setq god-exempt-predicates nil)
+  (define-key god-local-mode-map (kbd ".") #'repeat)
+  (define-key god-local-mode-map (kbd "[") #'backward-paragraph)
+  (define-key god-local-mode-map (kbd "]") #'forward-paragraph)
+)
+#+end_src
+* Yasnippet
 #+begin_src emacs-lisp
 (use-package yasnippet
   :straight t
@@ -1089,7 +1130,7 @@ Basic projectile setup
         '("~/.emacs.d/snippets")))
 #+end_src
 
-** Eldoc
+* Eldoc
 #+begin_src emacs-lisp
 (use-package eldoc
 :config
@@ -1098,14 +1139,14 @@ Basic projectile setup
 
 #+end_src
 
-** Eldoc box
+* Eldoc box
 #+begin_src emacs-lisp
 (use-package eldoc-box
 :straight t
 )
 #+end_src
 
-** Sideline
+* Sideline
 #+begin_src emacs-lisp
 (use-package sideline
   :straight t
@@ -1116,35 +1157,36 @@ Basic projectile setup
   (setq sideline-backends-right '(sideline-flymake)))
 #+end_src
 
-** Sideline flymake
+* Sideline flymake
 #+begin_src emacs-lisp
 (use-package sideline-flymake
 :straight t
 )
 #+end_src
 
-** Poetry
+* Poetry
 #+begin_src emacs-lisp
 (use-package poetry
  :straight t)
 #+end_src
 
-** Eglot
+* Eglot
 #+begin_src emacs-lisp
 (use-package eglot
 :straight t
 :bind 
 (("M-2" . eglot-format))
+:config
 )
 #+end_src
-** Consult eglot
+* Consult eglot
 #+begin_src emacs-lisp
 (use-package consult-eglot
 :straight t
 )
 #+end_src
 
-** Magit
+* Magit
 #+begin_src emacs-lisp
 (use-package magit
 :straight t
@@ -1152,7 +1194,7 @@ Basic projectile setup
 #+end_src
 
 
-** Git blamer
+* Git blamer
 #+begin_src emacs-lisp
 (use-package blamer
   :straight t
@@ -1172,7 +1214,7 @@ Basic projectile setup
 )
 #+end_src
 
-** Doxygen
+* Doxygen
 #+begin_src emacs-lisp
 (require 'doxymacs)
 (add-hook 'c-mode-common-hook 'doxymacs-mode)
@@ -1183,7 +1225,7 @@ Basic projectile setup
 #+end_src
 
 
-** Header line which function
+* Header line which function
 #+begin_src emacs-lisp
 (use-package breadcrumb
 :straight t
@@ -1192,7 +1234,7 @@ Basic projectile setup
 )
 #+end_src
 
-** Perspective (workspaces)
+* Perspective (workspaces)
 #+begin_src emacs-lisp
 (use-package perspective
   :bind
@@ -1279,5 +1321,107 @@ Basic projectile setup
 :config 
 (global-set-key (kbd "M-z") 'avy-zap-to-char-dwim)
 (global-set-key (kbd "M-Z") 'avy-zap-up-to-char-dwim)
+)
+#+end_src
+
+** AI
+*** Codeium
+#+begin_src emacs-lisp
+;; we recommend using use-package to organize your init.el
+(use-package codeium
+    ;; if you use straight
+    :straight '(:type git :host github :repo "Exafunction/codeium.el")
+    ;; otherwise, make sure that the codeium.el file is on load-path
+
+    :init
+    ;; use globally
+    (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
+    (defun add-my-custom-completion-function ()
+            (lambda (interactive)
+        (run-hook-with-args-until-success #'codeium-completion-at-point
+                                         'eglot-completion-at-point)))
+    ;;"Add my custom completion function to `completion-at-point-functions'."
+
+    (add-hook 'eglot--managed-mode-hook 'add-my-custom-completion-function)
+    ;; (add-hook 'eglot-completion-at-point #'codeium-completion-at-point nil t)
+    ;; (remove-hook 'completion-at-point-functions 'eglot-completion-at-point t)
+    ;; or on a hook
+    ;; (add-hook go-mode-hook
+    ;;     (lambda ()
+    ;;         (setq-local completion-at-point-functions '(codeium-completion-at-point))))
+
+    ;; if you want multiple completion backends, use cape (https://github.com/minad/cape):
+    ;; (add-hook 'python-mode-hook
+    ;;     (lambda ()
+    ;;         (setq-local completion-at-point-functions
+    ;;             (list (cape-super-capf #'codeium-completion-at-point #'lsp-completion-at-point)))))
+    ;; an async company-backend is coming soon!
+
+    ;; codeium-completion-at-point is autoloaded, but you can
+    ;; optionally set a timer, which might speed up things as the
+    ;; codeium local language server takes ~0.2s to start up
+    ;; (add-hook 'emacs-startup-hook
+    ;;  (lambda () (run-with-timer 0.1 nil #'codeium-init)))
+
+    ;; :defer t ;; lazy loading, if you want
+    :config
+    (setq use-dialog-box nil) ;; do not use popup boxes
+
+    ;; if you don't want to use customize to save the api-key
+    ;; (setq codeium/metadata/api_key "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx")
+
+    ;; get codeium status in the modeline
+    (setq codeium-mode-line-enable
+        (lambda (api) (not (memq api '(CancelRequest Heartbeat AcceptCompletion)))))
+    (add-to-list 'mode-line-format '(:eval (car-safe codeium-mode-line)) t)
+    ;; alternatively for a more extensive mode-line
+    ;; (add-to-list 'mode-line-format '(-50 "" codeium-mode-line) t)
+
+    ;; use M-x codeium-diagnose to see apis/fields that would be sent to the local language server
+    (setq codeium-api-enabled
+        (lambda (api)
+            (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion))))
+    ;; you can also set a config for a single buffer like this:
+    ;; (add-hook 'python-mode-hook
+    ;;     (lambda ()
+    ;;         (setq-local codeium/editor_options/tab_size 4)))
+
+    ;; You can overwrite all the codeium configs!
+    ;; for example, we recommend limiting the string sent to codeium for better performance
+    (defun my-codeium/document/text ()
+        (buffer-substring-no-properties (max (- (point) 3000) (point-min)) (min (+ (point) 1000) (point-max))))
+    ;; if you change the text, you should also change the cursor_offset
+    ;; warning: this is measured by UTF-8 encoded bytes
+    (defun my-codeium/document/cursor_offset ()
+        (codeium-utf8-byte-length
+            (buffer-substring-no-properties (max (- (point) 3000) (point-min)) (point))))
+    (setq codeium/document/text 'my-codeium/document/text)
+    (setq codeium/document/cursor_offset 'my-codeium/document/cursor_offset))
+#+end_src
+*** Keyfreq
+#+begin_src emacs-lisp
+(use-package keyfreq
+:straight t
+:config
+(keyfreq-mode 1)
+(keyfreq-autosave-mode 1)
+(setq keyfreq-excluded-commands
+      '(self-insert-command
+        forward-char
+        backward-char
+        previous-line
+        next-line
+        treemacs-previous-line
+        treemacs-next-line
+        company-complete-selection
+        newline
+        treemacs-RET-action
+        vertico-exit
+        indent-for-tab-command
+        company-select-next-or-abort
+        delete-backward-char
+        end-of-visual-line
+        vertico-next
+        ))
 )
 #+end_src
