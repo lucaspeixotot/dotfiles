@@ -1,10 +1,10 @@
 return {
-    "echasnovski/mini.ai",
-    version = "*",
+	"echasnovski/mini.ai",
+	version = "*",
 
-    config = function()
-        local ai = require("mini.ai")
+	config = function()
+		local ai = require("mini.ai")
 
-        ai.setup()
-    end
+		ai.setup()
+	end,
 }
