@@ -8,6 +8,11 @@ return {
     },
     config = function()
         local aerial = require("aerial")
+
+        local nmap_leader = function(suffix, rhs, desc)
+            vim.keymap.set('n', '<Leader>' .. suffix, rhs, { desc = desc })
+        end
+
         aerial.setup({
             on_attach = function(bufnr)
                 -- Jump forwards/backwards with '{' and '}'
@@ -16,6 +21,6 @@ return {
             end,
         })
 
-        vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle! left<CR>")
+        nmap_leader("a", "<cmd>AerialToggle! left<CR>", "Toggle aerial")
     end
 }

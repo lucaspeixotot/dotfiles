@@ -1,4 +1,12 @@
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+local nmap_leader = function(suffix, rhs, desc)
+    vim.keymap.set('n', '<Leader>' .. suffix, rhs, { desc = desc })
+end
+
+local vmap_leader = function(suffix, rhs, desc)
+    vim.keymap.set('v', '<Leader>' .. suffix, rhs, { desc = desc })
+end
+
+nmap_leader("pv", vim.cmd.Ex, "")
 
 -- Better window navigation
 vim.keymap.set("n", "<C-h>", "<C-w>h")
@@ -25,8 +33,8 @@ vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
 
 -- Quick save and quit
-vim.keymap.set("n", "<leader>w", ":w<cr>")
-vim.keymap.set("n", "<leader>q", ":q<cr>")
+nmap_leader("w", ":w<cr>", "Quick save")
+nmap_leader("q", ":q<cr>", "Quick quit")
 
 -- Emacs insert mode --
 vim.keymap.set("i", "<C-a>", "<ESC>I")
@@ -36,9 +44,9 @@ vim.keymap.set("i", "<M-b>", "<ESC>bi")
 vim.keymap.set("i", "<M-d>", "<ESC>cW")
 
 -- yank to PC clipboard
-vim.keymap.set("n", "<leader>y", '"+y')
-vim.keymap.set("v", "<leader>y", '"+y')
-vim.keymap.set("n", "<leader>Y", '"+Y')
+nmap_leader("y", '"+y', "")
+vmap_leader("y", '"+y', "")
+nmap_leader("Y", '"+Y', "")
 
-vim.keymap.set("n", "<leader>d", '"_d')
-vim.keymap.set("v", "<leader>d", '"_d')
+nmap_leader("d", '"_d', "")
+vmap_leader("d", '"_d', "")

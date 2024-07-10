@@ -13,9 +13,11 @@
   "mini.ai": { "branch": "main", "commit": "a7e90f110e6274262616311b93cef12cd2667a2d" },
   "mini.base16": { "branch": "main", "commit": "bc8bceda36c6e979e22b637305d1962afe0120ff" },
   "mini.bracketed": { "branch": "main", "commit": "06ad08fc75dc540cba76d3d8de0f2dc9f75b5812" },
+  "mini.clue": { "branch": "main", "commit": "08f792869781b4bfdfcaa55eb905b9635c0a243f" },
   "mini.comment": { "branch": "main", "commit": "c8406379987c321ecdef9f53e1ca741a55002104" },
   "mini.completion": { "branch": "main", "commit": "6cd80770afa5da1d2a529a2b4b1fb18756d7866c" },
   "mini.cursorword": { "branch": "main", "commit": "b6fb7e8556b3e3bb09c5cca1937d8e542f8a0261" },
+  "mini.diff": { "branch": "main", "commit": "faf99c45fc6df1108eaf1da97497f0385c09afbc" },
   "mini.extra": { "branch": "main", "commit": "a89d2376082cfe4b9d55713beddd5c5f5995ea2a" },
   "mini.files": { "branch": "main", "commit": "05c861ff4066a9d20233ec776e9ec894ab9f19fe" },
   "mini.fuzzy": { "branch": "main", "commit": "5f13acf079086ad0a4bc8e7a1adf9382cadef0fa" },
@@ -41,6 +43,7 @@
   "nvim-treesitter-context": { "branch": "master", "commit": "a2d8aa6d0cafec780a337bf7ca04a48cf1ec3dde" },
   "nvim-web-devicons": { "branch": "master", "commit": "c0cfc1738361b5da1cd0a962dd6f774cc444f856" },
   "nvim-window": { "branch": "main", "commit": "81f29840ac3aaeea6fc2153edfabebd00d692476" },
+  "outline.nvim": { "branch": "main", "commit": "028e0bc8ad3d511e9fc1f0678594a608eb908ee5" },
   "plenary.nvim": { "branch": "master", "commit": "a3e3bc82a3f95c5ed0d7201546d5d2c19b20d683" },
   "window-picker": { "branch": "main", "commit": "41cfaa428577c53552200a404ae9b3a0b5719706" }
 }

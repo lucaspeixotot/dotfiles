@@ -41,4 +41,7 @@ function _G.open_config_tab()
 end
 
 -- Set the keymap
-vim.keymap.set('n', '<leader>=', ':lua open_config_tab()<CR>', { noremap = true, silent = true })
+local nmap_leader = function(suffix, rhs, desc)
+    vim.keymap.set('n', '<Leader>' .. suffix, rhs, { desc = desc })
+end
+nmap_leader('=', ':lua open_config_tab()<CR>', "Open nvim config")

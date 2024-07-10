@@ -3,6 +3,11 @@ return {
     config = function()
         local conform = require("conform")
 
+        local nmap_leader = function(suffix, rhs, desc)
+            vim.keymap.set('n', '<Leader>' .. suffix, rhs, { desc = desc })
+        end
+
+
         conform.setup({
             formatters_by_ft = {
                 lua = { "stylua" },
@@ -14,7 +19,7 @@ return {
                 lsp_format = "fallback",
             },
 
-            vim.keymap.set("n", "<leader>if", ":lua require('conform').format()<cr>", {}),
+            nmap_leader("if", ":lua require('conform').format()<cr>", "Format file")
         })
     end,
 }
