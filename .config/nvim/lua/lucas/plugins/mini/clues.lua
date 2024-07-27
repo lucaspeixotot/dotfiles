@@ -44,31 +44,14 @@ return {
                 miniclue.gen_clues.registers(),
                 miniclue.gen_clues.windows(),
                 miniclue.gen_clues.z(),
-                -- Harpoon clues
-                { mode = "n", keys = "<leader>h",  desc = "+Harpoon" },
-                -- Aerial clues
-                { mode = "n", keys = "<leader>a",  desc = "Aerial toggle" },
-                -- Neotree clues
-                { mode = "n", keys = "<leader>t",  desc = "Neotree open" },
-                -- IDE clues
-                { mode = "n", keys = "<leader>i",  desc = "+IDE" },
-                { mode = "n", keys = "<leader>if", desc = "Format buffer" },
-                -- Misc clues
-                { mode = "n", keys = "<leader>o",  desc = "Window pick" },
-                { mode = "n", keys = "<leader>w",  desc = "Save" },
-                { mode = "n", keys = "<leader>q",  desc = "Quit" },
-                { mode = "n", keys = "<leader>=",  desc = "Neovim config" },
+                -- Session clues
+                { mode = "n", keys = "<leader>s", desc = "+SESSIONS" },
+                -- Viedit clues
+                { mode = "n", keys = "<leader>r", desc = "+VIEDIT" },
+                -- Utils clues
+                { mode = "n", keys = "<leader>u", desc = "+UTILS" },
                 -- Pick clues
-                { mode = "n", keys = "<leader>f",  desc = "+Pick (find)" },
-                { mode = "n", keys = "<leader>ff", desc = "Pick files" },
-                { mode = "n", keys = "<leader>fb", desc = "Pick buffers" },
-                { mode = "n", keys = "<leader>fg", desc = "Pick grep" },
-                { mode = "n", keys = "<leader>fe", desc = "Pick explorer" },
-                { mode = "n", keys = "<leader>fs", desc = "Pick lsp" },
-                { mode = "n", keys = "<leader>fd", desc = "Pick diagnostics" },
-                { mode = "n", keys = "<leader>fh", desc = "Pick history" },
-                { mode = "n", keys = "<leader>fp", desc = "Pick git hunks" },
-
+                { mode = "n", keys = "<leader>f", desc = "+Pick" },
 
             },
         })

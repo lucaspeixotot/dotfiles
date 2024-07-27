@@ -31,14 +31,4 @@ vim.opt.colorcolumn = "80"
 vim.cmd([[set laststatus=3]])
 vim.cmd([[highlight WinSeparator guibg=None]])
 vim.cmd([[syntax on]])
-
-
--- Define the function to open a new tab in the ~/.config/nvim directory
-function _G.open_config_tab()
-    vim.cmd("tabnew")
-    vim.cmd("cd ~/.config/nvim")
-    vim.cmd("edit ~/.config/nvim")
-end
-
--- Set the keymap
-nmap_leader('=', ':lua open_config_tab()<CR>', "Open nvim config")
+vim.wo.relativenumber = true

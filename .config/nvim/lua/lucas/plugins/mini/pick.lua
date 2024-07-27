@@ -1,18 +1,18 @@
 return {
-	"echasnovski/mini.pick",
-	version = "*",
-	dependencies = {
-		"nvim-tree/nvim-web-devicons",
-	},
-	config = function()
-		local pick = require("mini.pick")
-		local builtin = require("mini.pick").builtin
-		require("nvim-web-devicons").setup({})
+    "echasnovski/mini.pick",
+    version = "*",
+    dependencies = {
+        "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+        local pick = require("mini.pick")
+        local builtin = require("mini.pick").builtin
+        require("nvim-web-devicons").setup({})
 
-		pick.setup({})
+        pick.setup({})
 
-		vim.keymap.set("n", "<leader>ff", builtin.files, {})
-		vim.keymap.set("n", "<leader>fg", builtin.grep_live, {})
-		vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
-	end,
+        nmap_leader("ff", builtin.files, "Find files")
+        nmap_leader("fg", builtin.grep_live, "Find Grep")
+        nmap_leader("fb", builtin.buffers, "Find buffers")
+    end,
 }

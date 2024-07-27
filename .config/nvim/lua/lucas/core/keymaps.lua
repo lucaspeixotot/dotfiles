@@ -37,3 +37,15 @@ vim.keymap.set("i", "<M-d>", "<ESC>cW")
 nmap_leader("y", '"+y', "Copy to clipboard")
 vmap_leader("y", '"+y', "Copy to clipboard")
 nmap_leader("Y", '"+Y', "Copy to clipboard")
+
+--- Utils keymaps
+nmap_leader("ul", ":lua toggle_relative_number()<cr>", "Toggle relative numbers")
+nmap_leader('uc', ':lua open_config_tab()<CR>', "Open nvim config")
+nmap_leader('ud', function()
+    update_cwd()
+end, "Update CWD")
+nmap_leader(
+    'uh',
+    function() MiniExtra.pickers.keymaps() end,
+    "Help keymaps"
+)

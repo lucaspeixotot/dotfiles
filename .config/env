@@ -1,9 +1,0 @@
-#!/bin/sh
-
-export BROWSER=firefox-esr
-export FILE_MANAGER=nnn
-export TERMINAL=urxvt
-export WALLPAPER=~/.config/wall.png
-PATH=$PATH:/snap/bin
-PATH=$PATH:$HOME/.local/bin
-PATH=$PATH:$HOME/.config/scripts

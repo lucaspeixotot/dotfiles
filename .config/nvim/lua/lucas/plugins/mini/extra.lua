@@ -3,9 +3,9 @@ return {
     version = "*",
     config = function()
         local extra = require("mini.extra")
-        vim.keymap.set("n", "<leader>fe", ":Pick explorer cwd='.'<CR>", {})
-        vim.keymap.set("n", "<leader>fs", ":Pick lsp scope='document_symbol'<CR>", {})
-        vim.keymap.set("n", "<leader>fd", ":Pick diagnostic scope='current'<CR>", {})
+        nmap_leader("fe", ":Pick explorer cwd='.'<CR>", "Pick explorer")
+        nmap_leader("fs", ":Pick lsp scope='workspace_symbol'<CR>", "Pick symbol")
+        nmap_leader("fd", ":Pick diagnostic scope='current'<CR>", "Pick diagnostic")
         extra.setup({})
     end,
 }

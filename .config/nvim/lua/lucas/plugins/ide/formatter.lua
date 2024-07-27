@@ -14,7 +14,7 @@ return {
                 lsp_format = "fallback",
             },
 
-            nmap_leader("if", ":lua require('conform').format()<cr>", "Format file")
+            nmap_g("rf", ":lua require('conform').format()<cr>", "Format file")
         })
     end,
 }

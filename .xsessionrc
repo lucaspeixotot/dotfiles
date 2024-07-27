@@ -1,7 +1,0 @@
-#!/bin/sh
-
-[ -r ~/.config/env ] && . ~/.config/env
-
-setbg ~/.config/wallpapers/Landscapes &
-compton &
-
