@@ -4,9 +4,6 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
         local harpoon = require("harpoon")
-        local nmap_leader = function(suffix, rhs, desc)
-            vim.keymap.set('n', '<Leader>' .. suffix, rhs, { desc = desc })
-        end
 
         -- REQUIRED
         harpoon:setup()
@@ -40,7 +37,6 @@ return {
         nmap_leader("5", function()
             harpoon:list():select(5)
         end, "Select 5")
-
 
         nmap_leader("6", function()
             harpoon:list():select(6)

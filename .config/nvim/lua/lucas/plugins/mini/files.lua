@@ -4,6 +4,6 @@ return {
     config = function()
         local files = require("mini.files")
         files.setup({})
-        vim.keymap.set("n", "<leader>e", ":lua MiniFiles.open()<cr>", {})
+        nmap_leader("e", ":lua MiniFiles.open()<cr>", "Mini files")
     end,
 }

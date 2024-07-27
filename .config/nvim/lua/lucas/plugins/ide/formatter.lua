@@ -3,11 +3,6 @@ return {
     config = function()
         local conform = require("conform")
 
-        local nmap_leader = function(suffix, rhs, desc)
-            vim.keymap.set('n', '<Leader>' .. suffix, rhs, { desc = desc })
-        end
-
-
         conform.setup({
             formatters_by_ft = {
                 lua = { "stylua" },

@@ -10,8 +10,8 @@ return {
         lspconfig.clangd.setup({})
         lspconfig.jdtl.setup({})
 
-        vim.keymap.set("n", "gr", ":lua vim.lsp.buf.references()<cr>", {})
-        vim.keymap.set("n", "gi", ":lua vim.lsp.buf.implementation()<cr>", {})
-        vim.keymap.set("n", "gf", ":lua vim.lsp.buf.definition()<cr>", {})
+        nmap_g("r", ":lua vim.lsp.buf.references()<cr>", "Go to references")
+        nmap_g("i", ":lua vim.lsp.buf.implementation()<cr>", "Go to implementation")
+        nmap_g("f", ":lua vim.lsp.buf.definition()<cr>", "Go to definition")
     end,
 }

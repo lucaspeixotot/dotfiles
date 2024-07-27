@@ -1,13 +1,3 @@
-local nmap_leader = function(suffix, rhs, desc)
-    vim.keymap.set('n', '<Leader>' .. suffix, rhs, { desc = desc })
-end
-
-local vmap_leader = function(suffix, rhs, desc)
-    vim.keymap.set('v', '<Leader>' .. suffix, rhs, { desc = desc })
-end
-
-nmap_leader("pv", vim.cmd.Ex, "")
-
 -- Better window navigation
 vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-j>", "<C-w>j")
@@ -44,9 +34,6 @@ vim.keymap.set("i", "<M-b>", "<ESC>bi")
 vim.keymap.set("i", "<M-d>", "<ESC>cW")
 
 -- yank to PC clipboard
-nmap_leader("y", '"+y', "")
-vmap_leader("y", '"+y', "")
-nmap_leader("Y", '"+Y', "")
-
-nmap_leader("d", '"_d', "")
-vmap_leader("d", '"_d', "")
+nmap_leader("y", '"+y', "Copy to clipboard")
+vmap_leader("y", '"+y', "Copy to clipboard")
+nmap_leader("Y", '"+Y', "Copy to clipboard")
