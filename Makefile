@@ -21,6 +21,3 @@ apply-nvim:
 	@echo 'Applying neovim configuration'
 	@find $(SYS_NVIM_DIR)/ -mindepth 1 \( -name 'reminders' -o -name 'sessions' -o -name 'undodir' \) -prune -o -exec rm -rf {} +
 	@cp -a $(DOT_NVIM_DIR) $(SYS_NVIM_DIR)/..
-	@make -p $(SYS_NVIM_DIR)/reminders
-	@make -p $(SYS_NVIM_DIR)/sessions
-	@make -p $(SYS_NVIM_DIR)/undodir
