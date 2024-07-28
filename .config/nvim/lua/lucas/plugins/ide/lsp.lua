@@ -36,7 +36,20 @@ return {
             vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
         end
 
-        lspconfig.lua_ls.setup({})
+        lspconfig.lua_ls.setup({
+            settings = {
+                Lua = {
+                    diagnostics = {
+                        -- Get the language server to recognize the `vim` global
+                        globals = { "vim" },
+                    },
+                    workspace = {
+                        -- Make the server aware of Neovim runtime files
+                        library = vim.api.nvim_get_runtime_file("", true),
+                    },
+                },
+            }
+        })
         lspconfig.gopls.setup({})
         lspconfig.pyright.setup({})
         lspconfig.bashls.setup({})

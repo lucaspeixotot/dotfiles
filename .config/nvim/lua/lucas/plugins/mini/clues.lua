@@ -51,7 +51,9 @@ return {
                 -- Utils clues
                 { mode = "n", keys = "<leader>u", desc = "+UTILS" },
                 -- Pick clues
-                { mode = "n", keys = "<leader>f", desc = "+Pick" },
+                { mode = "n", keys = "<leader>f", desc = "+PICK" },
+                -- Debug clues
+                { mode = "n", keys = "<leader>d", desc = "+DEBUG" },
 
             },
         })

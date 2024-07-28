@@ -7,7 +7,6 @@ return {
         -- auto_refresh = false
     },
     branch = "regexp",
-    event = 'VeryLazy', -- Optional: needed only if you want to type `:VenvSelect` without a keymapping
     config = function()
         local venvselector = require("venv-selector")
         venvselector.setup({

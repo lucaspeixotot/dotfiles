@@ -49,3 +49,4 @@ nmap_leader(
     function() MiniExtra.pickers.keymaps() end,
     "Help keymaps"
 )
+nmap_leader("ur", ":RemoteStart<CR>", 'Remote ssh start')
