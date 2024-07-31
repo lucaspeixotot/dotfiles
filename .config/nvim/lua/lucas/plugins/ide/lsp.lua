@@ -51,7 +51,16 @@ return {
             }
         })
         lspconfig.gopls.setup({})
-        lspconfig.pyright.setup({})
+        lspconfig.pyright.setup({
+            settings = {
+                python = {
+                    analysis = {
+                        extraPaths = { "./app" },
+                        typeCheckingMode = "off"
+                    }
+                }
+            }
+        })
         lspconfig.bashls.setup({})
         lspconfig.clangd.setup({})
     end,
