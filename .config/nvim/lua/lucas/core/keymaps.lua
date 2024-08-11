@@ -50,3 +50,8 @@ nmap_leader(
     "Help keymaps"
 )
 nmap_leader("sr", ":RemoteStart<CR>", 'Remote ssh start')
+
+nmap_leader("ue", function()
+    local file_path = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
+    vim.cmd('luafile' .. file_path)
+end, "Execute the current lua file")

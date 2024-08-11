@@ -282,6 +282,6 @@ return {
                 },
             },
         })
-        nmap_leader("t", ":Neotree reveal<cr>", "Neotree")
+        nmap_leader("t", ":Neotree reveal=true toggle=true<cr>", "Neotree")
     end,
 }
