@@ -27,7 +27,7 @@ return {
                 "pyright",
                 "bashls",
                 "clangd",
-                "terraform-ls",
+                "terraformls",
                 "tflint",
             },
         })
