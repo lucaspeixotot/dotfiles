@@ -63,5 +63,6 @@ return {
         })
         lspconfig.bashls.setup({})
         lspconfig.clangd.setup({})
+        lspconfig.terraformls.setup({})
     end,
 }
