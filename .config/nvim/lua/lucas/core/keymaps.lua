@@ -1,3 +1,5 @@
+nmap_leader("<space>", ":noh<CR>", "Escape search highlight")
+
 -- Better window navigation
 vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-j>", "<C-w>j")

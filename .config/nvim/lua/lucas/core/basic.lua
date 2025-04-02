@@ -21,7 +21,7 @@ vim.opt.wrap = false           -- display lines as one long line
 vim.opt.scrolloff = 8          -- is one of my fav
 vim.opt.sidescrolloff = 8
 vim.opt.undodir = os.getenv("HOME") .. "/config/nvim/undodir"
-vim.opt.hlsearch = false
+vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
