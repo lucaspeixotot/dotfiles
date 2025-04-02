@@ -32,3 +32,15 @@ vim.cmd([[set laststatus=3]])
 vim.cmd([[highlight WinSeparator guibg=None]])
 vim.cmd([[syntax on]])
 vim.wo.relativenumber = true
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "sh",
+    callback = function()
+        local filepath = vim.fn.expand("%:p")
+        if filepath:match("/fw%-ci/") then
+            vim.opt_local.expandtab = false -- Use tabs, not spaces
+            vim.opt_local.tabstop = 8       -- Set tab width to 8 spaces
+            vim.opt_local.shiftwidth = 8    -- Indentation level = 8 spaces
+            vim.opt_local.softtabstop = 8   -- Make backspace treat tabs as 8 spaces
+        end
+    end,
+})

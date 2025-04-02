@@ -28,7 +28,7 @@ return {
                 "bashls",
                 "clangd",
                 "terraformls",
-                "tflint",
+                "tflint"
             },
         })
     end,
