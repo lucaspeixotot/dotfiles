@@ -6,6 +6,8 @@ return {
         "nvim-treesitter/nvim-treesitter",
         "nvim-tree/nvim-web-devicons"
     },
+    lazy = true,
+    event = "VeryLazy",
     config = function()
         local aerial = require("aerial")
 
@@ -17,6 +19,6 @@ return {
             end,
         })
 
-        nmap_leader("a", "<cmd>AerialToggle! left<CR>", "Toggle aerial")
+        nmap_g("a", "<cmd>AerialToggle! left<CR>", "Toggle aerial")
     end
 }

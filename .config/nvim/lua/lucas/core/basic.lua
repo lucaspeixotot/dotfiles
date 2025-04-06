@@ -14,7 +14,7 @@ vim.opt.writebackup = false    -- if a file is being edited by another program (
 vim.opt.expandtab = true       -- convert tabs to spaces
 vim.opt.shiftwidth = 4         -- the number of spaces inserted for each indentation
 vim.opt.tabstop = 4            -- insert 2 spaces for a tab
-vim.opt.cursorline = true      -- highlight the current line
+vim.opt.cursorline = false     -- do not highlight the current line
 vim.opt.number = true          -- set numbered lines
 vim.opt.relativenumber = false -- set relative numbered lines
 vim.opt.wrap = false           -- display lines as one long line
@@ -31,7 +31,6 @@ vim.opt.colorcolumn = "80"
 vim.cmd([[set laststatus=3]])
 vim.cmd([[highlight WinSeparator guibg=None]])
 vim.cmd([[syntax on]])
-vim.wo.relativenumber = true
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "sh",
     callback = function()

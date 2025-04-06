@@ -52,6 +52,10 @@ return {
                 { mode = "n", keys = "<leader>u", desc = "+UTILS" },
                 -- Pick clues
                 { mode = "n", keys = "<leader>f", desc = "+PICK" },
+                -- Avante clues
+                { mode = "n", keys = "<leader>a", desc = "+AVANTE" },
+                -- Avante clues
+                { mode = "n", keys = "<leader>c", desc = "+CONFLICTS" },
                 -- Debug clues
                 { mode = "n", keys = "<leader>d", desc = "+DEBUG" },
 

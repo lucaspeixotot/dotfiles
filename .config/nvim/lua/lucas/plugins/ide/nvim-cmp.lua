@@ -37,9 +37,10 @@ return {
                 end, { 'i', 's' }),
             }),
             sources = cmp.config.sources({
+                { name = 'copilot' },
                 { name = 'nvim_lsp' },
-                { name = 'nvim_lua' },                -- Added
-                { name = 'nvim_lsp_signature_help' }, -- Added
+                { name = 'nvim_lua' },
+                { name = 'nvim_lsp_signature_help' },
                 { name = 'buffer' },
                 { name = 'path' },
             }),
