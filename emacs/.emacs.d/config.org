@@ -51,7 +51,7 @@ A few UI Tweaks
 #+end_src
 
 #+begin_src emacs-lisp
-  (global-display-line-numbers-mode t)
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
   (global-visual-line-mode t)
 #+end_src
 ** Font
@@ -177,16 +177,99 @@ one, an error is signaled."
     (ediff-split-window-function 'split-window-horizontally) ; Split windows side by side
     (ediff-merge-split-window-function 'split-window-horizontally)) ; Same for merge windows
 #+end_src
-* UI
-** ALL THE ICONS
+** Smerge
 #+begin_src emacs-lisp
-  (use-package all-the-icons
-    :straight t
-    :if (display-graphic-p))
+  (use-package smerge-mode
+    :ensure nil
+    :init
+    (setq smerge-command-prefix "\C-cm")
+    :hook
+    (prog-mode . smerge-mode)
+    :config
+    (defhydra hydra-smerge (:color red :hint nil)
+      "
+  Navigate       Keep               other
+  ----------------------------------------
+  _p_: previous  _c_: current       _e_: ediff
+  _n_: next      _m_: mine  <<      _u_: undo
+  _k_: up        _o_: other >>      _r_: refine
+  _j_: down      _a_: combine       _-_: smerge mode
+                 _b_: base          _q_: quit
+  "
+      ("n" smerge-next)
+      ("p" smerge-prev)
+      ("c" smerge-keep-current)
+      ("m" smerge-keep-mine)
+      ("o" smerge-keep-other)
+      ("b" smerge-keep-base)
+      ("a" smerge-keep-all)
+      ("e" smerge-ediff)
+      ("k" previous-line)
+      ("j" forward-line)
+      ("r" smerge-refine)
+      ("u" undo)
+      ("-" smerge-mode)
+      ("q" nil :exit t))
 
-  (use-package all-the-icons-dired
+    (defun enable-smerge-maybe ()
+      (when (and buffer-file-name (vc-backend buffer-file-name))
+        (save-excursion
+          (goto-char (point-min))
+          (when (re-search-forward "^<<<<<<< " nil t)
+            (smerge-mode +1)
+            (scimax-smerge/body)))))
+    )
+#+end_src
+** Theme
+#+begin_src emacs-lisp
+  (use-package modus-themes
     :straight t
-    :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+    :config
+    ;; Add all your customizations prior to loading the themes
+    (setq modus-themes-italic-constructs t
+          modus-themes-bold-constructs t)
+
+    ;; Maybe define some palette overrides, such as by using our presets
+    (setq modus-themes-common-palette-overrides
+          modus-themes-preset-overrides-intense)
+
+    ;; Load the theme of your choice.
+    (load-theme 'modus-vivendi :no-confirm)
+
+    (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
+#+end_src
+** Browser kill ring
+#+begin_src emacs-lisp
+  (use-package browse-kill-ring
+  :straight t
+  :defer t)
+#+end_src
+** Search utilities
+#+begin_src emacs-lisp
+  (use-package ripgrep
+    :defer t)
+
+  (use-package rg
+    :defer t)
+
+  (use-package ag
+    :defer t)
+
+  (use-package wgrep
+    :defer t)
+#+end_src
+** Electric pair
+#+begin_src emacs-lisp
+  (electric-pair-mode)
+#+end_src
+* UI
+** Nerd fonts
+#+begin_src emacs-lisp
+  (use-package nerd-icons
+    :straight t
+    :custom
+    (nerd-icons-font-family "Symbols Nerd Font Mono")
+    )
 #+end_src
 ** Dashboard
 Setup my dashboard window
@@ -198,9 +281,8 @@ Setup my dashboard window
    (setq dashboard-set-heading-icons t)
    (setq dashboard-set-file-icons t)
    (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
-   ;;(setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
-   ;; (setq dashboard-startup-banner "/home/dt/.config/emacs/images/emacs-dash.png")  ;; use custom image as banner
    (setq dashboard-center-content nil) ;; set to 't' for centered content
+   (setq dashboard-projects-backend 'projectile)
    (setq dashboard-items '((recents . 5)
                            (agenda . 5 )
                            (bookmarks . 3)
@@ -214,33 +296,15 @@ Setup my dashboard window
 #+end_src
 ** Doom modeline
 #+begin_src emacs-lisp
-(use-package doom-modeline
-  :straight t
-  :hook (after-init . doom-modeline-mode)
-  :config
-  (setq doom-modeline-buffer-file-name-style 'relative-from-project)
-)
+  (use-package doom-modeline
+    :straight t
+    :hook (after-init . doom-modeline-mode)
+    :config
+    (setq doom-modeline-buffer-file-name-style 'relative-from-project)
+    (setq inhibit-compacting-font-caches t)
+  )
 #+end_src
-** Doom themes
-#+begin_src emacs-lisp
-(use-package doom-themes
-  :straight t
-  :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-gruvbox t)
 
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Enable ncustom neotree theme (all-the-icons must be installed!)
-  (doom-themes-neotree-config)
-  ;; or for treemacs users
-  ;; (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-  ;; (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
-#+end_src
 ** Tree sitter
 Enable tree sitter globally on emacs
 #+begin_src emacs-lisp
@@ -337,16 +401,16 @@ Enable tree sitter globally on emacs
                                      (set-cursor-color "#ffffff")
                                      (message
                                       "Thank you, come again.")))
-      "vi"
-      ("l" forward-char)
-      ("h" backward-char)
-      ("j" next-line)
-      ("k" previous-line)
+      "emacs fast movements"
+      ("f" forward-char)
+      ("b" backward-char)
+      ("n" next-line)
+      ("p" previous-line)
       ("a" beginning-of-line)
       ("e" end-of-line)
       ("u" scroll-down-command)
       ("d" scroll-up-command)
-      ("L" recenter-top-bottom)
+      ("l" recenter-top-bottom)
       ("RET" avy-goto-char)
       ("q" nil "quit"))
 
@@ -416,6 +480,14 @@ Enable tree sitter globally on emacs
     (define-key god-local-mode-map (kbd ".") #'repeat)
     (define-key god-local-mode-map (kbd "[") #'backward-paragraph)
     (define-key god-local-mode-map (kbd "]") #'forward-paragraph)
+    )
+#+end_src
+** Move where I mean (mwim)
+#+begin_src emacs-lisp
+  (use-package mwim
+    :straight t
+    :bind (("C-a" . mwim-beginning-of-code-or-line)
+           ("C-e" . mwim-end-of-code-or-line))
     )
 #+end_src
 * Completion system
@@ -639,71 +711,78 @@ Basic projectile setup
 
 ** Auto Complete
 #+begin_src emacs-lisp
-  (use-package corfu
-    ;; Optional customizations
-    ;; :custom
-    ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-    ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-    ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-    ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-    ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
-    ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+   (use-package corfu
+     :straight t
+     ;; Optional customizations
+     :custom
+     (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+     ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+     ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+     ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+     ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+     ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
 
-    ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
-    ;; :hook ((prog-mode . corfu-mode)
-    ;;        (shell-mode . corfu-mode)
-    ;;        (eshell-mode . corfu-mode))
+     ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
+     ;; :hook ((prog-mode . corfu-mode)
+     ;;        (shell-mode . corfu-mode)
+     ;;        (eshell-mode . corfu-mode))
+     (corfu-auto t)
+     (corfu-quit-no-match 'separator)
+     (corfu-auto-prefix 3)
+     (corfu-auto-delay 0.0)
+     (corfu-echo-documentation 0.25)
+     (corfu-preview-current 'insert)
 
-    :init
+     :init
 
-    ;; Recommended: Enable Corfu globally.  Recommended since many modes provide
-    ;; Capfs and Dabbrev can be used globally (M-/).  See also the customization
-    ;; variable `global-corfu-modes' to exclude certain modes.
-    (global-corfu-mode)
+     ;; Recommended: Enable Corfu globally.  Recommended since many modes provide
+     ;; Capfs and Dabbrev can be used globally (M-/).  See also the customization
+     ;; variable `global-corfu-modes' to exclude certain modes.
+     (global-corfu-mode)
 
-    ;; Enable optional extension modes:
-    ;; (corfu-history-mode)
-    ;; (corfu-popupinfo-mode)
-    :config
-    ;; Enable auto completion and configure quitting
-    (setq corfu-auto t
-          corfu-quit-no-match 'separator) ;; or t
-    )
+     ;; Enable optional extension modes:
+     ;; (corfu-history-mode)
+     ;; (corfu-popupinfo-mode)
+     :config
+     ;; Enable auto completion and configure quitting
+     ;; (setq corfu-auto t
+     ;;       corfu-quit-no-match 'separator) ;; or t
+     )
 
-  ;; A few more useful configurations...
-  (use-package emacs
-    :custom
-    ;; TAB cycle if there are only few candidates
-    ;; (completion-cycle-threshold 3)
+   ;; A few more useful configurations...
+   (use-package emacs
+     :custom
+     ;; TAB cycle if there are only few candidates
+     ;; (completion-cycle-threshold 3)
 
-    ;; Enable indentation+completion using the TAB key.
-    ;; `completion-at-point' is often bound to M-TAB.
-    (tab-always-indent 'complete)
+     ;; Enable indentation+completion using the TAB key.
+     ;; `completion-at-point' is often bound to M-TAB.
+     (tab-always-indent 'complete)
 
-    ;; Emacs 30 and newer: Disable Ispell completion function.
-    ;; Try `cape-dict' as an alternative.
-    (text-mode-ispell-word-completion nil)
+     ;; Emacs 30 and newer: Disable Ispell completion function.
+     ;; Try `cape-dict' as an alternative.
+     (text-mode-ispell-word-completion nil)
 
-    ;; Hide commands in M-x which do not apply to the current mode.  Corfu
-    ;; commands are hidden, since they are not used via M-x. This setting is
-    ;; useful beyond Corfu.
-    (read-extended-command-predicate #'command-completion-default-include-p))
+     ;; Hide commands in M-x which do not apply to the current mode.  Corfu
+     ;; commands are hidden, since they are not used via M-x. This setting is
+     ;; useful beyond Corfu.
+     (read-extended-command-predicate #'command-completion-default-include-p))
 #+end_src
 ** LSP
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :straight t
     :hook
-    ((prog-mode . lsp-deferred) ; Auto-start LSP for supported languages
-     (bash-ts-mode . (lambda () (lsp-mode -1))))
-    :commands lsp
+    ((prog-mode . lsp-deferred)) ; Auto-start LSP for supported languages
     :custom
     (lsp-completion-provider :none) ; Use Company instead of Capf
+    (lsp-diagnostics-provider :none)
     :init
     (setq lsp-keymap-prefix "C-c l") ; Prefix for LSP commands
     :config
-    (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.git\\'"))
+    (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.git\\'")
     (setq-default flymake-diagnostic-functions nil)
+    )
 
   (use-package lsp-ui
     :straight t
@@ -711,24 +790,30 @@ Basic projectile setup
     :custom
     (lsp-ui-doc-enable t)
     (lsp-ui-doc-position 'bottom)
-    (lsp-ui-sideline-show-hover t)
-    (lsp-ui-sideline-enable t)
     (lsp-ui-imenu-enable t))
 #+end_src
 ** Flycheck
 #+begin_src emacs-lisp
-  (use-package flycheck
-    :straight t
-    :hook
-    ((prog-mode . flycheck-mode)
-    (bash-ts-mode . (lambda ()
-                     (flycheck-mode)
-                     (setq flycheck-checker 'sh-bash))))
-    :custom
-    (flycheck-indication-mode 'right-fringe) ; Show indicators in fringe
-    (flycheck-check-syntax-automatically '(save mode-enabled))
-    :config
-    (setq flycheck-display-errors-delay 0.2))
+    (use-package flycheck
+      :straight t
+      :hook ((prog-mode . flycheck-mode))
+      :custom
+      (flycheck-indication-mode 'right-fringe)
+      (flycheck-check-syntax-automatically '(save mode-enabled))
+      :config
+      (setq flycheck-display-errors-delay 0.2)
+
+      ;; Force Flycheck to use shellcheck in *every* sh-mode buffer
+      (add-hook 'sh-mode-hook
+                (lambda ()
+                  ;; Disable LSP checker (redundant but ensures cleanup)
+                  ;; (setq-local flycheck-disabled-checkers '(lsp))
+                  ;; Explicitly select shellcheck
+                  (flycheck-select-checker 'sh-shellcheck)
+                  ;; If shellcheck fails, fall back to sh-bash (optional)
+                  (unless (flycheck-may-use-checker 'sh-shellcheck)
+                    (flycheck-select-checker 'sh-bash))))
+      )
 #+end_src
 * Misc
 ** undo fu
@@ -780,6 +865,188 @@ Basic projectile setup
   :straight t
   :bind-keymap ("M-'" . surround-keymap))
 #+end_src
+** Multiple cursors
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :straight t
+    
+    :config
+    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+  )
+#+end_src
+** Symbol overlay
+#+begin_src emacs-lisp
+  (use-package symbol-overlay
+    :straight t
+    :defer t
+    :hook (prog-mode . symbol-overlay-mode)
+    :bind (
+                ("C-;" . symbol-overlay-put)
+                ("M-N" . symbol-overlay-jump-next)
+                ("M-P" . symbol-overlay-jump-previous)))
+
+  (use-package symbol-overlay-mc
+    :ensure t
+    :bind (("M-a" . symbol-overlay-mc-mark-all)))
+#+end_src
+** Treemacs
+#+begin_src emacs-lisp
+  (use-package treemacs
+    :straight t
+    :defer t
+    :init
+    (with-eval-after-load 'winum
+      (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+    :config
+    (progn
+      (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
+            treemacs-deferred-git-apply-delay        0.5
+            treemacs-directory-name-transformer      #'identity
+            treemacs-display-in-side-window          t
+            treemacs-eldoc-display                   'simple
+            treemacs-file-event-delay                2000
+            treemacs-file-extension-regex            treemacs-last-period-regex-value
+            treemacs-file-follow-delay               0.2
+            treemacs-file-name-transformer           #'identity
+            treemacs-follow-after-init               t
+            treemacs-expand-after-init               t
+            treemacs-find-workspace-method           'find-for-file-or-pick-first
+            treemacs-git-command-pipe                ""
+            treemacs-goto-tag-strategy               'refetch-index
+            treemacs-header-scroll-indicators        '(nil . "^^^^^^")
+            treemacs-hide-dot-git-directory          t
+            treemacs-indentation                     2
+            treemacs-indentation-string              " "
+            treemacs-is-never-other-window           nil
+            treemacs-max-git-entries                 5000
+            treemacs-missing-project-action          'ask
+            treemacs-move-files-by-mouse-dragging    t
+            treemacs-move-forward-on-expand          nil
+            treemacs-no-png-images                   nil
+            treemacs-no-delete-other-windows         t
+            treemacs-project-follow-cleanup          nil
+            treemacs-persist-file                    (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+            treemacs-position                        'left
+            treemacs-read-string-input               'from-child-frame
+            treemacs-recenter-distance               0.1
+            treemacs-recenter-after-file-follow      nil
+            treemacs-recenter-after-tag-follow       nil
+            treemacs-recenter-after-project-jump     'always
+            treemacs-recenter-after-project-expand   'on-distance
+            treemacs-litter-directories              '("/node_modules" "/.venv" "/.cask")
+            treemacs-project-follow-into-home        nil
+            treemacs-show-cursor                     nil
+            treemacs-show-hidden-files               t
+            treemacs-silent-filewatch                nil
+            treemacs-silent-refresh                  nil
+            treemacs-sorting                         'alphabetic-asc
+            treemacs-select-when-already-in-treemacs 'move-back
+            treemacs-space-between-root-nodes        t
+            treemacs-tag-follow-cleanup              t
+            treemacs-tag-follow-delay                1.5
+            treemacs-text-scale                      nil
+            treemacs-user-mode-line-format           nil
+            treemacs-user-header-line-format         nil
+            treemacs-wide-toggle-width               70
+            treemacs-width                           35
+            treemacs-width-increment                 1
+            treemacs-width-is-initially-locked       t
+            treemacs-workspace-switch-cleanup        nil)
+
+      ;; The default width and height of the icons is 22 pixels. If you are
+      ;; using a Hi-DPI display, uncomment this to double the icon size.
+      ;;(treemacs-resize-icons 44)
+
+      (treemacs-follow-mode t)
+      (treemacs-filewatch-mode t)
+      (treemacs-fringe-indicator-mode 'always)
+      (when treemacs-python-executable
+        (treemacs-git-commit-diff-mode t))
+
+      (pcase (cons (not (null (executable-find "git")))
+                   (not (null treemacs-python-executable)))
+        (`(t . t)
+         (treemacs-git-mode 'deferred))
+        (`(t . _)
+         (treemacs-git-mode 'simple)))
+
+      (treemacs-hide-gitignored-files-mode nil))
+    :bind
+    (:map global-map
+          ("M-0"       . treemacs-select-window)
+          ("C-x t 1"   . treemacs-delete-other-windows)
+          ("C-x t t"   . treemacs)
+          ("C-x t d"   . treemacs-select-directory)
+          ("C-x t B"   . treemacs-bookmark)
+          ("C-x t C-t" . treemacs-find-file)
+          ("C-x t M-t" . treemacs-find-tag)))
+
+  (use-package treemacs-projectile
+    :after (treemacs projectile)
+    :straight t)
+
+  (use-package treemacs-icons-dired
+    :hook (dired-mode . treemacs-icons-dired-enable-once)
+    :straight t)
+
+  (use-package treemacs-magit
+    :after (treemacs magit)
+    :straight t)
+#+end_src
+* AI
+** Elysium
+#+begin_src emacs-lisp
+  (use-package elysium
+  :custom
+  ;; Below are the default values
+  (elysium-window-size 0.33) ; The elysium buffer will be 1/3 your screen
+  (elysium-window-style 'vertical)) ; Can be customized to horizontal
+#+end_src
+** gptel
+#+begin_src emacs-lisp
+  (use-package gptel
+    :straight t
+    :config
+    (gptel-make-anthropic "Claude"
+      :stream t
+      :key (getenv "ANTHROPIC_API_KEY")
+      )
+    )
+#+end_src
+* Git
+** Diff hl
+#+begin_src emacs-lisp
+  (use-package diff-hl
+    :straight t
+    :config
+    (global-diff-hl-mode)
+    )
+#+end_src
+** Magit
+#+begin_src emacs-lisp
+  (use-package magit
+    :straight t
+    :config
+    (setq magit-ediff-dwim-show-on-hunks t)
+    )
+#+end_src
+** Blamer
+#+begin_src emacs-lisp
+  (use-package blamer
+    :after magit
+    :bind (("C-c g i" . blamer-show-commit-info)
+           ("C-c g b" . blamer-show-posframe-commit-info))
+    :defer 20
+    :custom
+    (blamer-idle-time                 0.3)
+    (blamer-min-offset                4)
+    (blamer-max-commit-message-length 100)
+    (blamer-datetime-formatter        "[%s]")
+    (blamer-commit-formatter          " ● %s")
+    )
+#+end_src
 * Keybindings
 ** General
 #+begin_src emacs-lisp
@@ -797,7 +1064,9 @@ Basic projectile setup
     (c-c-leader
       "h" '(:ignore t :wk "Hydra")
       "h f" '(hydra-files/body :wk "Hydra files")
-      "h d" '(hydra-diagnostics/body :wk "Hydra diagnostics"))
+      "h d" '(hydra-diagnostics/body :wk "Hydra diagnostics")
+      "h m" '(hydra-smerge/body :wk "Hydra Smerge")
+      )
 
     ;; Define keybindings for toggling various modes and functions
     (c-c-leader
@@ -839,14 +1108,3 @@ Basic projectile setup
 	which-key-separator " → " )
   )
  #+end_src
-* AI
-#+begin_src emacs-lisp
-  (use-package gptel
-    :straight t
-    :config
-    (gptel-make-anthropic "Claude"
-      :stream t
-      :key (getenv "ANTHROPIC_API_KEY")
-      )
-    )
-#+end_src
