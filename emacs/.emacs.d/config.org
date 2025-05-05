@@ -28,6 +28,10 @@ Replace use-package to straight.
 (setq straight-use-package-by-default t)
 #+end_src
 * Emacs basic settings
+** Line number modeline
+#+begin_src emacs-lisp
+  (line-number-mode 0)
+#+end_src
 ** Tramp
 #+begin_src emacs-lisp
   (setq tramp-allow-unsafe-temporary-files t)
@@ -306,7 +310,7 @@ one, an error is signaled."
 #+begin_src emacs-lisp
   (use-package avy
     :straight t
-    :bind (("M-RET" . avy-goto-char)
+    :bind (("M-c" . avy-goto-char)
            ("M-l" . avy-goto-line))
     )
 #+end_src
@@ -637,6 +641,14 @@ one, an error is signaled."
   (marginalia-mode))
 #+end_src
 * IDE features
+** Breadcrumb
+#+begin_src elisp
+  (use-package breadcrumb
+    :straight t
+    :init
+    (breadcrumb-mode t)
+    )
+#+end_src
 ** Flymake
 #+begin_src emacs-lisp
   (use-package flymake
@@ -654,6 +666,55 @@ one, an error is signaled."
     :straight t
     :config
     (global-set-key (kbd "M-F") 'format-all-region-or-buffer)
+    )
+#+end_src
+** Dap
+#+begin_src elisp
+  (use-package dape
+    :preface
+    ;; By default dape shares the same keybinding prefix as `gud'
+    ;; If you do not want to use any prefix, set it to nil.
+    ;; (setq dape-key-prefix "\C-x\C-a")
+
+    ;; :hook
+    ;; Save breakpoints on quit
+    ;; (kill-emacs . dape-breakpoint-save)
+    ;; Load breakpoints on startup
+    ;; (after-init . dape-breakpoint-load)
+
+    :config
+    ;; Turn on global bindings for setting breakpoints with mouse
+    ;; (dape-breakpoint-global-mode)
+
+    ;; Info buffers to the right
+    (setq dape-buffer-window-arrangement 'right)
+
+    ;; Info buffers like gud (gdb-mi)
+    (setq dape-buffer-window-arrangement 'gud)
+    (setq dape-info-hide-mode-line nil)
+
+    ;; Pulse source line (performance hit)
+    ;; (add-hook 'dape-display-source-hook 'pulse-momentary-highlight-one-line)
+
+    ;; Showing inlay hints
+    ;; (setq dape-inlay-hints t)
+
+    ;; Save buffers on startup, useful for interpreted languages
+    (add-hook 'dape-start-hook (lambda () (save-some-buffers t t)))
+
+    ;; Kill compile buffer on build success
+    (add-hook 'dape-compile-hook 'kill-buffer)
+
+    ;; Projectile users
+    ;; (setq dape-cwd-function 'projectile-project-root)
+    )
+#+end_src
+** Eldoc box
+#+begin_src elisp
+  (use-package eldoc-box
+    :straight t
+    :config
+    (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
     )
 #+end_src
 ** Auto Complete
@@ -857,7 +918,7 @@ one, an error is signaled."
 
       ;; The default width and height of the icons is 22 pixels. If you are
       ;; using a Hi-DPI display, uncomment this to double the icon size.
-      ;;(treemacs-resize-icons 44)
+      (treemacs-resize-icons 15)
 
       (treemacs-follow-mode t)
       (treemacs-filewatch-mode t)
@@ -873,15 +934,7 @@ one, an error is signaled."
          (treemacs-git-mode 'simple)))
 
       (treemacs-hide-gitignored-files-mode nil))
-    :bind
-    (:map global-map
-          ("M-0"       . treemacs-select-window)
-          ("C-x t 1"   . treemacs-delete-other-windows)
-          ("C-x t t"   . treemacs)
-          ("C-x t d"   . treemacs-select-directory)
-          ("C-x t B"   . treemacs-bookmark)
-          ("C-x t C-t" . treemacs-find-file)
-          ("C-x t M-t" . treemacs-find-tag)))
+    )
 
   (use-package treemacs-icons-dired
     :hook (dired-mode . treemacs-icons-dired-enable-once)
@@ -960,14 +1013,34 @@ one, an error is signaled."
 #+end_src
 ** Perspective
 #+begin_src emacs-lisp
-  (use-package perspective
+  ;; (use-package perspective
+  ;;   :straight t
+  ;;   :bind
+  ;;   ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
+  ;;   :custom
+  ;;   (persp-mode-prefix-key (kbd "C-c M-p"))  ; pick your own prefix key here
+  ;;   :init
+  ;;   (persp-mode))
+#+end_src
+** Diminish
+#+begin_src elisp
+  ;; (use-package diminish
+  ;;   :straight t
+  ;;   :config
+  ;;   (diminish 'which-key-mode)
+  ;;   (diminish 'auto-revert-mode)
+  ;;   (diminish 'visual-line-mode)
+  ;;   (diminish 'symbol-overlay-mode)
+  ;;   (diminish 'treesit-fold-mode)
+  ;;   (diminish 'smerge-mode)
+  ;;   (diminish 'eldoc-mode)
+  ;;   (diminish 'eldoc-box-hover-mode)
+  ;;   )
+
+  (use-package minions
     :straight t
-    :bind
-    ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
-    :custom
-    (persp-mode-prefix-key (kbd "C-c M-p"))  ; pick your own prefix key here
-    :init
-    (persp-mode))
+    :config
+    (minions-mode))
 #+end_src
 * AI
 ** Elysium
@@ -983,6 +1056,7 @@ one, an error is signaled."
   (use-package gptel
     :straight t
     :config
+    (gptel-make-gh-copilot "HPECopilot")
     (setq gptel-model 'claude-3-7-sonnet-20250219)
     (setq gptel-backend (gptel-make-anthropic "Claude"
                           :stream t
@@ -990,8 +1064,6 @@ one, an error is signaled."
                           ))
     (setq gptel-default-mode 'org-mode)
     )
-
-
 #+end_src
 * Git
 ** Diff hl
@@ -1025,6 +1097,14 @@ one, an error is signaled."
     (blamer-commit-formatter          " ● %s")
     )
 #+end_src
+** Forge
+#+begin_src emacs-lisp
+  (use-package sqlite3
+    :straight t)
+  (use-package forge
+    :straight t
+    :after magit)
+#+end_src
 * UI
 ** Nerd fonts
 #+begin_src emacs-lisp
@@ -1056,16 +1136,6 @@ Setup my dashboard window
                                      (bookmarks . "book")))
    :config
    (dashboard-setup-startup-hook))
-#+end_src
-** Doom modeline
-#+begin_src emacs-lisp
-  ;; (use-package doom-modeline
-  ;;   :straight t
-  ;;   :hook (after-init . doom-modeline-mode)
-  ;;   :config
-  ;;   (setq doom-modeline-buffer-file-name-style 'relative-from-project)
-  ;;   (setq inhibit-compacting-font-caches t)
-  ;; )
 #+end_src
 ** Theme
 #+begin_src emacs-lisp
@@ -1105,11 +1175,14 @@ Enable tree sitter globally on emacs
     (setq treesit-fold-line-count-format " <%d lines> ")
     )
 
-  (use-package treesit-fold-indicators
-    :straight (treesit-fold-indicators :type git :host github :repo "emacs-tree-sitter/treesit-fold")
-    :init
-    (global-treesit-fold-indicators-mode t)
-    )
+    (setq treesit-language-source-alist
+          '((java "https://github.com/tree-sitter/tree-sitter-java")))
+
+  ;; (use-package treesit-fold-indicators
+  ;;   :straight (treesit-fold-indicators :type git :host github :repo "emacs-tree-sitter/treesit-fold")
+  ;;   :init
+  ;;   (global-treesit-fold-indicators-mode t)
+  ;;   )
 
   ;; (use-package tree-sitter
   ;;   :straight t
@@ -1122,6 +1195,14 @@ Enable tree sitter globally on emacs
   ;; (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 #+end_src
 * Languages
+** Python
+#+begin_src elisp
+  (use-package poetry
+    :straight t)
+
+  (use-package pyvenv
+    :straight t)
+#+end_src
 ** Terraform
 #+begin_src emacs-lisp
   (use-package terraform-mode
@@ -1196,15 +1277,18 @@ Enable tree sitter globally on emacs
   (define-prefix-command 'my-toggle-map)
   (define-prefix-command 'my-ai-map)
   (define-prefix-command 'my-fold-map)
+  (define-prefix-command 'my-treemacs-map)
 
   (global-set-key (kbd "C-c h") my-hydra-map)
   (which-key-add-key-based-replacements "C-c h" "Hydra")
-  (global-set-key (kbd "C-c t") my-toggle-map)
+  (global-set-key (kbd "C-c m") my-toggle-map)
   (which-key-add-key-based-replacements "C-c t" "Toggle")
   (global-set-key (kbd "C-c a") my-ai-map)
   (which-key-add-key-based-replacements "C-c a" "AI")
   (global-set-key (kbd "C-c f") my-fold-map)
   (which-key-add-key-based-replacements "C-c f" "Fold")
+  (global-set-key (kbd "C-c t") my-treemacs-map)
+  (which-key-add-key-based-replacements "C-c t" "Treemacs")
 
   ;; Hydra-related commands
   (define-key my-hydra-map (kbd "f") 'hydra-files/body)
@@ -1227,10 +1311,12 @@ Enable tree sitter globally on emacs
   (define-key my-ai-map (kbd "m") 'gptel-menu)
   (define-key my-ai-map (kbd "c") 'gptel)
   (define-key my-ai-map (kbd "C") 'gptel-clear-conversation)
+  (define-key my-ai-map (kbd "q") 'elysium-query)
   (which-key-add-key-based-replacements "C-c a s" "Send to LLM")
   (which-key-add-key-based-replacements "C-c a m" "LLM menu")
   (which-key-add-key-based-replacements "C-c a c" "Chat with LLM")
   (which-key-add-key-based-replacements "C-c a C" "Clear LLM conversation")
+  (which-key-add-key-based-replacements "C-c a q" "Elysium query")
 
   ;; Fold related commands
   (define-key my-fold-map (kbd "o") 'treesit-fold-open)
@@ -1245,4 +1331,11 @@ Enable tree sitter globally on emacs
   (which-key-add-key-based-replacements "C-c f c" "Close fold")
   (which-key-add-key-based-replacements "C-c f C" "Close all folds")
   (which-key-add-key-based-replacements "C-c f t" "Toggle fold")
+
+  ;; Treemacs related commands
+  (global-set-key (kbd "M-0") 'treemacs-select-window)
+  (define-key my-treemacs-map (kbd "t") 'treemacs)
+  (define-key my-treemacs-map (kbd "d") 'treemacs-select-directory)
+  (which-key-add-key-based-replacements "C-c t t" "Treemacs")
+  (which-key-add-key-based-replacements "C-c t d" "Select directory")
 #+end_src
