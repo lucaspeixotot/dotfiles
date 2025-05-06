@@ -79,14 +79,6 @@ A few UI Tweaks
   (set-face-attribute 'bold nil :family "Hack Nerd Font Mono" :weight 'bold)
   (set-frame-font "Hack Nerd Font Mono-10" nil t)
   (setq-default line-spacing 0)
-  ;; (set-face-attribute 'default nil
-  ;;   :font "Hack Nerd Font Mono"
-  ;;   :height 100
-  ;;   :weight 'medium)
-  ;; (set-face-attribute 'fixed-pitch nil
-  ;;   :font "Hack Nerd Font Mono"
-  ;;   :height 110
-  ;;   :weight 'medium)
 #+end_src
 ** Backup
 #+begin_src emacs-lisp
@@ -190,7 +182,8 @@ one, an error is signaled."
 #+end_src
 ** Trailing spaces
 #+begin_src emacs-lisp
-  (setq-default show-trailing-whitespace t)
+  (setq-default show-trailing-whitespace nil)
+  (add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace t)))
 #+end_src
 ** Ediff
 #+begin_src emacs-lisp
@@ -273,6 +266,10 @@ one, an error is signaled."
   (setq lazy-count-prefix-format "(%s/%s) ")
   (setq lazy-count-suffix-format nil)
   (setq search-whitespace-regexp ".*?")
+#+end_src
+** Authinfo
+#+begin_src emacs-lisp
+  (setq auth-sources '("~/.authinfo"))
 #+end_src
 * Better movement
 ** Expand region
@@ -1011,36 +1008,18 @@ one, an error is signaled."
   (use-package olivetti
     :straight t)
 #+end_src
-** Perspective
-#+begin_src emacs-lisp
-  ;; (use-package perspective
-  ;;   :straight t
-  ;;   :bind
-  ;;   ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
-  ;;   :custom
-  ;;   (persp-mode-prefix-key (kbd "C-c M-p"))  ; pick your own prefix key here
-  ;;   :init
-  ;;   (persp-mode))
-#+end_src
-** Diminish
+** Minions
 #+begin_src elisp
-  ;; (use-package diminish
-  ;;   :straight t
-  ;;   :config
-  ;;   (diminish 'which-key-mode)
-  ;;   (diminish 'auto-revert-mode)
-  ;;   (diminish 'visual-line-mode)
-  ;;   (diminish 'symbol-overlay-mode)
-  ;;   (diminish 'treesit-fold-mode)
-  ;;   (diminish 'smerge-mode)
-  ;;   (diminish 'eldoc-mode)
-  ;;   (diminish 'eldoc-box-hover-mode)
-  ;;   )
-
   (use-package minions
     :straight t
     :config
-    (minions-mode))
+    (setq minions-prominent-modes '(flymake-mode))
+    (minions-mode 1))
+#+end_src
+** Terminal (vterm)
+#+begin_src emacs-lisp
+  (use-package vterm
+    :straight t)
 #+end_src
 * AI
 ** Elysium
@@ -1195,6 +1174,11 @@ Enable tree sitter globally on emacs
   ;; (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 #+end_src
 * Languages
+** Json
+#+begin_src emacs-lisp
+  (use-package json-mode
+    :straight t)
+#+end_src
 ** Python
 #+begin_src elisp
   (use-package poetry
