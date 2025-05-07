@@ -1013,7 +1013,7 @@ one, an error is signaled."
   (use-package minions
     :straight t
     :config
-    (setq minions-prominent-modes '(flymake-mode))
+    (setq minions-prominent-modes '(flymake-mode god-local-mode))
     (minions-mode 1))
 #+end_src
 ** Terminal (vterm)
@@ -1227,6 +1227,21 @@ Enable tree sitter globally on emacs
 #+begin_src emacs-lisp
   (use-package dockerfile-mode
     :straight t)
+#+end_src
+* Org
+#+begin_src emacs-lisp
+  (use-package org
+    :straight t
+    :config
+    (setq org-M-RET-may-split-line '((default . nil)))
+    (setq org-insert-heading-respect-content t)
+    (setq org-log-done 'time)
+    (setq org-log-into-drawer t)
+    (setq org-agenda-files (list (or (getenv "ORG_AGENDA_FILES")
+                                     "~/org-files")))
+    (setq org-todo-keywords
+          '((sequence "TODO(t)" "INPROGRESS(i@/!)" "BLOCKED(b@/!)" "REVIEW(r@/!)" "|" "CANCEL(c!)" "DONE(d!)")))
+    )
 #+end_src
 * Keybindings
 ** Which key
