@@ -39,7 +39,18 @@ Replace use-package to straight.
 ** Project
 #+begin_src emacs-lisp
   (use-package project
-    :straight t)
+    :straight t
+    :config
+    (with-eval-after-load 'project
+      (setq project-switch-commands
+            (cl-remove-if
+             (lambda (cmd)
+               (memq (car cmd) '(project-vc-dir project-eshell)))
+             project-switch-commands)))
+    (with-eval-after-load 'project
+      (define-key project-prefix-map "D" #'project-dired)
+      (add-to-list 'project-switch-commands '(project-dired "Dired") t))
+    )
 #+end_src
 ** Reload Emacs
 Helper function to reload emacs easily.
@@ -533,7 +544,7 @@ one, an error is signaled."
      :preview-key '(:debounce 0.4 any))
 
     ;; Optionally configure the narrowing key.
-    ;; Both < and C-+ work reasonably well.
+    ;; Both  and C-+ work reasonably well.
     (setq consult-narrow-key "<") ;; "C-+"
 
     ;; Optionally make narrowing help available in the minibuffer.
@@ -1019,7 +1030,29 @@ one, an error is signaled."
 ** Terminal (vterm)
 #+begin_src emacs-lisp
   (use-package vterm
-    :straight t)
+    :straight t
+    :config
+    (defun project-vterm ()
+      "Switch to or create a `vterm` buffer in the current project's root."
+      (interactive)
+      (let* ((proj (or (project-current)          ; find current project
+                       (user-error "No project found")))
+             (root (project-root proj))
+             ;; strip trailing slash and take only last directory component
+             (proj-name (file-name-nondirectory
+                         (directory-file-name root)))
+             (buf-name (format "*vterm-%s*" proj-name))
+             (buf (get-buffer buf-name)))
+        (if (buffer-live-p buf)
+            ;; if it already exists, just switch to it
+            (switch-to-buffer buf)
+          ;; else create it under the project root
+          (let ((default-directory root))
+            (vterm buf-name)))))
+    (with-eval-after-load 'project
+      (define-key project-prefix-map "v" #'project-vterm)
+      (add-to-list 'project-switch-commands '(project-vterm "vterm") t))
+    )
 #+end_src
 * AI
 ** Elysium
@@ -1059,6 +1092,9 @@ one, an error is signaled."
     :straight t
     :config
     (setq magit-ediff-dwim-show-on-hunks t)
+    (with-eval-after-load 'project
+      (define-key project-prefix-map "m" #'magit-project-status)
+      (add-to-list 'project-switch-commands '(magit-project-status "Magit") t))
     )
 #+end_src
 ** Blamer
@@ -1097,24 +1133,35 @@ one, an error is signaled."
 Setup my dashboard window
 #+begin_src emacs-lisp
   (use-package dashboard
-   :straight t
-   :init
-   (setq initial-buffer-choice 'dashboard-open)
-   (setq dashboard-set-heading-icons t)
-   (setq dashboard-set-file-icons t)
-   (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
-   (setq dashboard-center-content nil) ;; set to 't' for centered content
-   (setq dashboard-projects-backend 'project-el)
-   (setq dashboard-items '((recents . 5)
-                           (agenda . 5 )
-                           (bookmarks . 3)
-                           (projects . 3)
-                           (registers . 3)))
-   :custom
-   (dashboard-modify-heading-icons '((recents . "file-text")
-                                     (bookmarks . "book")))
-   :config
-   (dashboard-setup-startup-hook))
+    :straight t
+    :init
+    (setq initial-buffer-choice 'dashboard-open)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
+    (setq dashboard-center-content t) ;; set to 't' for centered content
+    (setq dashboard-display-icons-p t)     ; display icons on both GUI and terminal
+    (setq dashboard-icon-type 'nerd-icons) ; use `nerd-icons' package
+    (setq dashboard-projects-backend 'project-el)
+    (setq dashboard-items '((recents . 10)
+                            (agenda . 5 )
+                            (projects . 5)))
+    (setq dashboard-footer-messages
+          '("Keep smiling, keep coding!"
+            "Every day is a new opportunity."
+            "Stay positive and productive."
+            "Code with joy!"
+            "Believe in the power of your code."
+            "Happy coding!"
+            "Make today amazing."
+            "Your code can change the world."
+            "Stay curious, stay creative."
+            "Embrace the journey of learning."))
+    :custom
+    (dashboard-modify-heading-icons '((recents . "file-text")
+                                      (bookmarks . "book")))
+    :config
+    (dashboard-setup-startup-hook))
 #+end_src
 ** Theme
 #+begin_src emacs-lisp
@@ -1231,14 +1278,13 @@ Enable tree sitter globally on emacs
 * Org
 #+begin_src emacs-lisp
   (use-package org
-    :straight t
+    :straight nil
     :config
     (setq org-M-RET-may-split-line '((default . nil)))
     (setq org-insert-heading-respect-content t)
     (setq org-log-done 'time)
     (setq org-log-into-drawer t)
-    (setq org-agenda-files (list (or (getenv "ORG_AGENDA_FILES")
-                                     "~/org-files")))
+    (setq org-agenda-files '("~/org-files"))
     (setq org-todo-keywords
           '((sequence "TODO(t)" "INPROGRESS(i@/!)" "BLOCKED(b@/!)" "REVIEW(r@/!)" "|" "CANCEL(c!)" "DONE(d!)")))
     )
