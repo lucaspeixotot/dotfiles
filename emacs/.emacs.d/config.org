@@ -28,6 +28,10 @@ Replace use-package to straight.
 (setq straight-use-package-by-default t)
 #+end_src
 * Emacs basic settings
+** Cursor type
+#+begin_src emacs-lisp
+  (setq-default cursor-type 'bar)
+#+end_src
 ** Line number modeline
 #+begin_src emacs-lisp
   (line-number-mode 0)
@@ -320,13 +324,13 @@ one, an error is signaled."
   (use-package avy
     :straight t
     :bind
-    (:map org-mode-map
-          ("M-c" . avy-goto-char))
-    (("M-l" . avy-goto-line))
+    (("M-l" . avy-goto-line)
+     ("M-c" . avy-goto-char))
     :config
-    ;; bind M-RET in all prog-modes
-    (define-key prog-mode-map (kbd "M-RET") #'avy-goto-char)
-  )
+    ;; Additional mode-specific bindings
+    (define-key org-mode-map (kbd "M-c") #'avy-goto-char)
+    (define-key text-mode-map (kbd "M-c") #'avy-goto-char)
+    (define-key prog-mode-map (kbd "M-RET") #'avy-goto-char))
 #+end_src
 ** Ace window
 #+begin_src emacs-lisp
@@ -453,11 +457,17 @@ one, an error is signaled."
     :init
     (global-set-key (kbd "<escape>") #'god-mode-all)
     :config
-    (setq god-exempt-major-modes nil)
-    (setq god-exempt-predicates nil)
+    (define-key god-local-mode-map (kbd "i") #'god-local-mode)
     (define-key god-local-mode-map (kbd ".") #'repeat)
     (define-key god-local-mode-map (kbd "[") #'backward-paragraph)
     (define-key god-local-mode-map (kbd "]") #'forward-paragraph)
+    (custom-set-faces
+     '(god-mode-lighter ((t (:inherit error)))))
+    (defun my-god-mode-update-cursor-type ()
+      (setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
+
+    (add-hook 'god-mode-enabled-hook #'my-god-mode-update-cursor-type)
+    (add-hook 'god-mode-disabled-hook #'my-god-mode-update-cursor-type)
     )
 #+end_src
 ** Move where I mean (mwim)
@@ -466,6 +476,18 @@ one, an error is signaled."
     :straight t
     :bind (("C-a" . mwim-beginning-of-code-or-line)
            ("C-e" . mwim-end-of-code-or-line))
+    )
+#+end_src
+** Key chords
+#+begin_src emacs-lisp
+  (use-package key-chord
+    :straight t
+    :init
+    (key-chord-mode 1)
+    :config
+    (key-chord-define prog-mode-map "jf" #'format-all-region-or-buffer)
+    (key-chord-define-global "jq" #'god-mode-all)
+    (key-chord-define-global "jc" #'avy-goto-char)
     )
 #+end_src
 * Completion system
@@ -693,8 +715,6 @@ one, an error is signaled."
 #+begin_src emacs-lisp
   (use-package format-all
     :straight t
-    :config
-    (global-set-key (kbd "M-F") 'format-all-region-or-buffer)
     )
 #+end_src
 ** Dap
@@ -1234,8 +1254,9 @@ Setup my dashboard window
     (dashboard-setup-startup-hook))
 #+end_src
 ** Theme
-#+begin_src emacs-lisp
-  (use-package modus-themes
+*** Modus Themes
+#+Begin_src emacs-lisp
+   (use-package modus-themes
     :straight t
     :config
     ;; Add all your customizations prior to loading the themes
@@ -1250,6 +1271,12 @@ Setup my dashboard window
     (load-theme 'modus-vivendi :no-confirm)
 
     (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
+#+end_src
+*** Ef themes
+#+begin_src emacs-lisp
+  (use-package ef-themes
+    :straight t
+    )
 #+end_src
 ** Tree sitter
 Enable tree sitter globally on emacs

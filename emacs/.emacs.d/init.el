@@ -9,7 +9,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("95ddb63be6417ed3d661a9858cdde3b8e363f783ff2b8181840ee7a5153bda49"
+   '("b9c002dc827fb75b825da3311935c9f505d48d7ee48f470f0aa7ac5d2a595ab2"
+     "95ddb63be6417ed3d661a9858cdde3b8e363f783ff2b8181840ee7a5153bda49"
      "1a115a5125aca3244fc09a946e52386d93d7bb2ca5c65338b05aabdc39d80f3b"
      "fd6f696ce0bd8bfdb72c573631e0b0cdc33e6301852d656596617a7bbaf55729"
      "55d823394508383752cafe3a914d1831586ea72b56628693521fea04c0fefbcc"
@@ -27,4 +28,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(god-mode-lighter ((t (:inherit error)))))
