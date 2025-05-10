@@ -839,6 +839,12 @@ one, an error is signaled."
       (symbols-outline-follow-mode))
     )
 #+end_src
+** Docker
+#+begin_src emacs-lisp
+  (use-package docker
+    :straight t
+    :bind ("C-c d" . docker))
+#+end_src
 * Misc
 ** undo fu
 #+begin_src emacs-lisp
@@ -1108,6 +1114,14 @@ one, an error is signaled."
       (define-key project-prefix-map "v" #'project-vterm)
       (add-to-list 'project-switch-commands '(project-vterm "vterm") t))
     )
+#+end_src
+** Exec path from shell
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+    :straight t
+    :config
+    (when (memq window-system '(mac ns x))
+      (exec-path-from-shell-initialize)))
 #+end_src
 ** Perspective
 #+begin_src emacs-lisp
