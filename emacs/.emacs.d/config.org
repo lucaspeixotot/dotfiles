@@ -63,10 +63,11 @@ Helper function to reload emacs easily.
 ** Smooth scrolling
 Create a better experience scrolling on emacs
 #+begin_src emacs-lisp
-  (setq scroll-margin 7)
-  (setq scroll-preserve-screen-position 7)
+  (setq scroll-margin 3)
+  (setq scroll-preserve-screen-position 3)
   (setq scroll-conservatively most-positive-fixnum)
   (setq scroll-step 1)
+  (add-hook 'xref-after-return-hook 'recenter)
 #+end_src
 ** GUI
 A few UI Tweaks
@@ -318,34 +319,44 @@ one, an error is signaled."
 #+begin_src emacs-lisp
   (use-package avy
     :straight t
-    :bind (("M-c" . avy-goto-char)
-           ("M-l" . avy-goto-line))
-    )
+    :bind
+    (:map org-mode-map
+          ("M-c" . avy-goto-char))
+    (("M-l" . avy-goto-line))
+    :config
+    ;; bind M-RET in all prog-modes
+    (define-key prog-mode-map (kbd "M-RET") #'avy-goto-char)
+  )
 #+end_src
 ** Ace window
 #+begin_src emacs-lisp
-       (use-package ace-window
-         :straight t
-         :config
-         (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-         (setq aw-background nil)
-         (defvar aw-dispatch-alist
-           '((?x aw-delete-window "Delete Window")
-             (?m aw-swap-window "Swap Windows")
-             (?M aw-move-window "Move Window")
-             (?c aw-copy-window "Copy Window")
-             (?j aw-switch-buffer-in-window "Select Buffer")
-             (?n aw-flip-window)
-             (?u aw-switch-buffer-other-window "Switch Buffer Other Window")
-             (?c aw-split-window-fair "Split Fair Window")
-             (?v aw-split-window-vert "Split Vert Window")
-             (?b aw-split-window-horz "Split Horz Window")
-             (?o delete-other-windows "Delete Other Windows")
-             (?? aw-show-dispatch-help))
-           "List of actions for `aw-dispatch-default'.")
-        :bind
-        ([remap other-window] . ace-window)
-  )
+  (use-package ace-window
+    :straight t
+    :init
+    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+    (setq aw-background t)
+    (defvar aw-dispatch-alist
+      '((?x aw-delete-window "Delete Window")
+        (?m aw-swap-window "Swap Windows")
+        (?M aw-move-window "Move Window")
+        (?c aw-copy-window "Copy Window")
+        (?j aw-switch-buffer-in-window "Select Buffer")
+        (?n aw-flip-window)
+        (?u aw-switch-buffer-other-window "Switch Buffer Other Window")
+        (?c aw-split-window-fair "Split Fair Window")
+        (?v aw-split-window-vert "Split Vert Window")
+        (?b aw-split-window-horz "Split Horz Window")
+        (?o delete-other-windows "Delete Other Windows")
+        (?? aw-show-dispatch-help))
+      "List of actions for `aw-dispatch-default'.")
+    (setq aw-dispatch-always nil)
+    (setq aw-ignore-on t)
+    (setq aw-ignore-current t)
+    :config
+    ;;(add-to-list 'aw-ignored-buffers "*Outline*")
+    :bind
+    ([remap other-window] . ace-window)
+    )
 #+end_src
 ** Hydra
 #+begin_src emacs-lisp
@@ -359,16 +370,26 @@ one, an error is signaled."
                                      (message
                                       "Thank you, come again.")))
       "emacs fast movements"
-      ("f" forward-char)
-      ("b" backward-char)
-      ("n" next-line)
-      ("p" previous-line)
+      ("l" forward-char)
+      ("h" backward-char)
+      ("j" next-line)
+      ("k" previous-line)
       ("a" beginning-of-line)
       ("e" end-of-line)
+      ("w" forward-word)
+      ("b" backward-word)
       ("u" scroll-down-command)
       ("d" scroll-up-command)
-      ("l" recenter-top-bottom)
+      ("z" recenter-top-bottom)
+      ("c" treesit-fold-close)
+      ("C" treesit-fold-close-all)
+      ("o" treesit-fold-open)
+      ("O" treesit-fold-open-all)
+      ("r" treesit-fold-open-recursively)
       ("RET" avy-goto-char)
+      ("." xref-find-definitions)
+      ("," xref-go-back)
+      ("?" xref-find-references)
       ("q" nil "quit"))
 
     (defhydra hydra-files
@@ -564,7 +585,7 @@ one, an error is signaled."
     ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
     ;;;; 5. No project support
     ;; (setq consult-project-function nil)
-  )
+    )
   #+end_src
 ** Vertico
 #+begin_src emacs-lisp
@@ -722,7 +743,8 @@ one, an error is signaled."
   (use-package eldoc-box
     :straight t
     :config
-    (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
+    ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
+    (global-set-key (kbd "M--") 'eldoc-box-help-at-point)
     )
 #+end_src
 ** Auto Complete
@@ -783,6 +805,19 @@ one, an error is signaled."
      ;; commands are hidden, since they are not used via M-x. This setting is
      ;; useful beyond Corfu.
      (read-extended-command-predicate #'command-completion-default-include-p))
+#+end_src
+** Symbols outline
+#+begin_src emacs-lisp
+  (use-package symbols-outline
+    :straight t
+    :config
+    (global-set-key (kbd "M-g s") 'symbols-outline-show)
+    (with-eval-after-load 'symbols-outline
+      (setq symbols-outline-fetch-fn #'symbols-outline-lsp-fetch)
+      (setq symbols-outline-window-position 'left)
+      (setq symbols-outline-use-nerd-icon-in-gui t)
+      (symbols-outline-follow-mode))
+    )
 #+end_src
 * Misc
 ** undo fu
@@ -897,7 +932,7 @@ one, an error is signaled."
             treemacs-no-delete-other-windows         t
             treemacs-project-follow-cleanup          nil
             treemacs-persist-file                    (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-            treemacs-position                        'left
+            treemacs-position                        'right
             treemacs-read-string-input               'from-child-frame
             treemacs-recenter-distance               0.1
             treemacs-recenter-after-file-follow      nil
@@ -1054,6 +1089,31 @@ one, an error is signaled."
       (add-to-list 'project-switch-commands '(project-vterm "vterm") t))
     )
 #+end_src
+** Perspective
+#+begin_src emacs-lisp
+  (use-package perspective
+    :bind
+    ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
+    :custom
+    (persp-mode-prefix-key (kbd "C-c M-p"))  ; pick your own prefix key here
+    :config
+    (setq switch-to-prev-buffer-skip
+          (lambda (win buff bury-or-kill)
+            (not (persp-is-current-buffer buff))))
+    (consult-customize consult--source-buffer :hidden t :default nil)
+    (add-to-list 'consult-buffer-sources persp-consult-source)
+    :init
+    (require 'consult)
+    (persp-mode))
+
+  (use-package persp-project
+    :straight (persp-project :type git :host github :repo "PauloPhagula/persp-project")
+    :after (perspective project)
+    :config
+    (persp-project-mode)
+    (global-set-key (kbd "C-x p p") 'persp-project-switch-project)
+    )
+#+end_src
 * AI
 ** Elysium
 #+begin_src emacs-lisp
@@ -1120,6 +1180,15 @@ one, an error is signaled."
     :straight t
     :after magit)
 #+end_src
+** Code review
+#+begin_src emacs-lisp
+  ;; (use-package code-review
+  ;;   :straight (code-review :type git :host github :repo "doomelpa/code-review")
+  ;;   :config
+  ;;   (setq code-review-fill-column 80)
+  ;;   (setq code-review-auth-login-marker 'forge)
+  ;;   )
+#+end_src
 * UI
 ** Nerd fonts
 #+begin_src emacs-lisp
@@ -1143,6 +1212,7 @@ Setup my dashboard window
     (setq dashboard-display-icons-p t)     ; display icons on both GUI and terminal
     (setq dashboard-icon-type 'nerd-icons) ; use `nerd-icons' package
     (setq dashboard-projects-backend 'project-el)
+    (setq dashboard-projects-switch-function 'persp-project-switch-project)
     (setq dashboard-items '((recents . 10)
                             (agenda . 5 )
                             (projects . 5)))
@@ -1190,7 +1260,10 @@ Enable tree sitter globally on emacs
     (treesit-auto-install 'prompt)
     :config
     (treesit-auto-add-to-auto-mode-alist 'all)
-    (global-treesit-auto-mode))
+    (global-treesit-auto-mode)
+    (setq major-mode-remap-alist
+          '((json-mode . json-ts-mode)))
+    )
 
   (use-package treesit-fold
     :straight (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold")
@@ -1201,24 +1274,8 @@ Enable tree sitter globally on emacs
     (setq treesit-fold-line-count-format " <%d lines> ")
     )
 
-    (setq treesit-language-source-alist
-          '((java "https://github.com/tree-sitter/tree-sitter-java")))
-
-  ;; (use-package treesit-fold-indicators
-  ;;   :straight (treesit-fold-indicators :type git :host github :repo "emacs-tree-sitter/treesit-fold")
-  ;;   :init
-  ;;   (global-treesit-fold-indicators-mode t)
-  ;;   )
-
-  ;; (use-package tree-sitter
-  ;;   :straight t
-  ;;   )
-
-  ;; (use-package tree-sitter-langs
-  ;;   :straight t)
-
-  ;; (global-tree-sitter-mode)
-  ;; (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+  (setq treesit-language-source-alist
+        '((java "https://github.com/tree-sitter/tree-sitter-java")))
 #+end_src
 * Languages
 ** Json
@@ -1292,24 +1349,25 @@ Enable tree sitter globally on emacs
 * Keybindings
 ** Which key
 #+begin_src emacs-lisp
-(use-package which-key
-  :straight t
-  :init
-  (which-key-mode 1)
-  :config
-  (setq which-key-side-window-location 'bottom
-	which-key-sort-order #'which-key-key-order-alpha
-	which-key-sort-uppercase-first nil
-	which-key-add-column-padding 1
-	which-key-max-display-columns nil
-	which-key-min-display-lines 6
-	which-key-side-window-slot -10
-	which-key-side-window-max-height 0.25
-	which-key-idle-delay 0.8
-	which-key-max-description-length 25
-	which-key-allow-imprecise-window-fit nil
-	which-key-separator " → " )
-  )
+  (use-package which-key
+    :straight t
+    :init
+    (which-key-mode 1)
+    :config
+    (setq which-key-side-window-location 'bottom
+  	    which-key-sort-order #'which-key-key-order-alpha
+  	    which-key-sort-uppercase-first nil
+  	    which-key-add-column-padding 1
+  	    which-key-max-display-columns nil
+  	    which-key-min-display-lines 6
+  	    which-key-side-window-slot -10
+  	    which-key-side-window-max-height 0.25
+  	    which-key-idle-delay 0.8
+  	    which-key-max-description-length 25
+  	    which-key-allow-imprecise-window-fit nil
+  	    which-key-separator " → " )
+    (which-key-add-key-based-replacements "C-x p p" "Persp project switch")
+    )
  #+end_src
 ** Bindings
 #+begin_src emacs-lisp
