@@ -1123,6 +1123,11 @@ one, an error is signaled."
     (when (memq window-system '(mac ns x))
       (exec-path-from-shell-initialize)))
 #+end_src
+** Multi vterm
+#+begin_src emacs-lisp
+  (use-package multi-vterm
+    :straight t)
+#+end_src
 ** Perspective
 #+begin_src emacs-lisp
   (use-package perspective
