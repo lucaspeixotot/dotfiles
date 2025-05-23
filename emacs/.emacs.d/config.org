@@ -338,7 +338,7 @@ one, an error is signaled."
     :straight t
     :init
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-    (setq aw-background t)
+    (setq aw-background nil)
     (defvar aw-dispatch-alist
       '((?x aw-delete-window "Delete Window")
         (?m aw-swap-window "Swap Windows")
@@ -354,8 +354,8 @@ one, an error is signaled."
         (?? aw-show-dispatch-help))
       "List of actions for `aw-dispatch-default'.")
     (setq aw-dispatch-always nil)
-    (setq aw-ignore-on t)
-    (setq aw-ignore-current t)
+    (setq aw-ignore-on nil)
+    (setq aw-ignore-current nil)
     :config
     ;;(add-to-list 'aw-ignored-buffers "*Outline*")
     :bind
@@ -893,7 +893,7 @@ one, an error is signaled."
 #+begin_src emacs-lisp
 (use-package surround
   :straight t
-  :bind-keymap ("M-'" . surround-keymap))
+  :bind-keymap ("M-=" . surround-keymap))
 #+end_src
 ** Multiple cursors
 #+begin_src emacs-lisp
