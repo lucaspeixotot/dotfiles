@@ -1153,6 +1153,13 @@ one, an error is signaled."
     (global-set-key (kbd "C-x p p") 'persp-project-switch-project)
     )
 #+end_src
+** Horizontal scroll because of marginalia
+#+begin_src emacs-lisp
+  (put 'scroll-left 'disabled nil)
+  (put 'scroll-right 'disabled nil)
+  (setq hscroll-margin 1)
+  (setq hscroll-step 1)
+#+end_src
 * AI
 ** Elysium
 #+begin_src emacs-lisp
