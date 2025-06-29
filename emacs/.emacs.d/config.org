@@ -28,10 +28,6 @@ Replace use-package to straight.
 (setq straight-use-package-by-default t)
 #+end_src
 * Emacs basic settings
-** Cursor type
-#+begin_src emacs-lisp
-  (setq-default cursor-type 'bar)
-#+end_src
 ** Line number modeline
 #+begin_src emacs-lisp
   (line-number-mode 0)
@@ -463,11 +459,6 @@ one, an error is signaled."
     (define-key god-local-mode-map (kbd "]") #'forward-paragraph)
     (custom-set-faces
      '(god-mode-lighter ((t (:inherit error)))))
-    (defun my-god-mode-update-cursor-type ()
-      (setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
-
-    (add-hook 'god-mode-enabled-hook #'my-god-mode-update-cursor-type)
-    (add-hook 'god-mode-disabled-hook #'my-god-mode-update-cursor-type)
     )
 #+end_src
 ** Move where I mean (mwim)
