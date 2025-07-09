@@ -30,7 +30,7 @@ Replace use-package to straight.
 * Emacs basic settings
 ** Line number modeline
 #+begin_src emacs-lisp
-  (line-number-mode 0)
+  (line-number-mode 1)
 #+end_src
 ** Tramp
 #+begin_src emacs-lisp
@@ -282,6 +282,17 @@ one, an error is signaled."
 ** Authinfo
 #+begin_src emacs-lisp
   (setq auth-sources '("~/.authinfo"))
+
+  (defun cvt/auth-source-get-password (host user)
+    "Fetch password for HOST and USER from .authinfo, warning if not found."
+    (let ((found (car (auth-source-search :host host :user user :require '(:user :secret)))))
+      (if found
+          (let ((secret (plist-get found :secret)))
+            (if (functionp secret)
+                (funcall secret)
+              secret))
+        (message "No authinfo entry found for host: %s user: %s" host user)
+        nil)))
 #+end_src
 * Better movement
 ** Expand region
@@ -886,6 +897,19 @@ one, an error is signaled."
   :straight t
   :bind-keymap ("M-=" . surround-keymap))
 #+end_src
+** Magit
+#+begin_src emacs-lisp
+  ;; (use-package magit)
+
+  (use-package magit
+    :straight t
+    :config
+    (setq magit-ediff-dwim-show-on-hunks t)
+    (with-eval-after-load 'project
+      (define-key project-prefix-map "m" #'magit-project-status)
+      (add-to-list 'project-switch-commands '(magit-project-status "Magit") t))
+    )
+#+end_src
 ** Multiple cursors
 #+begin_src emacs-lisp
   (use-package multiple-cursors
@@ -1112,7 +1136,11 @@ one, an error is signaled."
     :straight t
     :config
     (when (memq window-system '(mac ns x))
-      (exec-path-from-shell-initialize)))
+      (exec-path-from-shell-initialize))
+    (dolist (var '("CONFLUENCE_API_TOKEN" "JIRA_API_TOKEN" "GITHUB_PERSONAL_ACCESS_TOKEN"))
+      (add-to-list 'exec-path-from-shell-variables var))
+    (exec-path-from-shell-initialize)
+    )
 #+end_src
 ** Multi vterm
 #+begin_src emacs-lisp
@@ -1140,7 +1168,6 @@ one, an error is signaled."
     :straight (persp-project :type git :host github :repo "PauloPhagula/persp-project")
     :after (perspective project)
     :config
-    (persp-project-mode)
     (global-set-key (kbd "C-x p p") 'persp-project-switch-project)
     )
 #+end_src
@@ -1152,18 +1179,23 @@ one, an error is signaled."
   (setq hscroll-step 1)
 #+end_src
 * AI
-** Elysium
-#+begin_src emacs-lisp
-  (use-package elysium
-  :custom
-  ;; Below are the default values
-  (elysium-window-size 0.33) ; The elysium buffer will be 1/3 your screen
-  (elysium-window-style 'vertical)) ; Can be customized to horizontal
-#+end_src
 ** gptel
 #+begin_src emacs-lisp
+  ;; (use-package gptel
+  ;;   :straight t
+  ;;   :config
+  ;;   (gptel-make-gh-copilot "HPECopilot")
+  ;;   (setq gptel-model 'claude-3-7-sonnet-20250219)
+  ;;   (setq gptel-backend (gptel-make-anthropic "Claude"
+  ;;                         :stream t
+  ;;                         :key (getenv "ANTHROPIC_API_KEY")
+  ;;                         ))
+  ;;   (setq gptel-default-mode 'org-mode)
+  ;;   (require 'gptel-integrations)
+  ;;   )
+
   (use-package gptel
-    :straight t
+    :straight (gptel :type git :host github :repo "lucaspeixotoac/gptel" :branch "feature/directive-from-file")
     :config
     (gptel-make-gh-copilot "HPECopilot")
     (setq gptel-model 'claude-3-7-sonnet-20250219)
@@ -1172,7 +1204,60 @@ one, an error is signaled."
                           :key (getenv "ANTHROPIC_API_KEY")
                           ))
     (setq gptel-default-mode 'org-mode)
+    (require 'gptel-integrations)
     )
+
+#+end_src
+** mcp
+#+begin_src emacs-lisp
+  ;; (use-package mcp
+  ;;   :ensure t)
+  ;; ;
+  (use-package mcp
+    :straight t
+    :after gptel
+    :config
+    (require 'mcp-hub)
+    :custom
+    (mcp-hub-servers
+     `(("github" . (
+                    :command "docker"
+                             :args (
+                                    "run"
+                                    "-i"
+                                    "--rm"
+                                    "-e" "GITHUB_PERSONAL_ACCESS_TOKEN"
+                                    "ghcr.io/github/github-mcp-server"
+                                    )
+                             :env (
+                                   :GITHUB_PERSONAL_ACCESS_TOKEN ,(cvt/auth-source-get-password "localhost" "git_api_token")
+                                                                 )
+                             ))
+       ("jira" . (
+                  :command "docker"
+                           :args (
+                                  "run"
+                                  "-i"
+                                  "--rm"
+                                  "-e" "CONFLUENCE_URL"
+                                  "-e" "CONFLUENCE_USERNAME"
+                                  "-e" "CONFLUENCE_API_TOKEN"
+                                  "-e" "JIRA_URL"
+                                  "-e" "JIRA_USERNAME"
+                                  "-e" "JIRA_API_TOKEN"
+                                  "ghcr.io/sooperset/mcp-atlassian:latest"
+                                  )
+                           :env (
+                                 :CONFLUENCE_URL "https://hpe.atlassian.net/wiki"
+                                 :CONFLUENCE_USERAME "lucas.cavalcante@hpe.com"
+                                 :CONFLUENCE_API_TOKEN ,(cvt/auth-source-get-password "localhost" "confluence_api_token")
+                                 :JIRA_URL "https://hpe.atlassian.net"
+                                 :JIRA_USERNAME "lucas.cavalcante@hpe.com"
+                                 :JIRA_API_TOKEN ,(cvt/auth-source-get-password "localhost" "jira_api_token")
+                                 )))
+       ))
+    :hook
+    (after-init . mcp-hub-start-all-server))
 #+end_src
 * Git
 ** Diff hl
@@ -1181,17 +1266,6 @@ one, an error is signaled."
     :straight t
     :config
     (global-diff-hl-mode)
-    )
-#+end_src
-** Magit
-#+begin_src emacs-lisp
-  (use-package magit
-    :straight t
-    :config
-    (setq magit-ediff-dwim-show-on-hunks t)
-    (with-eval-after-load 'project
-      (define-key project-prefix-map "m" #'magit-project-status)
-      (add-to-list 'project-switch-commands '(magit-project-status "Magit") t))
     )
 #+end_src
 ** Blamer
