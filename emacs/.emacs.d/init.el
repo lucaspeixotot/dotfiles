@@ -9,7 +9,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("b9c002dc827fb75b825da3311935c9f505d48d7ee48f470f0aa7ac5d2a595ab2"
+   '("a9028cd93db14a5d6cdadba789563cb90a97899c4da7df6f51d58bb390e54031"
+     "7235b77f371f46cbfae9271dce65f5017b61ec1c8687a90ff30c6db281bfd6b7"
+     "1c2fb3448ce245f18c62fde3c7cfd008e69a27e88ae8a03fbb62857f13d0b6fe"
+     "b9c002dc827fb75b825da3311935c9f505d48d7ee48f470f0aa7ac5d2a595ab2"
      "95ddb63be6417ed3d661a9858cdde3b8e363f783ff2b8181840ee7a5153bda49"
      "1a115a5125aca3244fc09a946e52386d93d7bb2ca5c65338b05aabdc39d80f3b"
      "fd6f696ce0bd8bfdb72c573631e0b0cdc33e6301852d656596617a7bbaf55729"
