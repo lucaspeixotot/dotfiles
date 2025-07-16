@@ -31,6 +31,9 @@
 ;; Always follow symlinks, needed because of stow usage of my dotfiles
 (setq vc-follow-symlinks t)
 
+;; Set the maximum output size for reading process output, allowing for larger data transfers.
+(setq read-process-output-max (* 1024 1024 4))
+
 (provide 'early-init)
 ;;; early-init.el ends here
 

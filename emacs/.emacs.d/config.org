@@ -518,7 +518,7 @@ one, an error is signaled."
       ("o" treesit-fold-open)
       ("O" treesit-fold-open-all)
       ("r" treesit-fold-open-recursively)
-      ("RET" avy-goto-char)
+      ("RET" avy-goto-char-timer)
       ("." xref-find-definitions)
       ("," xref-go-back)
       ("?" xref-find-references)
@@ -610,7 +610,8 @@ one, an error is signaled."
     :config
     (key-chord-define prog-mode-map "jf" #'format-all-region-or-buffer)
     (key-chord-define-global "jq" #'god-mode-all)
-    (key-chord-define-global "jc" #'avy-goto-char)
+    (key-chord-define-global "jc" #'avy-goto-char-timer)
+    (key-chord-define-global "jp" #'persp-switch)
     )
 #+end_src
 * Completion system
@@ -755,7 +756,13 @@ one, an error is signaled."
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
   (use-package savehist
     :init
-    (savehist-mode))
+    (savehist-mode)
+    :config
+    (add-to-list 'savehist-additional-variables 'kill-ring)
+    (add-to-list 'savehist-additional-variables 'mark-ring)
+    (add-to-list 'savehist-additional-variables 'search-ring)
+    (add-to-list 'savehist-additional-variables 'regexp-search-ring)
+    )
 
   ;; A few more useful configurations...
   (use-package emacs
@@ -1308,16 +1315,17 @@ one, an error is signaled."
   (use-package gptel
     :straight t
     :config
-    (gptel-make-gh-copilot "HPECopilot")
-    (setq gptel-model 'claude-3-7-sonnet-20250219)
-    (setq gptel-backend (gptel-make-anthropic "Claude"
-                          :stream t
-                          :key (getenv "ANTHROPIC_API_KEY")
-                          ))
+    (setq gptel-backend (gptel-make-gh-copilot "HPECopilot"))
+    (setq gptel-model 'claude-3.7-sonnet)
+    ;; (setq gptel-backend (gptel-make-anthropic "Claude"
+    ;;                       :stream t
+    ;;                       :key (getenv "ANTHROPIC_API_KEY")
+    ;;                       ))
     (setq gptel-default-mode 'org-mode)
     (setq gptel-prompt-prefix-alist '((markdown-mode . "Response: ") (org-mode . "* Prompt: ") (text-mode . "### ")))
     (setq gptel-response-prefix-alist '((markdown-mode . "Response: ") (org-mode . "") (text-mode . "Response: ")))
     (require 'gptel-integrations)
+    (setq gptel-expert-commands t)
     )
 #+end_src
 ** gptel-quick
@@ -1644,10 +1652,12 @@ Enable tree sitter globally on emacs
   (define-key my-ai-map (kbd "m") 'gptel-menu)
   (define-key my-ai-map (kbd "c") 'gptel)
   (define-key my-ai-map (kbd "C") 'gptel-clear-conversation)
-  (which-key-add-key-based-replacements "C-c a s" "Send to LLM")
-  (which-key-add-key-based-replacements "C-c a m" "LLM menu")
-  (which-key-add-key-based-replacements "C-c a c" "Chat with LLM")
-  (which-key-add-key-based-replacements "C-c a C" "Clear LLM conversation")
+  (define-key my-ai-map (kbd "q") 'gptel-quick)
+  (which-key-add-key-based-replacements "C-c a s" "Gptel send")
+  (which-key-add-key-based-replacements "C-c a m" "Gptel menu")
+  (which-key-add-key-based-replacements "C-c a c" "Gptel chat")
+  (which-key-add-key-based-replacements "C-c a C" "Gptel clear chat")
+  (which-key-add-key-based-replacements "C-c a q" "Gptel quick")
 
   ;; Fold related commands
   (define-key my-fold-map (kbd "o") 'treesit-fold-open)
