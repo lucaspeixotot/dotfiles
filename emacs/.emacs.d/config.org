@@ -34,7 +34,33 @@ Replace use-package to straight.
 #+end_src
 ** Tramp
 #+begin_src emacs-lisp
-  (setq tramp-allow-unsafe-temporary-files t)
+  (use-package tramp
+    :straight nil
+    :config
+    ;;Tramp settings improve
+    (setq remote-file-name-inhibit-locks t
+          tramp-use-scp-direct-remote-copying t
+          remote-file-name-inhibit-auto-save-visited t)
+
+    (setq tramp-copy-size-limit (* 1024 1024) ;; 1MB
+          tramp-verbose 2)
+
+    (connection-local-set-profile-variables
+     'remote-direct-async-process
+     '((tramp-direct-async-process . t)))
+
+    (connection-local-set-profiles
+     '(:application tramp :protocol "scp")
+     'remote-direct-async-process)
+
+    (setq magit-tramp-pipe-stty-settings 'pty)
+
+    (with-eval-after-load 'tramp
+      (with-eval-after-load 'compile
+        (remove-hook 'compilation-mode-hook #'tramp-compile-disable-ssh-controlmaster-options)))
+
+    (setq tramp-allow-unsafe-temporary-files t)
+    )
 #+end_src
 ** Project
 #+begin_src emacs-lisp
@@ -50,6 +76,14 @@ Replace use-package to straight.
     (with-eval-after-load 'project
       (define-key project-prefix-map "D" #'project-dired)
       (add-to-list 'project-switch-commands '(project-dired "Dired") t))
+    )
+
+  (use-package project-x
+    :straight (project-x :type git :host github :repo "karthink/project-x")
+    :after project
+    :config
+    (project-x-mode)
+    (setq project-x-save-interval 600)
     )
 #+end_src
 ** Reload Emacs
@@ -1023,7 +1057,7 @@ one, an error is signaled."
 #+begin_src emacs-lisp
 (use-package surround
   :straight t
-  :bind-keymap ("M-=" . surround-keymap))
+  :bind-keymap ("C-c s" . surround-keymap))
 #+end_src
 ** Magit
 #+begin_src emacs-lisp
@@ -1308,6 +1342,48 @@ one, an error is signaled."
   (put 'scroll-right 'disabled nil)
   (setq hscroll-margin 1)
   (setq hscroll-step 1)
+#+end_src
+** Denote
+#+begin_src emacs-lisp
+  (use-package denote
+    :ensure t
+    :hook (dired-mode . denote-dired-mode)
+    :bind
+    (("C-c n n" . denote)
+     ("C-c n r" . denote-rename-file)
+     ("C-c n l" . denote-link)
+     ("C-c n b" . denote-backlinks)
+     ("C-c n d" . denote-dired)
+     ("C-c n g" . denote-grep)
+     ("C-c n o" . denote-open-or-create)
+     )
+    :config
+    (setq denote-directory (expand-file-name "~/org-denote/"))
+
+    ;; Automatically rename Denote buffers when opening them so that
+    ;; instead of their long file name they have, for example, a literal
+    ;; "[D]" followed by the file's title.  Read the doc string of
+    ;; `denote-rename-buffer-format' for how to modify this.
+    (denote-rename-buffer-mode 1))
+
+  (use-package consult-denote
+    :straight t
+    :bind
+    (("C-c n f" . consult-denote-find)
+     ("C-c n g" . consult-denote-grep))
+    :config
+    (consult-denote-mode 1))
+
+  (use-package denote-menu
+    :straight t
+    :config
+    (global-set-key (kbd "C-c z") #'list-denotes)
+    (define-key denote-menu-mode-map (kbd "c") #'denote-menu-clear-filters)
+    (define-key denote-menu-mode-map (kbd "/ f") #'denote-menu-filter)
+    (define-key denote-menu-mode-map (kbd "/ k") #'denote-menu-filter-by-keyword)
+    (define-key denote-menu-mode-map (kbd "/ o") #'denote-menu-filter-out-keyword)
+    (define-key denote-menu-mode-map (kbd "e") #'denote-menu-export-to-dired)
+    )
 #+end_src
 * AI
 ** gptel
