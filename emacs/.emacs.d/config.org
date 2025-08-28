@@ -620,7 +620,7 @@ one, an error is signaled."
   (use-package god-mode
     :straight t
     :init
-    (global-set-key (kbd "<escape>") #'god-mode-all)
+    (global-set-key (kbd "<escape>") #'god-local-mode)
     :config
     (define-key god-local-mode-map (kbd "i") #'god-local-mode)
     (define-key god-local-mode-map (kbd ".") #'repeat)
@@ -655,7 +655,7 @@ one, an error is signaled."
     (key-chord-mode 1)
     :config
     (key-chord-define prog-mode-map "jf" #'format-all-region-or-buffer)
-    (key-chord-define-global "jq" #'god-mode-all)
+    (key-chord-define-global "jq" #'god-local-mode)
     (key-chord-define-global "jc" #'avy-goto-char-timer)
     (key-chord-define-global "jp" #'persp-switch)
     )
@@ -909,16 +909,30 @@ one, an error is signaled."
     (breadcrumb-mode t)
     )
 #+end_src
-** Flymake
+** Flymake/flycheck
 #+begin_src emacs-lisp
-  (use-package flymake
+  ;; (use-package flymake
+  ;;   :straight t
+  ;;   :config
+  ;;   (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
+  ;;   (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error)
+  ;;   (setq-default flymake-indicator-type 'fringes)
+  ;;   (setq-default flymake-fringe-indicator-position 'right-fringe)
+  ;;   )
+
+
+  (use-package flycheck
     :straight t
+    :init (global-flycheck-mode)
     :config
-    (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
-    (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error)
-    (setq-default flymake-indicator-type 'fringes)
-    (setq-default flymake-fringe-indicator-position 'right-fringe)
+    (setq flycheck-check-syntax-automatically '(mode-enabled save))
     )
+
+  (use-package flycheck-eglot
+    :ensure t
+    :after (flycheck eglot)
+    :config
+    (global-flycheck-eglot-mode 1))
 #+end_src
 ** Format all
 #+begin_src emacs-lisp
@@ -1338,7 +1352,7 @@ one, an error is signaled."
   (use-package minions
     :straight t
     :config
-    (setq minions-prominent-modes '(flymake-mode god-local-mode))
+    (setq minions-prominent-modes '(flymake-mode god-local-mode flycheck-mode))
     (minions-mode 1))
 #+end_src
 ** Terminal (vterm)
@@ -1541,6 +1555,11 @@ one, an error is signaled."
                   ))
        ))
     )
+#+end_src
+** eca
+#+begin_src emacs-lisp
+  (use-package eca
+    :straight t)
 #+end_src
 * Git
 ** Diff hl
