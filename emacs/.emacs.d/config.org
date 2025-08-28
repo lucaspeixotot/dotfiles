@@ -660,6 +660,32 @@ one, an error is signaled."
     (key-chord-define-global "jp" #'persp-switch)
     )
 #+end_src
+** Better C-v/M-v
+#+begin_src emacs-lisp
+  (defun better-scroll-up-half (&optional arg)
+    "Scroll up by half a screen and recenter.
+  With prefix ARG, scroll ARG lines instead."
+    (interactive "P")
+    (let ((n (if arg
+                 (prefix-numeric-value arg)
+               (/ (window-body-height) 2))))
+      (scroll-up-command n)
+      (recenter)))
+
+  (defun better-scroll-down-half (&optional arg)
+    "Scroll down by half a screen and recenter.
+  With prefix ARG, scroll ARG lines instead."
+    (interactive "P")
+    (let ((n (if arg
+                 (prefix-numeric-value arg)
+               (/ (window-body-height) 2))))
+      (scroll-down-command n)
+      (recenter)))
+
+  (global-set-key (kbd "C-v") 'better-scroll-up-half)
+  (global-set-key (kbd "M-v") 'better-scroll-down-half)
+
+#+end_src
 * Completion system
 ** Consult
 #+begin_src emacs-lisp
