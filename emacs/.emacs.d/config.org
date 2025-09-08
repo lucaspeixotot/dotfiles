@@ -1010,7 +1010,7 @@ one, an error is signaled."
      ;;        (eshell-mode . corfu-mode))
      (corfu-auto t)
      (corfu-quit-no-match 'separator)
-     (corfu-auto-prefix 3)
+     (corfu-auto-prefix 2)
      (corfu-auto-delay 0.0)
      (corfu-echo-documentation 0.25)
      (corfu-preview-current 'insert)
@@ -1761,6 +1761,24 @@ Enable tree sitter globally on emacs
 ** Golang
 #+begin_src emacs-lisp
   (setq-default go-ts-mode-indent-offset 4)
+#+end_src
+** Ruby
+#+begin_src emacs-lisp
+  (use-package robe
+    :straight t
+    :config
+    (add-hook 'ruby-mode-hook 'robe-mode)
+    (add-hook 'ruby-ts-mode-hook 'robe-mode))
+
+  (use-package rubocop
+    :straight t
+    :hook ((ruby-mode . rubocop-mode)
+           (ruby-ts-mode . rubocop-mode)))
+
+  ;;; Gerenciamento de Projetos
+  (use-package bundler :straight t)
+  (use-package rake :straight t)
+  (use-package rbenv :straight t)
 #+end_src
 * Keybindings
 ** Which key
