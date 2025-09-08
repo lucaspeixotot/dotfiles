@@ -34,3 +34,4 @@
  ;; If there is more than one, they won't work right.
  '(god-mode-lighter ((t (:inherit error)))))
 (put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)

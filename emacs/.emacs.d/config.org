@@ -1254,6 +1254,7 @@ one, an error is signaled."
       (treemacs-resize-icons 15)
 
       (treemacs-follow-mode t)
+      (treemacs-project-follow-mode t)
       (treemacs-filewatch-mode t)
       (treemacs-fringe-indicator-mode 'always)
       (when treemacs-python-executable
@@ -1471,6 +1472,11 @@ one, an error is signaled."
     (define-key denote-menu-mode-map (kbd "/ o") #'denote-menu-filter-out-keyword)
     (define-key denote-menu-mode-map (kbd "e") #'denote-menu-export-to-dired)
     )
+#+end_src
+** Verb (http mode)
+#+begin_src emacs-lisp
+  (use-package verb
+    :straight t)
 #+end_src
 * AI
 ** gptel
@@ -1865,6 +1871,7 @@ Enable tree sitter globally on emacs
     (setq org-agenda-files '("~/org-files"))
     (setq org-todo-keywords
           '((sequence "TODO(t)" "INPROGRESS(i@/!)" "BLOCKED(b@/!)" "REVIEW(r@/!)" "|" "CANCEL(c!)" "DONE(d!)")))
+    (define-key org-mode-map (kbd "C-c C-r") verb-command-map)
     )
 #+end_src
 
