@@ -925,7 +925,7 @@ one, an error is signaled."
     :straight t
     :init (global-flycheck-mode)
     :config
-    (setq flycheck-check-syntax-automatically '(mode-enabled save))
+    (setq flycheck-check-syntax-automatically '(mode-enabled idle-change))
     )
 
   (use-package flycheck-eglot
@@ -990,112 +990,12 @@ one, an error is signaled."
     (global-set-key (kbd "M--") 'eldoc-box-help-at-point)
     )
 #+end_src
-** Templates
-#+begin_src emacs-lisp
-  ;; Configure Tempel
-  (use-package tempel
-    :straight t
-    ;; Require trigger prefix before template name when completing.
-    ;; :custom
-    ;; (tempel-trigger-prefix "<")
-
-    :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
-           ("M-*" . tempel-insert))
-
-    :init
-
-    ;; Setup completion at point
-    (defun tempel-setup-capf ()
-      ;; Add the Tempel Capf to `completion-at-point-functions'.
-      ;; `tempel-expand' only triggers on exact matches. Alternatively use
-      ;; `tempel-complete' if you want to see all matches, but then you
-      ;; should also configure `tempel-trigger-prefix', such that Tempel
-      ;; does not trigger too often when you don't expect it. NOTE: We add
-      ;; `tempel-expand' *before* the main programming mode Capf, such
-      ;; that it will be tried first.
-      (setq-local completion-at-point-functions
-                  (cons #'tempel-expand
-                        completion-at-point-functions)))
-
-    (add-hook 'conf-mode-hook 'tempel-setup-capf)
-    (add-hook 'prog-mode-hook 'tempel-setup-capf)
-    (add-hook 'text-mode-hook 'tempel-setup-capf)
-
-    ;; Optionally make the Tempel templates available to Abbrev,
-    ;; either locally or globally. `expand-abbrev' is bound to C-x '.
-    ;; (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
-    ;; (global-tempel-abbrev-mode)
-  )
-
-  ;; Optional: Add tempel-collection.
-  ;; The package is young and doesn't have comprehensive coverage.
-  (use-package tempel-collection
-    :straight t)
-#+end_src
 ** Auto Complete
-*** Corfu
-#+begin_src emacs-lisp
-   (use-package corfu
-     :straight t
-     ;; Optional customizations
-     :custom
-     (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-     ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-     ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-     ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-     ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
-     ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-
-     ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
-     ;; :hook ((prog-mode . corfu-mode)
-     ;;        (shell-mode . corfu-mode)
-     ;;        (eshell-mode . corfu-mode))
-     (corfu-auto t)
-     (corfu-quit-no-match 'separator)
-     (corfu-auto-prefix 2)
-     (corfu-auto-delay 0.0)
-     (corfu-echo-documentation 0.25)
-     (corfu-preview-current 'insert)
-
-     :init
-
-     ;; Recommended: Enable Corfu globally.  Recommended since many modes provide
-     ;; Capfs and Dabbrev can be used globally (M-/).  See also the customization
-     ;; variable `global-corfu-modes' to exclude certain modes.
-     (global-corfu-mode)
-
-     ;; Enable optional extension modes:
-     ;; (corfu-history-mode)
-     ;; (corfu-popupinfo-mode)
-     :config
-     ;; Enable auto completion and configure quitting
-     ;; (setq corfu-auto t
-     ;;       corfu-quit-no-match 'separator) ;; or t
-     )
-
-   ;; A few more useful configurations...
-   (use-package emacs
-     :custom
-     ;; TAB cycle if there are only few candidates
-     ;; (completion-cycle-threshold 3)
-
-     ;; Enable indentation+completion using the TAB key.
-     ;; `completion-at-point' is often bound to M-TAB.
-     (tab-always-indent 'complete)
-
-     ;; Emacs 30 and newer: Disable Ispell completion function.
-     ;; Try `cape-dict' as an alternative.
-     (text-mode-ispell-word-completion nil)
-
-     ;; Hide commands in M-x which do not apply to the current mode.  Corfu
-     ;; commands are hidden, since they are not used via M-x. This setting is
-     ;; useful beyond Corfu.
-     (read-extended-command-predicate #'command-completion-default-include-p))
-#+end_src
 *** Cape
 #+begin_src emacs-lisp
   ;; Add extensions
   (use-package cape
+    :straight t
     ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
     ;; Press C-c p ? to for help.
     :bind ("C-c p" . cape-prefix-map) ;; Alternative key: M-<tab>, M-p, M-+
@@ -1115,9 +1015,111 @@ one, an error is signaled."
     (add-hook 'completion-at-point-functions #'cape-file)
     ;; (add-hook 'completion-at-point-functions #'cape-elisp-block)
     ;; (add-hook 'completion-at-point-functions #'cape-elisp-symbol)
-    ;; (add-hook 'completion-at-point-functions #'cape-history)
+    (add-hook 'completion-at-point-functions #'cape-history)
+    ;; (setq completion-at-point-functions (list (cape-capf-debug #'cape-dict)))
     ;; ...
     )
+#+end_src
+*** Tempel
+#+begin_src emacs-lisp
+  ;; Configure Tempel
+  (use-package tempel
+    :straight t
+    :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
+           ("M-*" . tempel-insert))
+
+    :init
+
+    ;; Setup completion at point
+    (defun tempel-setup-capf ()
+      ;; Add the Tempel Capf to `completion-at-point-functions'.  `tempel-expand'
+      ;; only triggers on exact matches. We add `tempel-expand' *before* the main
+      ;; programming mode Capf, such that it will be tried first.
+      (setq-local completion-at-point-functions
+                  (cons #'tempel-expand completion-at-point-functions))
+
+      ;; Alternatively use `tempel-complete' if you want to see all matches.  Use
+      ;; a trigger prefix character in order to prevent Tempel from triggering
+      ;; unexpectly.
+      ;; (setq-local corfu-auto-trigger "/"
+      ;;             completion-at-point-functions
+      ;;             (cons (cape-capf-trigger #'tempel-complete ?/)
+                        ;; completion-at-point-functions))
+     )
+
+    ;; (add-hook 'conf-mode-hook 'tempel-setup-capf)
+    ;; (add-hook 'prog-mode-hook 'tempel-setup-capf)
+    ;; (add-hook 'text-mode-hook 'tempel-setup-capf)
+    
+
+    ;; Optionally make the Tempel templates available to Abbrev,
+    ;; either locally or globally. `expand-abbrev' is bound to C-x '.
+    (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
+    (global-tempel-abbrev-mode)
+  )
+
+  ;; Optional: Add tempel-collection if you want ready-made templates.
+  (use-package tempel-collection
+    :straight t)
+#+end_src
+*** Corfu
+#+begin_src emacs-lisp
+  (use-package corfu
+    :straight t
+    ;; Optional customizations
+    :custom
+    (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+    ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+    ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+    ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+    (corfu-preselect 'prompt)      ;; Preselect the prompt
+    ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+
+    ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
+    ;; :hook ((prog-mode . corfu-mode)
+    ;;        (shell-mode . corfu-mode)
+    ;;        (eshell-mode . corfu-mode))
+    (corfu-auto t)
+    (corfu-quit-no-match 'separator)
+    (corfu-auto-prefix 2)
+    (corfu-auto-delay 0.0)
+    (corfu-echo-documentation 0.25)
+    (corfu-preview-current 'insert)
+
+    :init
+
+    ;; Recommended: Enable Corfu globally.  Recommended since many modes provide
+    ;; Capfs and Dabbrev can be used globally (M-/).  See also the customization
+    ;; variable `global-corfu-modes' to exclude certain modes.
+    (global-corfu-mode)
+
+    ;; Enable optional extension modes:
+    (corfu-history-mode)
+    (corfu-popupinfo-mode)
+    :config
+    ;; Enable auto completion and configure quitting
+    ;; (setq corfu-auto t
+    ;;       corfu-quit-no-match 'separator) ;; or t
+    )
+
+  ;; A few more useful configurations...
+  (use-package emacs
+    :custom
+    ;; TAB cycle if there are only few candidates
+    ;; (completion-cycle-threshold 3)
+
+    ;; Enable indentation+completion using the TAB key.
+    ;; `completion-at-point' is often bound to M-TAB.
+    (tab-always-indent 'complete)
+
+    ;; Emacs 30 and newer: Disable Ispell completion function.
+    ;; Try `cape-dict' as an alternative.
+    (text-mode-ispell-word-completion nil)
+
+    ;; Hide commands in M-x which do not apply to the current mode.  Corfu
+    ;; commands are hidden, since they are not used via M-x. This setting is
+    ;; useful beyond Corfu.
+    (read-extended-command-predicate #'command-completion-default-include-p))
 #+end_src
 ** Symbols outline
 #+begin_src emacs-lisp
@@ -1137,6 +1139,15 @@ one, an error is signaled."
   (use-package docker
     :straight t
     :bind ("C-c d" . docker))
+#+end_src
+** Dumb jump
+#+begin_src emacs-lisp
+  (use-package dumb-jump
+    :straight t
+    :config
+    (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+    (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+    )
 #+end_src
 * Misc
 ** undo fu
@@ -1624,21 +1635,6 @@ one, an error is signaled."
     (global-diff-hl-mode)
     )
 #+end_src
-** Blamer
-#+begin_src emacs-lisp
-  (use-package blamer
-    :after magit
-    :bind (("C-c g i" . blamer-show-commit-info)
-           ("C-c g b" . blamer-show-posframe-commit-info))
-    :defer 20
-    :custom
-    (blamer-idle-time                 0.3)
-    (blamer-min-offset                4)
-    (blamer-max-commit-message-length 100)
-    (blamer-datetime-formatter        "[%s]")
-    (blamer-commit-formatter          " ● %s")
-    )
-#+end_src
 ** Forge
 #+begin_src emacs-lisp
   (use-package sqlite3
@@ -1649,12 +1645,33 @@ one, an error is signaled."
 #+end_src
 ** Code review
 #+begin_src emacs-lisp
-  ;; (use-package code-review
-  ;;   :straight (code-review :type git :host github :repo "doomelpa/code-review")
-  ;;   :config
-  ;;   (setq code-review-fill-column 80)
-  ;;   (setq code-review-auth-login-marker 'forge)
+  ;; (use-package emacs-pr-review
+  ;;   :straght t
   ;;   )
+
+#+end_src
+** Blame reveal
+#+begin_src emacs-lisp
+  (use-package blame-reveal
+    :straight (blame-reveal :type git :host github :repo "LuciusChen/blame-reveal")
+    :commands blame-reveal-mode
+    :config
+    (setq blame-reveal-style 'left-fringe)          ; or 'right-fringe
+    (setq blame-reveal-display-layout 'compact)     ; 'line, 'compact, 'full
+    (setq blame-reveal-display-style 'background)   ; 'background, 'box, 'inverse
+    ;; Commit message line
+    (setq blame-reveal-header-weight 'bold          ; 'bold, 'normal, 'semi-bold, 'extra-bold
+          blame-reveal-header-height 1.0)           ; 1.0 = default size
+
+    ;; Metadata line (hash, author, date)
+    (setq blame-reveal-metadata-weight 'normal      ; 'bold, 'normal, 'semi-bold, 'light
+          blame-reveal-metadata-height 0.9)         ; 0.9 = 90% of default
+
+    ;; Description lines
+    (setq blame-reveal-description-weight 'normal   ; 'bold, 'normal, 'semi-bold, 'light
+          blame-reveal-description-height 0.9)      ; 0.9 = 90% of default
+
+    )
 #+end_src
 * UI
 ** Nerd fonts
@@ -1999,95 +2016,4 @@ Enable tree sitter globally on emacs
   (use-package pgmacs
     :defer t
     :straight (pgmacs :type git :host github :repo "emarsden/pgmacs"))
-#+end_src
-* Meow
-#+begin_src emacs-lisp
-  (use-package meow
-    :straight t
-    :config
-    (defun meow-setup ()
-    (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
-    (meow-motion-define-key
-     '("j" . meow-next)
-     '("k" . meow-prev)
-     '("<escape>" . ignore))
-    (meow-leader-define-key
-     ;; Use SPC (0-9) for digit arguments.
-     '("1" . meow-digit-argument)
-     '("2" . meow-digit-argument)
-     '("3" . meow-digit-argument)
-     '("4" . meow-digit-argument)
-     '("5" . meow-digit-argument)
-     '("6" . meow-digit-argument)
-     '("7" . meow-digit-argument)
-     '("8" . meow-digit-argument)
-     '("9" . meow-digit-argument)
-     '("0" . meow-digit-argument)
-     '("/" . meow-keypad-describe-key)
-     '("?" . meow-cheatsheet))
-    (meow-normal-define-key
-     '("0" . meow-expand-0)
-     '("9" . meow-expand-9)
-     '("8" . meow-expand-8)
-     '("7" . meow-expand-7)
-     '("6" . meow-expand-6)
-     '("5" . meow-expand-5)
-     '("4" . meow-expand-4)
-     '("3" . meow-expand-3)
-     '("2" . meow-expand-2)
-     '("1" . meow-expand-1)
-     '("-" . negative-argument)
-     '(";" . meow-reverse)
-     '("," . meow-inner-of-thing)
-     '("." . meow-bounds-of-thing)
-     '("[" . meow-beginning-of-thing)
-     '("]" . meow-end-of-thing)
-     '("a" . meow-append)
-     '("A" . meow-open-below)
-     '("b" . meow-back-word)
-     '("B" . meow-back-symbol)
-     '("c" . meow-change)
-     '("d" . meow-delete)
-     '("D" . meow-backward-delete)
-     '("e" . meow-next-word)
-     '("E" . meow-next-symbol)
-     '("f" . meow-find)
-     '("g" . meow-cancel-selection)
-     '("G" . meow-grab)
-     '("h" . meow-left)
-     '("H" . meow-left-expand)
-     '("i" . meow-insert)
-     '("I" . meow-open-above)
-     '("j" . meow-next)
-     '("J" . meow-next-expand)
-     '("k" . meow-prev)
-     '("K" . meow-prev-expand)
-     '("l" . meow-right)
-     '("L" . meow-right-expand)
-     '("m" . meow-join)
-     '("n" . meow-search)
-     '("o" . meow-block)
-     '("O" . meow-to-block)
-     '("p" . meow-yank)
-     '("q" . meow-quit)
-     '("Q" . meow-goto-line)
-     '("r" . meow-replace)
-     '("R" . meow-swap-grab)
-     '("s" . meow-kill)
-     '("t" . meow-till)
-     '("u" . meow-undo)
-     '("U" . meow-undo-in-selection)
-     '("v" . meow-visit)
-     '("w" . meow-mark-word)
-     '("W" . meow-mark-symbol)
-     '("x" . meow-line)
-     '("X" . meow-goto-line)
-     '("y" . meow-save)
-     '("Y" . meow-sync-grab)
-     '("z" . meow-pop-selection)
-     '("'" . repeat)
-     '("<escape>" . ignore)))
-    (meow-setup)
-    (meow-global-mode 1)
-    )
-#+end_src
+#+end_src 

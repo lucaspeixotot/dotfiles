@@ -36,3 +36,5 @@
  '(god-mode-lighter ((t (:inherit error)))))
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
