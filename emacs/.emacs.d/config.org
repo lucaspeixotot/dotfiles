@@ -1443,7 +1443,7 @@ one, an error is signaled."
     :config
     (when (memq window-system '(mac ns x))
       (exec-path-from-shell-initialize))
-    (dolist (var '("CONFLUENCE_API_TOKEN" "JIRA_API_TOKEN" "GITHUB_PERSONAL_ACCESS_TOKEN"))
+    (dolist (var '("CONFLUENCE_API_TOKEN" "JIRA_API_TOKEN" "GITHUB_PERSONAL_ACCESS_TOKEN" "JAVA_OPTS" "PATH"))
       (add-to-list 'exec-path-from-shell-variables var))
     (exec-path-from-shell-initialize)
     )
@@ -1554,6 +1554,7 @@ one, an error is signaled."
     (setq gptel-response-prefix-alist '((markdown-mode . "Response: ") (org-mode . "") (text-mode . "Response: ")))
     (require 'gptel-integrations)
     (setq gptel-expert-commands t)
+    (gptel-highlight-mode)
     )
 #+end_src
 ** gptel-quick
