@@ -423,6 +423,8 @@ one, an error is signaled."
                         ?k ?l ?' ?x ?c ?v ?b
                         ?n ?, ?/))
     (global-set-key (kbd "M-j") 'avy-goto-char-timer)
+    (global-set-key (kbd "M-c") 'avy-goto-char-in-line)
+    (global-set-key (kbd "M-l") 'avy-goto-line)
     (defun avy-action-kill-whole-line (pt)
       (save-excursion
         (goto-char pt)
@@ -553,6 +555,7 @@ one, an error is signaled."
       ("O" treesit-fold-open-all)
       ("r" treesit-fold-open-recursively)
       ("RET" avy-goto-char-timer)
+      ("f" avy-goto-char-in-line)
       (";" symbol-overlay-put)
       ("n" symbol-overlay-jump-next)
       ("p" symbol-overlay-jump-prev)
@@ -626,6 +629,8 @@ one, an error is signaled."
     (define-key god-local-mode-map (kbd ".") #'repeat)
     (define-key god-local-mode-map (kbd "[") #'backward-paragraph)
     (define-key god-local-mode-map (kbd "]") #'forward-paragraph)
+    ;; Quick in-line char jump (similar to Vim f)
+    (define-key god-local-mode-map (kbd "f") #'avy-goto-char-in-line)
     (custom-set-faces
      '(god-mode-lighter ((t (:inherit error)))))
     (defun my-god-mode-highlight-line ()
@@ -988,6 +993,19 @@ one, an error is signaled."
     :config
     ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
     (global-set-key (kbd "M--") 'eldoc-box-help-at-point)
+    )
+#+end_src
+** Eglot (LSP)
+#+begin_src emacs-lisp
+  (use-package eglot
+    :straight t
+    :config
+    ;; Manual start and useful actions
+    (global-set-key (kbd "C-c e e") #'eglot)
+    (global-set-key (kbd "C-c e o") #'eglot-organize-imports)
+    (global-set-key (kbd "C-c e f") #'eglot-format-buffer)
+    (global-set-key (kbd "C-c e a") #'eglot-code-actions)
+    (global-set-key (kbd "C-c e r") #'eglot-rename)
     )
 #+end_src
 ** Auto Complete
@@ -1451,7 +1469,22 @@ one, an error is signaled."
 ** Multi vterm
 #+begin_src emacs-lisp
   (use-package multi-vterm
-    :straight t)
+    :straight t
+    :config
+    ;; Prefix for vterm actions
+    (define-prefix-command 'my-vterm-map)
+    (global-set-key (kbd "C-c v") 'my-vterm-map)
+    (define-key my-vterm-map (kbd "c") #'multi-vterm)       ;; create new vterm
+    (define-key my-vterm-map (kbd "n") #'multi-vterm-next)  ;; next vterm
+    (define-key my-vterm-map (kbd "p") #'multi-vterm-prev)  ;; previous vterm
+    (define-key my-vterm-map (kbd "v") #'project-vterm)     ;; project vterm
+
+    (which-key-add-key-based-replacements "C-c v" "Vterm")
+    (which-key-add-key-based-replacements "C-c v c" "Create vterm")
+    (which-key-add-key-based-replacements "C-c v n" "Next vterm")
+    (which-key-add-key-based-replacements "C-c v p" "Prev vterm")
+    (which-key-add-key-based-replacements "C-c v v" "Project vterm")
+    )
 #+end_src
 ** Perspective
 #+begin_src emacs-lisp
