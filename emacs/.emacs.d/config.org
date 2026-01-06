@@ -1584,8 +1584,9 @@ one, an error is signaled."
     ;;                       :key (getenv "ANTHROPIC_API_KEY")
     ;;                       ))
     (setq gptel-default-mode 'org-mode)
-    (setq gptel-prompt-prefix-alist '((markdown-mode . "Response: ") (org-mode . "* Prompt: ") (text-mode . "### ")))
-    (setq gptel-response-prefix-alist '((markdown-mode . "Response: ") (org-mode . "") (text-mode . "Response: ")))
+    (setq gptel-prompt-prefix-alist '((markdown-mode . "Response: ") (org-mode . "@user\n ") (text-mode . "### ")))
+    (setq gptel-response-prefix-alist '((markdown-mode . "Response: ") (org-mode . "@assistant\n") (text-mode . "Response: ")))
+    (setq gptel-org-branching-context t)
     (require 'gptel-integrations)
     (setq gptel-expert-commands t)
     (gptel-highlight-mode)
@@ -1597,64 +1598,11 @@ one, an error is signaled."
     :straight (gptel-quick :type git :host github :repo "karthink/gptel-quick")
     )
 #+end_src
-** mcp
+** gptel-agent
 #+begin_src emacs-lisp
-  (use-package mcp
+  (use-package gptel-agent
     :straight t
-    :after gptel
-    :config
-    (require 'mcp-hub)
-    :custom
-    (mcp-hub-servers
-     `(("github" . (
-                    :command "docker"
-                             :args (
-                                    "run"
-                                    "-i"
-                                    "--rm"
-                                    "-e" "GITHUB_PERSONAL_ACCESS_TOKEN"
-                                    "ghcr.io/github/github-mcp-server"
-                                    )
-                             :env (
-                                   :GITHUB_PERSONAL_ACCESS_TOKEN ,(cvt/auth-source-get-password "localhost" "git_api_token")
-                                                                 )
-                             ))
-       ("jira" . (
-                  :command "docker"
-                           :args (
-                                  "run"
-                                  "-i"
-                                  "--rm"
-                                  "-e" "CONFLUENCE_URL"
-                                  "-e" "CONFLUENCE_USERNAME"
-                                  "-e" "CONFLUENCE_API_TOKEN"
-                                  "-e" "JIRA_URL"
-                                  "-e" "JIRA_USERNAME"
-                                  "-e" "JIRA_API_TOKEN"
-                                  "ghcr.io/sooperset/mcp-atlassian:latest"
-                                  )
-                           :env (
-                                 :CONFLUENCE_URL "https://hpe.atlassian.net/wiki"
-                                 :CONFLUENCE_USERAME "lucas.cavalcante@hpe.com"
-                                 :CONFLUENCE_API_TOKEN ,(cvt/auth-source-get-password "localhost" "confluence_api_token")
-                                 :JIRA_URL "https://hpe.atlassian.net"
-                                 :JIRA_USERNAME "lucas.cavalcante@hpe.com"
-                                 :JIRA_API_TOKEN ,(cvt/auth-source-get-password "localhost" "jira_api_token")
-                                 )))
-       ("filesystem" . (
-                  :command "docker"
-                  :args (
-                         "run"
-                         "-i"
-                         "--rm"
-                         "--user" "1000:1000"
-                         "--mount" ,(concat "type=bind,src=/home/hpedev/glp/dev-env/ws/github.com/glcp,dst=/projects/glcp")
-                         "mcp/filesystem"
-                         "/projects"
-                         )
-                  ))
-       ))
-    )
+    :config (gptel-agent-update))
 #+end_src
 ** eca
 #+begin_src emacs-lisp
@@ -2007,7 +1955,9 @@ Enable tree sitter globally on emacs
    org-hide-emphasis-markers t
    org-pretty-entities t
    org-agenda-tags-column 0
-   org-ellipsis "…")
+   org-ellipsis "…"
+   org-use-sub-superscripts nil
+   )
 
   ;; (global-org-modern-mode)
 
