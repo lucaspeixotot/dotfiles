@@ -1174,7 +1174,9 @@ one, an error is signaled."
     :straight t
     :config
     (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
-    (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+    ;; (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+    (setq xref-show-definitions-function #'consult-xref)
+    (setq dumb-jump-force-searcher 'rg)
     )
 #+end_src
 * Misc
@@ -1490,7 +1492,7 @@ one, an error is signaled."
     :config
     (when (memq window-system '(mac ns x))
       (exec-path-from-shell-initialize))
-    (dolist (var '("CONFLUENCE_API_TOKEN" "JIRA_API_TOKEN" "GITHUB_PERSONAL_ACCESS_TOKEN" "JAVA_OPTS" "PATH"))
+    (dolist (var '("CONFLUENCE_API_TOKEN" "JIRA_API_TOKEN" "GITHUB_PERSONAL_ACCESS_TOKEN" "JAVA_OPTS" "JAVA_HOME" "PATH" "USER"))
       (add-to-list 'exec-path-from-shell-variables var))
     (exec-path-from-shell-initialize)
     )
@@ -1642,8 +1644,16 @@ one, an error is signaled."
 #+end_src
 ** eca
 #+begin_src emacs-lisp
-  (use-package eca
-    :straight t)
+```lisp
+(use-package eca
+  :straight t
+  :config
+  (when (boundp 'user-login-name)
+    (setq eca-custom-command
+          (if (string-equal (getenv "USER") "hpedev")
+              '("~/.emacs.d/eca/eca" "-Djavax.net.ssl.trustStore=/usr/lib/jvm/java-21-openjdk-amd64/lib/security/cacerts" "-Djavax.net.ssl.trustStorePassword=changeit" "server")
+            '("~/.emacs.d/eca/eca" "server")))))
+```
 #+end_src
 * Git
 ** Diff hl
