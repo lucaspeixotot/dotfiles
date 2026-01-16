@@ -34,5 +34,9 @@
 ;; Set the maximum output size for reading process output, allowing for larger data transfers.
 (setq read-process-output-max (* 1024 1024 4))
 
+(setq native-comp-deferred-compilation nil)
+
+(setq native-comp-speed -1)
+
 (provide 'early-init)
 ;;; early-init.el ends here

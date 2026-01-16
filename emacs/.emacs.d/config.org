@@ -117,13 +117,20 @@ A few UI Tweaks
 #+end_src
 ** Font
 #+begin_src emacs-lisp
-  (set-face-attribute 'font-lock-comment-face nil
-                      :slant 'italic)
-  (set-face-attribute 'font-lock-keyword-face nil
-                      :slant 'italic)
+  ;; Set the default font globally
+  (set-face-attribute 'default nil :family "JetBrains Mono" :height 100 :weight 'normal)
+
+  ;; Ensure consistency for fixed-pitch and variable-pitch faces
+  (set-face-attribute 'fixed-pitch nil :family "JetBrains Mono" :height 100)
+  (set-face-attribute 'variable-pitch nil :family "JetBrains Mono" :height 1.0)
+
+  ;; Fine-tune specific faces as desired
+  (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
+  (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
   (set-face-attribute 'font-lock-string-face nil :slant 'italic)
-  (set-face-attribute 'bold nil :family "Hack Nerd Font Mono" :weight 'bold)
-  (set-frame-font "Hack Nerd Font Mono-10" nil t)
+  (set-face-attribute 'bold nil :weight 'bold)
+
+  ;; Optional: Adjust frame-specific settings like line spacing
   (setq-default line-spacing 0)
 #+end_src
 ** Backup
@@ -873,7 +880,9 @@ one, an error is signaled."
     ;;       #'command-completion-default-include-p)
 
     ;; Enable recursive minibuffers
-    (setq enable-recursive-minibuffers t))
+    (setq enable-recursive-minibuffers t)
+    (global-auto-revert-mode t)
+    )
 #+end_src
 ** Orderless
 #+begin_src emacs-lisp
@@ -1197,6 +1206,25 @@ one, an error is signaled."
 (global-set-key (kbd "M-z") 'avy-zap-to-char-dwim)
 (global-set-key (kbd "M-Z") 'avy-zap-up-to-char-dwim)
 )
+#+end_src
+** Highlight TODO
+#+begin_src emacs-lisp
+  (use-package hl-todo
+    :straight t
+    :config
+    (setq hl-todo-keyword-faces
+      '(("TODO"   . "#FF0000")
+        ("FIXME"  . "#FF0000")
+        ("DEBUG"  . "#A020F0")
+        ("GOTCHA" . "#FF4500")
+        ("STUB"   . "#1E90FF")))
+    (keymap-set hl-todo-mode-map "C-c p" #'hl-todo-previous)
+    (keymap-set hl-todo-mode-map "C-c n" #'hl-todo-next)
+    (keymap-set hl-todo-mode-map "C-c o" #'hl-todo-occur)
+    (keymap-set hl-todo-mode-map "C-c i" #'hl-todo-insert)
+    )
+
+  (use-package consult-todo :straight t :demand t)
 #+end_src
 ** Save place
 #+begin_src emacs-lisp
@@ -1571,6 +1599,14 @@ one, an error is signaled."
     :straight (time-zones :type git :host github :repo "xenodium/time-zones")
     )
 #+end_src
+** Wgrep
+#+begin_src emacs-lisp
+  (use-package wgrep
+    :straight t
+    :config
+    (setq wgrep-auto-save-buffer t)
+    )
+#+end_src
 * AI
 ** gptel
 #+begin_src emacs-lisp
@@ -1584,9 +1620,9 @@ one, an error is signaled."
     ;;                       :key (getenv "ANTHROPIC_API_KEY")
     ;;                       ))
     (setq gptel-default-mode 'org-mode)
-    (setq gptel-prompt-prefix-alist '((markdown-mode . "Response: ") (org-mode . "@user\n ") (text-mode . "### ")))
-    (setq gptel-response-prefix-alist '((markdown-mode . "Response: ") (org-mode . "@assistant\n") (text-mode . "Response: ")))
-    (setq gptel-org-branching-context t)
+    (setq gptel-prompt-prefix-alist '((markdown-mode . "Response: ") (org-mode . "* User\n") (text-mode . "### ")))
+    (setq gptel-response-prefix-alist '((markdown-mode . "Response: ") (org-mode . "* Assistant\n") (text-mode . "Response: ")))
+    (setq gptel-org-branching-context nil)
     (require 'gptel-integrations)
     (setq gptel-expert-commands t)
     (gptel-highlight-mode)
@@ -1809,6 +1845,15 @@ Enable tree sitter globally on emacs
 ** Golang
 #+begin_src emacs-lisp
   (setq-default go-ts-mode-indent-offset 4)
+
+
+  (use-package go-add-tags
+    :straight t
+    :config
+    (with-eval-after-load 'go-ts-mode
+    (define-key go-ts-mode-map (kbd "C-c t") #'go-add-tags))
+    )
+
 #+end_src
 ** Ruby
 #+begin_src emacs-lisp
@@ -1895,6 +1940,8 @@ Enable tree sitter globally on emacs
   ;; AI-related functions
   (define-key my-ai-map (kbd "s") 'gptel-send)
   (define-key my-ai-map (kbd "m") 'gptel-menu)
+  (define-key my-ai-map (kbd "a") 'gptel-agent)
+  (define-key my-ai-map (kbd "r") 'gptel-rewrite)
   (define-key my-ai-map (kbd "c") 'gptel)
   (define-key my-ai-map (kbd "C") 'gptel-clear-conversation)
   (define-key my-ai-map (kbd "q") 'gptel-quick)
