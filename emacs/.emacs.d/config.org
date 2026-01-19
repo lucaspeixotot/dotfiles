@@ -1651,7 +1651,6 @@ one, an error is signaled."
 #+end_src
 ** eca
 #+begin_src emacs-lisp
-```lisp
 (use-package eca
   :straight t
   :config
@@ -1660,7 +1659,15 @@ one, an error is signaled."
           (if (string-equal (getenv "USER") "hpedev")
               '("~/.emacs.d/eca/eca" "-Djavax.net.ssl.trustStore=/usr/lib/jvm/java-21-openjdk-amd64/lib/security/cacerts" "-Djavax.net.ssl.trustStorePassword=changeit" "server")
             '("~/.emacs.d/eca/eca" "server")))))
-```
+#+end_src
+** Agent shell
+#+begin_src emacs-lisp
+  (use-package agent-shell
+    :straight t
+    :config
+    (setq agent-shell-prefer-viewport-interaction t)
+    (agent-shell-completion-mode t)
+  )
 #+end_src
 * Git
 ** Diff hl
