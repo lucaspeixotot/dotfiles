@@ -1075,9 +1075,9 @@ one, an error is signaled."
                         ;; completion-at-point-functions))
      )
 
-    ;; (add-hook 'conf-mode-hook 'tempel-setup-capf)
-    ;; (add-hook 'prog-mode-hook 'tempel-setup-capf)
-    ;; (add-hook 'text-mode-hook 'tempel-setup-capf)
+    (add-hook 'conf-mode-hook 'tempel-setup-capf)
+    (add-hook 'prog-mode-hook 'tempel-setup-capf)
+    (add-hook 'text-mode-hook 'tempel-setup-capf)
     
 
     ;; Optionally make the Tempel templates available to Abbrev,
@@ -1089,6 +1089,12 @@ one, an error is signaled."
   ;; Optional: Add tempel-collection if you want ready-made templates.
   (use-package tempel-collection
     :straight t)
+
+  (use-package eglot-tempel
+    :straight t
+    :preface (eglot-tempel-mode)
+    :init
+    (eglot-tempel-mode t))
 #+end_src
 *** Corfu
 #+begin_src emacs-lisp
