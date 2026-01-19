@@ -1609,6 +1609,13 @@ one, an error is signaled."
     (setq wgrep-auto-save-buffer t)
     )
 #+end_src
+** Mini echo (modeline)
+#+begin_src emacs-lisp
+  (use-package mini-echo
+    :straight t
+    :config
+    (mini-echo-mode))
+#+end_src
 * AI
 ** gptel
 #+begin_src emacs-lisp
@@ -1749,26 +1756,42 @@ Setup my dashboard window
 ** Theme
 *** Modus Themes
 #+Begin_src emacs-lisp
-   (use-package modus-themes
-    :straight t
-    :config
-    ;; Add all your customizations prior to loading the themes
-    (setq modus-themes-italic-constructs t
-          modus-themes-bold-constructs t)
+  (use-package modus-themes
+   :straight t
+   ;; :config
+   ;; Add all your customizations prior to loading the themes
+   ;; (setq modus-themes-italic-constructs t
+   ;;       modus-themes-bold-constructs t)
 
-    ;; Maybe define some palette overrides, such as by using our presets
-    (setq modus-themes-common-palette-overrides
-          modus-themes-preset-overrides-intense)
+   ;; Maybe define some palette overrides, such as by using our presets
+   ;; (setq modus-themes-common-palette-overrides
+   ;;       modus-themes-preset-overrides-intense)
 
-    ;; Load the theme of your choice.
-    (load-theme 'modus-vivendi-tinted :no-confirm)
+   ;; Load the theme of your choice.
+   ;; (load-theme 'modus-vivendi-tinted :no-confirm)
 
-    (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
+   ;; (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
+   )
 #+end_src
 *** Ef themes
 #+begin_src emacs-lisp
   (use-package ef-themes
     :straight t
+    :init
+    (ef-themes-take-over-modus-themes-mode 1)
+    :bind
+    (("<f5>" . modus-themes-rotate)
+     ("C-<f5>" . modus-themes-select)
+     ("M-<f5>" . modus-themes-load-random))
+    :config
+    ;; All customisations here.
+    (setq modus-themes-mixed-fonts t)
+    (setq modus-themes-italic-constructs t)
+
+    ;; Finally, load your theme of choice (or a random one with
+    ;; `modus-themes-load-random', `modus-themes-load-random-dark',
+    ;; `modus-themes-load-random-light').
+    (modus-themes-load-theme 'ef-summer)
     )
 #+end_src
 ** Tree sitter
