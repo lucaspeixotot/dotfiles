@@ -1230,6 +1230,7 @@ one, an error is signaled."
     (keymap-set hl-todo-mode-map "C-c n" #'hl-todo-next)
     (keymap-set hl-todo-mode-map "C-c o" #'hl-todo-occur)
     (keymap-set hl-todo-mode-map "C-c i" #'hl-todo-insert)
+    (global-hl-todo-mode 1)
     )
 
   (use-package consult-todo :straight t :demand t)
@@ -1804,7 +1805,7 @@ Setup my dashboard window
     ;; Finally, load your theme of choice (or a random one with
     ;; `modus-themes-load-random', `modus-themes-load-random-dark',
     ;; `modus-themes-load-random-light').
-    (modus-themes-load-theme 'ef-summer)
+    (modus-themes-load-theme 'ef-elea-dark)
     )
 #+end_src
 ** Tree sitter
