@@ -1010,12 +1010,12 @@ one, an error is signaled."
     :straight t
     :config
     ;; Manual start and useful actions
-    (global-set-key (kbd "C-c e e") #'eglot)
-    (global-set-key (kbd "C-c e d") #'eglot-shutdown)
-    (global-set-key (kbd "C-c e o") #'eglot-code-action-organize-imports)
-    (global-set-key (kbd "C-c e f") #'eglot-format-buffer)
-    (global-set-key (kbd "C-c e a") #'eglot-code-actions)
-    (global-set-key (kbd "C-c e r") #'eglot-rename)
+    (global-set-key (kbd "C-c l e") #'eglot)
+    (global-set-key (kbd "C-c l d") #'eglot-shutdown)
+    (global-set-key (kbd "C-c l o") #'eglot-code-action-organize-imports)
+    (global-set-key (kbd "C-c l f") #'eglot-format-buffer)
+    (global-set-key (kbd "C-c l a") #'eglot-code-actions)
+    (global-set-key (kbd "C-c l r") #'eglot-rename)
     )
 #+end_src
 ** Auto Complete
@@ -1051,50 +1051,50 @@ one, an error is signaled."
 *** Tempel
 #+begin_src emacs-lisp
   ;; Configure Tempel
-  (use-package tempel
-    :straight t
-    :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
-           ("M-*" . tempel-insert))
+  ;; (use-package tempel
+  ;;   :straight t
+  ;;   :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
+  ;;          ("M-*" . tempel-insert))
 
-    :init
+  ;;   :init
 
-    ;; Setup completion at point
-    (defun tempel-setup-capf ()
-      ;; Add the Tempel Capf to `completion-at-point-functions'.  `tempel-expand'
-      ;; only triggers on exact matches. We add `tempel-expand' *before* the main
-      ;; programming mode Capf, such that it will be tried first.
-      (setq-local completion-at-point-functions
-                  (cons #'tempel-expand completion-at-point-functions))
+  ;;   ;; Setup completion at point
+  ;;   (defun tempel-setup-capf ()
+  ;;     ;; Add the Tempel Capf to `completion-at-point-functions'.  `tempel-expand'
+  ;;     ;; only triggers on exact matches. We add `tempel-expand' *before* the main
+  ;;     ;; programming mode Capf, such that it will be tried first.
+  ;;     (setq-local completion-at-point-functions
+  ;;                 (cons #'tempel-expand completion-at-point-functions))
 
-      ;; Alternatively use `tempel-complete' if you want to see all matches.  Use
-      ;; a trigger prefix character in order to prevent Tempel from triggering
-      ;; unexpectly.
-      ;; (setq-local corfu-auto-trigger "/"
-      ;;             completion-at-point-functions
-      ;;             (cons (cape-capf-trigger #'tempel-complete ?/)
-                        ;; completion-at-point-functions))
-     )
+  ;;     ;; Alternatively use `tempel-complete' if you want to see all matches.  Use
+  ;;     ;; a trigger prefix character in order to prevent Tempel from triggering
+  ;;     ;; unexpectly.
+  ;;     ;; (setq-local corfu-auto-trigger "/"
+  ;;     ;;             completion-at-point-functions
+  ;;     ;;             (cons (cape-capf-trigger #'tempel-complete ?/)
+  ;;                       ;; completion-at-point-functions))
+  ;;    )
 
-    (add-hook 'conf-mode-hook 'tempel-setup-capf)
-    (add-hook 'prog-mode-hook 'tempel-setup-capf)
-    (add-hook 'text-mode-hook 'tempel-setup-capf)
+  ;;   (add-hook 'conf-mode-hook 'tempel-setup-capf)
+  ;;   (add-hook 'prog-mode-hook 'tempel-setup-capf)
+  ;;   (add-hook 'text-mode-hook 'tempel-setup-capf)
     
 
-    ;; Optionally make the Tempel templates available to Abbrev,
-    ;; either locally or globally. `expand-abbrev' is bound to C-x '.
-    (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
-    (global-tempel-abbrev-mode)
-  )
+  ;;   ;; Optionally make the Tempel templates available to Abbrev,
+  ;;   ;; either locally or globally. `expand-abbrev' is bound to C-x '.
+  ;;   (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
+  ;;   (global-tempel-abbrev-mode)
+  ;; )
 
-  ;; Optional: Add tempel-collection if you want ready-made templates.
-  (use-package tempel-collection
-    :straight t)
+  ;; ;; Optional: Add tempel-collection if you want ready-made templates.
+  ;; (use-package tempel-collection
+  ;;   :straight t)
 
-  (use-package eglot-tempel
-    :straight t
-    :preface (eglot-tempel-mode)
-    :init
-    (eglot-tempel-mode t))
+  ;; (use-package eglot-tempel
+  ;;   :straight t
+  ;;   :preface (eglot-tempel-mode)
+  ;;   :init
+  ;;   (eglot-tempel-mode t))
 #+end_src
 *** Corfu
 #+begin_src emacs-lisp
@@ -1154,6 +1154,23 @@ one, an error is signaled."
     ;; commands are hidden, since they are not used via M-x. This setting is
     ;; useful beyond Corfu.
     (read-extended-command-predicate #'command-completion-default-include-p))
+#+end_src
+*** Yasnippets
+#+begin_src emacs-lisp
+  (use-package yasnippet-snippets
+    :straight t)
+
+  (use-package yasnippet-capf
+    :straight t
+    :after cape
+    :config
+    (add-to-list 'completion-at-point-functions #'yasnippet-capf))
+
+  (use-package yasnippet
+       :straight t
+       :config
+       (yas-reload-all)
+       (yas-global-mode 1))
 #+end_src
 ** Symbols outline
 #+begin_src emacs-lisp
