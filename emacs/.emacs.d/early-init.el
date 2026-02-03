@@ -37,6 +37,7 @@
 (setq native-comp-deferred-compilation nil)
 
 (setq native-comp-speed -1)
+(setq package-enable-at-startup nil)
 
 (provide 'early-init)
 ;;; early-init.el ends here

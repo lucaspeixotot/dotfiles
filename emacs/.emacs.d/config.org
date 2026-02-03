@@ -28,6 +28,7 @@ Replace use-package to straight.
 (setq straight-use-package-by-default t)
 #+end_src
 * Emacs basic settings
+
 ** Line number modeline
 #+begin_src emacs-lisp
   (global-display-line-numbers-mode)
@@ -124,13 +125,14 @@ A few UI Tweaks
   (set-face-attribute 'fixed-pitch nil :family "JetBrains Mono" :height 100)
   (set-face-attribute 'variable-pitch nil :family "JetBrains Mono" :height 1.0)
 
+  ;;
   ;; Fine-tune specific faces as desired
   (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
   (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
   (set-face-attribute 'font-lock-string-face nil :slant 'italic)
   (set-face-attribute 'bold nil :weight 'bold)
 
-  ;; Optional: Adjust frame-specific settings like line spacing
+  ;; ;; Optional: Adjust frame-specific settings like line spacing
   (setq-default line-spacing 0)
 #+end_src
 ** Backup
@@ -386,6 +388,10 @@ one, an error is signaled."
         (message "No authinfo entry found for host: %s user: %s" host user)
         nil)))
 #+end_src
+** Mark ring config
+#+begin_src emacs-lisp
+  (setq set-mark-command-repeat-pop t)
+#+end_src
 * Better movement
 ** Expand region
 #+begin_src emacs-lisp
@@ -429,8 +435,8 @@ one, an error is signaled."
                         ?a ?s ?d ?f ?g ?h ?j
                         ?k ?l ?' ?x ?c ?v ?b
                         ?n ?, ?/))
-    (global-set-key (kbd "M-j") 'avy-goto-char-timer)
-    (global-set-key (kbd "M-c") 'avy-goto-char-in-line)
+    (global-set-key (kbd "M-RET") 'avy-goto-char-timer)
+    (global-set-key (kbd "M-j") 'avy-goto-char)
     (global-set-key (kbd "M-l") 'avy-goto-line)
     (defun avy-action-kill-whole-line (pt)
       (save-excursion
@@ -582,8 +588,11 @@ one, an error is signaled."
       ("q" nil "quit")
       )
 
-    (defhydra hydra-diagnostics
-      (:color amaranth)
+    (defhydra hydra-diagnostics (:pre (set-cursor-color "#40e0d0")
+                             :post (progn
+                                     (set-cursor-color "#ffffff")
+                                     (message
+                                      "Thank you, come again."))) 
       "Diagnostics"
       ("n" flycheck-next-error "next")
       ("p" flycheck-previous-error "prev")
@@ -637,7 +646,7 @@ one, an error is signaled."
     (define-key god-local-mode-map (kbd "[") #'backward-paragraph)
     (define-key god-local-mode-map (kbd "]") #'forward-paragraph)
     ;; Quick in-line char jump (similar to Vim f)
-    (define-key god-local-mode-map (kbd "f") #'avy-goto-char-in-line)
+    (define-key god-local-mode-map (kbd "f") #'avy-goto-char)
     (custom-set-faces
      '(god-mode-lighter ((t (:inherit error)))))
     (defun my-god-mode-highlight-line ()
@@ -1048,54 +1057,6 @@ one, an error is signaled."
     ;; ...
     )
 #+end_src
-*** Tempel
-#+begin_src emacs-lisp
-  ;; Configure Tempel
-  ;; (use-package tempel
-  ;;   :straight t
-  ;;   :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
-  ;;          ("M-*" . tempel-insert))
-
-  ;;   :init
-
-  ;;   ;; Setup completion at point
-  ;;   (defun tempel-setup-capf ()
-  ;;     ;; Add the Tempel Capf to `completion-at-point-functions'.  `tempel-expand'
-  ;;     ;; only triggers on exact matches. We add `tempel-expand' *before* the main
-  ;;     ;; programming mode Capf, such that it will be tried first.
-  ;;     (setq-local completion-at-point-functions
-  ;;                 (cons #'tempel-expand completion-at-point-functions))
-
-  ;;     ;; Alternatively use `tempel-complete' if you want to see all matches.  Use
-  ;;     ;; a trigger prefix character in order to prevent Tempel from triggering
-  ;;     ;; unexpectly.
-  ;;     ;; (setq-local corfu-auto-trigger "/"
-  ;;     ;;             completion-at-point-functions
-  ;;     ;;             (cons (cape-capf-trigger #'tempel-complete ?/)
-  ;;                       ;; completion-at-point-functions))
-  ;;    )
-
-  ;;   (add-hook 'conf-mode-hook 'tempel-setup-capf)
-  ;;   (add-hook 'prog-mode-hook 'tempel-setup-capf)
-  ;;   (add-hook 'text-mode-hook 'tempel-setup-capf)
-    
-
-  ;;   ;; Optionally make the Tempel templates available to Abbrev,
-  ;;   ;; either locally or globally. `expand-abbrev' is bound to C-x '.
-  ;;   (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
-  ;;   (global-tempel-abbrev-mode)
-  ;; )
-
-  ;; ;; Optional: Add tempel-collection if you want ready-made templates.
-  ;; (use-package tempel-collection
-  ;;   :straight t)
-
-  ;; (use-package eglot-tempel
-  ;;   :straight t
-  ;;   :preface (eglot-tempel-mode)
-  ;;   :init
-  ;;   (eglot-tempel-mode t))
-#+end_src
 *** Corfu
 #+begin_src emacs-lisp
   (use-package corfu
@@ -1154,23 +1115,6 @@ one, an error is signaled."
     ;; commands are hidden, since they are not used via M-x. This setting is
     ;; useful beyond Corfu.
     (read-extended-command-predicate #'command-completion-default-include-p))
-#+end_src
-*** Yasnippets
-#+begin_src emacs-lisp
-  (use-package yasnippet-snippets
-    :straight t)
-
-  (use-package yasnippet-capf
-    :straight t
-    :after cape
-    :config
-    (add-to-list 'completion-at-point-functions #'yasnippet-capf))
-
-  (use-package yasnippet
-       :straight t
-       :config
-       (yas-reload-all)
-       (yas-global-mode 1))
 #+end_src
 ** Symbols outline
 #+begin_src emacs-lisp
@@ -1633,13 +1577,6 @@ one, an error is signaled."
     (setq wgrep-auto-save-buffer t)
     )
 #+end_src
-** Mini echo (modeline)
-#+begin_src emacs-lisp
-  (use-package mini-echo
-    :straight t
-    :config
-    (mini-echo-mode))
-#+end_src
 * AI
 ** gptel
 #+begin_src emacs-lisp
@@ -1785,30 +1722,19 @@ Setup my dashboard window
     (dashboard-setup-startup-hook))
 #+end_src
 ** Theme
-*** Modus Themes
-#+Begin_src emacs-lisp
-  (use-package modus-themes
-   :straight t
-   ;; :config
-   ;; Add all your customizations prior to loading the themes
-   ;; (setq modus-themes-italic-constructs t
-   ;;       modus-themes-bold-constructs t)
-
-   ;; Maybe define some palette overrides, such as by using our presets
-   ;; (setq modus-themes-common-palette-overrides
-   ;;       modus-themes-preset-overrides-intense)
-
-   ;; Load the theme of your choice.
-   ;; (load-theme 'modus-vivendi-tinted :no-confirm)
-
-   ;; (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
-   )
-#+end_src
 *** Ef themes
 #+begin_src emacs-lisp
   (use-package ef-themes
-    :straight t
+    :ensure t
     :init
+    ;; This makes the Modus commands listed below consider only the Ef
+    ;; themes.  For an alternative that includes Modus and all
+    ;; derivative themes (like Ef), enable the
+    ;; `modus-themes-include-derivatives-mode' instead.  The manual of
+    ;; the Ef themes has a section that explains all the possibilities:
+    ;;
+    ;; - Evaluate `(info "(ef-themes) Working with other Modus themes or taking over Modus")'
+    ;; - Visit <https://protesilaos.com/emacs/ef-themes#h:6585235a-5219-4f78-9dd5-6a64d87d1b6e>
     (ef-themes-take-over-modus-themes-mode 1)
     :bind
     (("<f5>" . modus-themes-rotate)
@@ -1822,7 +1748,9 @@ Setup my dashboard window
     ;; Finally, load your theme of choice (or a random one with
     ;; `modus-themes-load-random', `modus-themes-load-random-dark',
     ;; `modus-themes-load-random-light').
-    (modus-themes-load-theme 'ef-elea-dark)
+    (modus-themes-load-theme 'ef-maris-dark)
+    (setq modus-themes-mixed-fonts t)
+    (setq modus-themes-italic-constructs t)  
     )
 #+end_src
 ** Tree sitter
@@ -1964,6 +1892,8 @@ Enable tree sitter globally on emacs
 #+begin_src emacs-lisp
   ;; Global keybindings for hydras
   (global-set-key (kbd "M-1") 'hydra-vi/body)
+  (global-set-key (kbd "M-2") 'hydra-diagnostics/body)
+  (global-set-key (kbd "M-3") 'hydra-smerge/body)
   (global-set-key (kbd "M-o") 'ace-window)
   (global-set-key (kbd "M-O") 'hydra-window/body)
 
