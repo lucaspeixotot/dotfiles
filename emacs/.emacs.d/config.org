@@ -84,7 +84,7 @@ Replace use-package to straight.
     :after project
     :config
     (project-x-mode)
-    (setq project-x-save-interval 600)
+    (setq project-x-save-interval nil)
     )
 #+end_src
 ** Reload Emacs
@@ -162,14 +162,6 @@ Useul keybindgs to scale the text easily
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
 (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
-#+end_src
-** Winum
-#+begin_src emacs-lisp
-  (use-package winum
-    :straight t
-    :config
-    (winum-mode)
-    )
 #+end_src
 ** Helpful
 #+begin_src emacs-lisp
@@ -280,6 +272,7 @@ one, an error is signaled."
 #+begin_src emacs-lisp
   (use-package smerge-mode
     :straight t
+    :after hydra
     :init
     (setq smerge-command-prefix "\C-cm")
     :hook
@@ -375,7 +368,9 @@ one, an error is signaled."
 #+end_src
 ** Authinfo
 #+begin_src emacs-lisp
-  (setq auth-sources '("~/.authinfo"))
+  (require 'epa-file)
+  (epa-file-enable)
+  (setq auth-sources '("~/.authinfo.gpg"))
 
   (defun cvt/auth-source-get-password (host user)
     "Fetch password for HOST and USER from .authinfo, warning if not found."
@@ -668,19 +663,6 @@ one, an error is signaled."
            ("C-e" . mwim-end-of-code-or-line))
     )
 #+end_src
-** Key chords
-#+begin_src emacs-lisp
-  (use-package key-chord
-    :straight t
-    :init
-    (key-chord-mode 1)
-    :config
-    (key-chord-define prog-mode-map "jf" #'format-all-region-or-buffer)
-    (key-chord-define-global "jq" #'god-local-mode)
-    (key-chord-define-global "jc" #'avy-goto-char-timer)
-    (key-chord-define-global "jp" #'persp-switch)
-    )
-#+end_src
 ** Better C-v/M-v
 #+begin_src emacs-lisp
   (defun better-scroll-up-half (&optional arg)
@@ -798,8 +780,6 @@ one, an error is signaled."
      consult-theme :preview-key '(:debounce 0.2 any)
      consult-ripgrep consult-git-grep consult-grep
      consult-bookmark consult-recent-file consult-xref
-     consult--source-bookmark consult--source-file-register
-     consult--source-recent-file consult--source-project-recent-file
      ;; :preview-key "M-."
      :preview-key '(:debounce 0.4 any))
 
@@ -962,48 +942,7 @@ one, an error is signaled."
   (use-package format-all
     :straight t
     )
-#+end_src
-** Dap
-#+begin_src elisp
-  (use-package dape
-    :preface
-    ;; By default dape shares the same keybinding prefix as `gud'
-    ;; If you do not want to use any prefix, set it to nil.
-    ;; (setq dape-key-prefix "\C-x\C-a")
-
-    ;; :hook
-    ;; Save breakpoints on quit
-    ;; (kill-emacs . dape-breakpoint-save)
-    ;; Load breakpoints on startup
-    ;; (after-init . dape-breakpoint-load)
-
-    :config
-    ;; Turn on global bindings for setting breakpoints with mouse
-    ;; (dape-breakpoint-global-mode)
-
-    ;; Info buffers to the right
-    (setq dape-buffer-window-arrangement 'right)
-
-    ;; Info buffers like gud (gdb-mi)
-    (setq dape-buffer-window-arrangement 'gud)
-    (setq dape-info-hide-mode-line nil)
-
-    ;; Pulse source line (performance hit)
-    ;; (add-hook 'dape-display-source-hook 'pulse-momentary-highlight-one-line)
-
-    ;; Showing inlay hints
-    ;; (setq dape-inlay-hints t)
-
-    ;; Save buffers on startup, useful for interpreted languages
-    (add-hook 'dape-start-hook (lambda () (save-some-buffers t t)))
-
-    ;; Kill compile buffer on build success
-    (add-hook 'dape-compile-hook 'kill-buffer)
-
-    ;; Projectile users
-    ;; (setq dape-cwd-function 'projectile-project-root)
-    )
-#+end_src
+#+end_
 ** Eldoc box
 #+begin_src elisp
   (use-package eldoc-box
@@ -1116,25 +1055,6 @@ one, an error is signaled."
     ;; useful beyond Corfu.
     (read-extended-command-predicate #'command-completion-default-include-p))
 #+end_src
-** Symbols outline
-#+begin_src emacs-lisp
-  (use-package symbols-outline
-    :straight t
-    :config
-    (global-set-key (kbd "M-g s") 'symbols-outline-show)
-    (with-eval-after-load 'symbols-outline
-      (setq symbols-outline-fetch-fn #'symbols-outline-lsp-fetch)
-      (setq symbols-outline-window-position 'left)
-      (setq symbols-outline-use-nerd-icon-in-gui t)
-      (symbols-outline-follow-mode))
-    )
-#+end_src
-** Docker
-#+begin_src emacs-lisp
-  (use-package docker
-    :straight t
-    :bind ("C-c d" . docker))
-#+end_src
 ** Dumb jump
 #+begin_src emacs-lisp
   (use-package dumb-jump
@@ -1175,26 +1095,6 @@ one, an error is signaled."
 (global-set-key (kbd "M-z") 'avy-zap-to-char-dwim)
 (global-set-key (kbd "M-Z") 'avy-zap-up-to-char-dwim)
 )
-#+end_src
-** Highlight TODO
-#+begin_src emacs-lisp
-  (use-package hl-todo
-    :straight t
-    :config
-    (setq hl-todo-keyword-faces
-      '(("TODO"   . "#FF0000")
-        ("FIXME"  . "#FF0000")
-        ("DEBUG"  . "#A020F0")
-        ("GOTCHA" . "#FF4500")
-        ("STUB"   . "#1E90FF")))
-    (keymap-set hl-todo-mode-map "C-c p" #'hl-todo-previous)
-    (keymap-set hl-todo-mode-map "C-c n" #'hl-todo-next)
-    (keymap-set hl-todo-mode-map "C-c o" #'hl-todo-occur)
-    (keymap-set hl-todo-mode-map "C-c i" #'hl-todo-insert)
-    (global-hl-todo-mode 1)
-    )
-
-  (use-package consult-todo :straight t :demand t)
 #+end_src
 ** Save place
 #+begin_src emacs-lisp
@@ -1410,14 +1310,6 @@ one, an error is signaled."
     (popper-mode +1)
     (popper-echo-mode +1))                ; For echo area hints
 #+end_src
-** Olivetti
-#+begin_src emacs-lisp
-  (use-package olivetti
-    :straight t)
-#+end_src
-** Moody
-#+begin_src emacs-lisp
-#+end_src
 ** Minions
 #+begin_src elisp
   (use-package minions
@@ -1496,7 +1388,6 @@ one, an error is signaled."
     (setq switch-to-prev-buffer-skip
           (lambda (win buff bury-or-kill)
             (not (persp-is-current-buffer buff))))
-    (consult-customize consult--source-buffer :hidden t :default nil)
     (add-to-list 'consult-buffer-sources persp-consult-source)
     :init
     (require 'consult)
@@ -1637,44 +1528,6 @@ one, an error is signaled."
     :straight t
     :config
     (global-diff-hl-mode)
-    )
-#+end_src
-** Forge
-#+begin_src emacs-lisp
-  (use-package sqlite3
-    :straight t)
-  (use-package forge
-    :straight t
-    :after magit)
-#+end_src
-** Code review
-#+begin_src emacs-lisp
-  ;; (use-package emacs-pr-review
-  ;;   :straght t
-  ;;   )
-
-#+end_src
-** Blame reveal
-#+begin_src emacs-lisp
-  (use-package blame-reveal
-    :straight (blame-reveal :type git :host github :repo "LuciusChen/blame-reveal")
-    :commands blame-reveal-mode
-    :config
-    (setq blame-reveal-style 'left-fringe)          ; or 'right-fringe
-    (setq blame-reveal-display-layout 'compact)     ; 'line, 'compact, 'full
-    (setq blame-reveal-display-style 'background)   ; 'background, 'box, 'inverse
-    ;; Commit message line
-    (setq blame-reveal-header-weight 'bold          ; 'bold, 'normal, 'semi-bold, 'extra-bold
-          blame-reveal-header-height 1.0)           ; 1.0 = default size
-
-    ;; Metadata line (hash, author, date)
-    (setq blame-reveal-metadata-weight 'normal      ; 'bold, 'normal, 'semi-bold, 'light
-          blame-reveal-metadata-height 0.9)         ; 0.9 = 90% of default
-
-    ;; Description lines
-    (setq blame-reveal-description-weight 'normal   ; 'bold, 'normal, 'semi-bold, 'light
-          blame-reveal-description-height 0.9)      ; 0.9 = 90% of default
-
     )
 #+end_src
 * UI
@@ -2021,25 +1874,4 @@ Enable tree sitter globally on emacs
   ;;    org-agenda-tags-column 0
   ;;    org-ellipsis "…")
   ;;   )
-#+end_src
-* Markdown
-#+begin_src emacs-lisp
-  (use-package markdown-mode
-  :ensure t
-  :mode ("README\\.md\\'" . gfm-mode)
-  :init (setq markdown-command "multimarkdown")
-  :bind (:map markdown-mode-map
-         ("C-c C-e" . markdown-do))
-  :config
-  (setq markdown-command "pandoc")
-  )
-#+end_src
-* Emacs postgresql
-#+begin_src emacs-lisp
-  (use-package pg
-    :straight t)
-
-  (use-package pgmacs
-    :defer t
-    :straight (pgmacs :type git :host github :repo "emarsden/pgmacs"))
 #+end_src 
