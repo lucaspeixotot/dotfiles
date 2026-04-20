@@ -1,0 +1,19 @@
+# 1. Ignore everything in the config directory
+.emacs-v2.d/*
+
+# 2. But don't ignore these specific files/directories
+! .emacs-v2.d/init.el
+! .emacs-v2.d/early-init.el
+! .emacs-v2.d/lisp/
+
+# 3. If you have nested directories in lisp, ensure Git stays inside them
+! .emacs-v2.d/lisp/**/
+
+# 4. Standard Emacs clutter to ignore (even inside allowed folders)
+*.elc
+*~
+\#*\#
+/.emacs-v2.d/auto-save-list/
+/.emacs-v2.d/eln-cache/
+/.emacs-v2.d/straight/
+/.emacs-v2.d/elpa/

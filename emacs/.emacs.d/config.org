@@ -28,7 +28,6 @@ Replace use-package to straight.
 (setq straight-use-package-by-default t)
 #+end_src
 * Emacs basic settings
-
 ** Line number modeline
 #+begin_src emacs-lisp
   (global-display-line-numbers-mode)
@@ -111,7 +110,6 @@ A few UI Tweaks
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 #+end_src
-
 #+begin_src emacs-lisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
   (global-visual-line-mode t)
@@ -175,7 +173,7 @@ Useul keybindgs to scale the text easily
     ;; Lookup the current symbol at point. C-c C-d is a common keybinding
     ;; for this in lisp modes.
     (global-set-key (kbd "C-c C-d") #'helpful-at-point)
-
+    
     ;; Look up *F*unctions (excludes macros).
     ;;
     ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
@@ -411,6 +409,7 @@ one, an error is signaled."
     (move-text-default-bindings)
     )
 #+end_src
+
 ** Repeat mode
 #+begin_src emacs-lisp
   (use-package repeat
@@ -689,6 +688,7 @@ one, an error is signaled."
   (global-set-key (kbd "M-v") 'better-scroll-down-half)
 
 #+end_src
+
 * Completion system
 ** Consult
 #+begin_src emacs-lisp
