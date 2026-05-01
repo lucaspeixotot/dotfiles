@@ -3,6 +3,10 @@
 (use-package meow
   :straight t
   :init
+  (defun lpac/enable-meow-maybe ()
+    (unless (or (derived-mode-p 'dired-mode 'magit-mode 'eca-chat-mode)
+                (minibufferp))
+      (meow-mode 1)))
   (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-motion-define-key
@@ -87,7 +91,8 @@
    '("<escape>" . ignore)))
   :config
   (meow-setup)
-  (meow-global-mode 1)
+  (add-hook 'prog-mode-hook #'lpac/enable-meow-maybe)
+  (add-hook 'text-mode-hook #'lpac/enable-meow-maybe)
   )
 
 (use-package avy

@@ -29,4 +29,29 @@
     (setq modus-themes-italic-constructs t)  
     )
 
+;; use-package with package.el:
+(use-package dashboard
+  :straight t
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-projects-backend 'project-el)
+  (setq dashboard-center-content t)
+  (setq dashboard-vertically-center-content t)
+  (setq dashboard-projects-switch-function 'persp-project-switch-project)
+  (setq dashboard-items '((recents   . 5)
+                        (bookmarks . 5)
+                        (projects  . 10)
+                        (agenda    . 5)
+                        (registers . 5)))
+  (setq dashboard-startupify-list '(dashboard-insert-banner
+                                  dashboard-insert-newline
+                                  dashboard-insert-banner-title
+                                  dashboard-insert-newline
+                                  dashboard-insert-navigator
+                                  dashboard-insert-newline
+                                  dashboard-insert-init-info
+                                  dashboard-insert-items
+                                  dashboard-insert-newline))
+  )
+
 (provide 'lpac-core-themes)

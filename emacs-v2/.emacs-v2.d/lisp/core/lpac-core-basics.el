@@ -84,20 +84,52 @@
     (ediff-split-window-function 'split-window-horizontally) ; Split windows side by side
     (ediff-merge-split-window-function 'split-window-horizontally))
 
-(use-package switch-window
-  :straight t
-  :config
-  (setq switch-window-shortcut-style 'qwerty)
-  (setq switch-window-threshold 2)
-  (setq switch-window-minibuffer-shortcut ?z)
-  :bind
-   ([remap other-window] . switch-window)
-  )
+(use-package ace-window
+    :straight t
+    :config
+    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+    (setq aw-background nil)
+    (defvar aw-dispatch-alist
+      '((?x aw-delete-window "Delete Window")
+        (?m aw-swap-window "Swap Windows")
+        (?M aw-move-window "Move Window")
+        (?c aw-copy-window "Copy Window")
+        (?j aw-switch-buffer-in-window "Select Buffer")
+        (?n aw-flip-window)
+        (?u aw-switch-buffer-other-window "Switch Buffer Other Window")
+        (?s aw-split-window-fair "Split Fair Window")
+        (?v aw-split-window-vert "Split Vert Window")
+        (?b aw-split-window-horz "Split Horz Window")
+        (?o delete-other-windows "Delete Other Windows")
+        (?? aw-show-dispatch-help))
+      "List of actions for `aw-dispatch-default'.")
+    (setq aw-dispatch-always nil)
+    (setq aw-ignore-on nil)
+    (setq aw-ignore-current nil)
+    ;; :config
+    ;;(add-to-list 'aw-ignored-buffers "*Outline*")
+    ;; (ace-window-display-mode)
+    :bind
+    ([remap other-window] . ace-window)
+    )
 
 (use-package wgrep
     :straight t
     :config
     (setq wgrep-auto-save-buffer t)
     )
+
+(use-package undo-fu
+  :straight t
+  :config
+  (global-set-key (kbd "C-/")   'undo-fu-only-undo)
+  )
+
+(use-package vundo
+  :straight t
+  :bind (
+         ("C-x u" . vundo)
+         )
+  )
 
 (provide 'lpac-core-basics)
