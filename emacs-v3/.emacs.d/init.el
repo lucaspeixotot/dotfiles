@@ -207,21 +207,34 @@
   :ensure t
   :bind-keymap ("C-0" . surround-keymap))
 
+(use-package helpful
+  :ensure t
+  :config
+  ;; Note that the built-in `describe-function' includes both functions
+  ;; and macros. `helpful-function' is functions only, so we provide
+  ;; `helpful-callable' as a drop-in replacement.
+  (global-set-key (kbd "C-h f") #'helpful-callable)
+
+  (global-set-key (kbd "C-h v") #'helpful-variable)
+  (global-set-key (kbd "C-h k") #'helpful-key)
+  (global-set-key (kbd "C-h x") #'helpful-command)
+  ;; Lookup the current symbol at point. C-c C-d is a common keybinding
+  ;; for this in lisp modes.
+  (global-set-key (kbd "C-c C-d") #'helpful-at-point)
+
+  ;; Look up *F*unctions (excludes macros).
+  ;;
+  ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
+  ;; already links to the manual, if a function is referenced there.
+  (global-set-key (kbd "C-h F") #'helpful-function)  
+  )
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Search utilities
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package ripgrep
-  :defer t)
-
-(use-package rg
-  :defer t)
-
-(use-package ag
-  :defer t)
 
 (use-package wgrep
   :defer t)
@@ -312,18 +325,19 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(agent-shell breadcrumb consult-dir dashboard diff-hl dumb-jump eca
-                 ef-themes eldoc-box embark-consult go-add-tags
-                 god-mode macrostep marginalia orderless paredit
-                 repeat-help surround symbol-overlay-mc tabspaces
-                 treemacs-magit treesit-auto undo-fu undo-fu-session
-                 undo-tree vertico vundo wgrep))
+   '(agent-shell breadcrumb cape consult-dir corfu dashboard diff-hl
+                 dumb-jump eca ef-themes eldoc-box embark-consult
+                 go-add-tags god-mode helpful macrostep marginalia
+                 orderless paredit repeat-help rg ripgrep surround
+                 symbol-overlay-mc tabspaces treemacs-magit
+                 treesit-auto undo-fu undo-fu-session undo-tree
+                 vertico vundo wgrep))
  '(treesit-font-lock-level 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(god-mode-lighter ((t (:inherit error)))))
 
 (setq gc-cons-threshold (or cvt--initial-gc-threshold 800000))
