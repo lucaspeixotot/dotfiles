@@ -5,7 +5,7 @@
   :config
   ;; Line number configs
   (global-display-line-numbers-mode)
-  
+
   ;; Smooth scrolling
   (setq scroll-margin 3)
   (setq scroll-preserve-screen-position 3)

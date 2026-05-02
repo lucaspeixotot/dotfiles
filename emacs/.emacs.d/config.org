@@ -1114,7 +1114,7 @@ one, an error is signaled."
 #+begin_src emacs-lisp
 (use-package surround
   :straight t
-  :bind-keymap ("C-c s" . surround-keymap))
+  :bind-keymap ("C-c 0" . surround-keymap))
 #+end_src
 ** Magit
 #+begin_src emacs-lisp

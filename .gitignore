@@ -5,3 +5,4 @@ node_modules
 packer_compiled.lua
 tmux/.config/tmux/plugins/
 .agent-shell/
+.dotfiles-tabspaces-session.el

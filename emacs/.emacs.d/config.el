@@ -131,7 +131,7 @@
   ;; Lookup the current symbol at point. C-c C-d is a common keybinding
   ;; for this in lisp modes.
   (global-set-key (kbd "C-c C-d") #'helpful-at-point)
-
+  
   ;; Look up *F*unctions (excludes macros).
   ;;
   ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
@@ -979,7 +979,7 @@ With prefix ARG, scroll ARG lines instead."
 
 (use-package surround
   :straight t
-  :bind-keymap ("C-c s" . surround-keymap))
+  :bind-keymap ("C-c 0" . surround-keymap))
 
 ;; (use-package magit)
 
