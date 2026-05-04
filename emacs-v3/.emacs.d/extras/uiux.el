@@ -240,8 +240,9 @@
 (use-package treemacs
   :ensure t
   :defer t
-  :config
+  :init
   (global-set-key (kbd "M-0") 'treemacs-select-window)
+  :config
   (progn
     (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
           treemacs-deferred-git-apply-delay        0.5

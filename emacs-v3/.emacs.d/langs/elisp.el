@@ -31,4 +31,9 @@
          (clojure-mode . paredit-mode)
          (clojure-script-mode . paredit-mode)
          (cider-repl-mode . paredit-mode))
+
+  :config
+  ;; Example of remapping M-s to s-s (on Mac)
+  (define-key paredit-mode-map (kbd "M-s") nil)
+  (define-key paredit-mode-map (kbd "s-s") 'paredit-splice-sexp)
   )

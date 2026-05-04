@@ -119,6 +119,12 @@
          )
   )
 
+(use-package saveplace
+  :ensure t
+  :config
+  :hook (after-init . save-place-mode)
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Misc
@@ -226,8 +232,31 @@
   ;;
   ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
   ;; already links to the manual, if a function is referenced there.
-  (global-set-key (kbd "C-h F") #'helpful-function)  
+  (global-set-key (kbd "C-h F") #'helpful-function)
   )
+
+(use-package stripspace
+  :ensure t
+  ;; Enable for prog-mode-hook, text-mode-hook, conf-mode-hook
+  :hook ((prog-mode . stripspace-local-mode)
+         (text-mode . stripspace-local-mode)
+         (conf-mode . stripspace-local-mode))
+
+  :custom
+  ;; The `stripspace-only-if-initially-clean' option:
+  ;; - nil to always delete trailing whitespace.
+  ;; - Non-nil to only delete whitespace when the buffer is clean initially.
+  ;; (The initial cleanliness check is performed when `stripspace-local-mode'
+  ;; is enabled.)
+  (stripspace-only-if-initially-clean nil)
+
+  ;; Enabling `stripspace-restore-column' preserves the cursor's column position
+  ;; even after stripping spaces. This is useful in scenarios where you add
+  ;; extra spaces and then save the file. Although the spaces are removed in the
+  ;; saved file, the cursor remains in the same position, ensuring a consistent
+  ;; editing experience without affecting cursor placement.
+  (stripspace-restore-column t))
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -327,11 +356,12 @@
  '(package-selected-packages
    '(agent-shell breadcrumb cape consult-dir corfu dashboard diff-hl
                  dumb-jump eca ef-themes eldoc-box embark-consult
-                 go-add-tags god-mode helpful macrostep marginalia
-                 orderless paredit repeat-help rg ripgrep surround
-                 symbol-overlay-mc tabspaces treemacs-magit
-                 treesit-auto undo-fu undo-fu-session undo-tree
-                 vertico vundo wgrep))
+                 go-add-tags god-mode helpful key-chord kirigami
+                 macrostep marginalia meow meow-tree-sitter orderless
+                 outline-indent paredit repeat-help rg ripgrep
+                 stripspace surround symbol-overlay-mc tabspaces
+                 treemacs-magit treesit-auto treesit-fold undo-fu
+                 undo-fu-session undo-tree vertico vundo))
  '(treesit-font-lock-level 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
