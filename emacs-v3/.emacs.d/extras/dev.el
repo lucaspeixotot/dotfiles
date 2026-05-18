@@ -197,7 +197,7 @@
   ;; (corfu-auto-trigger ".")
   (corfu-quit-no-match 'separator)
   (corfu-cycle t) ;; Enable cycling for `corfu-next/previous'
-  (corfu-quit-at-boundary nil) ;; Never quit at completion boundary
+  (corfu-quit-at-boundary 'separator) ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
   ;; (corfu-preview-current nil)    ;; Disable current candidate preview
   (corfu-preselect 'prompt) ;; Preselect the prompt

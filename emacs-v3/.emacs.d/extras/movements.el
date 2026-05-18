@@ -215,8 +215,10 @@
      '("/" . meow-keypad-describe-key)
      '("?" . meow-cheatsheet))
     (meow-normal-define-key
-     '("0" . meow-expand-0)
-     '("9" . meow-expand-9)
+     ;; '("0" . meow-expand-0)
+     ;; '("9" . meow-expand-9)
+     '("0" . meow-end-of-thing)
+     '("9" . meow-beginning-of-thing)
      '("8" . meow-expand-8)
      '("7" . meow-expand-7)
      '("6" . meow-expand-6)
@@ -229,8 +231,8 @@
      '(";" . meow-reverse)
      '("," . meow-inner-of-thing)
      '("." . meow-bounds-of-thing)
-     '("[" . meow-beginning-of-thing)
-     '("]" . meow-end-of-thing)
+     ;; '("[" . meow-beginning-of-thing)
+     ;; '("]" . meow-end-of-thing)
      '("a" . meow-append)
      '("A" . meow-open-below)
      '("b" . meow-back-word)
@@ -258,7 +260,7 @@
      '("o" . meow-block)
      '("O" . meow-to-block)
      '("p" . meow-yank)
-     '("q" . meow-quit)
+     ;; '("q" . meow-quit)
      '("Q" . meow-goto-line)
      '("r" . meow-replace)
      '("R" . meow-swap-grab)
@@ -278,7 +280,7 @@
      '("<escape>" . ignore)))
   :config
   (meow-setup)
-  (meow-global-mode 1)
+  ;; (meow-global-mode 1)
   (setq meow-cheatsheet-physical-layout meow-cheatsheet-physical-layout-ansi)
 )
 
@@ -305,4 +307,6 @@
    key-chord-typing-reset-delay 0.5
    key-chord-use-key-tracking t
    )
+  (key-chord-define-global "jw" 'tabspaces-switch-or-create-workspace)
+  (key-chord-define-global "fd" 'meow-insert-exit)
   )
