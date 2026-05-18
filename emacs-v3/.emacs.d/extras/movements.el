@@ -307,6 +307,44 @@
    key-chord-typing-reset-delay 0.5
    key-chord-use-key-tracking t
    )
-  (key-chord-define-global "jw" 'tabspaces-switch-or-create-workspace)
-  (key-chord-define-global "fd" 'meow-insert-exit)
+  (key-chord-define-global "jf" 'hydra-moves/body)
+  )
+
+(use-package hydra
+  :straight t
+  :init
+  (defhydra hydra-moves ()
+      "emacs fast movements"
+      ("l" forward-char)
+      ("h" backward-char)
+      ("j" next-line)
+      ("k" previous-line)
+      ("a" beginning-of-line)
+      ("e" end-of-line)
+      ("w" forward-word)
+      ("b" backward-word)
+      ("u" scroll-down-command)
+      ("d" scroll-up-command)
+      ("z" recenter-top-bottom)
+      ("c" kirigami-close-fold)
+      ("C" kirigami-close-folds)
+      ("o" kirigami-open-fold)
+      ("O" kirigami-open-fold-rec)
+      ("r" treesit-fold-open-recursively)
+      ("RET" avy-goto-char-timer)
+      ("f" avy-goto-char-in-line)
+      (";" symbol-overlay-put)
+      ("n" symbol-overlay-jump-next)
+      ("p" symbol-overlay-jump-prev)
+      ("." embark-dwim)
+      ("," xref-go-back)
+      ("?" xref-find-references)
+      ("q" nil "quit"))
+  )
+
+(use-package avy-zap
+  :straight t
+  :config
+  (global-set-key (kbd "M-z") 'avy-zap-to-char-dwim)
+  (global-set-key (kbd "M-Z") 'avy-zap-up-to-char-dwim)
   )

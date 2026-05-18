@@ -173,7 +173,7 @@ Useul keybindgs to scale the text easily
     ;; Lookup the current symbol at point. C-c C-d is a common keybinding
     ;; for this in lisp modes.
     (global-set-key (kbd "C-c C-d") #'helpful-at-point)
-    
+
     ;; Look up *F*unctions (excludes macros).
     ;;
     ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
@@ -586,7 +586,7 @@ one, an error is signaled."
                              :post (progn
                                      (set-cursor-color "#ffffff")
                                      (message
-                                      "Thank you, come again."))) 
+                                      "Thank you, come again.")))
       "Diagnostics"
       ("n" flycheck-next-error "next")
       ("p" flycheck-previous-error "prev")
@@ -1603,7 +1603,7 @@ Setup my dashboard window
     ;; `modus-themes-load-random-light').
     (modus-themes-load-theme 'ef-maris-dark)
     (setq modus-themes-mixed-fonts t)
-    (setq modus-themes-italic-constructs t)  
+    (setq modus-themes-italic-constructs t)
     )
 #+end_src
 ** Tree sitter
@@ -1874,4 +1874,4 @@ Enable tree sitter globally on emacs
   ;;    org-agenda-tags-column 0
   ;;    org-ellipsis "…")
   ;;   )
-#+end_src 
+#+end_src
