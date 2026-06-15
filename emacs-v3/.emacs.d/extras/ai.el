@@ -13,7 +13,7 @@
 
 ;;; Eca
 (use-package eca
-  :ensure t
+  :straight t
   :config
   (when (boundp 'user-login-name)
     (setq eca-custom-command
@@ -22,7 +22,7 @@
             '("~/.emacs.d/eca/eca" "server")))))
 
 (use-package gptel
-  :ensure t
+  :straight t
   :bind (
          ("C-c a n" . gptel)
          ("C-c a r" . gptel-rewrite)
@@ -32,12 +32,15 @@
   (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "@user\n")
   (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n")
   (setq gptel-expert-commands t)
-  (gptel-make-deepseek "EmacsDeepseek"       ;Any name you want
+  (gptel-make-deepseek "PersonalDeepseek"       ;Any name you want
     :stream t                           ;for streaming responses
     :key (getenv "DEEPSEEK_API_KEY_EMACS"))               ;can be a function that returns the key
+  (gptel-make-gh-copilot "HPECopilot")
   (setq gptel-default-mode 'org-mode)
   )
 
 (use-package gptel-agent
+  :straight t
   :config
+  (add-to-list 'gptel-agent-dirs "~/glp/dev-env/ws/github.com/glcp/lucas-glp-sdlc-marketplace/plugins/glp-design-workflow/agents/")
   (gptel-agent-update))

@@ -225,6 +225,7 @@
   ;; Recommended: Enable Corfu globally.  Recommended since many modes provide
   ;; Capfs and Dabbrev can be used globally (M-/).  See also the customization
   ;; variable `global-corfu-modes' to exclude certain modes.
+  (setq global-corfu-minibuffer nil)
   (global-corfu-mode)
 
   ;; Enable optional extension modes:

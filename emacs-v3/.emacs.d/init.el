@@ -229,8 +229,11 @@
   :hook (prog-mode . symbol-overlay-mode)
   :bind (
          ("C-;" . symbol-overlay-put)
-         ("M-N" . symbol-overlay-jump-next)
-         ("M-P" . symbol-overlay-jump-previous)))
+         ("M-n" . symbol-overlay-jump-next)
+         ("M-p" . symbol-overlay-jump-prev)
+         ("M-N" . symbol-overlay-switch-forward)
+         ("M-P" . symbol-overlay-switch-backward)
+         ))
 
 (use-package symbol-overlay-mc
   :ensure t
