@@ -203,8 +203,7 @@ Optional argument CANDIDATE is the selected item."
   :config
   (pdf-tools-install)
   :mode
-  ("\\.[pP][dD][fF]\\" . pdf-view-mode)
-  )
+  ("\\.[pP][dD][fF]\\'" . pdf-view-mode))
 
 (use-package org
   :straight nil
@@ -213,3 +212,13 @@ Optional argument CANDIDATE is the selected item."
    'org-babel-load-languages
    '((latex . t)))
   )
+
+(use-package dictionary
+  :straight t
+  :custom
+  (dictionary-server "dict.org")
+  :bind
+  (("C-c w s d" . dictionary-lookup-definition)))
+
+(use-package olivetti
+  :straight t)

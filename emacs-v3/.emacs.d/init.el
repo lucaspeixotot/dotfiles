@@ -64,7 +64,7 @@
 (set-face-attribute 'bold nil :weight 'bold)
 
 ;; ;; Optional: Adjust frame-specific settings like line spacing
-(setq-default line-spacing 0)
+(setq-default line-spacing 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
