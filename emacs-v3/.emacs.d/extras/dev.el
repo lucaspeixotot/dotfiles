@@ -201,7 +201,6 @@
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
   ;; (corfu-preview-current nil)    ;; Disable current candidate preview
   (corfu-preselect 'prompt) ;; Preselect the prompt
-
   ;; (corfu-on-exact-match 'insert) ;; Configure handling of exact matches
 
   ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
@@ -218,6 +217,7 @@
         ([backtab] . corfu-previous)
         ("M-q" . corfu-quick-complete)
         ("C-q" . corfu-quick-insert)
+        ("C-<return>" . corfu-insert)
         )
 
   :init

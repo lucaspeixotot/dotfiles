@@ -150,7 +150,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Line number configs
-(global-display-line-numbers-mode)
+
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+
+;; Code: truncate long lines (no wrapping at all)
+(add-hook 'prog-mode-hook (lambda () (setq-local truncate-lines t)))
+
+;; Text: visual line wrapping (word-level, visual navigation)
+(add-hook 'text-mode-hook #'visual-line-mode)
+(add-hook 'org-mode-hook #'visual-line-mode)
 
 ;; Smooth scrolling
 (setq scroll-margin 3)
@@ -229,7 +237,7 @@
 
 (use-package surround
   :ensure t
-  :bind-keymap ("C-0" . surround-keymap))
+  :bind-keymap ("C-c C-s" . surround-keymap))
 
 (use-package helpful
   :ensure t
@@ -361,6 +369,9 @@
 ;;; Languages specific settings
 (load-file (expand-file-name "langs/elisp.el" user-emacs-directory))
 (load-file (expand-file-name "langs/golang.el" user-emacs-directory))
+
+;;; Org mode, notes, and study
+(load-file (expand-file-name "extras/org-notes.el" user-emacs-directory))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
