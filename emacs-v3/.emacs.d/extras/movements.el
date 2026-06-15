@@ -244,5 +244,5 @@
 (use-package expand-region
   :straight t
   :config
-  (global-set-key (kbd "C-=") 'er/expand-region)
+  (global-set-key (kbd "C-0") 'er/expand-region)
   )

@@ -182,8 +182,9 @@
 (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
 (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
 
-;; Trailing spaces
-(setq-default show-trailing-whitespace t)
+;; Trailing spaces — show only in programming modes
+(setq-default show-trailing-whitespace nil)
+(add-hook 'prog-mode-hook (lambda () (setq-local show-trailing-whitespace t)))
 
 ;; Electric pair
 (electric-pair-mode)
