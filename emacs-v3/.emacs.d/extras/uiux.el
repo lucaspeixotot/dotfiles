@@ -332,7 +332,7 @@
 
 ;; use-package with package.el:
 (use-package dashboard
-  :ensure t
+  :straight t
   :config
   (dashboard-setup-startup-hook)
   ;; Content is not centered by default. To center, set
@@ -340,7 +340,8 @@
   ;; vertically center content
   (setq dashboard-vertically-center-content t)
   (setq dashboard-items '((recents   . 5)
-                          (projects  . 5)
+                          (projects  . 10)
+                          (agenda . 10)
                           ))
   (setq dashboard-startupify-list '(dashboard-insert-banner
                                     dashboard-insert-newline
@@ -352,4 +353,7 @@
                                     dashboard-insert-items
                                     dashboard-insert-newline
                                     ))
+  ;; 2. Dashboard Agenda Custom Settings (Optional but Recommended)
+  (setq dashboard-week-agenda t)        ; Show the next 7 days instead of just today
+  (setq dashboard-agenda-release-buffers t) ; Closes Org files after scanning them
   )

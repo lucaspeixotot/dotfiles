@@ -34,18 +34,18 @@
   ;; decide.  For example:
   ( :map global-map
     ("C-c n n" . denote)
+    ("C-c n o" . denote-open-or-create)
     ("C-c n d" . denote-dired)
-    ("C-c n g" . denote-grep)
+    ;; ("C-c n g" . denote-grep)
     ;; If you intend to use Denote with a variety of file types, it is
     ;; easier to bind the link-related commands to the `global-map', as
     ;; shown here.  Otherwise follow the same pattern for `org-mode-map',
     ;; `markdown-mode-map', and/or `text-mode-map'.
-    ("C-c n l a l" . denote-link)
-    ("C-c n l a r" . denote-add-links)
-    ("C-c n l a o" . denote-open-or-create)
-    ("C-c n l s l" . denote-find-link)
-    ("C-c n l s b" . denote-find-backlink)
-    ("C-c n l s B" . denote-backlinks)
+    ("C-c n i l" . denote-link)
+    ("C-c n i L" . denote-add-links)
+    ("C-c n q l" . denote-find-link)
+    ("C-c n q b" . denote-find-backlink)
+    ("C-c n q B" . denote-backlinks)
     ("C-c n q c" . denote-query-contents-link) ; create link that triggers a grep
     ("C-c n q f" . denote-query-filenames-link) ; create link that triggers a dired
     ;; Note that `denote-rename-file' can work from any context, not just
@@ -62,9 +62,9 @@
 
   :config
   ;; Remember to check the docstring of each of those variables.
-  (setq denote-directory (expand-file-name "~/denote-test/"))
+  (setq denote-directory (expand-file-name "~/denote-notes/"))
   (setq denote-save-buffers nil)
-  (setq denote-known-keywords '("epoch"))
+  (setq denote-known-keywords '("literature" "permanent"))
   (setq denote-infer-keywords t)
   (setq denote-sort-keywords nil)
   (setq denote-prompts '(title keywords))
@@ -82,9 +82,9 @@
   :straight t
   :bind
   (:map global-map
-        ("C-c n o f" . denote-org-dblock-insert-files)
-        ("C-c n o l" . denote-org-dblock-insert-links)
-        ("C-c n o b" . denote-org-dblock-insert-backlinks)
+        ("C-c n i o f" . denote-org-dblock-insert-files)
+        ("C-c n i o l" . denote-org-dblock-insert-links)
+        ("C-c n i o b" . denote-org-dblock-insert-backlinks)
         )
   :commands
   ;; I list the commands here so that you can discover them more
@@ -207,11 +207,39 @@ Optional argument CANDIDATE is the selected item."
 
 (use-package org
   :straight nil
+  :init
+  (define-prefix-command 'org-user-menu-map)
+  :bind-keymap
+  ("C-c o" . org-user-menu-map)
+  :bind
+  (:map org-user-menu-map
+        ("a" .  org-agenda)
+        ("c" .  org-capture)
+   )
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((latex . t)))
-  )
+  :custom
+  (org-directory "~/org/")
+  (org-agenda-files '("~/org/inbox.org"
+                      "~/org/tasks.org"))
+  (org-default-notes-file "~/org/inbox.org")
+  (org-refile-targets '(("~/org/tasks.org" :maxlevel . 3)
+                        ("~/org/inbox.org" :maxlevel . 3)))
+  (org-refile-use-outline-path 'file)
+  (org-outline-path-complete-in-steps nil)
+  :config
+  (setq org-capture-templates
+        `(("i" "Inbox task" entry
+           (file+headline ,(expand-file-name "inbox.org" org-directory) "Inbox")
+           "* TODO %?\n  DATE: %U\n")
+          ("t" "Active task" entry
+           (file+headline ,(expand-file-name "tasks.org" org-directory) "Tasks")
+           "* TODO %?\n  DATE: %U\n")
+          ("l" "Task linked to current location" entry
+           (file+headline ,(expand-file-name "inbox.org" org-directory) "Inbox")
+           "* TODO %?\n  DATE: %U\n  RELATED LOCATION: %a\n"))))
 
 (use-package dictionary
   :straight t
@@ -222,3 +250,70 @@ Optional argument CANDIDATE is the selected item."
 
 (use-package olivetti
   :straight t)
+
+(use-package denote-silo
+  :straight t
+  ;; Bind these commands to key bindings of your choice.
+  :commands ( denote-silo-create-note
+              denote-silo-open-or-create
+              denote-silo-select-silo-then-command
+              denote-silo-dired
+              denote-silo-cd )
+  :config
+  ;; Add your silos to this list.  By default, it only includes the
+  ;; value of the variable `denote-directory'.
+  (setq denote-silo-directories
+        (list denote-directory
+              "~/denote-notes/"
+              "~/org-denote/"
+              "~/denote-test/"))
+  :bind
+  (:map global-map
+        ("C-c n m c" . denote-silo-create-note)
+        ("C-c n m o" . denote-silo-open-or-create)
+        ("C-c n m d" . denote-silo-dired)
+        ("C-c n m s" . denote-silo-cd)
+        ("C-c n m x" . denote-silo-select-silo-then-command)
+        )
+  )
+
+(use-package denote-explore
+  :straight t
+  :custom
+  ;; Where to store network data and in which format
+  ;; (denote-explore-network-directory "<your preferred folder>")
+  (denote-explore-network-filename "denote-network")
+  ;; (denote-explore-network-keywords-ignore "<keywords list>")
+  ;; (denote-explore-network-regex-ignore "<regex>")
+  (denote-explore-network-format 'gexf)
+  (denote-explore-network-d3-colours 'SchemeObservable10)
+  (denote-explore-network-d3-js "https://d3js.org/d3.v7.min.js")
+  ;; (denote-explore-network-d3-template "<file path>")
+  ;; (denote-explore-network-graphviz-header "<header strings>")
+  (denote-explore-network-graphviz-filetype 'svg)
+  :bind
+  (;; Statistics
+   ("C-c n e s n" . denote-explore-count-notes)
+   ("C-c n e s k" . denote-explore-count-keywords)
+   ("C-c n e s e" . denote-explore-barchart-filetypes)
+   ("C-c n e s w" . denote-explore-barchart-keywords)
+   ("C-c n e s t" . denote-explore-barchart-timeline)
+   ;; Random walks
+   ("C-c n e w n" . denote-explore-random-note)
+   ("C-c n e w r" . denote-explore-random-regex)
+   ("C-c n e w l" . denote-explore-random-link)
+   ("C-c n e w k" . denote-explore-random-keyword)
+   ;; Denote Janitor
+   ("C-c n e j d" . denote-explore-duplicate-notes)
+   ("C-c n e j D" . denote-explore-duplicate-notes-dired)
+   ("C-c n e j l" . denote-explore-missing-links)
+   ("C-c n e j z" . denote-explore-zero-keywords)
+   ("C-c n e j s" . denote-explore-single-keywords)
+   ("C-c n e j r" . denote-explore-rename-keywords)
+   ("C-c n e j y" . denote-explore-sync-metadata)
+   ("C-c n e j i" . denote-explore-isolated-files)
+   ;; Visualise denote
+   ("C-c n e n" . denote-explore-network)
+   ("C-c n e r" . denote-explore-network-regenerate)
+   ("C-c n e d" . denote-explore-barchart-degree)
+   ("C-c n e b" . denote-explore-barchart-backlinks)))
