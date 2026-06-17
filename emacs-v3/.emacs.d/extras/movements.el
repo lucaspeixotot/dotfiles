@@ -211,6 +211,8 @@
       ("h" backward-char)
       ("j" next-line)
       ("k" previous-line)
+      ("J" (lambda () (interactive) (next-line) (recenter)))
+      ("K" (lambda () (interactive) (previous-line) (recenter)))
       ("a" beginning-of-line)
       ("e" end-of-line)
       ("w" forward-word)
