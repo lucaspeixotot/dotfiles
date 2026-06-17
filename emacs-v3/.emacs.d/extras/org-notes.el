@@ -328,3 +328,44 @@ Optional argument CANDIDATE is the selected item."
    ("C-c n e r" . denote-explore-network-regenerate)
    ("C-c n e d" . denote-explore-barchart-degree)
    ("C-c n e b" . denote-explore-barchart-backlinks)))
+
+(use-package org-remark-global-tracking
+  :straight nil
+  ;; It is recommended that `org-remark-global-tracking-mode' be
+  ;; enabled when Emacs initializes. You can set it in
+  ;; `after-init-hook'.
+  :hook after-init
+  :config
+  ;; Selectively keep or comment out the following if you want to use
+  ;; extensions for Info-mode, EWW, and NOV.el (EPUB) respectively.
+  (use-package org-remark-info :straight nil :after info :config (org-remark-info-mode +1))
+  (use-package org-remark-eww  :straight nil :after eww  :config (org-remark-eww-mode +1))
+  (use-package org-remark-nov  :straight nil :after nov  :config (org-remark-nov-mode +1)))
+
+(use-package org-remark
+  :straight t
+  :bind (;; :bind keyword also implicitly defers org-remark itself.
+         ;; Keybindings before :map is set for global-map. Adjust the keybinds
+         ;; as you see fit.
+         ("C-c n h m" . org-remark-mark)
+         ("C-c n h l" . org-remark-mark-line)
+         :map org-remark-mode-map
+         ("C-c n h o" . org-remark-open)
+         ("C-c n h ]" . org-remark-view-next)
+         ("C-c n h [" . org-remark-view-prev)
+         ("C-c n h r" . org-remark-remove)
+         ("C-c n h d" . org-remark-delete))
+  )
+
+(use-package org-download
+  :straight t
+  :after org
+  :config
+  ;; Define a pasta padrão onde as imagens serão salvas
+  (setq-default org-download-image-dir "./images")
+
+  ;; Opcional: Evita que o Emacs crie textos longos de anotação acima da imagem
+  (setq org-download-annotate-function (lambda (_) ""))
+  (define-key org-mode-map (kbd "C-c o d c") 'org-download-clipboard)
+  (define-key org-mode-map (kbd "C-c o d y") 'org-download-yank)
+  )

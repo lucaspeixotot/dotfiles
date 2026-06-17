@@ -42,6 +42,7 @@
   :hook (gptel-mode-hook . my/org-gptel-highlight-mode)
   :bind (
          ("C-c a n" . gptel)
+         ("C-c a s" . gptel-send)
          ("C-c a r" . gptel-rewrite)
          ("C-c a m" . gptel-menu)
          ("C-c a a" . gptel-add))
@@ -140,5 +141,6 @@ Feedback:
 (use-package gptel-agent
   :straight (gptel-agent :type git :host github :repo "karthink/gptel-agent")
   :config
-  (add-to-list 'gptel-agent-dirs "~/glp/dev-env/ws/github.com/glcp/lucas-glp-sdlc-marketplace/plugins/glp-design-workflow/agents/")
+  (when (string= (system-name) "hpedev")
+    (add-to-list 'gptel-agent-dirs "~/glp/dev-env/ws/github.com/glcp/lucas-glp-sdlc-marketplace/plugins/glp-design-workflow/agents/"))
   (gptel-agent-update))
