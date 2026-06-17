@@ -43,6 +43,7 @@
     ;; `markdown-mode-map', and/or `text-mode-map'.
     ("C-c n i l" . denote-link)
     ("C-c n i L" . denote-add-links)
+    ("C-c n i f" . denote-link-or-create)
     ("C-c n q l" . denote-find-link)
     ("C-c n q b" . denote-find-backlink)
     ("C-c n q B" . denote-backlinks)
@@ -66,7 +67,7 @@
   (setq denote-save-buffers nil)
   (setq denote-known-keywords '("literature" "permanent"))
   (setq denote-infer-keywords t)
-  (setq denote-sort-keywords nil)
+  (setq denote-sort-keywords t)
   (setq denote-prompts '(title keywords))
   (setq denote-excluded-directories-regexp nil)
   (setq denote-keywords-to-not-infer-regexp nil)
@@ -194,6 +195,8 @@ Optional argument CANDIDATE is the selected item."
 
 (use-package nov
   :straight t
+  :hook
+  (nov-mode . olivetti-mode)
   :config
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
 
@@ -249,7 +252,15 @@ Optional argument CANDIDATE is the selected item."
   (("C-c w s d" . dictionary-lookup-definition)))
 
 (use-package olivetti
-  :straight t)
+  :straight t
+  :config
+  (defun my/enable-olivetti-for-denote ()
+    "Enable olivetti-mode if the current buffer is a Denote note."
+    (when (and buffer-file-name
+               (denote-file-is-note-p buffer-file-name))
+      (olivetti-mode 1)))
+  :hook
+  (find-file . my/enable-olivetti-for-denote))
 
 (use-package denote-silo
   :straight t

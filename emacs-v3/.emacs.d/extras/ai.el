@@ -37,9 +37,8 @@
   '((t :inherit hl-line :extend t))
   "Face for @assistant lines.")
 
-
 (use-package gptel
-  :straight t
+  :straight (gptel :type git :host github :repo "karthink/gptel")
   :hook (gptel-mode-hook . my/org-gptel-highlight-mode)
   :bind (
          ("C-c a n" . gptel)
@@ -139,7 +138,7 @@ Feedback:
   )
 
 (use-package gptel-agent
-  :straight t
+  :straight (gptel-agent :type git :host github :repo "karthink/gptel-agent")
   :config
   (add-to-list 'gptel-agent-dirs "~/glp/dev-env/ws/github.com/glcp/lucas-glp-sdlc-marketplace/plugins/glp-design-workflow/agents/")
   (gptel-agent-update))
