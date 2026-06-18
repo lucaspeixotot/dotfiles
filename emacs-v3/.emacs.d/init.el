@@ -297,33 +297,33 @@
 
 (use-package wgrep
   :defer t)
-  (setq isearch-lazy-count t)
-  (setq lazy-count-prefix-format "(%s/%s) ")
-  (setq lazy-count-suffix-format nil)
-  (setq search-whitespace-regexp ".*?")
-  ;; Isearch in other windows
-  (defun isearch-forward-other-window (prefix)
-    "Function to isearch-forward in other-window."
-    (interactive "P")
-    (unless (one-window-p)
-      (save-excursion
-        (let ((next (if prefix -1 1)))
-          (other-window next)
-          (isearch-forward)
-          (other-window (- next))))))
+(setq isearch-lazy-count t)
+(setq lazy-count-prefix-format "(%s/%s) ")
+(setq lazy-count-suffix-format nil)
+(setq search-whitespace-regexp ".*?")
+;; Isearch in other windows
+(defun isearch-forward-other-window (prefix)
+  "Function to isearch-forward in other-window."
+  (interactive "P")
+  (unless (one-window-p)
+    (save-excursion
+      (let ((next (if prefix -1 1)))
+        (other-window next)
+        (isearch-forward)
+        (other-window (- next))))))
 
-  (defun isearch-backward-other-window (prefix)
-    "Function to isearch-backward in other-window."
-    (interactive "P")
-    (unless (one-window-p)
-      (save-excursion
-        (let ((next (if prefix 1 -1)))
-          (other-window next)
-          (isearch-backward)
-          (other-window (- next))))))
+(defun isearch-backward-other-window (prefix)
+  "Function to isearch-backward in other-window."
+  (interactive "P")
+  (unless (one-window-p)
+    (save-excursion
+      (let ((next (if prefix 1 -1)))
+        (other-window next)
+        (isearch-backward)
+        (other-window (- next))))))
 
-  (define-key global-map (kbd "C-M-s") 'isearch-forward-other-window)
-  (define-key global-map (kbd "C-M-r") 'isearch-backward-other-window)
+(global-set-key (kbd "C-M-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-M-r") 'isearch-backward-regexp)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
