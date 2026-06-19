@@ -359,13 +359,21 @@ Optional argument CANDIDATE is the selected item."
 
 (use-package org-download
   :straight t
-  :after org
+  :bind
+  (:map org-user-menu-map
+        ("d c" . org-download-clipboard)
+        ("d y" . org-download-yank))
   :config
   ;; Define a pasta padrão onde as imagens serão salvas
   (setq-default org-download-image-dir "./images")
 
   ;; Opcional: Evita que o Emacs crie textos longos de anotação acima da imagem
   (setq org-download-annotate-function (lambda (_) ""))
-  (define-key org-mode-map (kbd "C-c o d c") 'org-download-clipboard)
-  (define-key org-mode-map (kbd "C-c o d y") 'org-download-yank)
+  )
+
+(use-package toc-org
+  :straight t
+  :config
+  (add-hook 'org-mode-hook 'toc-org-mode)
+  (add-hook 'markdown-mode-hook 'toc-org-mode)
   )

@@ -37,9 +37,31 @@
   '((t :inherit hl-line :extend t))
   "Face for @assistant lines.")
 
+(defvar-local my/org-gptel-font-lock-keywords
+    '(("^\\(@user\\)\\b.*$"
+       (0 'my/gptel-user-line-face prepend)
+       (1 'my/org-gptel-user-face prepend))
+
+      ("^\\(@assistant\\)\\b.*$"
+       (0 'my/gptel-assistant-line-face prepend)
+       (1 'my/org-gptel-assistant-face prepend)))
+  "Font-lock rules for gptel role markers."
+  )
+
+(define-minor-mode my/org-gptel-highlight-mode
+  "Toggle highlighting of @user and @assistant markers."
+  :lighter " GPT-Hi"
+  (if my/org-gptel-highlight-mode
+      (font-lock-add-keywords nil my/org-gptel-font-lock-keywords 'append)
+    (font-lock-remove-keywords nil my/org-gptel-font-lock-keywords))
+  (font-lock-flush)
+  (font-lock-ensure))
+
 (use-package gptel
   :straight (gptel :type git :host github :repo "karthink/gptel")
-  :hook (gptel-mode-hook . my/org-gptel-highlight-mode)
+  :init
+  ()
+  :hook (gptel-mode-hook .  (lambda () (my/org-gptel-highlight-mode 1)))
   :bind (
          ("C-c a n" . gptel)
          ("C-c a s" . gptel-send)
@@ -56,29 +78,10 @@
   (gptel-make-gh-copilot "HPECopilot")
   (setq gptel-default-mode 'org-mode)
 
-  (defvar-local my/org-gptel-font-lock-keywords
-      '(("^\\(@user\\)\\b.*$"
-         (0 'my/gptel-user-line-face prepend)
-         (1 'my/org-gptel-user-face prepend))
-
-        ("^\\(@assistant\\)\\b.*$"
-         (0 'my/gptel-assistant-line-face prepend)
-         (1 'my/org-gptel-assistant-face prepend)))
-    "Font-lock rules for gptel role markers."
-    )
-
-  (define-minor-mode my/org-gptel-highlight-mode
-    "Toggle highlighting of @user and @assistant markers."
-    :lighter " GPT-Hi"
-    (if my/org-gptel-highlight-mode
-        (font-lock-add-keywords nil my/org-gptel-font-lock-keywords 'append)
-      (font-lock-remove-keywords nil my/org-gptel-font-lock-keywords))
-    (font-lock-flush)
-    (font-lock-ensure))
   ;; 1) The directive: the actual prompt instructions
   (setf (alist-get 'english-refine gptel-directives)
 
-"You are my English writing assistant.
+        "You are my English writing assistant.
 
 My native language is Brazilian Portuguese. I will give you English text that I want to improve for work, emails, or professional communication.
 
