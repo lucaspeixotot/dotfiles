@@ -18,14 +18,12 @@
 
 ;; Expand elisp code and iterate recursively
 (use-package macrostep
-  :ensure t
   :config
   (define-key emacs-lisp-mode-map (kbd "C-c e") 'macrostep-expand))
 
 
 ;;; For editing structural prog mode http://danmidwood.com/content/2014/11/21/animated-paredit.html
 (use-package paredit
-  :ensure t
   :hook ((emacs-lisp-mode . paredit-mode)
          (lisp-mode . paredit-mode)
          (scheme-mode . paredit-mode)

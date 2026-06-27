@@ -12,7 +12,6 @@
 
 ;;; Avy to jump to characters quickly
 (use-package avy
-  :ensure t
   :config
   ;; Additional mode-specific bindings
   (setq avy-keys '(?q ?e ?r ?y ?u ?o ?p
@@ -94,7 +93,6 @@
 
 ;;; Ace window to jump to windows quickly
 (use-package ace-window
-    :ensure t
     :config
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
     (setq aw-background nil)
@@ -132,7 +130,6 @@
 
 ;;; God mode for better file navigation (save pinky)
 (use-package god-mode
-  :ensure t
   :config
   (define-key god-local-mode-map (kbd "i") #'god-mode-all)
   (global-set-key (kbd "M-1") #'(lambda () (interactive) (god-mode-all 1)))
@@ -186,7 +183,6 @@
 
 
 (use-package key-chord
-  :ensure t
   :config
   (key-chord-mode 1)
   (setq

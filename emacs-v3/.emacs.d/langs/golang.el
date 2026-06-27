@@ -14,7 +14,6 @@
 
 
 (use-package go-add-tags
-  :ensure t
   :config
   (with-eval-after-load 'go-ts-mode
     (define-key go-ts-mode-map (kbd "C-c t") #'go-add-tags))

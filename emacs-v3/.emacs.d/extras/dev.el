@@ -17,14 +17,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package eldoc-box
-  :ensure t
   :config
   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
   (global-set-key (kbd "C-c l h") 'eldoc-box-help-at-point)
   )
 
 (use-package eglot
-  :ensure t
+  :straight nil
   :config
   ;; Manual start and useful actions
   (global-set-key (kbd "C-c l e") #'eglot)
@@ -36,7 +35,6 @@
   )
 
 (use-package dumb-jump
-  :ensure t
   :custom
   (setq xref-show-definitions-function #'consult-xref)
   (setq dumb-jump-force-searcher 'rg)
@@ -53,7 +51,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package magit
-  :ensure t
   :config
   (setq magit-ediff-dwim-show-on-hunks t)
   (with-eval-after-load 'project
@@ -62,7 +59,6 @@
   )
 
 (use-package diff-hl
-  :ensure t
   :config
   (global-diff-hl-mode)
   )
@@ -76,7 +72,6 @@
 
 ;;; Display the parent context (function/class/block name)
 (use-package breadcrumb
-  :ensure t
   :init
   (breadcrumb-mode t)
   )
@@ -84,7 +79,6 @@
 ;;; Embark to do everythin you want
 
 (use-package embark
-  :ensure t
   :bind
   (("C-." . embark-act)         ;; pick some comfortable binding
    ("M-." . embark-dwim)        ;; good alternative: M-.
@@ -114,14 +108,12 @@
 
 ;; Consult users will also want the embark-consult package.
 (use-package embark-consult
-  :ensure t ; only need to install it, embark loads it after consult if found
+  ;; only need to install it, embark loads it after consult if found
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
 ;;; Tabspaces as perspective replacement
 (use-package tabspaces
-  ;; use this next line only if you also use ensure, otherwise ignore it.
-  :ensure t
   :hook (after-init . tabspaces-mode) ;; use this only if you want the minor-mode loaded at startup.
   :commands (tabspaces-switch-or-create-workspace
              tabspaces-open-or-create-project-and-workspace)
@@ -189,7 +181,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package corfu
-  :ensure t
   ;; Optional customizations
   :custom
   (corfu-auto t)
@@ -246,6 +237,7 @@
 
 ;; A few more useful configurations...
 (use-package emacs
+  :straight nil
   :custom
   ;; TAB cycle if there are only few candidates
   ;; (completion-cycle-threshold 3)
@@ -265,7 +257,6 @@
 
 ;; Add extensions
 (use-package cape
-  :ensure t
   ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
   ;; Press C-c p ? to for help.
   ;; :bind ("C-c p" . cape-prefix-map) ;; Alternative key: M-<tab>, M-p, M-+
@@ -297,14 +288,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package outline-indent
-  :ensure t
   :commands outline-indent-minor-mode
   :custom
   (outline-indent-ellipsis " ▼")
   )
 
 (use-package treesit-fold
-  :ensure t
   :commands (treesit-fold-close
              treesit-fold-close-all
              treesit-fold-open
@@ -356,7 +345,6 @@
   )
 
 (use-package kirigami
-  :ensure t
   :config
   (global-set-key (kbd "C-c z o") 'kirigami-open-fold)     ; Open fold at point
   (global-set-key (kbd "C-c z O") 'kirigami-open-fold-rec) ; Open fold recursively

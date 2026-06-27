@@ -49,7 +49,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package ef-themes
-  :ensure t
   :init
   ;; This makes the Modus commands listed below consider only the Ef
   ;; themes.  For an alternative that includes Modus and all
@@ -114,7 +113,6 @@
 
 ;; Improve undo/redo experience
 (use-package undo-fu
-  :ensure t
   :config
   (global-unset-key (kbd "C-z"))
   (global-set-key (kbd "C-z")   'undo-fu-only-undo)
@@ -123,21 +121,19 @@
 
 ;;; Persist undo tree
 (use-package undo-fu-session
-  :ensure t
   :config
   (undo-fu-session-global-mode)
   )
 
 ;; Visual undo/redo tree
 (use-package vundo
-  :ensure t
   :bind (
          ("C-x u" . vundo)
          )
   )
 
 (use-package saveplace
-  :ensure t
+  :straight nil
   :config
   :hook (after-init . save-place-mode)
   )
@@ -193,6 +189,7 @@
 
 ;; ediff tweak config
 (use-package ediff
+    :straight nil
     :custom
     (ediff-window-setup-function 'ediff-setup-windows-plain) ; Use a single frame for ediff
     (ediff-split-window-function 'split-window-horizontally) ; Split windows side by side
@@ -200,21 +197,18 @@
 
 ;; Enable massive edition under search results (like from embark)
 (use-package wgrep
-    :ensure t
     :config
     (setq wgrep-auto-save-buffer t)
     )
 
 (use-package repeat
-  :ensure t
+  :straight nil
   :hook (after-init . repeat-mode))
 
 (use-package repeat-help
-  :ensure t
   :hook (repeat-mode . repeat-help-mode))
 
 (use-package multiple-cursors
-  :ensure t
 
   :config
   (global-set-key (kbd "C->") 'mc/mark-next-like-this)
@@ -223,7 +217,6 @@
   )
 
 (use-package symbol-overlay
-  :ensure t
   :defer t
   :hook (prog-mode . symbol-overlay-mode)
   :bind (
@@ -235,15 +228,12 @@
          ))
 
 (use-package symbol-overlay-mc
-  :ensure t
   :bind (("M-a" . symbol-overlay-mc-mark-all)))
 
 (use-package surround
-  :ensure t
   :bind-keymap ("C-c C-s" . surround-keymap))
 
 (use-package helpful
-  :ensure t
   :config
   ;; Note that the built-in `describe-function' includes both functions
   ;; and macros. `helpful-function' is functions only, so we provide
@@ -265,7 +255,6 @@
   )
 
 (use-package stripspace
-  :ensure t
   ;; Enable for prog-mode-hook, text-mode-hook, conf-mode-hook
   :hook ((prog-mode . stripspace-local-mode)
          (text-mode . stripspace-local-mode)
@@ -332,7 +321,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package which-key
-  :ensure t
   :config
   (setq which-key-side-window-location 'bottom
   	  which-key-sort-order #'which-key-key-order-alpha

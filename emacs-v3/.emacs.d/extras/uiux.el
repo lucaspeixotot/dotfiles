@@ -11,7 +11,6 @@
 ;;;  $$$$$$$$/ $$/  $$/  $$/  $$$$$$$/  $$$$$$$/ $$$$$$$/         $$$$$$$/     $/        $$$$/
 
 (use-package consult
-  :ensure t
   ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (;; C-c bindings in `mode-specific-map'
          ;; ("C-c M-x" . consult-mode-command)
@@ -125,7 +124,6 @@
   )
 
 (use-package consult-dir
-  :ensure t
   :bind (("C-x C-d" . consult-dir)
          :map minibuffer-local-completion-map
          ("C-x C-d" . consult-dir)
@@ -134,7 +132,6 @@
 
 ;; Enable vertico
 (use-package vertico
-  :ensure t
   :init
   (vertico-mode)
 
@@ -153,7 +150,7 @@
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
-  :ensure t
+  :straight nil
   :init
   (savehist-mode)
   :config
@@ -165,6 +162,7 @@
 
 ;; A few more useful configurations...
 (use-package emacs
+  :straight nil
   :init
   ;; Add prompt indicator to `completing-read-multiple'.
   ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
@@ -195,7 +193,6 @@
 
 
 (use-package orderless
-  :ensure t
   :custom
   ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
   ;; (orderless-component-separator #'orderless-escapable-split-on-space)
@@ -206,7 +203,6 @@
   )
 
 (use-package marginalia
-  :ensure t
   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
   ;; available in the *Completions* buffer, add it to the
   ;; `completion-list-mode-map'.
@@ -229,7 +225,6 @@
   )
 
 (use-package treesit-auto
-  :ensure t
   :custom
   (treesit-auto-install 'prompt)
   :config
@@ -238,7 +233,6 @@
   )
 
 (use-package treemacs
-  :ensure t
   :defer t
   :init
   (global-set-key (kbd "M-0") 'treemacs-select-window)
@@ -320,8 +314,7 @@
   )
 
 (use-package treemacs-magit
-  :after (treemacs magit)
-  :ensure t)
+  :after (treemacs magit))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
