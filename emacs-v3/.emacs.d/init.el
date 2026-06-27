@@ -343,31 +343,31 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Better UI/UX
-(load-file (expand-file-name "extras/uiux.el" user-emacs-directory))
+(load (expand-file-name "extras/uiux.el" user-emacs-directory))
 
 ;;; Terminal settings
-(load-file (expand-file-name "extras/term.el" user-emacs-directory))
+(load (expand-file-name "extras/term.el" user-emacs-directory))
 
 ;;; Emacs better movements
-(load-file (expand-file-name "extras/movements.el" user-emacs-directory))
+(load (expand-file-name "extras/movements.el" user-emacs-directory))
 
 ;;; Dev settings
-(load-file (expand-file-name "extras/dev.el" user-emacs-directory))
+(load (expand-file-name "extras/dev.el" user-emacs-directory))
 
 ;;; Languages specific settings
-(load-file (expand-file-name "extras/ai.el" user-emacs-directory))
+(load (expand-file-name "extras/ai.el" user-emacs-directory))
 
 ;;; Remote config (tramp)
-(load-file (expand-file-name "extras/remote.el" user-emacs-directory))
+(load (expand-file-name "extras/remote.el" user-emacs-directory))
 
 
 ;;; Languages specific settings
-(load-file (expand-file-name "langs/elisp.el" user-emacs-directory))
-(load-file (expand-file-name "langs/golang.el" user-emacs-directory))
-(load-file (expand-file-name "langs/terraform.el" user-emacs-directory))
+(load (expand-file-name "langs/elisp.el" user-emacs-directory))
+(load (expand-file-name "langs/golang.el" user-emacs-directory))
+(load (expand-file-name "langs/terraform.el" user-emacs-directory))
 
 ;;; Org mode, notes, and study
-(load-file (expand-file-name "extras/org-notes.el" user-emacs-directory))
+(load (expand-file-name "extras/org-notes.el" user-emacs-directory))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
