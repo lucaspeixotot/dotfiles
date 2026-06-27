@@ -43,29 +43,6 @@
   )
 
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Font settings
-;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Set the default font globally
-(set-face-attribute 'default nil :family "JetBrains Mono NL" :height 100 :weight 'normal)
-
-;; Ensure consistency for fixed-pitch and variable-pitch faces
-(set-face-attribute 'fixed-pitch nil :family "JetBrains Mono NL" :height 100)
-(set-face-attribute 'variable-pitch nil :family "JetBrains Mono NL" :height 1.0)
-
-;; Fine-tune specific faces as desired
-(set-face-attribute 'font-lock-comment-face nil :slant 'italic)
-(set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
-(set-face-attribute 'font-lock-string-face nil :slant 'italic)
-(set-face-attribute 'bold nil :weight 'bold)
-
-;; ;; Optional: Adjust frame-specific settings like line spacing
-(setq-default line-spacing 1)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Themes
@@ -95,8 +72,30 @@
   ;; Finally, load your theme of choice (or a random one with
   ;; `modus-themes-load-random', `modus-themes-load-random-dark',
   ;; `modus-themes-load-random-light').
-  (modus-themes-load-theme 'ef-melissa-light))
+  (modus-themes-load-theme 'ef-melissa-light)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Font settings
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+  ;; Set the default font globally
+  (set-face-attribute 'default nil :family "JetBrains Mono NL" :height 100 :weight 'normal)
+
+  ;; Ensure consistency for fixed-pitch and variable-pitch faces
+  (set-face-attribute 'fixed-pitch nil :family "JetBrains Mono NL" :height 100)
+  (set-face-attribute 'variable-pitch nil :family "Literata" :height 110)
+
+  (set-face-attribute 'bold nil :weight 'bold)
+
+  ;; Fine-tune specific faces as desired
+  (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
+  (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
+  (set-face-attribute 'font-lock-string-face nil :slant 'italic)
+
+  ;; ;; Optional: Adjust frame-specific settings like line spacing
+  (setq-default line-spacing 1)
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -370,9 +369,14 @@
 ;;; Languages specific settings
 (load-file (expand-file-name "extras/ai.el" user-emacs-directory))
 
+;;; Remote config (tramp)
+(load-file (expand-file-name "extras/remote.el" user-emacs-directory))
+
+
 ;;; Languages specific settings
 (load-file (expand-file-name "langs/elisp.el" user-emacs-directory))
 (load-file (expand-file-name "langs/golang.el" user-emacs-directory))
+(load-file (expand-file-name "langs/terraform.el" user-emacs-directory))
 
 ;;; Org mode, notes, and study
 (load-file (expand-file-name "extras/org-notes.el" user-emacs-directory))

@@ -67,7 +67,12 @@
          ("C-c a s" . gptel-send)
          ("C-c a r" . gptel-rewrite)
          ("C-c a m" . gptel-menu)
-         ("C-c a a" . gptel-add))
+         ("C-c a a" . gptel-add)
+         ("C-c a c a" . gptel-context-add)
+         ("C-c a c f" . gptel-context-add-file)
+         ("C-c a c R" . gptel-context-remove-all)
+         )
+
   :config
   (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "@user\n")
   (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n")

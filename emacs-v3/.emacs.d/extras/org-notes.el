@@ -197,8 +197,9 @@ Optional argument CANDIDATE is the selected item."
   :straight t
   :hook
   (nov-mode . olivetti-mode)
-  :config
-  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+  :mode
+  ("\\.[eE][pP][uU][bB]\\'" . nov-mode)
+  )
 
 (use-package pdf-tools
   :straight t
@@ -377,3 +378,25 @@ Optional argument CANDIDATE is the selected item."
   (add-hook 'org-mode-hook 'toc-org-mode)
   (add-hook 'markdown-mode-hook 'toc-org-mode)
   )
+
+(use-package citar
+  :straight t
+  :custom
+  (citar-bibliography '("~/Calibre/catalog.bib"))
+  (org-cite-global-bibliography '("~/Calibre/catalog.bib"))
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  (citar-bibliography org-cite-global-bibliography)
+  :hook
+  (LaTeX-mode . citar-capf-setup)
+  (org-mode . citar-capf-setup)
+  :bind
+  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert))
+  )
+
+(use-package citar-embark
+  :straight t
+  :after (citar embark)
+  :no-require
+  :config (citar-embark-mode))
