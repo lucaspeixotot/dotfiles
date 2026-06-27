@@ -149,11 +149,17 @@
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 ;; Code: truncate long lines (no wrapping at all)
-(add-hook 'prog-mode-hook (lambda () (setq-local truncate-lines t)))
+(defun my/truncate-lines-for-code ()
+  "Truncate long lines in programming buffers."
+  (setq-local truncate-lines t))
+
+(add-hook 'prog-mode-hook #'my/truncate-lines-for-code)
 
 ;; Text: visual line wrapping (word-level, visual navigation)
 (add-hook 'text-mode-hook #'visual-line-mode)
-(add-hook 'org-mode-hook #'visual-line-mode)
+
+;; Indentation-aware continuation lines (Emacs 30+)
+(global-visual-wrap-prefix-mode 1)
 
 ;; Smooth scrolling
 (setq scroll-margin 3)
