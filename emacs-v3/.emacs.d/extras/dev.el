@@ -22,6 +22,10 @@
 
 (use-package eglot
   :straight nil
+  ;; Disable events buffer to prevent unbounded memory growth from LSP traffic.
+  ;; Set to '(:size 2000000 :format full) temporarily when debugging LSP issues.
+  :custom
+  (eglot-events-buffer-config '(:size 0 :format full))
   ;; Manual start and useful actions
   :bind (("C-c l e" . eglot)
          ("C-c l d" . eglot-shutdown)
@@ -232,6 +236,10 @@
 ;; A few more useful configurations...
 (use-package emacs
   :straight nil
+  ;; Disable events buffer to prevent unbounded memory growth from LSP traffic.
+  ;; Set to '(:size 2000000 :format full) temporarily when debugging LSP issues.
+  :custom
+  (eglot-events-buffer-config '(:size 0 :format full))
   :custom
   ;; TAB cycle if there are only few candidates
   ;; (completion-cycle-threshold 3)
