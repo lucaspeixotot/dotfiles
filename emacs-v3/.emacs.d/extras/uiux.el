@@ -153,9 +153,10 @@
 (use-package savehist
   :straight nil
   :init
+  (savehist-mode)
   (add-to-list 'savehist-additional-variables 'search-ring)
   (add-to-list 'savehist-additional-variables 'regexp-search-ring)
-  (savehist-mode))
+  )
 
 ;; A few more useful configurations...
 (use-package emacs
