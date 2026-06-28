@@ -148,16 +148,14 @@
   )
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
+;; NOTE: kill-ring and mark-ring are intentionally excluded from
+;; savehist-additional-variables to prevent unbounded history file growth.
 (use-package savehist
   :straight nil
   :init
-  (savehist-mode)
-  :config
-  (add-to-list 'savehist-additional-variables 'kill-ring)
-  (add-to-list 'savehist-additional-variables 'mark-ring)
   (add-to-list 'savehist-additional-variables 'search-ring)
   (add-to-list 'savehist-additional-variables 'regexp-search-ring)
-  )
+  (savehist-mode))
 
 ;; A few more useful configurations...
 (use-package emacs
