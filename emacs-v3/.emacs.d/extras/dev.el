@@ -389,3 +389,66 @@
   ;; Haskell
   (add-hook 'haskell-mode-hook #'outline-indent-minor-mode)
   )
+
+
+(use-package indent-bars
+  :ensure t
+  :custom
+  ;; --- Core ---
+  (indent-bars-treesit-support t)
+  (indent-bars-prefer-character t)
+
+  ;; --- List handling ---
+  ;; 'skip = omit deeper bars AND skip bars between nested list levels
+  ;; Note: C/C++ note says braces get treated as lists — same for Go
+  (indent-bars-no-descend-lists 'skip)
+
+  ;; --- Scope focus (which nodes define a "focus zone") ---
+  (indent-bars-treesit-scope
+   '((python function_definition class_definition
+             for_statement if_statement with_statement
+             while_statement)
+     (rust   trait_item impl_item macro_definition macro_invocation
+             struct_item enum_item mod_item const_item let_declaration
+             function_item for_expression if_expression loop_expression
+             while_expression match_expression match_arm call_expression
+             token_tree token_tree_pattern token_repetition)
+     (go     function_declaration method_declaration
+             if_statement for_statement
+             expression_switch_statement type_switch_statement
+             select_statement)))
+
+  ;; --- Wrap detection (prevent extra bars inside these) ---
+  (indent-bars-treesit-wrap
+   '((python argument_list parameters
+             list list_comprehension
+             dictionary dictionary_comprehension
+             parenthesized_expression subscript)
+     (c      argument_list parameter_list
+             init_declarator parenthesized_expression)
+     (rust   arguments parameters)
+     (lua    expression_list function_declaration if_statement
+             elseif_statement else_statement while_statement
+             for_statement repeat_statement comment)
+     (toml   table array comment)
+     (yaml   block_mapping_pair comment)
+     (go     argument_list parameter_list literal_value
+             import_spec_list var_spec_list field_declaration_list
+             expression_list)))
+
+  ;; --- Blank line separation at top level ---
+  (indent-bars-treesit-ignore-blank-lines-types
+   '("module"      ; python
+     "source_file" ; go
+     ))
+
+  ;; --- Hooks ---
+  :hook ((python-base-mode . indent-bars-mode)
+         (c-ts-mode        . indent-bars-mode)
+         (c++-ts-mode      . indent-bars-mode)
+         (rust-ts-mode     . indent-bars-mode)
+         (lua-ts-mode      . indent-bars-mode)
+         (toml-ts-mode     . indent-bars-mode)
+         (yaml-ts-mode     . indent-bars-mode)
+         (go-ts-mode       . indent-bars-mode)
+         (prog-mode        . indent-bars-mode)))
