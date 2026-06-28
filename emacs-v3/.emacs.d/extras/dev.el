@@ -335,14 +335,14 @@
   )
 
 (use-package kirigami
-  :config
-  (global-set-key (kbd "C-c z o") 'kirigami-open-fold)     ; Open fold at point
-  (global-set-key (kbd "C-c z O") 'kirigami-open-fold-rec) ; Open fold recursively
-  (global-set-key (kbd "C-c z r") 'kirigami-open-folds)    ; Open all folds
-  (global-set-key (kbd "C-c z c") 'kirigami-close-fold)    ; Close fold at point
-  (global-set-key (kbd "C-c z m") 'kirigami-close-folds)   ; Close all folds
-  (global-set-key (kbd "C-c z a") 'kirigami-toggle-fold)   ; Toggle fold at point
+  :bind (("C-c z o" . kirigami-open-fold)
+         ("C-c z O" . kirigami-open-fold-rec)
+         ("C-c z r" . kirigami-open-folds)
+         ("C-c z c" . kirigami-close-fold)
+         ("C-c z m" . kirigami-close-folds)
+         ("C-c z a" . kirigami-toggle-fold))
 
+  :config
   (add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
   (add-hook 'lisp-interaction-mode-hook #'hs-minor-mode) ; scratch
   (add-hook 'lisp-mode-hook #'outline-minor-mode)

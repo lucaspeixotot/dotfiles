@@ -84,6 +84,9 @@
 
   ;; Configure other variables and modes in the :config section,
   ;; after lazily loading the package.
+  :custom
+  (consult-narrow-key "<") ;; "C-+"
+
   :config
 
   ;; Optionally configure preview. The default value
@@ -99,10 +102,6 @@
    consult-bookmark consult-recent-file consult-xref
    ;; :preview-key "M-."
    :preview-key '(:debounce 0.4 any))
-
-  ;; Optionally configure the narrowing key.
-  ;; Both  and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; "C-+"
 
   ;; Optionally make narrowing help available in the minibuffer.
   ;; You may want to use `embark-prefix-help-command' or which-key instead.
@@ -217,11 +216,6 @@
   ;; package.
   (marginalia-mode)
 
-  :config
-  (put 'scroll-left 'disabled nil)
-  (put 'scroll-right 'disabled nil)
-  (setq hscroll-margin 1)
-  (setq hscroll-step 1)
   )
 
 (use-package treesit-auto
@@ -234,84 +228,79 @@
 
 (use-package treemacs
   :defer t
-  :init
-  (global-set-key (kbd "M-0") 'treemacs-select-window)
+  :bind (("M-0" . treemacs-select-window))
+  :custom
+  (treemacs-collapse-dirs                   (if treemacs-python-executable 3 0))
+  (treemacs-deferred-git-apply-delay        0.5)
+  (treemacs-directory-name-transformer      #'identity)
+  (treemacs-display-in-side-window          t)
+  (treemacs-eldoc-display                   'simple)
+  (treemacs-file-event-delay                2000)
+  (treemacs-file-extension-regex            treemacs-last-period-regex-value)
+  (treemacs-file-follow-delay               0.2)
+  (treemacs-file-name-transformer           #'identity)
+  (treemacs-follow-after-init               t)
+  (treemacs-expand-after-init               t)
+  (treemacs-find-workspace-method           'find-for-file-or-pick-first)
+  (treemacs-git-command-pipe                "")
+  (treemacs-goto-tag-strategy               'refetch-index)
+  (treemacs-header-scroll-indicators        '(nil . "^^^^^^"))
+  (treemacs-hide-dot-git-directory          t)
+  (treemacs-indentation                     2)
+  (treemacs-indentation-string              " ")
+  (treemacs-is-never-other-window           t)
+  (treemacs-max-git-entries                 5000)
+  (treemacs-missing-project-action          'ask)
+  (treemacs-move-files-by-mouse-dragging    t)
+  (treemacs-move-forward-on-expand          nil)
+  (treemacs-no-png-images                   nil)
+  (treemacs-no-delete-other-windows         t)
+  (treemacs-project-follow-cleanup          nil)
+  (treemacs-persist-file                    (expand-file-name ".cache/treemacs-persist" user-emacs-directory))
+  (treemacs-position                        'right)
+  (treemacs-read-string-input               'from-child-frame)
+  (treemacs-recenter-distance               0.1)
+  (treemacs-recenter-after-file-follow      nil)
+  (treemacs-recenter-after-tag-follow       nil)
+  (treemacs-recenter-after-project-jump     'always)
+  (treemacs-recenter-after-project-expand   'on-distance)
+  (treemacs-litter-directories              '("/node_modules" "/.venv" "/.cask"))
+  (treemacs-project-follow-into-home        nil)
+  (treemacs-show-cursor                     nil)
+  (treemacs-show-hidden-files               t)
+  (treemacs-silent-filewatch                nil)
+  (treemacs-silent-refresh                  nil)
+  (treemacs-sorting                         'alphabetic-asc)
+  (treemacs-select-when-already-in-treemacs 'move-back)
+  (treemacs-space-between-root-nodes        t)
+  (treemacs-tag-follow-cleanup              t)
+  (treemacs-tag-follow-delay                1.5)
+  (treemacs-text-scale                      -1)
+  (treemacs-user-mode-line-format           nil)
+  (treemacs-user-header-line-format         nil)
+  (treemacs-wide-toggle-width               70)
+  (treemacs-width                           35)
+  (treemacs-width-increment                 1)
+  (treemacs-width-is-initially-locked       t)
+  (treemacs-workspace-switch-cleanup        nil)
   :config
-  (progn
-    (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
-          treemacs-deferred-git-apply-delay        0.5
-          treemacs-directory-name-transformer      #'identity
-          treemacs-display-in-side-window          t
-          treemacs-eldoc-display                   'simple
-          treemacs-file-event-delay                2000
-          treemacs-file-extension-regex            treemacs-last-period-regex-value
-          treemacs-file-follow-delay               0.2
-          treemacs-file-name-transformer           #'identity
-          treemacs-follow-after-init               t
-          treemacs-expand-after-init               t
-          treemacs-find-workspace-method           'find-for-file-or-pick-first
-          treemacs-git-command-pipe                ""
-          treemacs-goto-tag-strategy               'refetch-index
-          treemacs-header-scroll-indicators        '(nil . "^^^^^^")
-          treemacs-hide-dot-git-directory          t
-          treemacs-indentation                     2
-          treemacs-indentation-string              " "
-          treemacs-is-never-other-window           t
-          treemacs-max-git-entries                 5000
-          treemacs-missing-project-action          'ask
-          treemacs-move-files-by-mouse-dragging    t
-          treemacs-move-forward-on-expand          nil
-          treemacs-no-png-images                   nil
-          treemacs-no-delete-other-windows         t
-          treemacs-project-follow-cleanup          nil
-          treemacs-persist-file                    (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-          treemacs-position                        'right
-          treemacs-read-string-input               'from-child-frame
-          treemacs-recenter-distance               0.1
-          treemacs-recenter-after-file-follow      nil
-          treemacs-recenter-after-tag-follow       nil
-          treemacs-recenter-after-project-jump     'always
-          treemacs-recenter-after-project-expand   'on-distance
-          treemacs-litter-directories              '("/node_modules" "/.venv" "/.cask")
-          treemacs-project-follow-into-home        nil
-          treemacs-show-cursor                     nil
-          treemacs-show-hidden-files               t
-          treemacs-silent-filewatch                nil
-          treemacs-silent-refresh                  nil
-          treemacs-sorting                         'alphabetic-asc
-          treemacs-select-when-already-in-treemacs 'move-back
-          treemacs-space-between-root-nodes        t
-          treemacs-tag-follow-cleanup              t
-          treemacs-tag-follow-delay                1.5
-          treemacs-text-scale                      -1
-          treemacs-user-mode-line-format           nil
-          treemacs-user-header-line-format         nil
-          treemacs-wide-toggle-width               70
-          treemacs-width                           35
-          treemacs-width-increment                 1
-          treemacs-width-is-initially-locked       t
-          treemacs-workspace-switch-cleanup        nil)
+  (treemacs-resize-icons 15)
 
-    ;; The default width and height of the icons is 22 pixels. If you are
-    ;; using a Hi-DPI display, uncomment this to double the icon size.
-    (treemacs-resize-icons 15)
+  (treemacs-follow-mode t)
+  (treemacs-project-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-fringe-indicator-mode 'always)
+  (when treemacs-python-executable
+    (treemacs-git-commit-diff-mode t))
 
-    (treemacs-follow-mode t)
-    (treemacs-project-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode 'always)
-    (when treemacs-python-executable
-      (treemacs-git-commit-diff-mode t))
+  (pcase (cons (not (null (executable-find "git")))
+               (not (null treemacs-python-executable)))
+    (`(t . t)
+     (treemacs-git-mode 'deferred))
+    (`(t . _)
+     (treemacs-git-mode 'simple)))
 
-    (pcase (cons (not (null (executable-find "git")))
-                 (not (null treemacs-python-executable)))
-      (`(t . t)
-       (treemacs-git-mode 'deferred))
-      (`(t . _)
-       (treemacs-git-mode 'simple)))
-
-    (treemacs-hide-gitignored-files-mode nil))
-  )
+  (treemacs-hide-gitignored-files-mode nil))
 
 (use-package treemacs-magit
   :after (treemacs magit))
@@ -326,27 +315,22 @@
 ;; use-package with package.el:
 (use-package dashboard
   :straight t
+  :custom
+  (dashboard-center-content t)
+  (dashboard-vertically-center-content t)
+  (dashboard-items '((recents   . 5)
+                     (projects  . 10)
+                     (agenda . 10)))
+  (dashboard-startupify-list '(dashboard-insert-banner
+                               dashboard-insert-newline
+                               dashboard-insert-banner-title
+                               dashboard-insert-newline
+                               dashboard-insert-navigator
+                               dashboard-insert-newline
+                               dashboard-insert-init-info
+                               dashboard-insert-items
+                               dashboard-insert-newline))
+  (dashboard-week-agenda t)
+  (dashboard-agenda-release-buffers t)
   :config
-  (dashboard-setup-startup-hook)
-  ;; Content is not centered by default. To center, set
-  (setq dashboard-center-content t)
-  ;; vertically center content
-  (setq dashboard-vertically-center-content t)
-  (setq dashboard-items '((recents   . 5)
-                          (projects  . 10)
-                          (agenda . 10)
-                          ))
-  (setq dashboard-startupify-list '(dashboard-insert-banner
-                                    dashboard-insert-newline
-                                    dashboard-insert-banner-title
-                                    dashboard-insert-newline
-                                    dashboard-insert-navigator
-                                    dashboard-insert-newline
-                                    dashboard-insert-init-info
-                                    dashboard-insert-items
-                                    dashboard-insert-newline
-                                    ))
-  ;; 2. Dashboard Agenda Custom Settings (Optional but Recommended)
-  (setq dashboard-week-agenda t)        ; Show the next 7 days instead of just today
-  (setq dashboard-agenda-release-buffers t) ; Closes Org files after scanning them
-  )
+  (dashboard-setup-startup-hook))

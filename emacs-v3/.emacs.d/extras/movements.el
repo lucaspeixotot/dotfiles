@@ -12,15 +12,17 @@
 
 ;;; Avy to jump to characters quickly
 (use-package avy
+  :custom
+  (avy-keys '(?q ?e ?r ?y ?u ?o ?p
+              ?a ?s ?d ?f ?g ?h ?j
+              ?k ?l ?' ?x ?c ?v ?b
+              ?n ?, ?/))
+  :bind (("M-RET" . avy-goto-char-timer)
+         ("M-j" . avy-goto-char)
+         ("M-l" . avy-goto-line)
+         :map isearch-mode-map
+         ("M-j" . avy-isearch))
   :config
-  ;; Additional mode-specific bindings
-  (setq avy-keys '(?q ?e ?r ?y ?u ?o ?p
-                      ?a ?s ?d ?f ?g ?h ?j
-                      ?k ?l ?' ?x ?c ?v ?b
-                      ?n ?, ?/))
-  (global-set-key (kbd "M-RET") 'avy-goto-char-timer)
-  (global-set-key (kbd "M-j") 'avy-goto-char)
-  (global-set-key (kbd "M-l") 'avy-goto-line)
   (defun avy-action-kill-whole-line (pt)
     (save-excursion
       (goto-char pt)
@@ -87,75 +89,70 @@
     t)
 
   (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
-
-  (define-key isearch-mode-map (kbd "M-j") 'avy-isearch)
   )
 
 ;;; Ace window to jump to windows quickly
 (use-package ace-window
-    :config
-    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-    (setq aw-background nil)
-    (defvar aw-dispatch-alist
-      '((?x aw-delete-window "Delete Window")
-        (?m aw-swap-window "Swap Windows")
-        (?M aw-move-window "Move Window")
-        (?c aw-copy-window "Copy Window")
-        (?j aw-switch-buffer-in-window "Select Buffer")
-        (?n aw-flip-window)
-        (?u aw-switch-buffer-other-window "Switch Buffer Other Window")
-        (?s aw-split-window-fair "Split Fair Window")
-        (?v aw-split-window-vert "Split Vert Window")
-        (?b aw-split-window-horz "Split Horz Window")
-        (?o delete-other-windows "Delete Other Windows")
-        (?? aw-show-dispatch-help))
-      "List of actions for `aw-dispatch-default'.")
-    (setq aw-dispatch-always nil)
-    (setq aw-ignore-on nil)
-    (setq aw-ignore-current nil)
-    ;; :config
-    ;;(add-to-list 'aw-ignored-buffers "*Outline*")
-    ;; (ace-window-display-mode)
-    :bind
-    ([remap other-window] . ace-window)
-    :config
-    (defvar cvt/ace-window-repeat-map
-      (let ((map (make-sparse-keymap)))
-        (define-key map (kbd "o") #'ace-window)
-        map)
-      "Repeat map for `ace-window`.")
+  :custom
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (aw-background nil)
+  (aw-dispatch-always nil)
+  (aw-ignore-on nil)
+  (aw-ignore-current nil)
+  :config
+  (defvar aw-dispatch-alist
+    '((?x aw-delete-window "Delete Window")
+      (?m aw-swap-window "Swap Windows")
+      (?M aw-move-window "Move Window")
+      (?c aw-copy-window "Copy Window")
+      (?j aw-switch-buffer-in-window "Select Buffer")
+      (?n aw-flip-window)
+      (?u aw-switch-buffer-other-window "Switch Buffer Other Window")
+      (?s aw-split-window-fair "Split Fair Window")
+      (?v aw-split-window-vert "Split Vert Window")
+      (?b aw-split-window-horz "Split Horz Window")
+      (?o delete-other-windows "Delete Other Windows")
+      (?? aw-show-dispatch-help))
+    "List of actions for `aw-dispatch-default'.")
+  ;; (ace-window-display-mode)
+  :bind
+  ([remap other-window] . ace-window)
+  :config
+  (defvar cvt/ace-window-repeat-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "o") #'ace-window)
+      map)
+    "Repeat map for `ace-window`.")
 
-    (put 'ace-window 'repeat-map 'cvt/ace-window-repeat-map)
-    )
+  (put 'ace-window 'repeat-map 'cvt/ace-window-repeat-map))
 
 ;;; God mode for better file navigation (save pinky)
 (use-package god-mode
+  :bind (("M-1" . (lambda () (interactive) (god-mode-all 1)))
+         ("C-x C-1" . delete-other-windows)
+         ("C-x C-2" . split-window-below)
+         ("C-x C-3" . split-window-right)
+         ("C-x C-0" . delete-window)
+         :map god-local-mode-map
+         ("i" . god-mode-all)
+         ("." . repeat)
+         ("[" . backward-paragraph)
+         ("]" . forward-paragraph)
+         :map isearch-mode-map
+         ("<escape>" . god-mode-isearch-activate)
+         :map god-mode-isearch-map
+         ("<escape>" . god-mode-isearch-disable))
+  :hook ((god-mode-enabled . my-god-mode-highlight-line)
+         (god-mode-disabled . my-god-mode-highlight-line))
+  :custom-face
+  (god-mode-lighter ((t (:inherit error))))
   :config
-  (define-key god-local-mode-map (kbd "i") #'god-mode-all)
-  (global-set-key (kbd "M-1") #'(lambda () (interactive) (god-mode-all 1)))
-  (define-key god-local-mode-map (kbd ".") #'repeat)
-  (global-set-key (kbd "C-x C-1") #'delete-other-windows)
-  (global-set-key (kbd "C-x C-2") #'split-window-below)
-  (global-set-key (kbd "C-x C-3") #'split-window-right)
-  (global-set-key (kbd "C-x C-0") #'delete-window)
-
-  (define-key god-local-mode-map (kbd "[") #'backward-paragraph)
-  (define-key god-local-mode-map (kbd "]") #'forward-paragraph)
   (require 'god-mode-isearch)
-  (define-key isearch-mode-map (kbd "<escape>") #'god-mode-isearch-activate)
-  (define-key god-mode-isearch-map (kbd "<escape>") #'god-mode-isearch-disable)
-
-  (custom-set-faces
-     '(god-mode-lighter ((t (:inherit error)))))
-    (defun my-god-mode-highlight-line ()
-      "Enable hl-line-mode when god-mode is active."
-      (if god-local-mode
-          (hl-line-mode 1)
-        (hl-line-mode -1)))
-
-    (add-hook 'god-mode-enabled-hook #'my-god-mode-highlight-line)
-    (add-hook 'god-mode-disabled-hook #'my-god-mode-highlight-line)
-  )
+  (defun my-god-mode-highlight-line ()
+    "Enable hl-line-mode when god-mode is active."
+    (if god-local-mode
+        (hl-line-mode 1)
+      (hl-line-mode -1))))
 
 ;;; Better M-v/C-v
 (defun better-scroll-up-half (&optional arg)
