@@ -73,15 +73,16 @@
          ("C-c a c R" . gptel-context-remove-all)
          )
 
+  :custom
+  (gptel-expert-commands t)
+  (gptel-default-mode 'org-mode)
   :config
   (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "@user\n")
   (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n")
-  (setq gptel-expert-commands t)
   (gptel-make-deepseek "PersonalDeepseek" ;Any name you want
     :stream t                             ;for streaming responses
     :key (getenv "DEEPSEEK_API_KEY_EMACS")) ;can be a function that returns the key
   (gptel-make-gh-copilot "HPECopilot")
-  (setq gptel-default-mode 'org-mode)
 
   ;; 1) The directive: the actual prompt instructions
   (setf (alist-get 'english-refine gptel-directives)

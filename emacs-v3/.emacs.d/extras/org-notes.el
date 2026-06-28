@@ -61,21 +61,18 @@
     ("C-c C-d C-k" . denote-dired-rename-marked-files-with-keywords)
     ("C-c C-d C-R" . denote-dired-rename-marked-files-using-front-matter))
 
+  :custom
+  (denote-directory (expand-file-name "~/denote-notes/"))
+  (denote-save-buffers nil)
+  (denote-known-keywords '("literature" "permanent"))
+  (denote-infer-keywords t)
+  (denote-sort-keywords t)
+  (denote-prompts '(title keywords))
+  (denote-excluded-directories-regexp nil)
+  (denote-keywords-to-not-infer-regexp nil)
+  (denote-rename-confirmations '(rewrite-front-matter modify-file-name))
+  (denote-date-prompt-use-org-read-date t)
   :config
-  ;; Remember to check the docstring of each of those variables.
-  (setq denote-directory (expand-file-name "~/denote-notes/"))
-  (setq denote-save-buffers nil)
-  (setq denote-known-keywords '("literature" "permanent"))
-  (setq denote-infer-keywords t)
-  (setq denote-sort-keywords t)
-  (setq denote-prompts '(title keywords))
-  (setq denote-excluded-directories-regexp nil)
-  (setq denote-keywords-to-not-infer-regexp nil)
-  (setq denote-rename-confirmations '(rewrite-front-matter modify-file-name))
-
-  ;; Pick dates, where relevant, with Org's advanced interface:
-  (setq denote-date-prompt-use-org-read-date t)
-
   ;; Automatically rename Denote buffers using the `denote-rename-buffer-format'.
   (denote-rename-buffer-mode 1))
 
@@ -126,16 +123,10 @@
         ("C-c n j o" . denote-journal-new-or-existing-entry)
         ("C-c n j l" . denote-journal-link-or-create-entry)
    )
-  :config
-  ;; Use the "journal" subdirectory of the `denote-directory'.  Set this
-  ;; to nil to use the `denote-directory' instead.
-  (setq denote-journal-directory
-        (expand-file-name "journal" denote-directory))
-  ;; Default keyword for new journal entries. It can also be a list of
-  ;; strings.
-  (setq denote-journal-keyword "journal")
-  ;; Read the doc string of `denote-journal-title-format'.
-  (setq denote-journal-title-format 'day-date-month-year))
+  :custom
+  (denote-journal-directory (expand-file-name "journal" denote-directory))
+  (denote-journal-keyword "journal")
+  (denote-journal-title-format 'day-date-month-year))
 
 (use-package denote-sequence
   :straight t
@@ -156,29 +147,29 @@
     ("C-c n s d" . denote-sequence-dired)
     ("C-c n s r" . denote-sequence-reparent)
     ("C-c n s c" . denote-sequence-convert))
-  :config
-  ;; The default sequence scheme is `numeric'.
-  (setq denote-sequence-scheme 'numeric))
+  :custom
+  (denote-sequence-scheme 'alphanumeric))
 
 (use-package denote-menu
   :straight t
-  :config
-  (global-set-key (kbd "C-c n z") #'list-denotes)
-
-  (define-key denote-menu-mode-map (kbd "c") #'denote-menu-clear-filters)
-  (define-key denote-menu-mode-map (kbd "/ r") #'denote-menu-filter)
-  (define-key denote-menu-mode-map (kbd "/ k") #'denote-menu-filter-by-keyword)
-  (define-key denote-menu-mode-map (kbd "/ o") #'denote-menu-filter-out-keyword)
-  (define-key denote-menu-mode-map (kbd "e") #'denote-menu-export-to-dired)
-)
+  :bind (("C-c n z" . list-denotes)
+         :map denote-menu-mode-map
+         ("c" . denote-menu-clear-filters)
+         ("/ r" . denote-menu-filter)
+         ("/ k" . denote-menu-filter-by-keyword)
+         ("/ o" . denote-menu-filter-out-keyword)
+         ("e" . denote-menu-export-to-dired)))
 
 (use-package calibredb
   :straight t
   :defer t
+  :custom
+  (calibredb-root-dir "~/Calibre")
+  (calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
+  :bind (:map calibredb-search-mode-map
+              ("V" . my/calibredb-open-file-with-emacs))
   :config
-  (setq calibredb-root-dir "~/Calibre")
   ;; for folder driver metadata: it should be .metadata.calibre
-  (setq calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
   ;; (setq calibredb-library-alist '(("~/OneDrive/Org/Doc/Calibre" (name . "Calibre")) ;; with name
   ;;                                 ("~/Documents/Books Library") ;; no name
   ;;                                 ("~/Documents/LIB1")
@@ -189,9 +180,7 @@ Optional argument CANDIDATE is the selected item."
     (interactive "P")
     (unless candidate
       (setq candidate (car (calibredb-find-candidate-at-point))))
-    (find-file (calibredb-get-file-path candidate t)))
-  (define-key calibredb-search-mode-map "V" #'my/calibredb-open-file-with-emacs)
-  )
+    (find-file (calibredb-get-file-path candidate t))))
 
 (use-package nov
   :straight t
@@ -220,10 +209,6 @@ Optional argument CANDIDATE is the selected item."
         ("a" .  org-agenda)
         ("c" .  org-capture)
    )
-  :config
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((latex . t)))
   :custom
   (org-directory "~/org/")
   (org-agenda-files '("~/org/inbox.org"
@@ -233,17 +218,20 @@ Optional argument CANDIDATE is the selected item."
                         ("~/org/inbox.org" :maxlevel . 3)))
   (org-refile-use-outline-path 'file)
   (org-outline-path-complete-in-steps nil)
+  (org-capture-templates
+   `(("i" "Inbox task" entry
+      (file+headline ,(expand-file-name "inbox.org" org-directory) "Inbox")
+      "* TODO %?\n  DATE: %U\n")
+     ("t" "Active task" entry
+      (file+headline ,(expand-file-name "tasks.org" org-directory) "Tasks")
+      "* TODO %?\n  DATE: %U\n")
+     ("l" "Task linked to current location" entry
+      (file+headline ,(expand-file-name "inbox.org" org-directory) "Inbox")
+      "* TODO %?\n  DATE: %U\n  RELATED LOCATION: %a\n")))
   :config
-  (setq org-capture-templates
-        `(("i" "Inbox task" entry
-           (file+headline ,(expand-file-name "inbox.org" org-directory) "Inbox")
-           "* TODO %?\n  DATE: %U\n")
-          ("t" "Active task" entry
-           (file+headline ,(expand-file-name "tasks.org" org-directory) "Tasks")
-           "* TODO %?\n  DATE: %U\n")
-          ("l" "Task linked to current location" entry
-           (file+headline ,(expand-file-name "inbox.org" org-directory) "Inbox")
-           "* TODO %?\n  DATE: %U\n  RELATED LOCATION: %a\n"))))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((latex . t))))
 
 (use-package dictionary
   :straight t
@@ -271,14 +259,12 @@ Optional argument CANDIDATE is the selected item."
               denote-silo-select-silo-then-command
               denote-silo-dired
               denote-silo-cd )
-  :config
-  ;; Add your silos to this list.  By default, it only includes the
-  ;; value of the variable `denote-directory'.
-  (setq denote-silo-directories
-        (list denote-directory
-              "~/denote-notes/"
-              "~/org-denote/"
-              "~/denote-test/"))
+  :custom
+  (denote-silo-directories
+   (list denote-directory
+         "~/denote-notes/"
+         "~/org-denote/"
+         "~/denote-test/"))
   :bind
   (:map global-map
         ("C-c n m c" . denote-silo-create-note)
@@ -364,20 +350,15 @@ Optional argument CANDIDATE is the selected item."
   (:map org-user-menu-map
         ("d c" . org-download-clipboard)
         ("d y" . org-download-yank))
-  :config
-  ;; Define a pasta padrão onde as imagens serão salvas
-  (setq-default org-download-image-dir "./images")
-
-  ;; Opcional: Evita que o Emacs crie textos longos de anotação acima da imagem
-  (setq org-download-annotate-function (lambda (_) ""))
+  :custom
+  (org-download-image-dir "./images")
+  (org-download-annotate-function (lambda (_) ""))
   )
 
 (use-package toc-org
   :straight t
-  :config
-  (add-hook 'org-mode-hook 'toc-org-mode)
-  (add-hook 'markdown-mode-hook 'toc-org-mode)
-  )
+  :hook ((org-mode . toc-org-mode)
+         (markdown-mode . toc-org-mode)))
 
 (use-package citar
   :straight t

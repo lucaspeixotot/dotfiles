@@ -180,20 +180,19 @@
 
 
 (use-package key-chord
+  :custom
+  (key-chord-two-keys-delay 0.1)
+  (key-chord-one-key-delay 0.2)
+  (key-chord-in-macros nil)
+  (key-chord-one-key-min-delay 0.0)
+  (key-chord-typing-detection nil)
+  (key-chord-typing-speed-threshold 0.1)
+  (key-chord-typing-reset-delay 0.5)
+  (key-chord-use-key-tracking t)
   :config
   (key-chord-mode 1)
-  (setq
-   key-chord-two-keys-delay 0.1
-   key-chord-one-key-delay 0.2
-   key-chord-in-macros nil
-   key-chord-one-key-min-delay 0.0
-   key-chord-typing-detection nil
-   key-chord-typing-speed-threshold 0.1
-   key-chord-typing-reset-delay 0.5
-   key-chord-use-key-tracking t
-   )
   (key-chord-define-global "jf" 'hydra-moves/body)
-  )
+)
 
 (use-package hydra
   :straight t
@@ -231,13 +230,9 @@
 
 (use-package avy-zap
   :straight t
-  :config
-  (global-set-key (kbd "M-z") 'avy-zap-to-char-dwim)
-  (global-set-key (kbd "M-Z") 'avy-zap-up-to-char-dwim)
-  )
+  :bind (("M-z" . avy-zap-to-char-dwim)
+         ("M-Z" . avy-zap-up-to-char-dwim)))
 
 (use-package expand-region
   :straight t
-  :config
-  (global-set-key (kbd "C-0") 'er/expand-region)
-  )
+  :bind (("C-0" . er/expand-region)))
