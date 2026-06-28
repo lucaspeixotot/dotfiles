@@ -63,15 +63,15 @@
   (("<f5>" . modus-themes-rotate)
    ("C-<f5>" . modus-themes-select)
    ("M-<f5>" . modus-themes-load-random))
+  :custom
+  (modus-themes-mixed-fonts t)
+  (modus-themes-italic-constructs t)
   :config
-  ;; All customisations here.
-  (setq modus-themes-mixed-fonts t)
-  (setq modus-themes-italic-constructs t)
-
   ;; Finally, load your theme of choice (or a random one with
   ;; `modus-themes-load-random', `modus-themes-load-random-dark',
   ;; `modus-themes-load-random-light').
-  (modus-themes-load-theme 'ef-melissa-light)
+  (modus-themes-load-theme 'ef-melissa-light))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Font settings
@@ -94,7 +94,6 @@
 
   ;; ;; Optional: Adjust frame-specific settings like line spacing
   (setq-default line-spacing 1)
-  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -113,11 +112,8 @@
 
 ;; Improve undo/redo experience
 (use-package undo-fu
-  :config
-  (global-unset-key (kbd "C-z"))
-  (global-set-key (kbd "C-z")   'undo-fu-only-undo)
-  (global-set-key (kbd "C-S-z") 'undo-fu-only-redo)
-  )
+  :bind (("C-z" . undo-fu-only-undo)
+         ("C-S-z" . undo-fu-only-redo)))
 
 ;;; Persist undo tree
 (use-package undo-fu-session
@@ -134,7 +130,6 @@
 
 (use-package saveplace
   :straight nil
-  :config
   :hook (after-init . save-place-mode)
   )
 
@@ -203,9 +198,9 @@
 
 ;; Enable massive edition under search results (like from embark)
 (use-package wgrep
-    :config
-    (setq wgrep-auto-save-buffer t)
-    )
+  :defer t
+  :custom
+  (wgrep-auto-save-buffer t))
 
 (use-package repeat
   :straight nil
@@ -215,12 +210,9 @@
   :hook (repeat-mode . repeat-help-mode))
 
 (use-package multiple-cursors
-
-  :config
-  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-  )
+  :bind (("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)))
 
 (use-package symbol-overlay
   :defer t
@@ -240,25 +232,18 @@
   :bind-keymap ("C-c C-s" . surround-keymap))
 
 (use-package helpful
-  :config
   ;; Note that the built-in `describe-function' includes both functions
   ;; and macros. `helpful-function' is functions only, so we provide
   ;; `helpful-callable' as a drop-in replacement.
-  (global-set-key (kbd "C-h f") #'helpful-callable)
-
-  (global-set-key (kbd "C-h v") #'helpful-variable)
-  (global-set-key (kbd "C-h k") #'helpful-key)
-  (global-set-key (kbd "C-h x") #'helpful-command)
-  ;; Lookup the current symbol at point. C-c C-d is a common keybinding
-  ;; for this in lisp modes.
-  (global-set-key (kbd "C-c C-d") #'helpful-at-point)
-
-  ;; Look up *F*unctions (excludes macros).
-  ;;
-  ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
-  ;; already links to the manual, if a function is referenced there.
-  (global-set-key (kbd "C-h F") #'helpful-function)
-  )
+  :bind (("C-h f" . helpful-callable)
+         ("C-h v" . helpful-variable)
+         ("C-h k" . helpful-key)
+         ("C-h x" . helpful-command)
+         ("C-c C-d" . helpful-at-point)
+         ;; Look up *F*unctions (excludes macros).
+         ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
+         ;; already links to the manual, if a function is referenced there.
+         ("C-h F" . helpful-function)))
 
 (use-package stripspace
   ;; Enable for prog-mode-hook, text-mode-hook, conf-mode-hook
@@ -289,8 +274,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package wgrep
-  :defer t)
 (setq isearch-lazy-count t)
 (setq lazy-count-prefix-format "(%s/%s) ")
 (setq lazy-count-suffix-format nil)
@@ -327,19 +310,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package which-key
+  :custom
+  (which-key-side-window-location 'bottom)
+  (which-key-sort-order #'which-key-key-order-alpha)
+  (which-key-sort-uppercase-first nil)
+  (which-key-add-column-padding 1)
+  (which-key-max-display-columns nil)
+  (which-key-min-display-lines 6)
+  (which-key-side-window-slot -10)
+  (which-key-side-window-max-height 0.25)
+  (which-key-idle-delay 0.5)
+  (which-key-max-description-length 25)
+  (which-key-allow-imprecise-window-fit nil)
+  (which-key-separator " → ")
   :config
-  (setq which-key-side-window-location 'bottom
-  	  which-key-sort-order #'which-key-key-order-alpha
-  	  which-key-sort-uppercase-first nil
-  	  which-key-add-column-padding 1
-  	  which-key-max-display-columns nil
-  	  which-key-min-display-lines 6
-  	  which-key-side-window-slot -10
-  	  which-key-side-window-max-height 0.25
-  	  which-key-idle-delay 0.5
-  	  which-key-max-description-length 25
-  	  which-key-allow-imprecise-window-fit nil
-  	  which-key-separator " → " )
   (which-key-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

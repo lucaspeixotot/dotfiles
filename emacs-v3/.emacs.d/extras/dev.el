@@ -17,30 +17,24 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package eldoc-box
-  :config
   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
-  (global-set-key (kbd "C-c l h") 'eldoc-box-help-at-point)
-  )
+  :bind (("C-c l h" . eldoc-box-help-at-point)))
 
 (use-package eglot
   :straight nil
-  :config
   ;; Manual start and useful actions
-  (global-set-key (kbd "C-c l e") #'eglot)
-  (global-set-key (kbd "C-c l d") #'eglot-shutdown)
-  (global-set-key (kbd "C-c l o") #'eglot-code-action-organize-imports)
-  (global-set-key (kbd "C-c l f") #'eglot-format-buffer)
-  (global-set-key (kbd "C-c l a") #'eglot-code-actions)
-  (global-set-key (kbd "C-c l r") #'eglot-rename)
-  )
+  :bind (("C-c l e" . eglot)
+         ("C-c l d" . eglot-shutdown)
+         ("C-c l o" . eglot-code-action-organize-imports)
+         ("C-c l f" . eglot-format-buffer)
+         ("C-c l a" . eglot-code-actions)
+         ("C-c l r" . eglot-rename)))
 
 (use-package dumb-jump
   :custom
-  (setq xref-show-definitions-function #'consult-xref)
-  (setq dumb-jump-force-searcher 'rg)
+  (dumb-jump-force-searcher 'rg)
   :config
-  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
-  )
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
 
 
@@ -51,12 +45,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package magit
+  :bind (:map project-prefix-map ("m" . magit-project-status))
+  :custom
+  (magit-ediff-dwim-show-on-hunks t)
+  (magit-tramp-pipe-stty-settings 'pty)
   :config
-  (setq magit-ediff-dwim-show-on-hunks t)
-  (with-eval-after-load 'project
-    (define-key project-prefix-map "m" #'magit-project-status)
-    (add-to-list 'project-switch-commands '(magit-project-status "Magit") t))
-  )
+  (add-to-list 'project-switch-commands '(magit-project-status "Magit") t))
 
 (use-package diff-hl
   :config
@@ -265,21 +259,17 @@
   ;;        ("C-c p h" . cape-history)
   ;;        ("C-c p f" . cape-file)
   ;;        ...)
-  :init
   ;; Add to the global default value of `completion-at-point-functions' which is
   ;; used by `completion-at-point'.  The order of the functions matters, the
   ;; first function returning a result wins.  Note that the list of buffer-local
   ;; completion functions takes precedence over the global list.
-  (add-hook 'completion-at-point-functions #'cape-abbrev)
-  (add-hook 'completion-at-point-functions #'cape-dabbrev)
-  (add-hook 'completion-at-point-functions #'cape-file)
-  (add-hook 'completion-at-point-functions #'cape-keyword)
-  (add-hook 'completion-at-point-functions #'cape-history)
-  (add-hook 'completion-at-point-functions #'cape-elisp-block)
-  (add-hook 'completion-at-point-functions #'cape-elisp-symbol)
-  ;; (add-hook 'completion-at-point-functions #'cape-history)
-  ;; ...
-)
+  :hook ((completion-at-point-functions . cape-abbrev)
+         (completion-at-point-functions . cape-dabbrev)
+         (completion-at-point-functions . cape-file)
+         (completion-at-point-functions . cape-keyword)
+         (completion-at-point-functions . cape-history)
+         (completion-at-point-functions . cape-elisp-block)
+         (completion-at-point-functions . cape-elisp-symbol)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
