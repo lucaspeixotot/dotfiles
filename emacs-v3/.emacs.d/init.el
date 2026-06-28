@@ -100,11 +100,14 @@
   :bind (("C-z" . undo-fu-only-undo)
          ("C-S-z" . undo-fu-only-redo)))
 
-;;; Persist undo tree
+;; Persist undo tree between sessions.  File limit prevents unbounded
+;; disk growth in ~/.emacs.d/undo-fu-session/ by retaining undo data
+;; for only the 200 most recently edited files.
 (use-package undo-fu-session
+  :custom
+  (undo-fu-session-file-limit 200)
   :config
-  (undo-fu-session-global-mode)
-  )
+  (undo-fu-session-global-mode))
 
 ;; Visual undo/redo tree
 (use-package vundo
