@@ -72,28 +72,6 @@
   ;; `modus-themes-load-random-light').
   (modus-themes-load-theme 'ef-melissa-light))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Font settings
-;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-  ;; Set the default font globally
-  (set-face-attribute 'default nil :family "JetBrains Mono NL" :height 100 :weight 'normal)
-
-  ;; Ensure consistency for fixed-pitch and variable-pitch faces
-  (set-face-attribute 'fixed-pitch nil :family "JetBrains Mono NL" :height 100)
-  (set-face-attribute 'variable-pitch nil :family "Literata" :height 110)
-
-  (set-face-attribute 'bold nil :weight 'bold)
-
-  ;; Fine-tune specific faces as desired
-  (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
-  (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
-  (set-face-attribute 'font-lock-string-face nil :slant 'italic)
-
-  ;; ;; Optional: Adjust frame-specific settings like line spacing
-  (setq-default line-spacing 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -139,54 +117,72 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Line number configs
-
-(add-hook 'prog-mode-hook #'display-line-numbers-mode)
-
-;; Code: truncate long lines (no wrapping at all)
-(defun my/truncate-lines-for-code ()
-  "Truncate long lines in programming buffers."
-  (setq-local truncate-lines t))
-
-(add-hook 'prog-mode-hook #'my/truncate-lines-for-code)
-
-;; Text: visual line wrapping (word-level, visual navigation)
-(add-hook 'text-mode-hook #'visual-line-mode)
-
-;; Indentation-aware continuation lines (Emacs 30+)
-(global-visual-wrap-prefix-mode 1)
-
-;; Smooth scrolling
-(setq scroll-margin 3)
-(setq scroll-preserve-screen-position 3)
-(setq scroll-conservatively most-positive-fixnum)
-(setq scroll-step 1)
-(add-hook 'xref-after-return-hook 'recenter)
-
 ;; UI Tweaks
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-;; Tabs
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-
-;; Zooming
-(global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-(global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
-(global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
-
-;; Trailing spaces — show only in programming modes
-(setq-default show-trailing-whitespace nil)
-(add-hook 'prog-mode-hook (lambda () (setq-local show-trailing-whitespace t)))
-
 ;; Electric pair
 (electric-pair-mode)
 
-;; Mark ring
-(setq set-mark-command-repeat-pop t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Global Emacs settings
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package emacs
+  :straight nil
+  :custom
+  (scroll-margin 3)
+  (scroll-preserve-screen-position 3)
+  (scroll-conservatively most-positive-fixnum)
+  (scroll-step 1)
+  (indent-tabs-mode nil)
+  (tab-width 4)
+  (show-trailing-whitespace nil)
+  (set-mark-command-repeat-pop t)
+  (hscroll-margin 1)
+  (hscroll-step 1)
+  (vc-handled-backends '(Git))
+  (auto-revert-remote-files nil)
+  (enable-remote-dir-locals nil)
+  :init
+  (put 'scroll-left 'disabled nil)
+  (put 'scroll-right 'disabled nil)
+  :hook ((prog-mode . display-line-numbers-mode)
+         (prog-mode . my/truncate-lines-for-code)
+         (prog-mode . my/show-trailing-whitespace)
+         (text-mode . visual-line-mode)
+         (xref-after-return . recenter))
+  :bind (("C-=" . text-scale-increase)
+         ("C--" . text-scale-decrease)
+         ("<C-wheel-up>" . text-scale-increase)
+         ("<C-wheel-down>" . text-scale-decrease)
+         ("C-M-s" . isearch-forward-regexp)
+         ("C-M-r" . isearch-backward-regexp))
+  :config
+  (defun my/truncate-lines-for-code ()
+    "Truncate long lines in programming buffers."
+    (setq-local truncate-lines t))
+
+  (defun my/show-trailing-whitespace ()
+    (setq-local show-trailing-whitespace t))
+
+  (global-visual-wrap-prefix-mode 1)
+
+  ;; Font settings
+  (set-face-attribute 'default nil :family "JetBrains Mono NL" :height 100 :weight 'normal)
+  (set-face-attribute 'fixed-pitch nil :family "JetBrains Mono NL" :height 100)
+  (set-face-attribute 'variable-pitch nil :family "Literata" :height 110)
+  (set-face-attribute 'bold nil :weight 'bold)
+  (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
+  (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
+  (set-face-attribute 'font-lock-string-face nil :slant 'italic)
+  (setq-default line-spacing 1)
+
+  (global-display-line-numbers-mode 1))
 
 ;; ediff tweak config
 (use-package ediff
@@ -298,9 +294,6 @@
         (other-window next)
         (isearch-backward)
         (other-window (- next))))))
-
-(global-set-key (kbd "C-M-s") 'isearch-forward-regexp)
-(global-set-key (kbd "C-M-r") 'isearch-backward-regexp)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -18,8 +18,7 @@
 
 ;; Expand elisp code and iterate recursively
 (use-package macrostep
-  :config
-  (define-key emacs-lisp-mode-map (kbd "C-c e") 'macrostep-expand))
+  :bind (:map emacs-lisp-mode-map ("C-c e" . macrostep-expand)))
 
 
 ;;; For editing structural prog mode http://danmidwood.com/content/2014/11/21/animated-paredit.html
@@ -31,8 +30,8 @@
          (clojure-script-mode . paredit-mode)
          (cider-repl-mode . paredit-mode))
 
+  :bind (:map paredit-mode-map ("s-s" . paredit-splice-sexp))
   :config
   ;; Example of remapping M-s to s-s (on Mac)
   (define-key paredit-mode-map (kbd "M-s") nil)
-  (define-key paredit-mode-map (kbd "s-s") 'paredit-splice-sexp)
   )

@@ -10,11 +10,12 @@
 ;;;  $$       |$$ | $$ | $$ |$$    $$ |$$       |/     $$/       $$       |   $$$/      $$  $$/
 ;;;  $$$$$$$$/ $$/  $$/  $$/  $$$$$$$/  $$$$$$$/ $$$$$$$/         $$$$$$$/     $/        $$$$/
 
-(setq-default go-ts-mode-indent-offset 4)
-
+(use-package go-ts-mode
+  :straight nil
+  :custom
+  (go-ts-mode-indent-offset 4))
 
 (use-package go-add-tags
   :config
   (with-eval-after-load 'go-ts-mode
-    (define-key go-ts-mode-map (kbd "C-c t") #'go-add-tags))
-  )
+    (define-key go-ts-mode-map (kbd "C-c t") #'go-add-tags)))
