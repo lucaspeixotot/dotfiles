@@ -33,6 +33,13 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
+;; Use gcmh to dynamically manage GC: high threshold while typing,
+;; low threshold when idle. Replaces manual gc-cons-threshold dance.
+(use-package gcmh
+  :demand t
+  :config
+  (gcmh-mode 1))
+
 (use-package exec-path-from-shell
   :config
   (dolist (var '("DEEPSEEK_API_KEY_EMACS"))
@@ -367,4 +374,3 @@
  '(package-selected-packages nil)
  '(treesit-font-lock-level 4))
 
-(setq gc-cons-threshold (or cvt--initial-gc-threshold 800000))
