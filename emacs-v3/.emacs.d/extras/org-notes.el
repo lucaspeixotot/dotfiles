@@ -205,8 +205,9 @@ Optional argument CANDIDATE is the selected item."
   ("C-c o" . org-user-menu-map)
   :bind
   (:map org-user-menu-map
-        ("a" .  org-agenda)
-        ("c" .  org-capture)
+        ("a" . org-agenda)
+        ("c" . org-capture)
+        ("l" . org-toggle-link-display)
    )
   :custom
   (org-directory "~/org/")
