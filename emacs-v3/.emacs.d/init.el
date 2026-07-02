@@ -202,6 +202,29 @@
     (ediff-split-window-function 'split-window-horizontally) ; Split windows side by side
     (ediff-merge-split-window-function 'split-window-horizontally))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Dired
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package dired
+  :straight nil
+  :bind (:map dired-mode-map
+              ("C-w" . my/dired-open-with-ace-window))
+  :config
+  (defun my/dired-open-with-ace-window ()
+    "Open file at point in a window selected via `ace-window'."
+    (interactive)
+    (require 'ace-window)
+    (let ((file (dired-get-file-for-visit))
+          (window (aw-select "Select target window")))
+      (when file
+        (with-selected-window window
+          (find-file file))))))
+
+
 ;; Enable massive edition under search results (like from embark)
 (use-package wgrep
   :defer t

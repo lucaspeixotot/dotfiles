@@ -163,12 +163,11 @@
 (use-package calibredb
   :straight t
   :defer t
-  :custom
-  (calibredb-root-dir "~/Calibre")
-  (calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
   :bind (:map calibredb-search-mode-map
               ("V" . my/calibredb-open-file-with-emacs))
   :config
+  (setq calibredb-root-dir "~/Calibre")
+  (setq calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
   ;; for folder driver metadata: it should be .metadata.calibre
   ;; (setq calibredb-library-alist '(("~/OneDrive/Org/Doc/Calibre" (name . "Calibre")) ;; with name
   ;;                                 ("~/Documents/Books Library") ;; no name
@@ -363,6 +362,7 @@ Optional argument CANDIDATE is the selected item."
 (use-package citar
   :straight t
   :custom
+  (citar-notes-paths '("~/denote-notes"))
   (citar-bibliography '("~/Calibre/catalog.bib"))
   (org-cite-global-bibliography '("~/Calibre/catalog.bib"))
   (org-cite-insert-processor 'citar)
@@ -381,3 +381,34 @@ Optional argument CANDIDATE is the selected item."
   :after (citar embark)
   :no-require
   :config (citar-embark-mode))
+
+(use-package citar-denote
+  :straight t
+  :demand t ;; Ensure minor mode loads
+  :after (:any citar denote)
+  :custom
+  ;; Package defaults
+  (citar-denote-file-type 'org)
+  (citar-denote-keyword "bib")
+  (citar-denote-signature nil)
+  (citar-denote-subdir nil)
+  (citar-denote-template nil)
+  (citar-denote-title-format "title")
+  (citar-denote-title-format-andstr "and")
+  (citar-denote-title-format-authors 1)
+  (citar-denote-use-bib-keywords nil)
+  :preface
+  (bind-key "C-c w n" #'citar-denote-open-note)
+  :init
+  (citar-denote-mode)
+  ;; Bind all available commands
+  :bind (("C-c w d" . citar-denote-dwim)
+         ("C-c w e" . citar-denote-open-reference-entry)
+         ("C-c w a" . citar-denote-add-citekey)
+         ("C-c w k" . citar-denote-remove-citekey)
+         ("C-c w r" . citar-denote-find-reference)
+         ("C-c w l" . citar-denote-link-reference)
+         ("C-c w f" . citar-denote-find-citation)
+         ("C-c w x" . citar-denote-nocite)
+         ("C-c w y" . citar-denote-cite-nocite)
+         ("C-c w z" . citar-denote-nobib)))
