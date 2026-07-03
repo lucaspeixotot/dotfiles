@@ -37,6 +37,17 @@
 ;; low threshold when idle. Replaces manual gc-cons-threshold dance.
 (use-package gcmh
   :demand t
+  :custom
+  ;; gc-cons-threshold is a *garbage budget*, not a memory cap. It bounds how
+  ;; much RSS can spike above the live working set (~51 MB here) during a burst
+  ;; of allocation before a collection runs. 128 MB covers every realistic
+  ;; single interactive command (completion, grep, LSP, LLM streaming chunk),
+  ;; so we keep ~all of gcmh's anti-stutter benefit while capping worst-case
+  ;; RSS at ~180 MB instead of ~1 GB. Larger values (512 MB+) buy ~no extra
+  ;; latency benefit but let RSS reach a high-water mark that glibc won't
+  ;; return to the OS (relevant to Emacs 30 memory-growth reports).
+  (gcmh-high-cons-threshold (* 512 1024 1024))
+  (gcmh-idle-delay 15)
   :config
   (gcmh-mode 1))
 
