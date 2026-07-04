@@ -395,6 +395,7 @@
 (load (expand-file-name "langs/elisp.el" user-emacs-directory))
 (load (expand-file-name "langs/golang.el" user-emacs-directory))
 (load (expand-file-name "langs/terraform.el" user-emacs-directory))
+(load (expand-file-name "langs/python.el" user-emacs-directory))
 
 ;;; Org mode, notes, and study
 (load (expand-file-name "extras/org-notes.el" user-emacs-directory))

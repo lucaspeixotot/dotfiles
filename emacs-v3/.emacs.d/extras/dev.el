@@ -457,6 +457,7 @@
 (use-package envrc
   :straight t
   :hook (after-init . envrc-global-mode))
+
 (use-package dape
   :straight t
   :commands (dape
@@ -464,10 +465,6 @@
              dape-info
              dape-repl
              dape-quit)
-  :init
-  ;; Persist breakpoints between sessions
-  (add-hook 'kill-emacs-hook 'dape-breakpoint-save)
-  (add-hook 'after-init-hook 'dape-breakpoint-load)
   :custom
   (dape-buffer-window-arrangement 'right)
   (dape-inlay-hints t)
