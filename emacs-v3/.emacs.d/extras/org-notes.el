@@ -259,11 +259,42 @@ Optional argument CANDIDATE is the selected item."
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package dictionary
-  :straight t
-  :custom
-  (dictionary-server "dict.org")
-  :bind
-  (("C-c w s d" . dictionary-lookup-definition)))
+  ;; :straight (:type built-in)
+  :ensure nil
+  :commands (dictionary-lookup-definition dictionary-search)
+  :config
+  (define-key help-map (kbd "C-d") 'apropos-documentation)
+  (setq dictionary-use-single-buffer t)
+  (defun dictionary-search-dwim (&optional arg)
+    "Search for definition of word at point. If region is active,
+search for contents of region instead. If called with a prefix
+argument, query for word to search."
+    (interactive "P")
+    (if arg
+        (dictionary-search nil)
+      (if (use-region-p)
+          (dictionary-search (buffer-substring-no-properties
+                              (region-beginning)
+                              (region-end)))
+        (if (thing-at-point 'word)
+            (dictionary-lookup-definition)
+          (dictionary-search-dwim '(4))))))
+
+  (defvar my/dictionary-log-file
+    (concat user-cache-directory "dictionary-log")
+    "File that tracks looked up words.")
+  (advice-add 'dictionary-search :after
+              (defun my/dictionary-log-update (word &optional dictionary)
+                "Add the looked up WORD to `my/dictionary-log-file'."
+                (when word
+                  (write-region (concat word "\n") nil
+                                my/dictionary-log-file
+                                'append))))
+
+  :bind (("C-M-=" . dictionary-search-dwim)
+         :map help-map
+         ("=" . dictionary-search-dwim)
+         ("d" . dictionary-search)))
 
 (use-package olivetti
   :straight t

@@ -183,8 +183,9 @@
   :custom
   (corfu-auto t)
   (corfu-auto-delay 0.2)
+  (corfu-auto-prefix 3)
   ;; (corfu-auto-trigger ".")
-  (corfu-quit-no-match 'separator)
+  (corfu-quit-no-match t)
   (corfu-cycle t) ;; Enable cycling for `corfu-next/previous'
   (corfu-quit-at-boundary 'separator) ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match

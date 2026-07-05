@@ -11,6 +11,9 @@
 ;;;  $$$$$$$$/ $$/  $$/  $$/  $$$$$$$/  $$$$$$$/ $$$$$$$/         $$$$$$$/     $/        $$$$/
 
 
+(defvar user-cache-directory "~/.cache/emacs/"
+  "Location where files created by emacs are placed.")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Package setup
@@ -182,7 +185,8 @@
          ("<C-wheel-up>" . text-scale-increase)
          ("<C-wheel-down>" . text-scale-decrease)
          ("C-M-s" . isearch-forward-regexp)
-         ("C-M-r" . isearch-backward-regexp))
+         ("C-M-r" . isearch-backward-regexp)
+         ("C-c SPC" . my/easy-page))
   :config
   (defun my/truncate-lines-for-code ()
     "Truncate long lines in programming buffers."
@@ -190,6 +194,151 @@
 
   (defun my/show-trailing-whitespace ()
     (setq-local show-trailing-whitespace t))
+
+  (defun open-next-line (arg)
+    "Move to the next line and then opens a line.
+See also `newline-and-indent'."
+    (interactive "p")
+    (end-of-line)
+    (open-line arg)
+    (forward-line 1)
+    (when newline-and-indent
+      (indent-according-to-mode)))
+
+  (global-set-key (kbd "C-o") 'open-next-line)
+
+  (defun open-previous-line (arg)
+    "Open a new line before the current one.
+See also `newline-and-indent'."
+    (interactive "p")
+    (beginning-of-line)
+    (open-line arg)
+    (when newline-and-indent
+      (indent-according-to-mode)))
+
+  (global-set-key (kbd "C-S-O") 'open-previous-line)
+
+
+  (defun move-text-internal (arg)
+    (cond
+     ((and mark-active transient-mark-mode)
+      (if (> (point) (mark))
+          (exchange-point-and-mark))
+      (let ((column (current-column))
+            (text (delete-and-extract-region (point) (mark))))
+        (forward-line arg)
+        (move-to-column column t)
+        (set-mark (point))
+        (insert text)
+        (exchange-point-and-mark)
+        (setq deactivate-mark nil)))
+     (t
+      (let ((column (current-column)))
+        (beginning-of-line)
+        (when (or (> arg 0) (not (bobp)))
+          (forward-line)
+          (when (or (< arg 0) (not (eobp)))
+            (transpose-lines arg))
+          (forward-line -1))
+        (move-to-column column t)))))
+
+  (defun move-text-down (arg)
+    "Move region (transient-mark-mode active) or current line
+  arg lines down."
+    (interactive "*p")
+    (move-text-internal arg))
+
+  (defun move-text-up (arg)
+    "Move region (transient-mark-mode active) or current line
+  arg lines up."
+    (interactive "*p")
+    (move-text-internal (- arg)))
+
+  (global-set-key [M-up] 'move-text-up)
+  (global-set-key [M-down] 'move-text-down)
+
+  (global-set-key (kbd "M-]") 'forward-paragraph)
+  (when (or window-system (daemonp))
+    (global-set-key (kbd "M-[") 'backward-paragraph))
+
+  (defun unfill-paragraph (&optional region)
+    "Takes a multi-line paragraph and makes it into a single line of text."
+    (interactive (progn (barf-if-buffer-read-only) '(t)))
+    (let ((fill-column (point-max))
+          (emacs-lisp-docstring-fill-column t))
+      (fill-paragraph nil region)))
+
+  (define-key global-map "\M-Q" 'unfill-paragraph)
+
+  (defvar-keymap my-pager-map
+    :doc "Keymap with paging commands"
+    "SPC" 'scroll-up-command
+    "C-l" 'recenter-top-bottom
+    "C-M-v" 'scroll-other-window
+    "C-M-S-v" 'scroll-other-window-down
+    "d" #'better-scroll-up-half
+
+    "u" #'better-scroll-down-half
+    "M-o" (if (fboundp 'switchy-window-minor-mode)
+              'switchy-window 'my/other-window)
+    "S-SPC" 'scroll-down-command)
+  (let ((scrolling (propertize  "SCRL" 'face '(:inherit highlight)))
+        ml-buffer)
+    (defalias 'my/easy-page
+      (lambda ()
+        (interactive)
+        (when (eq (window-buffer (selected-window))
+                  (current-buffer))
+          (setq ml-buffer (current-buffer))
+          (add-to-list 'mode-line-format scrolling)
+          (set-transient-map
+           my-pager-map t
+           (lambda () (with-current-buffer ml-buffer
+                   (setq mode-line-format
+                         (delete scrolling mode-line-format)))))))))
+
+  ;; C-a toggle between indentation and BOL
+  (defun back-to-indentation-or-beginning ()
+    (interactive)
+    (if (= (point) (progn (beginning-of-line-text) (point)))
+        (beginning-of-line)))
+  (global-set-key "\C-a" 'back-to-indentation-or-beginning)
+
+  ;; Register store DWIM
+  (defun store-register-dwim (arg register)
+    "Store what I mean in a register.
+With an active region, store or append (with \\[universal-argument]) the
+contents, optionally deleting the region (with a negative
+argument). With a numeric prefix, store the number. With \\[universal-argument]
+store the frame configuration. Otherwise, store the point."
+    (interactive
+     (list current-prefix-arg
+           (register-read-with-preview "Store in register: ")))
+    (cond
+     ((use-region-p)
+      (let ((begin (region-beginning))
+            (end (region-end))
+            (delete-flag (or (equal arg '-)  (equal arg '(-4)))))
+        (if (consp arg)
+            (append-to-register register begin end delete-flag)
+          (copy-to-register register begin end delete-flag t))))
+     ((numberp arg) (number-to-register arg register))
+     (t (point-to-register register arg))))
+
+  ;; Register use DWIM
+  (defun use-register-dwim (register &optional arg)
+    "Do what I mean with a register.
+For a window configuration, restore it. For a number or text, insert it.
+For a location, jump to it."
+    (interactive
+     (list (register-read-with-preview "Use register: ")
+           current-prefix-arg))
+    (condition-case nil
+        (jump-to-register register arg)
+      (user-error (insert-register register arg))))
+
+  (define-key global-map (kbd "M-m") 'store-register-dwim)
+  (define-key global-map (kbd "M-'") 'use-register-dwim)
 
   (global-visual-wrap-prefix-mode 1)
 
@@ -249,27 +398,85 @@
 (use-package repeat-help
   :hook (repeat-mode . repeat-help-mode))
 
-(use-package multiple-cursors
-  :bind (("C->" . mc/mark-next-like-this)
-         ("C-<" . mc/mark-previous-like-this)
-         ("C-c C-<" . mc/mark-all-like-this)))
+;; (use-package multiple-cursors
+;;   :bind (("C->" . mc/mark-next-like-this)
+;;          ("C-<" . mc/mark-previous-like-this)
+;;          ("C-c C-<" . mc/mark-all-like-this)))
 
-(use-package symbol-overlay
-  :defer t
-  :hook (prog-mode . symbol-overlay-mode)
-  :bind (
-         ("C-;" . symbol-overlay-put)
-         ("M-n" . symbol-overlay-jump-next)
-         ("M-p" . symbol-overlay-jump-prev)
-         ("M-N" . symbol-overlay-switch-forward)
-         ("M-P" . symbol-overlay-switch-backward)
-         ))
+;; (use-package symbol-overlay
+;;   :defer t
+;;   :hook (prog-mode . symbol-overlay-mode)
+;;   :bind (
+;;          ("C-;" . symbol-overlay-put)
+;;          ("M-n" . symbol-overlay-jump-next)
+;;          ("M-p" . symbol-overlay-jump-prev)
+;;          ("M-N" . symbol-overlay-switch-forward)
+;;          ("M-P" . symbol-overlay-switch-backward)
+;;          ))
 
-(use-package symbol-overlay-mc
-  :bind (("M-a" . symbol-overlay-mc-mark-all)))
+;; (use-package symbol-overlay-mc
+;;   :bind (("M-a" . symbol-overlay-mc-mark-all)))
 
-(use-package surround
-  :bind-keymap ("C-c C-s" . surround-keymap))
+(use-package embrace
+  :straight t
+  :bind (:map prog-mode-map
+         ("M-s a" . embrace-add)
+         ("M-s c" . embrace-change)
+         ("M-s d" . embrace-delete)
+         :map text-mode-map
+         ("M-s a" . embrace-add)
+         ("M-s c" . embrace-change)
+         ("M-s d" . embrace-delete)))
+
+(use-package goto-chg
+  :straight t
+  :bind (("M-g ;" . goto-last-change)
+         ("M-i" . goto-last-change)
+         ("M-g M-;" . goto-last-change)))
+
+(use-package pulsar
+  :straight t
+  :bind (:map global-map
+         ("C-x l" . pulsar-pulse-line)
+         ("C-x L" . pulsar-highlight-permanently-dwim))
+  :init
+  (pulsar-global-mode 1)
+  :config
+  (setq pulsar-delay 0.055)
+  (setq pulsar-iterations 5)
+  (setq pulsar-face 'pulsar-green)
+  (setq pulsar-region-face 'pulsar-yellow)
+  (setq pulsar-highlight-face 'pulsar-magenta)
+
+  ;; --- Avy commands that should pulse after jumping ---
+  (setq pulsar-pulse-functions
+        (append '(my/avy-goto-char-this-window
+                  my/avy-goto-char-timer
+                  avy-goto-char-2
+                  avy-goto-line-above
+                  avy-goto-line-below
+                  avy-goto-end-of-line
+                  avy-copy-line
+                  avy-copy-region
+                  avy-kill-whole-line
+                  avy-kill-region
+                  avy-kill-ring-save-region
+                  avy-move-line
+                  avy-move-region
+                  avy-resume)
+                pulsar-pulse-functions))
+
+  (setq pulsar-pulse-functions
+        (append '(switchy-window
+                  pulsar-pulse-functions)))
+
+  ;; existing integrations
+  (add-hook 'consult-after-jump-hook #'pulsar-recenter-top)
+  (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
+  (add-hook 'imenu-after-jump-hook #'pulsar-recenter-top)
+  (add-hook 'imenu-after-jump-hook #'pulsar-reveal-entry)
+  (add-hook 'next-error-hook #'pulsar-pulse-line)
+  (add-hook 'minibuffer-setup-hook #'pulsar-pulse-line))
 
 (use-package helpful
   ;; Note that the built-in `describe-function' includes both functions
@@ -399,6 +606,9 @@
 
 ;;; Org mode, notes, and study
 (load (expand-file-name "extras/org-notes.el" user-emacs-directory))
+
+(load (expand-file-name "extras/spell.el" user-emacs-directory))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
