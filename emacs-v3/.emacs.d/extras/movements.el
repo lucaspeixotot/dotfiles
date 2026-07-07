@@ -707,11 +707,11 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
 
 (use-package windmove
   :after window
-  :bind (("L" . windmove-swap-states-right)
+  :bind (:map other-window-repeat-map
+         ("L" . windmove-swap-states-right)
          ("J" . windmove-swap-states-down)
          ("K" . windmove-swap-states-up)
          ("H" . windmove-swap-states-left)
-         :map other-window-repeat-map
          ("l" . windmove-right)
          ("k" . windmove-up)
          ("h" . windmove-left)
