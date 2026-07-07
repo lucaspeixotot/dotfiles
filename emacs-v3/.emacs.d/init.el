@@ -594,7 +594,6 @@ For a location, jump to it."
 ;;; Remote config (tramp)
 (load (expand-file-name "extras/remote.el" user-emacs-directory))
 
-
 ;;; Misc settings
 (load-file (expand-file-name "extras/misc.el" user-emacs-directory))
 
@@ -606,8 +605,10 @@ For a location, jump to it."
 
 ;;; Org mode, notes, and study
 (load (expand-file-name "extras/org-notes.el" user-emacs-directory))
-
 (load (expand-file-name "extras/spell.el" user-emacs-directory))
+
+;;; Transients
+(load (expand-file-name "extras/setup-transients.el" user-emacs-directory))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -653,4 +654,15 @@ For a location, jump to it."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages nil)
+ '(safe-local-variable-values
+   '((my/dape-cwd . "/home/cavalcan/glcp/authn/tests/feature_test")))
  '(treesit-font-lock-level 4))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(avy-lead-face ((((background dark)) :foreground "LightCoral" :background "Black" :weight bold :underline t) (((background light)) :foreground "DarkRed" :background unspecified :box (:line-width (1 . -1)) :height 0.95 :weight bold)))
+ '(avy-lead-face-0 ((t :background unspecified :inherit avy-lead-face)))
+ '(avy-lead-face-1 ((t :background unspecified :inherit avy-lead-face)))
+ '(avy-lead-face-2 ((t :background unspecified :inherit avy-lead-face))))
