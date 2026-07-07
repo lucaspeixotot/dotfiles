@@ -28,4 +28,16 @@
   (:map python-mode-map
         ("C-c t" . python-pytest-dispatch))
   (:map python-ts-mode-map
-        ("C-c t" . python-pytest-dispatch)))
+        ("C-c t" . python-pytest-dispatch))
+  :config
+  (with-eval-after-load 'python-pytest
+  ;; Make python-pytest honor PYTEST_CWD (set per-project in .envrc),
+  ;; falling back to project.el when unset.
+  (defun my/python-pytest-root-from-env (orig-fn &rest args)
+    (let ((env (getenv "PYTEST_CWD")))
+      (if (and env (not (string-empty-p env)))
+          (file-name-as-directory (expand-file-name env))
+        (apply orig-fn args))))
+  (advice-add 'python-pytest--project-root :around
+              #'my/python-pytest-root-from-env))
+  )

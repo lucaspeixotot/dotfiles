@@ -476,19 +476,58 @@
    ("C-c d i" . dape-info)
    ("C-c d r" . dape-repl))
   :config
-  ;; Return pytest node id for the current buffer/function.
-  ;; Turns Python-style names like `TestClass.test_method' into the pytest
-  ;; form `TestClass::test_method' so pytest can locate them.
-  (defun my/dape-pytest-nodeid ()
+  ;; ---- Defaults / fallbacks ---------------------------------------
+  (defvar my/dape-pytest-default-args
+    "-s -vv --capture=no -o log_cli=true --log-cli-level=DEBUG"
+    "Fallback pytest options when `PYTEST_DAPE_ARGS' is not set.")
+
+  ;; Optional dir-local override for cwd (kept for flexibility).
+  (defvar my/dape-cwd nil
+    "Optional cwd override for Dape.  Prefer `PYTEST_CWD' in .envrc.")
+  (put 'my/dape-cwd 'safe-local-variable #'stringp)
+
+  ;; ---- cwd resolver ------------------------------------------------
+  ;; Precedence: PYTEST_CWD (envrc) > dir-local my/dape-cwd >
+  ;; project.el root > dape-cwd > default-directory.
+  (defun my/dape-cwd-fn (&optional _config)
+    (let* ((env (getenv "PYTEST_DAPE_CWD"))
+           (dir (or (and env (not (string-empty-p env)) env)
+                    my/dape-cwd
+                    (when-let ((proj (project-current)))
+                      (project-root proj))
+                    (ignore-errors (dape-cwd))
+                    default-directory)))
+      (expand-file-name dir)))
+
+  ;; ---- node id (optionally parametrized) ---------------------------
+  (defun my/dape-pytest-nodeid (&optional variant)
     (let* ((file (buffer-file-name))
            (defun-name (ignore-errors (python-info-current-defun)))
            (pytest-name (and defun-name
-                             (replace-regexp-in-string "\\." "::" defun-name))))
-      (if (and pytest-name (not (string-empty-p pytest-name)))
-          (format "%s::%s" file pytest-name)
-        file)))
+                             (replace-regexp-in-string "\\." "::" defun-name)))
+           (id (if (and pytest-name (> (length pytest-name) 0))
+                   (format "%s::%s" file pytest-name)
+                 file)))
+      (if (and variant (> (length variant) 0))
+          (format "%s[%s]" id variant)
+        id)))
 
-  ;; Common ensure: verifies python + debugpy are available
+  ;; ---- full :args vector (options from envrc + node id) -----------
+  (defun my/dape-pytest-args (&optional variant)
+    (let* ((opts-str (or (getenv "PYTEST_DAPE_ARGS")
+                         my/dape-pytest-default-args))
+           (opts (split-string opts-str "[ \t\n]+" t))
+           (nodeid (my/dape-pytest-nodeid variant)))
+      (vconcat opts (list nodeid))))
+
+  ;; ---- whole-file :args vector ------------------------------------
+  (defun my/dape-pytest-file-args ()
+    (let* ((opts-str (or (getenv "PYTEST_DAPE_ARGS")
+                         my/dape-pytest-default-args))
+           (opts (split-string opts-str "[ \t\n]+" t)))
+      (vconcat opts (list (buffer-file-name)))))
+
+  ;; ---- ensure debugpy in the active (envrc) python -----------------
   (defun my/dape-python-ensure (config)
     (dape-ensure-command config)
     (let ((python (dape-config-get config 'command)))
@@ -496,44 +535,45 @@
                       (format "%s -c \"import debugpy.adapter\"" python)))
         (user-error "%s: debugpy is not installed in this environment" python))))
 
-  ;; Debug the pytest test at point
+  ;; ---- test at point ----------------------------------------------
+  ;; Add a param by editing to (my/dape-pytest-args "pkce") at launch.
   (add-to-list
    'dape-configs
    `(pytest-at-point
      modes (python-mode python-ts-mode)
      ensure my/dape-python-ensure
      command "python"
-     command-args ("-m" "debugpy.adapter"
-                   "--host" "127.0.0.1"
-                   "--port" :autoport)
+     command-args ("-m" "debugpy.adapter" "--host" "127.0.0.1" "--port" :autoport)
      port :autoport
      :type "python"
      :request "launch"
      :module "pytest"
-     :cwd dape-cwd
-     :args [my/dape-pytest-nodeid]
+     :cwd my/dape-cwd-fn
+     :args (my/dape-pytest-args)
+     :console "internalConsole"
+     :redirectOutput t
+     :env (:PYTHONUNBUFFERED "1")
      :justMyCode nil
-     :console "integratedTerminal"
      :showReturnValue t
      :stopOnEntry nil))
 
-  ;; Debug all tests in the current file
+  ;; ---- whole file --------------------------------------------------
   (add-to-list
    'dape-configs
    `(pytest-file
      modes (python-mode python-ts-mode)
      ensure my/dape-python-ensure
      command "python"
-     command-args ("-m" "debugpy.adapter"
-                   "--host" "127.0.0.1"
-                   "--port" :autoport)
+     command-args ("-m" "debugpy.adapter" "--host" "127.0.0.1" "--port" :autoport)
      port :autoport
      :type "python"
      :request "launch"
      :module "pytest"
-     :cwd dape-cwd
-     :args [dape-buffer-default]
+     :cwd my/dape-cwd-fn
+     :args (my/dape-pytest-file-args)
+     :console "internalConsole"
+     :redirectOutput t
+     :env (:PYTHONUNBUFFERED "1")
      :justMyCode nil
-     :console "integratedTerminal"
      :showReturnValue t
      :stopOnEntry nil)))
