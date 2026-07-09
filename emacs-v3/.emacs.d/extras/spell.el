@@ -25,18 +25,4 @@
                  '(jinx grid (vertico-grid-annotate . 20)
                         (vertico-count . 4))))
 
-  (transient-define-prefix my/jinx-menu ()
-    "Jinx spell-check workflow."
-    [["Navigate"
-      ("n" "next"          jinx-next          :transient t)
-      ("p" "previous"      jinx-previous      :transient t)]
-     ["Correct"
-      ("c" "nearest"       jinx-correct-nearest :transient t)
-      ("$" "dispatch"      jinx-correct         :transient t)
-      ("a" "all in buffer" jinx-correct-all     :transient t)
-      ("w" "word at point" jinx-correct-word    :transient t)]
-     ["Session"
-      ("l" "languages"     jinx-languages)
-      ("m" "jinx-mode"     jinx-mode)
-      ("M" "global"        global-jinx-mode)
-      ("q" "quit"          transient-quit-one)]]))
+  )
