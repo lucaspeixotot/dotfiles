@@ -799,7 +799,7 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
   :bind
   ("M-1" . 'hydra-moves/body)
   :init
-  (defhydra hydra-moves ()
+  (defhydra hydra-moves (:color pink)
       "emacs fast movements"
       ("l" forward-char)
       ("h" backward-char)
@@ -827,7 +827,7 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
       ("." embark-dwim)
       ("," xref-go-back)
       ("?" xref-find-references)
-      ("q" nil "quit"))
+      ("q" nil "quit" :color blue))
   )
 
 (use-package avy-zap

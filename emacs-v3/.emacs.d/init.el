@@ -274,13 +274,13 @@ See also `newline-and-indent'."
     :doc "Keymap with paging commands"
     "SPC" 'scroll-up-command
     "C-l" 'recenter-top-bottom
-    "C-M-v" 'scroll-other-window
-    "C-M-S-v" 'scroll-other-window-down
+    "v" 'scroll-other-window
+    "M-v" 'scroll-other-window-down
     "d" #'better-scroll-up-half
 
     "u" #'better-scroll-down-half
     "M-o" (if (fboundp 'switchy-window-minor-mode)
-              'switchy-window 'my/other-window)
+              'switchy-window)
     "S-SPC" 'scroll-down-command)
   (let ((scrolling (propertize  "SCRL" 'face '(:inherit highlight)))
         ml-buffer)
@@ -656,7 +656,8 @@ For a location, jump to it."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages nil)
  '(safe-local-variable-values
-   '((my/dape-cwd . "/home/cavalcan/glcp/authn/tests/feature_test")))
+   '((my/dape-cwd . "/home/cavalcan/glcp/authn")
+     (my/dape-cwd . "/home/cavalcan/glcp/authn/tests/feature_test")))
  '(treesit-font-lock-level 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
