@@ -68,7 +68,7 @@
   (denote-known-keywords '("literature" "permanent"))
   (denote-infer-keywords t)
   (denote-sort-keywords t)
-  (denote-prompts '(title keywords))
+  (denote-prompts '(title keywords template))
   (denote-excluded-directories-regexp nil)
   (denote-keywords-to-not-infer-regexp nil)
   (denote-rename-confirmations '(rewrite-front-matter modify-file-name))
@@ -113,6 +113,36 @@
                       "\n\n-- Source: " org-link
                       "\n#+end_quote\n")))
           (message "Quote successfully copied to %s!" chosen-name)))))))
+
+  (defun org-dblock-write:denote-outbound-links (params)
+  "List denote: links found ABOVE this block, newest first."
+  (let* ((here (point))                   ; point is inside the block
+         (begin-pos (save-excursion
+                      (re-search-backward "^#\\+BEGIN:" nil t)
+                      (line-beginning-position)))
+         (links '()))
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward "\\[\\[denote:\\([^][]+?\\)\\]\\(?:\\[\\([^][]+\\)\\]\\)?"
+                                begin-pos t)
+        (push (cons (car (split-string (match-string 1) "::"))
+                    (or (match-string 2) (match-string 1)))
+              links)))
+    (setq links (delete-dups (nreverse links)))
+    (dolist (link links)
+      (insert (format "- [[denote:%s][%s]]\n" (car link) (cdr link))))))
+
+  (defun my-link-denote-template ()
+    (concat
+     "* References\n"
+     "#+BEGIN: denote-outbound-links\n"
+     "#+END:\n\n"
+     "* Backlinks\n"
+     "#+BEGIN: denote-backlinks :sort-by-component identifier :reverse-sort t\n"
+     "#+END:"))
+  (setq denote-templates
+        '((link . my-link-denote-template)))
+
 
   )
 

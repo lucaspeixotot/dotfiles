@@ -205,6 +205,8 @@
   :bind (("C-M-'"   . avy-resume)
          ("C-'"     . my/avy-goto-char-this-window)
          ("M-j"     . my/avy-goto-char-timer)
+         ("M-l"     . avy-goto-line)
+         ("M-h"     . avy-goto-char-in-line)
          ("M-s y"   . avy-copy-line)
          ("M-s M-y" . avy-copy-region)
          ("M-s M-k" . avy-kill-whole-line)
