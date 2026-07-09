@@ -432,6 +432,7 @@ For a location, jump to it."
   :straight t
   :bind (("M-g ;" . goto-last-change)
          ("M-i" . goto-last-change)
+         ("M-I" . goto-last-change-reverse)
          ("M-g M-;" . goto-last-change)))
 
 (use-package pulsar

@@ -130,7 +130,7 @@
     (defun my/macrursors-at-avy ()
       (interactive)
       (let* ((avy-all-windows nil)
-             (avy-timeout-seconds 0.40)
+             (avy-timeout-seconds 0.5)
              (positions (mapcar #'caar (avy--read-candidates))))
         (when positions
           (when-let* ((buf (overlay-buffer mouse-secondary-overlay))
@@ -818,7 +818,7 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
       ("C" kirigami-close-folds)
       ("o" kirigami-open-fold)
       ("O" kirigami-open-fold-rec)
-      ("r" treesit-fold-open-recursively)
+      ("r" kirigami-open-folds)
       ("RET" avy-goto-char-timer)
       ("f" avy-goto-char-in-line)
       (";" symbol-overlay-put)
