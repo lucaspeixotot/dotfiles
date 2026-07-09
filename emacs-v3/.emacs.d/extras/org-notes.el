@@ -18,7 +18,7 @@
 ;;     (info "(denote) Sample configuration")
 
 (use-package denote
-  :straight t
+ :straight t
   :hook
   (;; If you use plain text files (.txt), then you want to make the
    ;; Denote links clickable (Org mode and Markdown mode render links
@@ -44,6 +44,7 @@
     ("C-c n i l" . denote-link)
     ("C-c n i L" . denote-add-links)
     ("C-c n i f" . denote-link-or-create)
+    ("C-c n i q" . my/quote-to-denote)
     ("C-c n q l" . denote-find-link)
     ("C-c n q b" . denote-find-backlink)
     ("C-c n q B" . denote-backlinks)
@@ -74,7 +75,46 @@
   (denote-date-prompt-use-org-read-date t)
   :config
   ;; Automatically rename Denote buffers using the `denote-rename-buffer-format'.
-  (denote-rename-buffer-mode 1))
+  (denote-rename-buffer-mode 1)
+  (defun my/quote-to-denote ()
+  "Copy active region from nov-mode and append it with an Org link to a chosen Denote note."
+  (interactive)
+  (if (not (use-region-p))
+      (message "Please select a paragraph/region in the EPUB first.")
+    (let* ((quote (buffer-substring-no-properties (region-beginning) (region-end)))
+           ;; Safely trigger the link generation hooks
+           (_ (org-store-link nil))
+           (link-url (plist-get org-store-link-plist :link))
+           (link-desc (plist-get org-store-link-plist :description))
+           (org-link (format "[[%s][%s]]" link-url (or link-desc "EPUB Source")))
+           ;; Gather all currently open Denote buffers
+           (denote-buffers (seq-filter (lambda (buf)
+                                         (with-current-buffer buf
+                                           (and (derived-mode-p 'org-mode)
+                                                (fboundp 'denote-filename-is-note-p)
+                                                (buffer-file-name)
+                                                (denote-filename-is-note-p (buffer-file-name)))))
+                                       (buffer-list))))
+      (cond
+       ((null denote-buffers)
+        (message "No active Denote Org notes found open in buffers."))
+       (t
+        ;; Prompt user to choose from the open notes
+        (let* ((buffer-names (mapcar #'buffer-name denote-buffers))
+               (chosen-name (completing-read "Send quote to Denote note: " buffer-names nil t))
+               (target-buffer (get-buffer chosen-name)))
+
+          ;; Append to the bottom of the chosen note using native Org quote blocks
+          (with-current-buffer target-buffer
+            (save-excursion
+              (goto-char (point-max))
+              (insert "\n\n#+begin_quote\n"
+                      quote
+                      "\n\n-- Source: " org-link
+                      "\n#+end_quote\n")))
+          (message "Quote successfully copied to %s!" chosen-name)))))))
+
+  )
 
 (use-package denote-org
   :straight t
@@ -469,3 +509,17 @@ argument, query for word to search."
          ("C-c w x" . citar-denote-nocite)
          ("C-c w y" . citar-denote-cite-nocite)
          ("C-c w z" . citar-denote-nobib)))
+
+
+(use-package org-modern
+  :straight t
+  :config
+  (add-hook 'org-mode-hook #'org-modern-mode)
+  (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+  (setq org-modern-star '("◉" "○" "✸" "✿" "♦" "✜") ; Sleek headline bullets
+        org-modern-hide-stars nil                 ; Keep sub-levels visible
+        org-modern-table nil                      ; Set to t if you want styled tables
+        org-modern-todo t                         ; Styled TODO/DONE labels
+        org-modern-block-name t                   ; Clean block tags like #+begin_quote
+        org-modern-keyword t)
+  )
