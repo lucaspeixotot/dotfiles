@@ -780,22 +780,6 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
 (global-set-key (kbd "C-v") 'better-scroll-up-half)
 (global-set-key (kbd "M-v") 'better-scroll-down-half)
 
-
-(use-package key-chord
-  :custom
-  (key-chord-two-keys-delay 0.1)
-  (key-chord-one-key-delay 0.2)
-  (key-chord-in-macros nil)
-  (key-chord-one-key-min-delay 0.0)
-  (key-chord-typing-detection nil)
-  (key-chord-typing-speed-threshold 0.1)
-  (key-chord-typing-reset-delay 0.5)
-  (key-chord-use-key-tracking t)
-  ;; :config
-  ;; (key-chord-mode 1)
-  ;; (key-chord-define-global "jf" 'hydra-moves/body)
-)
-
 (use-package hydra
   :straight t
   :bind
@@ -823,9 +807,6 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
       ("r" kirigami-open-folds)
       ("RET" avy-goto-char-timer)
       ("f" avy-goto-char-in-line)
-      (";" symbol-overlay-put)
-      ("n" symbol-overlay-jump-next)
-      ("p" symbol-overlay-jump-prev)
       ("." embark-dwim)
       ("," xref-go-back)
       ("?" xref-find-references)
