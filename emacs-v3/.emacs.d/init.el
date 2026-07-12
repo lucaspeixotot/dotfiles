@@ -597,6 +597,7 @@ For a location, jump to it."
 
 ;;; Misc settings
 (load-file (expand-file-name "extras/misc.el" user-emacs-directory))
+(load-file (expand-file-name "extras/rss.el" user-emacs-directory))
 
 ;;; Languages specific settings
 (load (expand-file-name "langs/elisp.el" user-emacs-directory))
