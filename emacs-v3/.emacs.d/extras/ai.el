@@ -13,13 +13,11 @@
 
 ;;; Eca
 (use-package eca
-  :straight t
+  :straight (eca :host github :repo "editor-code-assistant/eca-emacs" :branch "master")
   :config
-  (when (boundp 'user-login-name)
-    (setq eca-custom-command
-          (if (string-equal (getenv "USER") "hpedev")
-              '("~/.emacs.d/eca/eca" "-Djavax.net.ssl.trustStore=/usr/lib/jvm/java-21-openjdk-amd64/lib/security/cacerts" "-Djavax.net.ssl.trustStorePassword=changeit" "server")
-            '("~/.emacs.d/eca/eca" "server")))))
+  (setq eca-extra-args '("--log-level" "debug"))
+  (setq eca-extra-args '("--verbose"))
+)
 
 (defface my/org-gptel-user-face
   '((t :inherit font-lock-keyword-face :weight bold))
@@ -58,7 +56,7 @@
   (font-lock-ensure))
 
 (use-package gptel
-  :straight (gptel :type git :host github :repo "karthink/gptel")
+  :straight (gptel :host github :repo "karthink/gptel" :branch "master")
   :init
   ()
   :hook (gptel-mode-hook .  (lambda () (my/org-gptel-highlight-mode 1)))
@@ -148,8 +146,42 @@ Feedback:
   )
 
 (use-package gptel-agent
-  :straight (gptel-agent :type git :host github :repo "karthink/gptel-agent")
+  :straight (gptel-agent :host github :repo "karthink/gptel-agent" :branch "master")
   :config
-  (when (string= (system-name) "hpedev")
-    (add-to-list 'gptel-agent-dirs "~/glp/dev-env/ws/github.com/glcp/lucas-glp-sdlc-marketplace/plugins/glp-design-workflow/agents/"))
+  ;; GLP SDLC marketplace: design-workflow agents and skills.
+  ;; Agents dir: files are read directly (non-recursive) as agent definitions.
+  (let ((glp-workflow "~/glcp/glp-sdlc-marketplace/plugins/glp-design-workflow/"))
+    (when (file-directory-p glp-workflow)
+      (add-to-list 'gptel-agent-dirs (expand-file-name "agents/" glp-workflow))
+      ;; Skills dir: scanned recursively for */SKILL.md.
+      (add-to-list 'gptel-agent-skill-dirs (expand-file-name "skills/" glp-workflow))))
+  ;; Personal skills directory. Each skill is a sub-folder containing a
+  ;; SKILL.md file (see https://agentskills.io).
+  (add-to-list 'gptel-agent-skill-dirs "~/custom_skills/")
   (gptel-agent-update))
+
+
+(use-package mcp
+  :straight t
+  :config
+  (setq mcp-hub-servers
+        `(("mcp-atlassian" . (:command "uvx"
+                              :args ("mcp-atlassian")
+                              :env (:JIRA_URL "https://hpe.atlassian.net/"
+                                    :JIRA_USERNAME ,(getenv "JIRA_USERNAME")
+                                    :JIRA_API_TOKEN ,(getenv "JIRA_API_TOKEN")
+                                    :CONFLUENCE_URL "https://hpe.atlassian.net/wiki"
+                                    :CONFLUENCE_USERNAME ,(getenv "CONFLUENCE_USERNAME")
+                                    :CONFLUENCE_API_TOKEN ,(getenv "CONFLUENCE_API_TOKEN"))))
+          ("github" . (:command "docker"
+                       :args ("run"
+                              "-i"
+                              "--rm"
+                              "-e"
+                              "GITHUB_PERSONAL_ACCESS_TOKEN"
+                              "-e"
+                              "GITHUB_HOST"
+                              "ghcr.io/github/github-mcp-server")
+                       :env (:GITHUB_PERSONAL_ACCESS_TOKEN ,(getenv "GITHUB_PERSONAL_ACCESS_TOKEN")
+                             :GITHUB_HOST , (or (getenv "GITHUB_HOST") "https://github.com"))))))
+  (require 'gptel-integrations))

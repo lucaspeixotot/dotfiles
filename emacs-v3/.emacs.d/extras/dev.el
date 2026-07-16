@@ -348,7 +348,7 @@
          ("C-c z O" . kirigami-open-fold-rec)
          ("C-c z r" . kirigami-open-folds)
          ("C-c z c" . kirigami-close-fold)
-         ("C-c z m" . kirigami-close-folds)
+         ("C-c z C" . kirigami-close-folds)
          ("C-c z a" . kirigami-toggle-fold))
 
   :config
@@ -490,7 +490,7 @@
   ;; Precedence: PYTEST_CWD (envrc) > dir-local my/dape-cwd >
   ;; project.el root > dape-cwd > default-directory.
   (defun my/dape-cwd-fn (&optional _config)
-    (let* ((env (getenv "PYTEST_DAPE_CWD"))
+    (let* ((env (getenv "PYTEST_CWD"))
            (dir (or (and env (not (string-empty-p env)) env)
                     my/dape-cwd
                     (when-let ((proj (project-current)))
