@@ -19,46 +19,8 @@
   (setq eca-extra-args '("--verbose"))
 )
 
-(defface my/org-gptel-user-face
-  '((t :inherit font-lock-keyword-face :weight bold))
-  "Face for @user markers.")
-
-(defface my/org-gptel-assistant-face
-  '((t :inherit font-lock-negation-char-face :weight bold))
-  "Face for @assistant markers.")
-
-(defface my/gptel-assistant-line-face
-  '((t :inherit hl-line :extend t))
-  "Face for @assistant lines.")
-
-(defface my/gptel-user-line-face
-  '((t :inherit hl-line :extend t))
-  "Face for @assistant lines.")
-
-(defvar-local my/org-gptel-font-lock-keywords
-    '(("^\\(@user\\)\\b.*$"
-       (0 'my/gptel-user-line-face prepend)
-       (1 'my/org-gptel-user-face prepend))
-
-      ("^\\(@assistant\\)\\b.*$"
-       (0 'my/gptel-assistant-line-face prepend)
-       (1 'my/org-gptel-assistant-face prepend)))
-  "Font-lock rules for gptel role markers."
-  )
-
-(define-minor-mode my/org-gptel-highlight-mode
-  "Toggle highlighting of @user and @assistant markers."
-  :lighter " GPT-Hi"
-  (if my/org-gptel-highlight-mode
-      (font-lock-add-keywords nil my/org-gptel-font-lock-keywords 'append)
-    (font-lock-remove-keywords nil my/org-gptel-font-lock-keywords))
-  (font-lock-flush)
-  (font-lock-ensure))
-
 (use-package gptel
   :straight (gptel :host github :repo "karthink/gptel" :branch "master")
-  :init
-  ()
   :hook (gptel-mode-hook .  (lambda () (my/org-gptel-highlight-mode 1)))
   :bind (
          ("C-c a n" . gptel)

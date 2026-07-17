@@ -202,9 +202,7 @@
 ;;; Avy to jump to characters quickly
 (use-package avy
   :commands (avy-goto-word-1 avy-goto-char-2 avy-goto-char-timer)
-  :bind (("C-M-'"   . avy-resume)
-         ("C-'"     . my/avy-goto-char-this-window)
-         ("M-j"     . my/avy-goto-char-timer)
+  :bind (("M-j"     . my/avy-goto-char-timer)
          ("M-l"     . avy-goto-line)
          ("M-h"     . avy-goto-char-in-line)
          ("M-s y"   . avy-copy-line)
@@ -282,26 +280,6 @@
                (when (= (mod N per-row) 0) (push "\n" display-strings)))
       (message "%s" (apply #'concat (nreverse display-strings)))))
 
-  ;; (defun avy-show-dispatch-help ()
-  ;;   (let* ((len (length "avy-action-"))
-  ;;          (fw (frame-width))
-  ;;          (raw-strings (mapcar
-  ;;                        (lambda (x)
-  ;;                          (format "%2s: %-19s"
-  ;;                                  (propertize
-  ;;                                   (char-to-string (car x))
-  ;;                                   'face 'aw-key-face)
-  ;;                                  (substring (symbol-name (cdr x)) len)))
-  ;;                        avy-dispatch-alist))
-  ;;          (max-len (1+ (apply #'max (mapcar #'length raw-strings))))
-  ;;          (strings-len (length raw-strings))
-  ;;          (per-row (floor fw max-len))
-  ;;          display-strings)
-  ;;     (cl-loop for string in raw-strings
-  ;;              for N from 1 to strings-len do
-  ;;              (push (concat string " ") display-strings)
-  ;;              (when (= (mod N per-row) 0) (push "\n" display-strings)))
-  ;;     (message "%s" (apply #'concat (nreverse display-strings)))))
 
   (setq avy-help-handler #'avy-show-dispatch-help)
 
@@ -696,24 +674,20 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
   (setq aw-dispatch-alist
         '((?k aw-delete-window "Delete Window")
           (?x aw-swap-window "Swap Windows")
-          (?m my/aw-take-over-window "Move Window")
           (?c aw-copy-window "Copy Window")
           (?j aw-switch-buffer-in-window "Select Buffer")
-          (?o aw-flip-window)
           (?b aw-switch-buffer-other-window "Switch Buffer Other Window")
-          (?c aw-split-window-fair "Split Fair Window")
-          (?s aw-split-window-vert "Split Vert Window")
-          (?v aw-split-window-horz "Split Horz Window")
-          (?o delete-other-windows "Delete Other Windows")
+          (?v aw-split-window-vert "Split Vert Window")
+          (?h aw-split-window-horz "Split Horz Window")
           (?? aw-show-dispatch-help))))
 
 (use-package windmove
   :after window
-  :bind (:map other-window-repeat-map
-         ("L" . windmove-swap-states-right)
-         ("J" . windmove-swap-states-down)
-         ("K" . windmove-swap-states-up)
-         ("H" . windmove-swap-states-left)
+  :bind (("C-<right>" . windmove-swap-states-right)
+         ("C-<down>" . windmove-swap-states-down)
+         ("C-<up>" . windmove-swap-states-up)
+         ("C-<left>" . windmove-swap-states-left)
+         :map other-window-repeat-map
          ("l" . windmove-right)
          ("k" . windmove-up)
          ("h" . windmove-left)
@@ -727,34 +701,6 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
   (dolist (cmd '(windmove-swap-states-left windmove-swap-states-right
                 windmove-swap-states-up windmove-swap-states-down))
   (put cmd 'repeat-map 'other-window-repeat-map)))
-
-;;; God mode for better file navigation (save pinky)
-(use-package god-mode
-  :bind (;; ("M-1" . (lambda () (interactive) (god-mode-all 1)))
-         ("C-x C-1" . delete-other-windows)
-         ("C-x C-2" . split-window-below)
-         ("C-x C-3" . split-window-right)
-         ("C-x C-0" . delete-window)
-         :map god-local-mode-map
-         ("i" . god-mode-all)
-         ("." . repeat)
-         ("[" . backward-paragraph)
-         ("]" . forward-paragraph)
-         :map isearch-mode-map
-         ("<escape>" . god-mode-isearch-activate)
-         :map god-mode-isearch-map
-         ("<escape>" . god-mode-isearch-disable))
-  :hook ((god-mode-enabled . my-god-mode-highlight-line)
-         (god-mode-disabled . my-god-mode-highlight-line))
-  :custom-face
-  (god-mode-lighter ((t (:inherit error))))
-  :config
-  (require 'god-mode-isearch)
-  (defun my-god-mode-highlight-line ()
-    "Enable hl-line-mode when god-mode is active."
-    (if god-local-mode
-        (hl-line-mode 1)
-      (hl-line-mode -1))))
 
 ;;; Better M-v/C-v
 (defun better-scroll-up-half (&optional arg)
@@ -776,7 +722,6 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
              (/ (window-body-height) 2))))
     (scroll-down-command n)
     (recenter)))
-
 (global-set-key (kbd "C-v") 'better-scroll-up-half)
 (global-set-key (kbd "M-v") 'better-scroll-down-half)
 

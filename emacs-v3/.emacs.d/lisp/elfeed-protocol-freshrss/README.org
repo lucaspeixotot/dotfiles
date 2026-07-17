@@ -1,0 +1,73 @@
+This is an integration of [[https://github.com/skeeto/elfeed][elfeed]] with [[https://www.freshrss.org][FreshRSS]] via [[https://github.com/fasheng/elfeed-protocol][elfeed-protocol]] derived from
+the existing [[https://gitlab.com/bricka/elfeed-protocol-theoldreader][theoldreader integration]] developed by Alex Figl-Brick.
+
+In principle this package should work with a number of other RSS servers using
+the [[https://freshrss.github.io/FreshRSS/en/developers/06_GoogleReader_API.html][greader API]], in practice I'm only testing against FreshRSS.
+
+* Features
+
+- Syncing Articles from FreshRSS' MainStream
+- Syncing individual subscriptions/feeds
+  - Both via ~elfeed-update-visible~ and
+  - ~elfeed-update-feed~
+- Two-Way Sync for read/favourite state
+- Show FreshRSS Folders and Labels as elfeed tags
+
+* Dependencies
+
+- emacs >= 29.1
+- [[https://github.com/emacs-elfeed][elfeed]]  >= 4.0.0
+- [[https://github.com/fasheng/elfeed-protocol][elfeed-protocol]] >= 1.0.0
+- [[https://github.com/kiwanami/emacs-deferred][deferred]] >= 0.5.1
+- [[https://github.com/tkf/emacs-request][request]] >= 0.3.2
+
+Should you run into compatibility issues with older versions of the FreshRSS
+server, please let me know.
+
+* Installation
+
+You need to register ~freshrss~ as a protocol with ~elfeed-protocol~ and then
+enable it. If you're using ~use-package~, it looks something like this:
+
+#+BEGIN_SRC emacs-lisp
+  (use-package elfeed
+    :defer t
+    :load elfeed-protocol
+    :custom
+    (elfeed-use-curl t)
+    :config
+    (setq elfeed-feeds `(("freshrss+https://user@freshrss.example.org"
+                          :api-url "https://freshrss.example.org/api/greader.php"
+                          :password "super secret passphrase or lisp form to get it"))))
+
+  (use-package elfeed-protocol
+    :defer t
+    :after elfeed
+    :custom
+    (elfeed-protocol-enabled-protocols '(freshrss))
+    :config
+    (elfeed-protocol-enable))
+
+  (use-package elfeed-protocol-freshrss
+    :defer t
+    :after elfeed
+    :config
+    (elfeed-protocol-freshrss-register-protocol))
+#+END_SRC
+
+After that, just run ~M-x elfeed~ and fetch your feeds.
+
+* Authentication
+
+The package uses the user in the feed URL and the password field to acquire a
+token for API requests once per emacs session, which it then uses in subsequent
+api calls.
+
+For alternatives to setting the password directly in you emacs configuration see
+the [[https://github.com/fasheng/elfeed-protocol#all-example-formats-for-elfeed-feeds][elfeed-protocol documentation]].
+
+* License
+
+GPLv3+
+
+Also if you don't support queer & trans folk or use LLMs please fuck off.

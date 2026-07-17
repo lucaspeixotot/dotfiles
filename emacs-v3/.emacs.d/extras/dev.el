@@ -49,6 +49,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package magit
+  :demand t
   :bind (:map project-prefix-map ("m" . magit-project-status))
   :custom
   (magit-ediff-dwim-show-on-hunks t)
@@ -181,11 +182,11 @@
 (use-package corfu
   ;; Optional customizations
   :custom
-  (corfu-auto t)
-  (corfu-auto-delay 0.2)
-  (corfu-auto-prefix 3)
+  ;; (corfu-auto t)
+  ;; (corfu-auto-delay 0.2)
+  ;; (corfu-auto-prefix 3)
   ;; (corfu-auto-trigger ".")
-  (corfu-quit-no-match t)
+  (corfu-quit-no-match 'separator)
   (corfu-cycle t) ;; Enable cycling for `corfu-next/previous'
   (corfu-quit-at-boundary 'separator) ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
@@ -393,7 +394,6 @@
 
 
 (use-package indent-bars
-  :ensure t
   :custom
   ;; --- Core ---
   (indent-bars-treesit-support t)

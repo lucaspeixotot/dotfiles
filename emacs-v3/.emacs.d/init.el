@@ -54,46 +54,6 @@
   :config
   (gcmh-mode 1))
 
-(use-package exec-path-from-shell
-  :config
-  (dolist (var '("DEEPSEEK_API_KEY_EMACS"))
-    (add-to-list 'exec-path-from-shell-variables var))
-
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize))
-  )
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Themes
-;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package ef-themes
-  :init
-  ;; This makes the Modus commands listed below consider only the Ef
-  ;; themes.  For an alternative that includes Modus and all
-  ;; derivative themes (like Ef), enable the
-  ;; `modus-themes-include-derivatives-mode' instead.  The manual of
-  ;; the Ef themes has a section that explains all the possibilities:
-  ;;
-  ;; - Evaluate `(info "(ef-themes) Working with other Modus themes or taking over Modus")'
-  ;; - Visit <https://protesilaos.com/emacs/ef-themes#h:6585235a-5219-4f78-9dd5-6a64d87d1b6e>
-  (ef-themes-take-over-modus-themes-mode 1)
-  :bind
-  (("<f5>" . modus-themes-rotate)
-   ("C-<f5>" . modus-themes-select)
-   ("M-<f5>" . modus-themes-load-random))
-  :custom
-  (modus-themes-mixed-fonts t)
-  (modus-themes-italic-constructs t)
-  :config
-  ;; Finally, load your theme of choice (or a random one with
-  ;; `modus-themes-load-random', `modus-themes-load-random-dark',
-  ;; `modus-themes-load-random-light').
-  (modus-themes-load-theme 'ef-melissa-light))
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Undo and history
@@ -118,9 +78,9 @@
 ;; disk growth in ~/.emacs.d/undo-fu-session/ by retaining undo data
 ;; for only the 200 most recently edited files.
 (use-package undo-fu-session
-  :custom
-  (undo-fu-session-file-limit 200)
+  :demand t
   :config
+  (setq undo-fu-session-file-limit 200)
   (undo-fu-session-global-mode))
 
 ;; Visual undo/redo tree
@@ -131,7 +91,6 @@
   )
 
 (use-package saveplace
-  :straight nil
   :hook (after-init . save-place-mode)
   )
 
@@ -204,7 +163,6 @@ See also `newline-and-indent'."
     (forward-line 1)
     (when newline-and-indent
       (indent-according-to-mode)))
-
   (global-set-key (kbd "C-o") 'open-next-line)
 
   (defun open-previous-line (arg)
@@ -215,47 +173,7 @@ See also `newline-and-indent'."
     (open-line arg)
     (when newline-and-indent
       (indent-according-to-mode)))
-
   (global-set-key (kbd "C-S-O") 'open-previous-line)
-
-
-  (defun move-text-internal (arg)
-    (cond
-     ((and mark-active transient-mark-mode)
-      (if (> (point) (mark))
-          (exchange-point-and-mark))
-      (let ((column (current-column))
-            (text (delete-and-extract-region (point) (mark))))
-        (forward-line arg)
-        (move-to-column column t)
-        (set-mark (point))
-        (insert text)
-        (exchange-point-and-mark)
-        (setq deactivate-mark nil)))
-     (t
-      (let ((column (current-column)))
-        (beginning-of-line)
-        (when (or (> arg 0) (not (bobp)))
-          (forward-line)
-          (when (or (< arg 0) (not (eobp)))
-            (transpose-lines arg))
-          (forward-line -1))
-        (move-to-column column t)))))
-
-  (defun move-text-down (arg)
-    "Move region (transient-mark-mode active) or current line
-  arg lines down."
-    (interactive "*p")
-    (move-text-internal arg))
-
-  (defun move-text-up (arg)
-    "Move region (transient-mark-mode active) or current line
-  arg lines up."
-    (interactive "*p")
-    (move-text-internal (- arg)))
-
-  (global-set-key [M-up] 'move-text-up)
-  (global-set-key [M-down] 'move-text-down)
 
   (global-set-key (kbd "M-]") 'forward-paragraph)
   (when (or window-system (daemonp))
@@ -267,35 +185,7 @@ See also `newline-and-indent'."
     (let ((fill-column (point-max))
           (emacs-lisp-docstring-fill-column t))
       (fill-paragraph nil region)))
-
   (define-key global-map "\M-Q" 'unfill-paragraph)
-
-  (defvar-keymap my-pager-map
-    :doc "Keymap with paging commands"
-    "SPC" 'scroll-up-command
-    "C-l" 'recenter-top-bottom
-    "v" 'scroll-other-window
-    "M-v" 'scroll-other-window-down
-    "d" #'better-scroll-up-half
-
-    "u" #'better-scroll-down-half
-    "M-o" (if (fboundp 'switchy-window-minor-mode)
-              'switchy-window)
-    "S-SPC" 'scroll-down-command)
-  (let ((scrolling (propertize  "SCRL" 'face '(:inherit highlight)))
-        ml-buffer)
-    (defalias 'my/easy-page
-      (lambda ()
-        (interactive)
-        (when (eq (window-buffer (selected-window))
-                  (current-buffer))
-          (setq ml-buffer (current-buffer))
-          (add-to-list 'mode-line-format scrolling)
-          (set-transient-map
-           my-pager-map t
-           (lambda () (with-current-buffer ml-buffer
-                   (setq mode-line-format
-                         (delete scrolling mode-line-format)))))))))
 
   ;; C-a toggle between indentation and BOL
   (defun back-to-indentation-or-beginning ()
@@ -336,7 +226,6 @@ For a location, jump to it."
     (condition-case nil
         (jump-to-register register arg)
       (user-error (insert-register register arg))))
-
   (define-key global-map (kbd "M-m") 'store-register-dwim)
   (define-key global-map (kbd "M-'") 'use-register-dwim)
 
@@ -352,7 +241,7 @@ For a location, jump to it."
   (set-face-attribute 'font-lock-string-face nil :slant 'italic)
   (setq-default line-spacing 1)
 
-  (global-display-line-numbers-mode 1))
+  )
 
 ;; ediff tweak config
 (use-package ediff
@@ -387,7 +276,6 @@ For a location, jump to it."
 
 ;; Enable massive edition under search results (like from embark)
 (use-package wgrep
-  :defer t
   :custom
   (wgrep-auto-save-buffer t))
 
@@ -397,25 +285,6 @@ For a location, jump to it."
 
 (use-package repeat-help
   :hook (repeat-mode . repeat-help-mode))
-
-;; (use-package multiple-cursors
-;;   :bind (("C->" . mc/mark-next-like-this)
-;;          ("C-<" . mc/mark-previous-like-this)
-;;          ("C-c C-<" . mc/mark-all-like-this)))
-
-;; (use-package symbol-overlay
-;;   :defer t
-;;   :hook (prog-mode . symbol-overlay-mode)
-;;   :bind (
-;;          ("C-;" . symbol-overlay-put)
-;;          ("M-n" . symbol-overlay-jump-next)
-;;          ("M-p" . symbol-overlay-jump-prev)
-;;          ("M-N" . symbol-overlay-switch-forward)
-;;          ("M-P" . symbol-overlay-switch-backward)
-;;          ))
-
-;; (use-package symbol-overlay-mc
-;;   :bind (("M-a" . symbol-overlay-mc-mark-all)))
 
 (use-package embrace
   :straight t
@@ -430,10 +299,8 @@ For a location, jump to it."
 
 (use-package goto-chg
   :straight t
-  :bind (("M-g ;" . goto-last-change)
-         ("M-i" . goto-last-change)
-         ("M-I" . goto-last-change-reverse)
-         ("M-g M-;" . goto-last-change)))
+  :bind (("M-i" . goto-last-change)
+         ("M-I" . goto-last-change-reverse)))
 
 (use-package pulsar
   :straight t
@@ -526,27 +393,6 @@ For a location, jump to it."
 (setq lazy-count-prefix-format "(%s/%s) ")
 (setq lazy-count-suffix-format nil)
 (setq search-whitespace-regexp ".*?")
-;; Isearch in other windows
-(defun isearch-forward-other-window (prefix)
-  "Function to isearch-forward in other-window."
-  (interactive "P")
-  (unless (one-window-p)
-    (save-excursion
-      (let ((next (if prefix -1 1)))
-        (other-window next)
-        (isearch-forward)
-        (other-window (- next))))))
-
-(defun isearch-backward-other-window (prefix)
-  "Function to isearch-backward in other-window."
-  (interactive "P")
-  (unless (one-window-p)
-    (save-excursion
-      (let ((next (if prefix 1 -1)))
-        (other-window next)
-        (isearch-backward)
-        (other-window (- next))))))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;

@@ -10,21 +10,54 @@
 ;;;  $$       |$$ | $$ | $$ |$$    $$ |$$       |/     $$/       $$       |   $$$/      $$  $$/
 ;;;  $$$$$$$$/ $$/  $$/  $$/  $$$$$$$/  $$$$$$$/ $$$$$$$/         $$$$$$$/     $/        $$$$/
 
+(add-to-list 'load-path
+             (expand-file-name "lisp/elfeed-protocol-freshrss" user-emacs-directory))
 
+;; ── Dependencies elfeed-protocol-freshrss ────────────────────────────
+(use-package deferred
+  :straight t
+  :demand t)
+
+(use-package request
+  :straight t
+  :demand t)
+
+(use-package request-deferred
+  :straight t
+  :demand t)
+
+;; ── elfeed core ──────────────────────────────────────────────────────
 (use-package elfeed
   :straight t
+  :custom
+  (elfeed-use-curl t)
   :config
-  (setq elfeed-feeds
-        '(("https://sachachua.com/blog/category/emacs-news/feed/" emacs)
-          ("https://www.youtube.com/feeds/videos.xml?channel_id=UC02coXfDPjEmU8uDT2G8Z2A" :title "Jones Manoel" youtube politics economy)
-          ("https://protesilaos.com/commentary.xml" prot)
-          ("https://protesilaos.com/interpretations.xml" prot)
-          ("https://protesilaos.com/news.xml" prot)
-          ("https://protesilaos.com/prot-asks.xml" prot)
-          ("https://protesilaos.com/politics.xml" prot)))
   (setq-default elfeed-search-filter "@1month +unread")
-  )
+  (let* ((freshrss-username (getenv "FRESHRSS_USERNAME"))
+         (freshrss-domain "rss.liclab.org")
+         (protocol-entry (concat "freshrss+https://" freshrss-username "@" freshrss-domain)))
+    (setq elfeed-feeds
+          `((,protocol-entry
+             :api-url ,(concat "https://" freshrss-domain "/api/greader.php")
+             :password ,(getenv "FRESHRSS_PASSWORD"))))))
 
+;; ── elfeed-protocol base ─────────────────────────────────────────────
+(use-package elfeed-protocol
+  :straight t
+  :after elfeed
+  :custom
+  (elfeed-protocol-enabled-protocols '(freshrss))
+  :config
+  (elfeed-protocol-enable))
+
+;; ── FreshRSS GReader backend ─────────────────────────────────────────
+(use-package elfeed-protocol-freshrss
+  :straight nil
+  :after elfeed-protocol
+  :config
+  (elfeed-protocol-freshrss-register-protocol))
+
+;; ── YouTube integration ──────────────────────────────────────────────
 (use-package elfeed-tube
   :straight t
   :after elfeed
@@ -35,11 +68,11 @@
   (elfeed-tube-setup)
 
   :bind (:map elfeed-show-mode-map
-         ("F" . elfeed-tube-fetch)
-         ([remap save-buffer] . elfeed-tube-save)
-         :map elfeed-search-mode-map
-         ("F" . elfeed-tube-fetch)
-         ([remap save-buffer] . elfeed-tube-save)))
+              ("F" . elfeed-tube-fetch)
+              ([remap save-buffer] . elfeed-tube-save)
+              :map elfeed-search-mode-map
+              ("F" . elfeed-tube-fetch)
+              ([remap save-buffer] . elfeed-tube-save)))
 
 (use-package elfeed-tube-mpv
   :straight t
