@@ -180,12 +180,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package corfu
-  ;; Optional customizations
   :custom
-  ;; (corfu-auto t)
-  ;; (corfu-auto-delay 0.2)
-  ;; (corfu-auto-prefix 3)
-  ;; (corfu-auto-trigger ".")
   (corfu-quit-no-match 'separator)
   (corfu-cycle t) ;; Enable cycling for `corfu-next/previous'
   (corfu-quit-at-boundary 'separator) ;; Never quit at completion boundary
@@ -216,6 +211,7 @@
   ;; Recommended: Enable Corfu globally.  Recommended since many modes provide
   ;; Capfs and Dabbrev can be used globally (M-/).  See also the customization
   ;; variable `global-corfu-modes' to exclude certain modes.
+  (setq tab-always-indent 'complete)
   (setq global-corfu-minibuffer nil)
   (global-corfu-mode)
 
@@ -232,7 +228,11 @@
                                  ,(lambda (&optional _)
                                     (and (derived-mode-p 'eshell-mode 'comint-mode)
                                          #'corfu-send))))
-  )
+  ;; Sort by input history (no need to modify `corfu-sort-function').
+  (with-eval-after-load 'savehist
+    (corfu-history-mode 1)
+    (add-to-list 'savehist-additional-variables 'corfu-history)))
+
 
 
 ;; A few more useful configurations...
@@ -280,6 +280,32 @@
          (completion-at-point-functions . cape-history)
          (completion-at-point-functions . cape-elisp-block)
          (completion-at-point-functions . cape-elisp-symbol)))
+
+(use-package completion-preview
+  :straight nil
+  :demand t
+  :bind
+  ( :map completion-preview-active-mode-map
+    ("M-n" . completion-preview-next-candidate)
+    ("M-p" . completion-preview-prev-candidate)
+    ("M-<return>" . completion-preview-insert)
+    ;; This way you can combine it with another interface (like the
+    ;; generic Completions buffer or `corfu-mode') to display more
+    ;; candidates.
+    ("<tab>" . completion-preview-complete))
+  :config
+  (setq completion-preview-exact-match-only nil)
+  (setq completion-preview-commands '(self-insert-command
+                                      insert-char
+                                      analyze-text-conversion
+                                      completion-preview-insert-word))
+  (setq completion-preview-minimum-symbol-length 2)
+  (setq completion-preview-idle-delay 0.3)
+  (setq completion-preview-ignore-case t)
+  (setq completion-preview-sort-function #'identity)
+
+  (global-completion-preview-mode 1))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
