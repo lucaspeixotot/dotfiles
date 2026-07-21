@@ -196,7 +196,43 @@
   :custom
   (denote-journal-directory (expand-file-name "journal" denote-directory))
   (denote-journal-keyword "journal")
-  (denote-journal-title-format 'day-date-month-year))
+  (denote-journal-title-format 'day-date-month-year)
+  :config
+  (defun my/calendar-open-denote-journal ()
+    "Open the denote journal entry for the date under cursor in calendar."
+    (interactive)
+    (let* ((calendar-date (calendar-cursor-to-date t))
+           (date (encode-time 0 0 0 (nth 1 calendar-date) (nth 0 calendar-date) (nth 2 calendar-date)))
+           (time-string (format-time-string "%Y%m%d" date))
+           (files (directory-files denote-journal-directory t time-string)))
+      (if files
+          (find-file (car files))
+        (message "No journal entry found for this date."))))
+
+  (with-eval-after-load 'calendar
+    (define-key calendar-mode-map (kbd "J") #'my/calendar-open-denote-journal))
+
+  (defun my/org-agenda-open-denote-journal ()
+    "Open the denote journal entry for the date at point in the Org Agenda."
+    (interactive)
+    (let ((date-prop (get-text-property (point) 'day)))
+      (if date-prop
+          (let* ((date (if (integerp date-prop)
+                           (calendar-gregorian-from-absolute date-prop)
+                         date-prop))
+                 (month (nth 0 date))
+                 (day-num (nth 1 date))
+                 (year (nth 2 date))
+                 (encoded-time (encode-time 0 0 0 day-num month year))
+                 (time-string (format-time-string "%Y%m%d" encoded-time))
+                 (files (directory-files denote-journal-directory t time-string)))
+            (if files
+                (find-file (car files))
+              (message "No journal entry found for %s." time-string)))
+        (message "No date found at point."))))
+
+  (with-eval-after-load 'org-agenda
+    (define-key org-agenda-mode-map (kbd "J") #'my/org-agenda-open-denote-journal)))
 
 (use-package denote-sequence
   :straight t
@@ -295,6 +331,7 @@ Optional argument CANDIDATE is the selected item."
         ("l" . org-toggle-link-display)
    )
   :custom
+  (org-startup-truncated nil)
   (org-directory "~/org/")
   (org-agenda-files '("~/org/inbox.org"
                       "~/org/tasks.org"))
@@ -314,6 +351,8 @@ Optional argument CANDIDATE is the selected item."
       (file+headline ,(expand-file-name "inbox.org" org-directory) "Inbox")
       "* TODO %?\n  DATE: %U\n  RELATED LOCATION: %a\n")))
   :config
+  (add-hook 'org-mode-hook #'visual-line-mode)
+  (define-key org-mode-map (kbd "C-,") nil)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((latex . t)))
@@ -553,3 +592,14 @@ argument, query for word to search."
         org-modern-block-name t                   ; Clean block tags like #+begin_quote
         org-modern-keyword t)
   )
+
+(use-package ox-pandoc
+  :straight t
+  :after org)
+
+(use-package plantuml-mode
+  :straight t
+  :config
+  (setq org-plantuml-jar-path (expand-file-name (or  (getenv "PLANTUML_JAR") "plantuml.jar")))
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t))))
