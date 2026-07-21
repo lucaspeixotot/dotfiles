@@ -699,11 +699,7 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
          ("l" . windmove-right)
          ("k" . windmove-up)
          ("h" . windmove-left)
-         ("j" . windmove-down)
-         ("C-l" . windmove-swap-states-right)
-         ("C-j" . windmove-swap-states-down)
-         ("C-k" . windmove-swap-states-up)
-         ("C-h" . windmove-swap-states-left))
+         ("j" . windmove-down))
   :init
   (setq windmove-wrap-around t)
   (dolist (cmd '(windmove-left windmove-right
