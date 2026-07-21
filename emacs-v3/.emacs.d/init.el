@@ -281,7 +281,10 @@ For a location, jump to it."
 
 (use-package repeat
   :straight nil
-  :hook (after-init . repeat-mode))
+  :hook (after-init . repeat-mode)
+  :config
+  (setq repeat-echo-function 'repeat-echo-message)
+  )
 
 (use-package repeat-help
   :hook (repeat-mode . repeat-help-mode))

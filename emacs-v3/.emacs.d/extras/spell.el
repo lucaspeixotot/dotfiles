@@ -15,6 +15,10 @@
   ;; Ativar globalmente após iniciar Emacs
   :hook ((text-mode org-mode prog-mode conf-mode) . jinx-mode)
   ;; Idiomas: inglês americano + português brasileiro
+  :bind (
+         ("C-c M-n" . jinx-next)
+         ("C-c M-p" . jinx-previous))
+
   :custom
   (jinx-languages "en_US pt_BR")
   ;; Entry point: open the workflow hydra
@@ -25,4 +29,5 @@
                  '(jinx grid (vertico-grid-annotate . 20)
                         (vertico-count . 4))))
 
-  )
+
+  (define-key jinx-repeat-map (kbd "c") #'jinx-correct))

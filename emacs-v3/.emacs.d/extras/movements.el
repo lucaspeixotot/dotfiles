@@ -234,7 +234,7 @@
                     ?u ?/ ?b ?n ?i ?o ?' ?l ?j))
   (setq avy-single-candidate-jump nil)
   (setq avy-dispatch-alist '((?m . avy-action-mark)
-                             (?$ . avy-action-ispell)
+                             (?$ . avy-action-jinx)
                              (?z . avy-action-zap-to-char)
                              (?  . avy-action-embark)
                              (?= . avy-action-define)
@@ -283,7 +283,7 @@
 
   (setq avy-help-handler #'avy-show-dispatch-help)
 
-  ;; Improved to include transposition by hylophile
+  ;; Improved to include transposition by hilopiteco
   (defun avy-action-easy-kill (pt)
     (unless (require 'easy-kill nil t)
       (user-error "Easy Kill not found, please install."))
@@ -349,6 +349,14 @@
         (dictionary-search-dwim))
       (select-window
        (cdr (ring-ref avy-ring 0))))
+    t)
+
+  (defun avy-action-jinx (pt)
+    (save-excursion
+      (goto-char pt)
+      (call-interactively #'jinx-correct))
+    (select-window
+     (cdr (ring-ref avy-ring 0)))
     t)
 
   (defun avy-action-embark (pt)
@@ -691,7 +699,11 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
          ("l" . windmove-right)
          ("k" . windmove-up)
          ("h" . windmove-left)
-         ("j" . windmove-down))
+         ("j" . windmove-down)
+         ("C-l" . windmove-swap-states-right)
+         ("C-j" . windmove-swap-states-down)
+         ("C-k" . windmove-swap-states-up)
+         ("C-h" . windmove-swap-states-left))
   :init
   (setq windmove-wrap-around t)
   (dolist (cmd '(windmove-left windmove-right
@@ -725,39 +737,6 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
 (global-set-key (kbd "C-v") 'better-scroll-up-half)
 (global-set-key (kbd "M-v") 'better-scroll-down-half)
 
-(use-package hydra
-  :straight t
-  :bind
-  ("M-1" . 'hydra-moves/body)
-  :init
-  (defhydra hydra-moves (:color pink)
-      "emacs fast movements"
-      ("l" forward-char)
-      ("h" backward-char)
-      ("j" next-line)
-      ("k" previous-line)
-      ("J" (lambda () (interactive) (next-line) (recenter)))
-      ("K" (lambda () (interactive) (previous-line) (recenter)))
-      ("a" beginning-of-line)
-      ("e" end-of-line)
-      ("w" forward-word)
-      ("b" backward-word)
-      ("u" better-scroll-down-half)
-      ("d" better-scroll-up-half)
-      ("z" recenter-top-bottom)
-      ("c" kirigami-close-fold)
-      ("C" kirigami-close-folds)
-      ("o" kirigami-open-fold)
-      ("O" kirigami-open-fold-rec)
-      ("r" kirigami-open-folds)
-      ("RET" avy-goto-char-timer)
-      ("f" avy-goto-char-in-line)
-      ("." embark-dwim)
-      ("," xref-go-back)
-      ("?" xref-find-references)
-      ("q" nil "quit" :color blue))
-  )
-
 (use-package avy-zap
   :straight t
   :bind (("M-z" . avy-zap-to-char-dwim)
@@ -784,3 +763,42 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
                   (setq this-command 'er/expand-region))))
   (put 'er/expand-region 'repeat-map 'expand-region-repeat-map)
   (put 'er/contract-region 'repeat-map 'expand-region-repeat-map))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Hydra config
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package hydra
+  :straight t
+  :bind
+  ("M-1" . 'hydra-moves/body)
+  :init
+  (defhydra hydra-moves (:color pink)
+    "emacs fast movements"
+    ("l" forward-char)
+    ("h" backward-char)
+    ("j" next-line)
+    ("k" previous-line)
+    ("J" (lambda () (interactive) (next-line) (recenter)))
+    ("K" (lambda () (interactive) (previous-line) (recenter)))
+    ("a" beginning-of-line)
+    ("e" end-of-line)
+    ("w" forward-word)
+    ("b" backward-word)
+    ("u" better-scroll-down-half)
+    ("d" better-scroll-up-half)
+    ("z" recenter-top-bottom)
+    ("c" kirigami-close-fold)
+    ("C" kirigami-close-folds)
+    ("o" kirigami-open-fold)
+    ("O" kirigami-open-fold-rec)
+    ("r" kirigami-open-folds)
+    ("RET" avy-goto-char-timer)
+    ("f" avy-goto-char-in-line)
+    ("." embark-dwim)
+    ("," xref-go-back)
+    ("?" xref-find-references)
+    ("q" nil "quit" :color blue))
+  )
