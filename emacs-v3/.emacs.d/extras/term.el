@@ -26,3 +26,6 @@
   ;; would grow without bound under heavy output (build logs, cat big files).
   ;; 128 K chars ≈ 1-2 MB per terminal buffer even with heavy ANSI coloring.
   (eat-term-scrollback-size 131072))
+
+(use-package ghostel
+  :straight t)

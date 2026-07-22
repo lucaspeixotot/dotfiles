@@ -38,3 +38,5 @@
                             ;; (foreground-color . "#ffffff")
                             (ns-appearance . dark)
                             (ns-transparent-titlebar . t)))
+
+(setq ring-bell-function 'ignore)

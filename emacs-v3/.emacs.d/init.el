@@ -275,8 +275,8 @@ For a location, jump to it."
   :straight nil
   :hook (after-init . repeat-mode)
   :init
-  (setq repeat-echo-function 'repeat-echo-message)
-  )
+  (add-hook 'repeat-mode-hook
+            (lambda () (setq repeat-echo-function #'repeat-echo-message))))
 
 (use-package repeat-help
   :hook (repeat-mode . repeat-help-mode))
@@ -664,6 +664,7 @@ For a location, jump to it."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages nil)
+ '(repeat-echo-function 'repeat-echo-message)
  '(safe-local-variable-values
    '((my/dape-cwd . "/home/cavalcan/glcp/authn")
      (my/dape-cwd . "/home/cavalcan/glcp/authn/tests/feature_test")))

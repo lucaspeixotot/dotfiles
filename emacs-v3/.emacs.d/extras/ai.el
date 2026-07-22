@@ -110,6 +110,7 @@ Feedback:
 (use-package gptel-agent
   :straight (gptel-agent :host github :repo "karthink/gptel-agent" :branch "master")
   :config
+  (advice-add 'gptel-agent--fontify-block :override 'ignore)
   ;; GLP SDLC marketplace: design-workflow agents and skills.
   ;; Agents dir: files are read directly (non-recursive) as agent definitions.
   (let ((glp-workflow "~/glcp/glp-sdlc-marketplace/plugins/glp-design-workflow/"))
@@ -120,7 +121,8 @@ Feedback:
   ;; Personal skills directory. Each skill is a sub-folder containing a
   ;; SKILL.md file (see https://agentskills.io).
   (add-to-list 'gptel-agent-skill-dirs "~/custom_skills/")
-  (gptel-agent-update))
+  (gptel-agent-update)
+  )
 
 
 (use-package mcp
