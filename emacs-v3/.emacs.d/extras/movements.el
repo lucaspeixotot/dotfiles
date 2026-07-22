@@ -11,7 +11,7 @@
 ;;;  $$$$$$$$/ $$/  $$/  $$/  $$$$$$$/  $$$$$$$/ $$$$$$$/         $$$$$$$/     $/        $$$$/
 
 (use-package easy-kill
-  :ensure t
+  :straight t
   :bind (([remap kill-ring-save] . #'easy-kill)
          ([remap mark-sexp]      . #'easy-mark)
          ("M-S-w" . kill-ring-save)
@@ -237,7 +237,7 @@
                              (?$ . avy-action-jinx)
                              (?z . avy-action-zap-to-char)
                              (?  . avy-action-embark)
-                             (?= . avy-action-define)
+                             (?= . avy-action-dict)
                              (23 . avy-action-zap-to-char)
                              (67108896 . avy-action-mark-to-char)
                              (?h . avy-action-helpful)
@@ -341,7 +341,7 @@
      (cdr (ring-ref avy-ring 0)))
     t)
 
-  (defun avy-action-define (pt)
+  (defun avy-action-dict (pt)
     (cl-letf (((symbol-function 'keyboard-quit)
                #'abort-recursive-edit))
       (save-excursion
@@ -798,3 +798,8 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
     ("?" xref-find-references)
     ("q" nil "quit" :color blue))
   )
+
+(use-package substitute
+  :straight t
+  :bind-keymap
+  ("C-c s" . substitute-prefix-map))
