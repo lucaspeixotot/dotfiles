@@ -231,14 +231,6 @@ For a location, jump to it."
 
   (global-visual-wrap-prefix-mode 1)
 
-  ;; Font settings
-  (set-face-attribute 'default nil :family "JetBrains Mono NL" :height 100 :weight 'normal)
-  (set-face-attribute 'fixed-pitch nil :family "JetBrains Mono NL" :height 100)
-  (set-face-attribute 'variable-pitch nil :family "Literata" :height 110)
-  (set-face-attribute 'bold nil :weight 'bold)
-  (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
-  (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
-  (set-face-attribute 'font-lock-string-face nil :slant 'italic)
   (setq-default line-spacing 1)
 
   )
@@ -532,9 +524,41 @@ For a location, jump to it."
   (modus-themes-to-rotate modus-themes-items)
   (modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
   :config
-  ;; Finally, load your theme of choice
+  ;; Also apply italic to font-lock-string-face and font-lock-keyword-face
+  ;; after the theme loads.  The modus-themes-italic-constructs option only
+  ;; affects comments and documentation strings, not these faces.  Using
+  ;; modus-themes-after-load-theme-hook ensures our customizations survive
+  ;; theme toggling, whereas set-face-attribute in the use-package emacs
+  ;; block gets overridden by the theme's custom-theme-set-faces on first load.
+  (add-hook 'modus-themes-after-load-theme-hook
+            (lambda ()
+              (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
+              (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
+              (set-face-attribute 'font-lock-string-face nil :slant 'italic)))
+  ;; Finally, load your theme of choice.
   (modus-themes-load-theme 'modus-operandi-tinted)
   )
+
+(use-package fontaine
+  :straight t
+  :demand t
+  :custom
+  (fontaine-latest-state-file
+   (locate-user-emacs-file "fontaine-latest-state.eld"))
+  (fontaine-presets
+   '((regular) ; inherits all properties from the t preset
+     (t
+      :default-family "JetBrains Mono NL"
+      :default-weight regular
+      :default-height 100
+      :variable-pitch-family "Literata"
+      :variable-pitch-height 1.1
+      :bold-weight bold
+      :line-spacing 1)))
+  :config
+  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
+  (fontaine-mode 1)
+  (define-key global-map (kbd "C-c f") #'fontaine-set-preset))
 
 (use-package doric-themes
   :straight t
