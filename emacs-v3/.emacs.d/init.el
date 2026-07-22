@@ -468,6 +468,26 @@ For a location, jump to it."
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package ef-themes
+  :straight t
+  ;; :init
+  ;; This makes the Modus commands listed below consider only the Ef
+  ;; themes.  For an alternative that includes Modus and all
+  ;; derivative themes (like Ef), enable the
+  ;; `modus-themes-include-derivatives-mode' instead.  The manual of
+  ;; the Ef themes has a section that explains all the possibilities:
+  ;;
+  ;; - Evaluate `(info "(ef-themes) Working with other Modus themes or taking over Modus")'
+  ;; - Visit <https://protesilaos.com/emacs/ef-themes#h:6585235a-5219-4f78-9dd5-6a64d87d1b6e>
+  ;; (ef-themes-take-over-modus-themes-mode 1)
+  ;; :config
+
+  ;; Finally, load your theme of choice (or a random one with
+  ;; `modus-themes-load-random', `modus-themes-load-random-dark',
+  ;; `modus-themes-load-random-light').
+  ;; (modus-themes-load-theme 'ef-melissa-light)
+  )
+
 (use-package modus-themes
   :straight t
   :demand t
@@ -494,51 +514,27 @@ For a location, jump to it."
   ;; not install and activate those other theme packages.
   (modus-themes-include-derivatives-mode 1)
   :bind
-  (("<f5>" . modus-themes-rotate)
+  (("<f5>" . modus-themes-toggle)
    ("C-<f5>" . modus-themes-select)
    ("M-<f5>" . modus-themes-load-random))
+  :custom
+  (modus-themes-italic-constructs t)
+  (modus-themes-bold-constructs t)
+  (modus-themes-mixed-fonts nil)
+  (modus-themes-variable-pitch-ui nil)
+  (modus-themes-completions '((t . (bold))))
+  (modus-themes-prompts '(bold))
+  (modus-themes-headings
+   '((agenda-structure . (variable-pitch light 2.2))
+     (agenda-date . (variable-pitch regular 1.3))
+     (t . (regular 1.15))))
+  (modus-themes-common-palette-overrides nil)
+  (modus-themes-to-rotate modus-themes-items)
+  (modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
   :config
-  ;; Your customizations here.  All customizations must evaluated
-  ;; BEFORE loading the theme.
-  (setq modus-themes-to-toggle '(modus-operandi modus-vivendi)
-        modus-themes-to-rotate modus-themes-items
-        modus-themes-mixed-fonts t
-        modus-themes-variable-pitch-ui t
-        modus-themes-italic-constructs t
-        modus-themes-bold-constructs t
-        modus-themes-completions '((t . (bold)))
-        modus-themes-prompts '(bold)
-        modus-themes-headings
-        '((agenda-structure . (variable-pitch light 2.2))
-          (agenda-date . (variable-pitch regular 1.3))
-          (t . (regular 1.15))))
-
-  (setq modus-themes-common-palette-overrides nil)
-
-  ;; Finally, load your theme of choice (or a random one with
-  ;; `modus-themes-load-random', `modus-themes-load-random-dark',
-  ;; `modus-themes-load-random-light').
-  ;; (modus-themes-load-theme 'modus-operandi)
+  ;; Finally, load your theme of choice
+  (modus-themes-load-theme 'modus-operandi-tinted)
   )
-
-(use-package ef-themes
-  :straight t
-  :init
-  ;; This makes the Modus commands listed below consider only the Ef
-  ;; themes.  For an alternative that includes Modus and all
-  ;; derivative themes (like Ef), enable the
-  ;; `modus-themes-include-derivatives-mode' instead.  The manual of
-  ;; the Ef themes has a section that explains all the possibilities:
-  ;;
-  ;; - Evaluate `(info "(ef-themes) Working with other Modus themes or taking over Modus")'
-  ;; - Visit <https://protesilaos.com/emacs/ef-themes#h:6585235a-5219-4f78-9dd5-6a64d87d1b6e>
-  (ef-themes-take-over-modus-themes-mode 1)
-  :config
-
-  ;; Finally, load your theme of choice (or a random one with
-  ;; `modus-themes-load-random', `modus-themes-load-random-dark',
-  ;; `modus-themes-load-random-light').
-  (modus-themes-load-theme 'ef-melissa-light))
 
 (use-package doric-themes
   :straight t
