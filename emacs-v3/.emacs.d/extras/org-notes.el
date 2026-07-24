@@ -18,7 +18,8 @@
 ;;     (info "(denote) Sample configuration")
 
 (use-package denote
- :straight t
+  :straight t
+  :demand t
   :hook
   (;; If you use plain text files (.txt), then you want to make the
    ;; Denote links clickable (Org mode and Markdown mode render links
@@ -407,6 +408,7 @@ argument, query for word to search."
 
 (use-package olivetti
   :straight t
+  :after denote
   :config
   (defun my/enable-olivetti-for-denote ()
     "Enable olivetti-mode if the current buffer is a Denote note."

@@ -226,29 +226,30 @@
 ;;; Dashboard
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq inhibit-startup-screen t)
 
 ;; use-package with package.el:
-(use-package dashboard
-  :straight t
-  :custom
-  (dashboard-center-content t)
-  (dashboard-vertically-center-content t)
-  (dashboard-items '((recents   . 5)
-                     (projects  . 10)
-                     (agenda . 10)))
-  (dashboard-startupify-list '(dashboard-insert-banner
-                               dashboard-insert-newline
-                               dashboard-insert-banner-title
-                               dashboard-insert-newline
-                               dashboard-insert-navigator
-                               dashboard-insert-newline
-                               dashboard-insert-init-info
-                               dashboard-insert-items
-                               dashboard-insert-newline))
-  (dashboard-week-agenda t)
-  (dashboard-agenda-release-buffers t)
-  :config
-  (dashboard-setup-startup-hook))
+;; (use-package dashboard
+;;   :straight t
+;;   :custom
+;;   (dashboard-center-content t)
+;;   (dashboard-vertically-center-content t)
+;;   (dashboard-items '((recents   . 5)
+;;                      (projects  . 10)
+;;                      (agenda . 10)))
+;;   (dashboard-startupify-list '(dashboard-insert-banner
+;;                                dashboard-insert-newline
+;;                                dashboard-insert-banner-title
+;;                                dashboard-insert-newline
+;;                                dashboard-insert-navigator
+;;                                dashboard-insert-newline
+;;                                dashboard-insert-init-info
+;;                                dashboard-insert-items
+;;                                dashboard-insert-newline))
+;;   (dashboard-week-agenda t)
+;;   (dashboard-agenda-release-buffers t)
+;;   :config
+;;   (dashboard-setup-startup-hook))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
