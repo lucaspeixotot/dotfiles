@@ -20,6 +20,11 @@
 (use-package denote
   :straight t
   :demand t
+  :init
+  (which-key-add-key-based-replacements
+    "C-c n" "Notes"
+    "C-c n q" "Query Notes"
+    "C-c n i" "Insert to notes")
   :hook
   (;; If you use plain text files (.txt), then you want to make the
    ;; Denote links clickable (Org mode and Markdown mode render links
@@ -33,35 +38,37 @@
   :bind
   ;; Denote DOES NOT define any key bindings.  This is for the user to
   ;; decide.  For example:
-  ( :map global-map
-    ("C-c n n" . denote)
-    ("C-c n o" . denote-open-or-create)
-    ("C-c n d" . denote-dired)
-    ;; ("C-c n g" . denote-grep)
-    ;; If you intend to use Denote with a variety of file types, it is
-    ;; easier to bind the link-related commands to the `global-map', as
-    ;; shown here.  Otherwise follow the same pattern for `org-mode-map',
-    ;; `markdown-mode-map', and/or `text-mode-map'.
-    ("C-c n i l" . denote-link)
-    ("C-c n i L" . denote-add-links)
-    ("C-c n i f" . denote-link-or-create)
-    ("C-c n i q" . my/quote-to-denote)
-    ("C-c n q l" . denote-find-link)
-    ("C-c n q b" . denote-find-backlink)
-    ("C-c n q B" . denote-backlinks)
-    ("C-c n q c" . denote-query-contents-link) ; create link that triggers a grep
-    ("C-c n q f" . denote-query-filenames-link) ; create link that triggers a dired
-    ;; Note that `denote-rename-file' can work from any context, not just
-    ;; Dired bufffers.  That is why we bind it here to the `global-map'.
-    ("C-c n r" . denote-rename-file)
-    ("C-c n R" . denote-rename-file-using-front-matter)
+  (:prefix-map my-denote-map
+   :prefix "C-c n"
+   :prefix-docstring "Notes"
+   ("n" . denote)
+   ("o" . denote-open-or-create)
+   ("d" . denote-dired)
+   ("r" . denote-rename-file)
+   ("R" . denote-rename-file-using-front-matter))
 
-    ;; Key bindings specifically for Dired.
-    :map dired-mode-map
-    ("C-c C-d C-i" . denote-dired-link-marked-notes)
-    ("C-c C-d C-r" . denote-dired-rename-files)
-    ("C-c C-d C-k" . denote-dired-rename-marked-files-with-keywords)
-    ("C-c C-d C-R" . denote-dired-rename-marked-files-using-front-matter))
+  (:prefix-map my-query-denote-map
+   :prefix "C-c n q"
+   :prefix-docstring "Query notes"
+   ("l" . denote-find-link)
+   ("b" . denote-find-backlink)
+   ("B" . denote-backlinks))
+
+  (:prefix-map my-insert-denote-map
+   :prefix "C-c n i"
+   :prefix-docstring "Insert to notes"
+   ("l" . denote-link)
+   ("L" . denote-add-links)
+   ("f" . denote-link-or-create)
+   ("q" . my/quote-to-denote)
+   ("c" . denote-query-contents-link)
+   ("d" . denote-query-filenames-link))
+
+  (:map dired-mode-map
+  ("C-c C-n C-i" . denote-dired-link-marked-notes)
+  ("C-c C-n C-r" . denote-dired-rename-files)
+  ("C-c C-n C-k" . denote-dired-rename-marked-files-with-keywords)
+  ("C-c C-n C-R" . denote-dired-rename-marked-files-using-front-matter))
 
   :custom
   (denote-directory (expand-file-name "~/denote-notes/"))
@@ -69,7 +76,7 @@
   (denote-known-keywords '("literature" "permanent"))
   (denote-infer-keywords t)
   (denote-sort-keywords t)
-  (denote-prompts '(title keywords template))
+  (denote-prompts '(keywords template))
   (denote-excluded-directories-regexp nil)
   (denote-keywords-to-not-infer-regexp nil)
   (denote-rename-confirmations '(rewrite-front-matter modify-file-name))
@@ -115,46 +122,32 @@
                       "\n#+end_quote\n")))
           (message "Quote successfully copied to %s!" chosen-name)))))))
 
-  (defun org-dblock-write:denote-outbound-links (params)
-  "List denote: links found ABOVE this block, newest first."
-  (let* ((here (point))                   ; point is inside the block
-         (begin-pos (save-excursion
-                      (re-search-backward "^#\\+BEGIN:" nil t)
-                      (line-beginning-position)))
-         (links '()))
-    (save-excursion
-      (goto-char (point-min))
-      (while (re-search-forward "\\[\\[denote:\\([^][]+?\\)\\]\\(?:\\[\\([^][]+\\)\\]\\)?"
-                                begin-pos t)
-        (push (cons (car (split-string (match-string 1) "::"))
-                    (or (match-string 2) (match-string 1)))
-              links)))
-    (setq links (delete-dups (nreverse links)))
-    (dolist (link links)
-      (insert (format "- [[denote:%s][%s]]\n" (car link) (cdr link))))))
-
-  (defun my-link-denote-template ()
+  (defun my-main-note-template ()
     (concat
-     "* References\n"
-     "#+BEGIN: denote-outbound-links\n"
-     "#+END:\n\n"
-     "* Backlinks\n"
+     "* Links\n"
+     "- Related to:\n"
+     "  \n"
+     "- Literature:\n"
+     "  \n"
+     "- Backlinks:\n"
      "#+BEGIN: denote-backlinks :sort-by-component identifier :reverse-sort t\n"
      "#+END:"))
   (setq denote-templates
-        '((link . my-link-denote-template)))
-
-
+        '((main . my-main-note-template)))
+  (setq denote-link-description-format "%s %t (%k)")
   )
 
 (use-package denote-org
   :straight t
+  :init
+  (which-key-add-key-based-replacements
+    "C-c n i o" "Org DBlock")
   :bind
-  (:map global-map
-        ("C-c n i o f" . denote-org-dblock-insert-files)
-        ("C-c n i o l" . denote-org-dblock-insert-links)
-        ("C-c n i o b" . denote-org-dblock-insert-backlinks)
-        )
+  (:prefix-map my-denote-org-dblock-map
+   :prefix "C-c n i o"
+   ("f" . denote-org-dblock-insert-files)
+   ("l" . denote-org-dblock-insert-links)
+   ("b" . denote-org-dblock-insert-backlinks))
   :commands
   ;; I list the commands here so that you can discover them more
   ;; easily.  You might want to bind the most frequently used ones to
@@ -176,24 +169,28 @@
 (use-package consult-denote
   :straight t
   :bind
-  (("C-c n f" . consult-denote-find)
-   ("C-c n g" . consult-denote-grep))
+  (:map my-denote-map
+        ("f" . consult-denote-find)
+        ("g" . consult-denote-grep))
   :config
   (consult-denote-mode 1))
 
 (use-package denote-journal
   :straight t
+  :init
+  (which-key-add-key-based-replacements
+    "C-c n j" "Journal")
   ;; Bind those to some key for your convenience.
   :commands ( denote-journal-new-entry
               denote-journal-new-or-existing-entry
               denote-journal-link-or-create-entry )
   :hook (calendar-mode . denote-journal-calendar-mode)
   :bind
-  (:map global-map
-        ("C-c n j n" . denote-journal-new-entry)
-        ("C-c n j o" . denote-journal-new-or-existing-entry)
-        ("C-c n j l" . denote-journal-link-or-create-entry)
-   )
+  (:prefix-map my-denote-journal-map
+   :prefix "C-c n j"
+   ("n" . denote-journal-new-entry)
+   ("o" . denote-journal-new-or-existing-entry)
+   ("l" . denote-journal-link-or-create-entry))
   :custom
   (denote-journal-directory (expand-file-name "journal" denote-directory))
   (denote-journal-keyword "journal")
@@ -237,8 +234,12 @@
 
 (use-package denote-sequence
   :straight t
+  :init
+  (which-key-add-key-based-replacements
+    "C-c n s" "Sequence")
   :bind
-  ( :map global-map
+  (:prefix-map my-denote-sequence-map
+   :prefix "C-c n s"
     ;; Here we make "C-c n s" a prefix for all "[n]otes with [s]equence".
     ;; This is just for demonstration purposes: use the key bindings
     ;; that work for you.  Also check the commands:
@@ -248,24 +249,27 @@
     ;; - `denote-sequence-new-child'
     ;; - `denote-sequence-new-child-of-current'
     ;; - `denote-sequence-new-sibling-of-current'
-    ("C-c n s s" . denote-sequence)
-    ("C-c n s f" . denote-sequence-find)
-    ("C-c n s l" . denote-sequence-link)
-    ("C-c n s d" . denote-sequence-dired)
-    ("C-c n s r" . denote-sequence-reparent)
-    ("C-c n s c" . denote-sequence-convert))
+    ("s" . denote-sequence)
+    ("f" . denote-sequence-find)
+    ("l" . denote-sequence-link)
+    ("d" . denote-sequence-dired)
+    ("r" . denote-sequence-reparent)
+    ("c" . denote-sequence-convert))
   :custom
-  (denote-sequence-scheme 'alphanumeric))
+  (denote-sequence-scheme 'alphanumeric)
+  )
 
 (use-package denote-menu
   :straight t
-  :bind (("C-c n z" . list-denotes)
-         :map denote-menu-mode-map
-         ("c" . denote-menu-clear-filters)
-         ("/ r" . denote-menu-filter)
-         ("/ k" . denote-menu-filter-by-keyword)
-         ("/ o" . denote-menu-filter-out-keyword)
-         ("e" . denote-menu-export-to-dired)))
+  :bind
+  (:map my-denote-map
+   ("z" . list-denotes))
+  (:map denote-menu-mode-map
+        ("c" . denote-menu-clear-filters)
+        ("f r" . denote-menu-filter)
+        ("f k" . denote-menu-filter-by-keyword)
+        ("f o" . denote-menu-filter-out-keyword)
+        ("e" . denote-menu-export-to-dired)))
 
 (use-package calibredb
   :straight t
@@ -420,6 +424,9 @@ argument, query for word to search."
 
 (use-package denote-silo
   :straight t
+  :init
+  (which-key-add-key-based-replacements
+    "C-c n m" "Silo")
   ;; Bind these commands to key bindings of your choice.
   :commands ( denote-silo-create-note
               denote-silo-open-or-create
@@ -433,17 +440,23 @@ argument, query for word to search."
          "~/org-denote/"
          "~/denote-test/"))
   :bind
-  (:map global-map
-        ("C-c n m c" . denote-silo-create-note)
-        ("C-c n m o" . denote-silo-open-or-create)
-        ("C-c n m d" . denote-silo-dired)
-        ("C-c n m s" . denote-silo-cd)
-        ("C-c n m x" . denote-silo-select-silo-then-command)
-        )
+  (:prefix-map my-denote-silo-map
+   :prefix "C-c n m"
+   ("c" . denote-silo-create-note)
+   ("o" . denote-silo-open-or-create)
+   ("d" . denote-silo-dired)
+   ("s" . denote-silo-cd)
+   ("x" . denote-silo-select-silo-then-command))
   )
 
 (use-package denote-explore
   :straight t
+  :init
+  (which-key-add-key-based-replacements
+    "C-c n e" "Explore"
+    "C-c n e s" "Statistics"
+    "C-c n e w" "Walks"
+    "C-c n e j" "Janitor")
   :custom
   ;; Where to store network data and in which format
   ;; (denote-explore-network-directory "<your preferred folder>")
@@ -457,31 +470,39 @@ argument, query for word to search."
   ;; (denote-explore-network-graphviz-header "<header strings>")
   (denote-explore-network-graphviz-filetype 'svg)
   :bind
-  (;; Statistics
-   ("C-c n e s n" . denote-explore-count-notes)
-   ("C-c n e s k" . denote-explore-count-keywords)
-   ("C-c n e s e" . denote-explore-barchart-filetypes)
-   ("C-c n e s w" . denote-explore-barchart-keywords)
-   ("C-c n e s t" . denote-explore-barchart-timeline)
+  (:prefix-map my-denote-explore-map
+   :prefix "C-c n e"
+   ("n" . denote-explore-network)
+   ("r" . denote-explore-network-regenerate)
+   ("d" . denote-explore-barchart-degree)
+   ("b" . denote-explore-barchart-backlinks))
+  (:prefix-map my-denote-explore-statistics-map
+   :prefix "C-c n e s"
+   ;; Statistics
+   ("n" . denote-explore-count-notes)
+   ("k" . denote-explore-count-keywords)
+   ("e" . denote-explore-barchart-filetypes)
+   ("w" . denote-explore-barchart-keywords)
+   ("t" . denote-explore-barchart-timeline))
+  (:prefix-map my-denote-explore-walk-map
+   :prefix "C-c n e w"
    ;; Random walks
-   ("C-c n e w n" . denote-explore-random-note)
-   ("C-c n e w r" . denote-explore-random-regex)
-   ("C-c n e w l" . denote-explore-random-link)
-   ("C-c n e w k" . denote-explore-random-keyword)
+   ("n" . denote-explore-random-note)
+   ("r" . denote-explore-random-regex)
+   ("l" . denote-explore-random-link)
+   ("k" . denote-explore-random-keyword))
+  (:prefix-map my-denote-explore-janitor-map
+   :prefix "C-c n e j"
    ;; Denote Janitor
-   ("C-c n e j d" . denote-explore-duplicate-notes)
-   ("C-c n e j D" . denote-explore-duplicate-notes-dired)
-   ("C-c n e j l" . denote-explore-missing-links)
-   ("C-c n e j z" . denote-explore-zero-keywords)
-   ("C-c n e j s" . denote-explore-single-keywords)
-   ("C-c n e j r" . denote-explore-rename-keywords)
-   ("C-c n e j y" . denote-explore-sync-metadata)
-   ("C-c n e j i" . denote-explore-isolated-files)
-   ;; Visualise denote
-   ("C-c n e n" . denote-explore-network)
-   ("C-c n e r" . denote-explore-network-regenerate)
-   ("C-c n e d" . denote-explore-barchart-degree)
-   ("C-c n e b" . denote-explore-barchart-backlinks)))
+   ("d" . denote-explore-duplicate-notes)
+   ("D" . denote-explore-duplicate-notes-dired)
+   ("l" . denote-explore-missing-links)
+   ("z" . denote-explore-zero-keywords)
+   ("s" . denote-explore-single-keywords)
+   ("r" . denote-explore-rename-keywords)
+   ("y" . denote-explore-sync-metadata)
+   ("i" . denote-explore-isolated-files))
+   )
 
 (use-package org-remark-global-tracking
   :straight nil
@@ -498,17 +519,23 @@ argument, query for word to search."
 
 (use-package org-remark
   :straight t
-  :bind (;; :bind keyword also implicitly defers org-remark itself.
-         ;; Keybindings before :map is set for global-map. Adjust the keybinds
-         ;; as you see fit.
-         ("C-c n h m" . org-remark-mark)
-         ("C-c n h l" . org-remark-mark-line)
-         :map org-remark-mode-map
-         ("C-c n h o" . org-remark-open)
-         ("C-c n h ]" . org-remark-view-next)
-         ("C-c n h [" . org-remark-view-prev)
-         ("C-c n h r" . org-remark-remove)
-         ("C-c n h d" . org-remark-delete))
+  :init
+  (which-key-add-key-based-replacements
+    "C-c n h" "Highlight")
+  :bind
+  (:prefix-map my-org-remark-map
+   :prefix "C-c n h"
+   ("C-c n h m" . org-remark-mark)
+   ("C-c n h l" . org-remark-mark-line))
+  (;; :bind keyword also implicitly defers org-remark itself.
+   ;; Keybindings before :map is set for global-map. Adjust the keybinds
+   ;; as you see fit.
+   :map org-remark-mode-map
+   ("C-c n h o" . org-remark-open)
+   ("C-c n h ]" . org-remark-view-next)
+   ("C-c n h [" . org-remark-view-prev)
+   ("C-c n h r" . org-remark-remove)
+   ("C-c n h d" . org-remark-delete))
   )
 
 (use-package org-download
@@ -565,21 +592,25 @@ argument, query for word to search."
   (citar-denote-title-format-andstr "and")
   (citar-denote-title-format-authors 1)
   (citar-denote-use-bib-keywords nil)
-  :preface
-  (bind-key "C-c w n" #'citar-denote-open-note)
   :init
   (citar-denote-mode)
+  (which-key-add-key-based-replacements
+    "C-c n b" "Citar Denote commands")
   ;; Bind all available commands
-  :bind (("C-c w d" . citar-denote-dwim)
-         ("C-c w e" . citar-denote-open-reference-entry)
-         ("C-c w a" . citar-denote-add-citekey)
-         ("C-c w k" . citar-denote-remove-citekey)
-         ("C-c w r" . citar-denote-find-reference)
-         ("C-c w l" . citar-denote-link-reference)
-         ("C-c w f" . citar-denote-find-citation)
-         ("C-c w x" . citar-denote-nocite)
-         ("C-c w y" . citar-denote-cite-nocite)
-         ("C-c w z" . citar-denote-nobib)))
+  :bind (:prefix-map my-citar-denote-map
+         :prefix "C-c n b"
+         ("n" . citar-denote-open-note)
+         ("d" . citar-denote-dwim)
+         ("e" . citar-denote-open-reference-entry)
+         ("a" . citar-denote-add-citekey)
+         ("k" . citar-denote-remove-citekey)
+         ("r" . citar-denote-find-reference)
+         ("l" . citar-denote-link-reference)
+         ("f" . citar-denote-find-citation)
+         ("x" . citar-denote-nocite)
+         ("y" . citar-denote-cite-nocite)
+         ("z" . citar-denote-nobib)))
+
 
 
 (use-package org-modern
