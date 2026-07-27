@@ -80,6 +80,7 @@
   (denote-excluded-directories-regexp nil)
   (denote-keywords-to-not-infer-regexp nil)
   (denote-rename-confirmations '(rewrite-front-matter modify-file-name))
+  (denote-rename-buffer-format "%s %D (%k)")
   (denote-date-prompt-use-org-read-date t)
   :config
   ;; Automatically rename Denote buffers using the `denote-rename-buffer-format'.
@@ -254,6 +255,8 @@
     ("l" . denote-sequence-link)
     ("d" . denote-sequence-dired)
     ("r" . denote-sequence-reparent)
+    ("R" . denote-sequence-reparent-recursive)
+    ("p" . denote-sequence-rename-as-parent)
     ("c" . denote-sequence-convert))
   :custom
   (denote-sequence-scheme 'alphanumeric)

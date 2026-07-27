@@ -603,3 +603,8 @@
      :justMyCode nil
      :showReturnValue t
      :stopOnEntry nil)))
+
+(use-package smerge-mode
+  :straight nil
+  :init
+  (setq smerge-command-prefix (kbd "C-c m")))
