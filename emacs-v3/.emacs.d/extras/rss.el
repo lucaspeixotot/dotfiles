@@ -34,7 +34,7 @@
   :config
   (setq-default elfeed-search-filter "@1month +unread")
   (let* ((freshrss-username (getenv "FRESHRSS_USERNAME"))
-         (freshrss-domain "rss.liclab.org")
+         (freshrss-domain (getenv "FRESHRSS_DOMAIN"))
          (protocol-entry (concat "freshrss+https://" freshrss-username "@" freshrss-domain)))
     (setq elfeed-feeds
           `((,protocol-entry

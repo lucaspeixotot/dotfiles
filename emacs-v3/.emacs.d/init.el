@@ -451,10 +451,6 @@ For a location, jump to it."
 (load (expand-file-name "extras/org-notes.el" user-emacs-directory))
 (load (expand-file-name "extras/spell.el" user-emacs-directory))
 
-;;; Transients
-(load (expand-file-name "extras/setup-transients.el" user-emacs-directory))
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Themes
