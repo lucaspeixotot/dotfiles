@@ -17,7 +17,9 @@
 (use-package clojure-ts-mode
   :straight t
   :config
-  (add-to-list 'org-src-lang-modes '("clojure" . clojure-ts)))
+  (with-eval-after-load 'org
+    (add-to-list 'org-src-lang-modes '("clojure" . clojure-ts)))
+  )
 
 (use-package cider
   :straight t
