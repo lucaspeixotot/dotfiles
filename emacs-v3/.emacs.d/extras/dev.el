@@ -606,9 +606,9 @@
 
 (use-package smerge-mode
   :straight nil
-  :defer t
-  :bind (:map smerge-mode-map
-              ("C-c m" . smerge-mode-prefix)))
+  :demand t
+  :custom
+  (smerge-command-prefix (kbd "C-c m")))
 
 (use-package flycheck
   :straight t
