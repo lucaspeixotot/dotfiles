@@ -528,8 +528,8 @@ argument, query for word to search."
   :bind
   (:prefix-map my-org-remark-map
    :prefix "C-c n h"
-   ("C-c n h m" . org-remark-mark)
-   ("C-c n h l" . org-remark-mark-line))
+   ("m" . org-remark-mark)
+   ("l" . org-remark-mark-line))
   (;; :bind keyword also implicitly defers org-remark itself.
    ;; Keybindings before :map is set for global-map. Adjust the keybinds
    ;; as you see fit.
@@ -605,14 +605,46 @@ argument, query for word to search."
          ("n" . citar-denote-open-note)
          ("d" . citar-denote-dwim)
          ("e" . citar-denote-open-reference-entry)
-         ("a" . citar-denote-add-citekey)
-         ("k" . citar-denote-remove-citekey)
+         ("a" . citar-denote-add-reference)
+         ("k" . citar-denote-remove-reference)
          ("r" . citar-denote-find-reference)
          ("l" . citar-denote-link-reference)
          ("f" . citar-denote-find-citation)
          ("x" . citar-denote-nocite)
          ("y" . citar-denote-cite-nocite)
-         ("z" . citar-denote-nobib)))
+         ("z" . citar-denote-nobib)
+         ("s" . my/citar-denote-search-contents)
+         ("S" . my/citar-denote-search-current-reference))
+  :config
+  (defun my/citar-denote-search-contents ()
+    "Pick a book with Citar, then consult-ripgrep the contents of
+every Denote note referencing it (front-matter `#+reference:' and
+body `[cite:@...]' citations)."
+    (interactive)
+    (let* ((citekey (citar-select-ref))
+           (ref-notes (gethash citekey (citar-denote--get-notes (list citekey))))
+           (cite-notes (citar-denote--retrieve-cite-files citekey))
+           (files (delete-dups (append ref-notes cite-notes))))
+      (if files
+          (consult-ripgrep files)
+        (user-error "No Denote notes reference %s" citekey))))
+
+  (defun my/citar-denote-search-current-reference ()
+    "Search the contents of all notes referencing the book of the
+current Denote note."
+    (interactive)
+    (let* ((file (buffer-file-name))
+           (keys (and file (citar-denote--retrieve-references file))))
+      (if (null keys)
+          (user-error "Current buffer is not a Denote note with references")
+        (let* ((citekey (if (= (length keys) 1) (car keys)
+                          (citar-select-ref :filter (citar-denote--has-citekeys keys))))
+               (ref-notes (gethash citekey (citar-denote--get-notes (list citekey))))
+               (cite-notes (citar-denote--retrieve-cite-files citekey))
+               (files (delete-dups (append ref-notes cite-notes))))
+          (if files
+              (consult-ripgrep files)
+            (user-error "No notes reference %s" citekey)))))))
 
 
 

@@ -10,40 +10,19 @@
 ;;;  $$       |$$ | $$ | $$ |$$    $$ |$$       |/     $$/       $$       |   $$$/      $$  $$/
 ;;;  $$$$$$$$/ $$/  $$/  $$/  $$$$$$$/  $$$$$$$/ $$$$$$$/         $$$$$$$/     $/        $$$$/
 
-(use-package casual
+;; (use-package clojure-mode
+;;   :straight t
+;;   :mode ("\\.clj\\'" "\\.cljs\\'" "\\.cljc\\'" "\\.edn\\'"))
+
+(use-package clojure-ts-mode
   :straight t
   :config
-  ;; disable line wrap
-  (add-hook 'csv-mode-hook
-            (lambda ()
-              (visual-line-mode -1)
-              (toggle-truncate-lines 1)))
+  (add-to-list 'org-src-lang-modes '("clojure" . clojure-ts)))
 
-  ;; auto detect separator
-  (add-hook 'csv-mode-hook #'csv-guess-set-separator)
-  ;; turn on field alignment
-  (add-hook 'csv-mode-hook #'csv-align-mode))
-
-(use-package popper
+(use-package cider
   :straight t
-  :bind (("C-'"   . popper-toggle)
-         ("C-\""    . popper-cycle)
-         ("C-M-'" . popper-toggle-type))
-  :init
-  (setq popper-reference-buffers
-        '("\\*Messages\\*"
-          "Output\\*$"
-          "\\*Async Shell Command\\*"
-          dictionary-mode
-          help-mode
-          compilation-mode))
-  (popper-mode +1)
-  (popper-echo-mode +1))                ; For echo area hints
-
-(use-package dired-preview
-  :straight t)
-
-(use-package keycast
-  :straight t
-  :demand t
-  )
+  :hook (cider-mode . eglot-ensure) ;; Eglot starts when CIDER connects
+  :config
+  ;; CIDER provides the REPL, debugger, test runner
+  (setq cider-repl-display-help-banner nil)
+  (setq cider-repl-display-in-current-window t))

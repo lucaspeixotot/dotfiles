@@ -606,5 +606,29 @@
 
 (use-package smerge-mode
   :straight nil
-  :init
-  (setq smerge-command-prefix (kbd "C-c m")))
+  :defer t
+  :bind (:map smerge-mode-map
+              ("C-c m" . smerge-mode-prefix)))
+
+(use-package flycheck
+  :straight t
+  :custom
+  (flycheck-fixable-indicator nil)
+  :hook (;; (after-init . global-flycheck-mode)
+         ;; Show diagnostics inline, next to the code (Error Lens style)
+         (after-init . global-flycheck-annotate-mode))
+  :config
+  (defun my/eglot-shutdown-disable-flycheck ()
+    "Disable Flycheck when Eglot stops managing the current buffer."
+    (when (and (not (bound-and-true-p eglot--managed-mode))
+               (bound-and-true-p flycheck-mode))
+      (flycheck-mode -1)))
+  (add-hook 'eglot-managed-mode-hook #'my/eglot-shutdown-disable-flycheck)
+  ;; Report Eglot's LSP diagnostics through Flycheck
+  (global-flycheck-eglot-mode 1)
+  (defvar-keymap my-flycheck-map
+    :doc "Personal flycheck repeat-map to enhance the error navigation."
+    :repeat t
+    "n" #'flycheck-next-error
+    "p" #'flycheck-previous-error
+    "l" #'flycheck-list-errors))
