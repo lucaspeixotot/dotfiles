@@ -21,7 +21,6 @@
 
 (use-package gptel
   :straight (gptel :host github :repo "karthink/gptel" :branch "master")
-  :hook (gptel-mode-hook .  (lambda () (my/org-gptel-highlight-mode 1)))
   :bind (
          ("C-c a n" . gptel)
          ("C-c a s" . gptel-send)

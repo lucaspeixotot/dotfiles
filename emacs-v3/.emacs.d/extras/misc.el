@@ -46,4 +46,10 @@
 (use-package keycast
   :straight t
   :demand t
+  :config
+  (keycast-tab-bar-mode +1)
+  )
+
+(use-package time-zones
+  :straight t
   )
