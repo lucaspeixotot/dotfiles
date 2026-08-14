@@ -172,11 +172,12 @@
 
 (use-package consult-denote
   :straight t
+  :after denote
   :bind
   (:map my-denote-map
         ("f" . consult-denote-find)
         ("g" . consult-denote-grep))
-  :config
+  :init
   (consult-denote-mode 1))
 
 (use-package denote-journal
