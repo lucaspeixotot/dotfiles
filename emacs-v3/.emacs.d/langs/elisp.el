@@ -11,7 +11,7 @@
 ;;;  $$$$$$$$/ $$/  $$/  $$/  $$$$$$$/  $$$$$$$/ $$$$$$$/         $$$$$$$/     $/        $$$$/
 
 ;; Ensure balanced parenthesis
-(use-package lisp
+(use-package emacs
   :straight nil
   :hook
   ((emacs-lisp-mode . (lambda () (add-hook 'after-save-hook #'check-parens nil t)))
