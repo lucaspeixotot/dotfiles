@@ -14,7 +14,10 @@
 (use-package lisp
   :straight nil
   :hook
-  (after-save . check-parens))
+  ((emacs-lisp-mode . (lambda () (add-hook 'after-save-hook #'check-parens nil t)))
+   (lisp-mode       . (lambda () (add-hook 'after-save-hook #'check-parens nil t)))
+   (scheme-mode     . (lambda () (add-hook 'after-save-hook #'check-parens nil t)))
+   (clojure-mode    . (lambda () (add-hook 'after-save-hook #'check-parens nil t)))))
 
 ;; Expand elisp code and iterate recursively
 (use-package macrostep

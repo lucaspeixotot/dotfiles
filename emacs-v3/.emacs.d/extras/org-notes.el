@@ -67,12 +67,15 @@
   (:map dired-mode-map
   ("C-c C-n C-i" . denote-dired-link-marked-notes)
   ("C-c C-n C-r" . denote-dired-rename-files)
-  ("C-c C-n C-k" . denote-dired-rename-marked-files-with-keywords)
-  ("C-c C-n C-R" . denote-dired-rename-marked-files-using-front-matter))
+  ("C-c C-n C-r" . denote-dired-rename-marked-files-with-keywords)
+  ("C-c C-n C-R" . denote-dired-rename-marked-files-using-front-matter)
+  ("C-c C-n C-f" . denote-dired-focus)
+  ("C-c C-n C-k" . denote-dired-rename-marked-files-add-keywords)
+  ("C-c C-n C-K" . denote-dired-rename-marked-files-remove-keywords))
 
   :custom
   (denote-directory (expand-file-name "~/denote-notes/"))
-  (denote-save-buffers nil)
+  (denote-save-buffers t)
   (denote-known-keywords '("literature" "permanent"))
   (denote-infer-keywords t)
   (denote-sort-keywords t)
