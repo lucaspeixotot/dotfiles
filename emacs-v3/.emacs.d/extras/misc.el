@@ -53,3 +53,32 @@
 (use-package time-zones
   :straight t
   )
+
+(use-package sql
+  :straight nil
+  :config
+  (setq sql-connection-alist
+        '(("hoku-default-db"
+           (sql-product 'postgres)
+           (sql-server "localhost")
+           (sql-port 5433)
+           (sql-user "postgres")
+           (sql-database "postgres"))
+          ("gemini-default-db"
+           (sql-product 'postgres)
+           (sql-server "localhost")
+           (sql-port 5434)
+           (sql-user "postgres")
+           (sql-database "postgres"))
+          ("polaris-default-db"
+           (sql-product 'postgres)
+           (sql-server "localhost")
+           (sql-port 5435)
+           (sql-user "postgres")
+           (sql-database "postgres"))
+          ("mira-default-db"
+           (sql-product 'postgres)
+           (sql-server "localhost")
+           (sql-port 5436)
+           (sql-user "postgres")
+           (sql-database "postgres")))))
