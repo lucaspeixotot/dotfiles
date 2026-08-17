@@ -691,10 +691,14 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
 
 (use-package windmove
   :after window
-  :bind (("C-<right>" . windmove-swap-states-right)
-         ("C-<down>" . windmove-swap-states-down)
-         ("C-<up>" . windmove-swap-states-up)
-         ("C-<left>" . windmove-swap-states-left)
+  :bind (("C-<right>" . windmove-right)
+         ("C-<down>" . windmove-down)
+         ("C-<up>" . windmove-up)
+         ("C-<left>" . windmove-left)
+         ("C-S-<right>" . windmove-swap-states-right)
+         ("C-S-<down>" . windmove-swap-states-down)
+         ("C-S-<up>" . windmove-swap-states-up)
+         ("C-S-<left>" . windmove-swap-states-left)
          :map other-window-repeat-map
          ("l" . windmove-right)
          ("k" . windmove-up)
@@ -803,3 +807,9 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
   :straight t
   :bind-keymap
   ("C-c s" . substitute-prefix-map))
+
+
+(use-package frog-jump-buffer
+  :straight t
+  :bind
+  ("M-0" . 'frog-jump-buffer))
