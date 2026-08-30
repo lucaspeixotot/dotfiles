@@ -546,6 +546,8 @@ For a location, jump to it."
    (locate-user-emacs-file "fontaine-latest-state.eld"))
   (fontaine-presets
    '((regular) ; inherits all properties from the t preset
+     (home
+      :default-height 140) ; larger font, inherited from the t preset
      (t
       ;; I keep all properties for didactic purposes, but most can be
       ;; omitted.  See the fontaine manual for the technicalities:

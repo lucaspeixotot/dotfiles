@@ -148,3 +148,10 @@ Feedback:
                        :env (:GITHUB_PERSONAL_ACCESS_TOKEN ,(getenv "GITHUB_PERSONAL_ACCESS_TOKEN")
                              :GITHUB_HOST , (or (getenv "GITHUB_HOST") "https://github.com"))))))
   (require 'gptel-integrations))
+
+;; Straight
+(use-package gptel-inline
+  :straight (:host github :repo "karthink/gptel-inline")
+  :after gptel
+  :bind
+  (("C-c a i" . gptel-inline)))
