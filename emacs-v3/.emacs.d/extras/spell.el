@@ -28,6 +28,8 @@
     (add-to-list 'vertico-multiform-categories
                  '(jinx grid (vertico-grid-annotate . 20)
                         (vertico-count . 4))))
-
-
+  (add-hook 'eca-chat-mode-hook
+          (lambda ()
+            (when (bound-and-true-p jinx-mode)
+              (jinx-mode -1))))
   (define-key jinx-repeat-map (kbd "c") #'jinx-correct))

@@ -363,6 +363,7 @@
   ;; Data and Configuration
   (add-hook 'json-ts-mode-hook #'treesit-fold-mode)
   (add-hook 'toml-ts-mode-hook #'treesit-fold-mode)
+  (add-hook 'yaml-ts-mode-hook #'treesit-fold-mode)
 
   ;; Third-party
   (add-hook 'kotlin-ts-mode-hook #'treesit-fold-mode)
@@ -554,12 +555,30 @@
            (opts (split-string opts-str "[ \t\n]+" t)))
       (vconcat opts (list (buffer-file-name)))))
 
-  ;; ---- ensure debugpy in the active (envrc) python -----------------
+  ;; ---- resolve and validate the project Python ---------------------
+  (defun my/dape-python-command ()
+    "Return the Python executable for the current pytest project.
+Prefer PYTEST_CWD/.venv so Dape does not depend on whether envrc has already
+updated the current buffer's `exec-path'.  Fall back to a nearest .venv and
+then to PATH for projects that do not set PYTEST_CWD."
+    (let* ((pytest-cwd (getenv "PYTEST_CWD"))
+           (project-venv (and pytest-cwd
+                              (expand-file-name ".venv/bin/python" pytest-cwd)))
+           (venv-root (locate-dominating-file default-directory ".venv"))
+           (nearest-venv (and venv-root
+                              (expand-file-name ".venv/bin/python" venv-root))))
+      (cond
+       ((and project-venv (file-executable-p project-venv)) project-venv)
+       ((and nearest-venv (file-executable-p nearest-venv)) nearest-venv)
+       ((executable-find "python") (executable-find "python"))
+       ((executable-find "python3") (executable-find "python3"))
+       (t (user-error "Unable to locate a project Python executable")))))
+
   (defun my/dape-python-ensure (config)
     (dape-ensure-command config)
     (let ((python (dape-config-get config 'command)))
-      (unless (zerop (process-file-shell-command
-                      (format "%s -c \"import debugpy.adapter\"" python)))
+      (unless (zerop (process-file
+                      python nil nil nil "-c" "import debugpy.adapter"))
         (user-error "%s: debugpy is not installed in this environment" python))))
 
   ;; ---- test at point ----------------------------------------------
@@ -569,7 +588,7 @@
    `(pytest-at-point
      modes (python-mode python-ts-mode)
      ensure my/dape-python-ensure
-     command "python"
+     command my/dape-python-command
      command-args ("-m" "debugpy.adapter" "--host" "127.0.0.1" "--port" :autoport)
      port :autoport
      :type "python"
@@ -590,7 +609,7 @@
    `(pytest-file
      modes (python-mode python-ts-mode)
      ensure my/dape-python-ensure
-     command "python"
+     command my/dape-python-command
      command-args ("-m" "debugpy.adapter" "--host" "127.0.0.1" "--port" :autoport)
      port :autoport
      :type "python"
