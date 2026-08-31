@@ -323,7 +323,8 @@ Optional argument CANDIDATE is the selected item."
   (org-startup-truncated nil)
   (org-directory "~/org/")
   (org-agenda-files '("~/org/inbox.org"
-                      "~/org/tasks.org"))
+                      "~/org/tasks.org"
+                      "~/org/study.org"))
   (org-default-notes-file "~/org/inbox.org")
   (org-refile-targets '(("~/org/tasks.org" :maxlevel . 3)
                         ("~/org/inbox.org" :maxlevel . 3)))

@@ -301,7 +301,7 @@
                                       analyze-text-conversion
                                       completion-preview-insert-word))
   (setq completion-preview-minimum-symbol-length 2)
-  (setq completion-preview-idle-delay 0.3)
+  (setq completion-preview-idle-delay 0.2)
   (setq completion-preview-ignore-case t)
   (setq completion-preview-sort-function #'identity)
 
