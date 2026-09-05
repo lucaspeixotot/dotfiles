@@ -6,3 +6,8 @@ packer_compiled.lua
 tmux/.config/tmux/plugins/
 .agent-shell/
 .dotfiles-tabspaces-session.el
+
+# Emacs artifacts (paranoia — backups already go to $TMPDIR)
+*~
+\#*\#
+.#*

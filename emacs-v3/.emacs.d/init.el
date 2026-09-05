@@ -452,6 +452,7 @@ For a location, jump to it."
 ;;; Org mode, notes, and study
 (load (expand-file-name "extras/org-notes.el" user-emacs-directory))
 (load (expand-file-name "extras/study.el" user-emacs-directory))
+(load (expand-file-name "extras/anki.el" user-emacs-directory))
 (load (expand-file-name "extras/spell.el" user-emacs-directory))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -1,163 +1,172 @@
-;;; study.el --- Concursos study tracking: phases and history
 ;; -*- lexical-binding: t; -*-
+;;; study.el --- Study rotation: least-recently-studied, priority groups
 
-;; Data file: ~/org/study.org.  Requires org-ql (installed below).
+;; Data files: any Org file under `my/study-dir' (default ~/study/org/).
+;; Model: level-1 headings = subjects, tagged :P0: or :P1: (optionally
+;; :fast: for double weight), TODO state ONCYCLE.  Clock in/out per
+;; subject (C-c C-x C-i / C-c C-x C-o).  Rotation order = weighted
+;; least-recently-clocked.  Only ONCYCLE subjects participate.
 
-;;; Derived parent state (level 1) from sub-subjects (level 2)
+(defvar my/study-dir (expand-file-name "~/study/org/")
+  "Directory containing study tracking Org files.")
 
-(defun my/study-derived-state ()
-  "Return the state derived from the level-2 children of the current entry.
-Any FOUNDATION => FOUNDATION; else any REFINEMENT => REFINEMENT;
-else any REVIEW => REVIEW; else all DONE => DONE; else QUEUE when there
-are children.  Return nil when there are no level-2 children yet, so a
-manually assigned parent state is left untouched."
-  (let ((children (delq nil (org-map-entries
-                             (lambda () (org-get-todo-state))
-                             "LEVEL=2" 'tree))))
-    (cond
-     ((member "FOUNDATION" children) "FOUNDATION")
-     ((member "REFINEMENT" children) "REFINEMENT")
-     ((member "REVIEW" children) "REVIEW")
-     ((and children (seq-every-p (lambda (s) (equal s "DONE")) children)) "DONE")
-     (children "QUEUE")
-     (t nil))))
+(defun my/study-last-clocked ()
+  "Return the most recent clock-out time of the current subtree, or nil.
+Scans CLOCK lines and takes the max end time (skips open/running clocks)."
+  (save-excursion
+    (org-back-to-heading)
+    (let ((end (save-excursion (org-end-of-subtree t t)))
+          (re (concat org-clock-string ".*\\]--\\(\\[[^]]+\\]\\)"))
+          last ts)
+      (while (re-search-forward re end t)
+        (setq ts (org-time-string-to-time (match-string 1)))
+        (when (or (null last) (time-less-p last ts))
+          (setq last ts)))
+      last)))
 
-(defun my/study-derive-one ()
-  "Derive the state of the parent subject of the current sub-subject."
-  (org-with-wide-buffer
-   (org-back-to-heading)
-   (when (org-up-heading-safe)
-     (let ((derived (my/study-derived-state)))
-       (when (and derived (not (equal (org-get-todo-state) derived)))
-         (org-todo derived))))))
+(defun my/study-subject-days ()
+  "Days since last clock-out of the current subject; -1 if never studied."
+  (if-let* ((t0 (my/study-last-clocked)))
+      (- (org-today) (time-to-days t0))
+    -1))
 
-(defun my/study-derive-all ()
-  "Re-derive the state of every level-1 subject in the current file."
+(defun my/study-subject-weight ()
+  "Return 2 if the current subject is tagged :fast:, else 1."
+  (if (member "fast" (org-get-tags nil t)) 2 1))
+
+(defun my/study-file-p (buffer)
+  "Return non-nil if BUFFER visits an Org file under `my/study-dir'."
+  (when (buffer-live-p buffer)
+    (let ((file (buffer-file-name buffer)))
+      (and file
+           (string-equal (downcase (file-name-extension file)) "org")
+           (file-in-directory-p (file-truename file)
+                                (file-truename my/study-dir))))))
+
+(defun my/study-source-buffer ()
+  "Return the study source buffer.
+Uses the current buffer when it visits an Org file under
+`my/study-dir'; otherwise prompts for one."
+  (if (my/study-file-p (current-buffer))
+      (current-buffer)
+    (let ((files (directory-files my/study-dir t "\\.org\\'")))
+      (unless files
+        (user-error "No .org files in %s" my/study-dir))
+      (let ((name (completing-read "Study file: "
+                                   (mapcar #'file-name-nondirectory files)
+                                   nil t)))
+        (find-file-noselect (expand-file-name name my/study-dir))))))
+
+(defun my/study-collect-group (group source)
+  "Return ONCYCLE level-1 subjects in SOURCE tagged GROUP.
+Sort by weighted staleness (descending); never-studied first; ties
+keep file order.  Each element: (DAYS NAME MARKER WEIGHT)."
+  (let ((entries nil)
+        (idx 0))
+    (with-current-buffer source
+      (org-with-wide-buffer
+       (org-map-entries
+        (lambda ()
+          (push (list (my/study-subject-days)
+                      (org-get-heading t t t t)
+                      (copy-marker (point) t)
+                      (my/study-subject-weight))
+                entries))
+        (format "LEVEL=1+%s/ONCYCLE" group) 'file)))
+    (setq entries (nreverse entries))
+    (let ((indexed (mapcar (lambda (e) (setq idx (1+ idx)) (cons idx e))
+                           entries)))
+      (mapcar #'cdr
+              (sort indexed
+                    (lambda (a b)
+                      (let* ((da (nth 1 a)) (db (nth 1 b))
+                             (wa (nth 4 a)) (wb (nth 4 b))
+                             (ka (if (= da -1) most-positive-fixnum (* da wa)))
+                             (kb (if (= db -1) most-positive-fixnum (* db wb))))
+                        (if (= ka kb) (< (car a) (car b)) (> ka kb)))))))))
+
+(defun my/study--insert (text &optional marker face)
+  "Insert TEXT with optional jump MARKER and FACE at beginning of line."
+  (let ((s (concat text "\n")))
+    (when marker
+      (add-text-properties 0 1 (list 'org-marker marker
+                                     'org-hd-marker marker) s))
+    (insert (if face (propertize s 'face face) s))))
+
+(defun my/study-block (group source)
+  "Insert the Today+Queue block for GROUP (from SOURCE) into buffer."
+  (let* ((items (my/study-collect-group group source))
+         (num (if (string= group "P0") "0" "1"))
+         (today (car items))
+         (queue (cdr items)))
+    (my/study--insert (format "Priority %s — Today" num) nil 'org-agenda-structure)
+    (if today
+        (my/study--insert (format "  [%s]  %s"
+                                  (if (< (car today) 0) "new" (format "%dd" (car today)))
+                                  (nth 1 today))
+                          (nth 2 today))
+      (my/study--insert "  —" nil 'org-agenda-dimmed-todo-face))
+    (my/study--insert (format "Priority %s — Queue" num) nil 'org-agenda-structure)
+    (if queue
+        (dolist (it queue)
+          (my/study--insert (format "  [%s]  %s"
+                                    (if (< (car it) 0) "new" (format "%dd" (car it)))
+                                    (nth 1 it))
+                            (nth 2 it)))
+      (my/study--insert "  —" nil 'org-agenda-dimmed-todo-face))
+    (insert "\n")))
+
+(defun my/study-rotation ()
+  "Show the study rotation: one Today pick and the Queue per group."
   (interactive)
-  (org-with-wide-buffer
-   (org-map-entries
-    (lambda ()
-      (let ((derived (my/study-derived-state)))
-        (when (and derived (not (equal (org-get-todo-state) derived)))
-          (org-todo derived))))
-    "LEVEL=1" 'file)))
-
-(defun my/study-buffer-p ()
-  "Return t when the current buffer is the study tracking file."
-  (and (buffer-file-name)
-       (equal "study.org" (file-name-nondirectory (buffer-file-name)))))
-
-(defun my/study-on-todo-change ()
-  "Hook: after a sub-subject state change, derive its parent subject."
-  (when (and (derived-mode-p 'org-mode)
-             (my/study-buffer-p)
-             (= (org-outline-level) 2))
-    (my/study-derive-one)))
-
-(add-hook 'org-after-todo-state-change-hook #'my/study-on-todo-change)
-
-;;; Accuracy (refinement) and review recording
-
-(defun my/study-log-note (text)
-  "Insert TEXT as a timestamped note in the current entry's LOGBOOK."
-  (org-with-wide-buffer
-   (org-back-to-heading)
-   (save-excursion
-     (goto-char (org-log-beginning t))
-     (insert (format "- %s - %s\n" (format-time-string "%Y-%m-%d %H:%M") text)))))
-
-(defun my/study-update-accuracy (value)
-  "Update ACCURACY of the current entry and log the change."
-  (interactive "nNew accuracy % (Tec): ")
-  (let ((old (org-entry-get nil "ACCURACY")))
-    (org-set-property "ACCURACY" (number-to-string value))
-    (my/study-log-note (format "ACCURACY %s -> %s%%" (or old "-") value))))
-
-(defun my/study-mark-review ()
-  "Set LAST-REVIEW to today (end of a review session)."
-  (interactive)
-  (org-set-property "LAST-REVIEW" (format-time-string "%Y-%m-%d")))
-
-;;; Branch pause (fiscal vs control)
-
-(defun my/study-toggle-paused ()
-  "Toggle the :paused: tag (branch on hold; hidden from views, history kept)."
-  (interactive)
-  (if (member "paused" (org-get-local-tags))
-      (org-toggle-tag "paused" 'off)
-    (org-toggle-tag "paused" 'on)))
-
-;;; Predicate used by the org-ql "today" view
-
-(defun my/study-review-due-p ()
-  "Return t when review is due: no LAST-REVIEW, or older than 21 days."
-  (let ((s (org-entry-get nil "LAST-REVIEW")))
-    (or (null s)
-        (time-less-p (days-to-time 21)
-                     (time-since (date-to-time s))))))
-
-;;; Command to open the "today" view
-
-(defun my/study-today ()
-  "Open the \"Study - Today\" agenda view (custom command \"e\")."
-  (interactive)
-  (org-agenda nil "e"))
+  (let* ((source (my/study-source-buffer))
+         (buf (get-buffer-create "*Study Rotation*")))
+    (with-current-buffer buf
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (org-agenda-mode)
+        (insert (propertize (format "STUDY ROTATION — %s"
+                                    (file-name-nondirectory
+                                     (buffer-file-name source)))
+                            'face 'org-agenda-structure)
+                "\n\n")
+        (my/study-block "P0" source)
+        (my/study-block "P1" source)
+        (goto-char (point-min))
+        (setq buffer-read-only t)))
+    (display-buffer buf)
+    (message "Study rotation: RET = jump to subject (then C-c C-x C-i). "
+             "Refresh with C-c o s t.")))
 
 ;;; Keymap under C-c o s
 
 (defvar my/study-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "t") #'my/study-today)
-    (define-key map (kbd "a") #'my/study-update-accuracy)
-    (define-key map (kbd "r") #'my/study-mark-review)
-    (define-key map (kbd "p") #'my/study-toggle-paused)
-    (define-key map (kbd "d") #'my/study-derive-all)
+    (define-key map (kbd "t") #'my/study-rotation)
+    (define-key map (kbd "c") #'org-clock-report)
     map)
   "Keymap for study tracking commands, bound under `C-c o s'.")
 
-;;; Org settings and installation (apply once org is loaded)
+;;; Org settings and installation
 
 (with-eval-after-load 'org
   (require 'org-clock)
+  (unless (file-exists-p my/study-dir)
+    (make-directory my/study-dir t))
+  (add-to-list 'org-agenda-files my/study-dir)
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "DONE(d)")
+          (sequence "ONCYCLE(o!)" "PAUSED(p!)" "COMPLETED(c!)")))
   (setq org-todo-keyword-faces
-        '(("QUEUE" . (:foreground "gray" :weight bold))
-          ("FOUNDATION" . (:foreground "tomato" :weight bold))
-          ("REFINEMENT" . (:foreground "goldenrod" :weight bold))
-          ("REVIEW" . (:foreground "lime green" :weight bold))
-          ("DONE" . (:foreground "RoyalBlue" :weight bold))
-          ("CANCELED" . (:foreground "gray"))))
-  (setq org-log-into-drawer "LOGBOOK")
-  (setq org-clock-into-drawer "LOGBOOK")
-  (setq org-clock-persist t)
-  (org-clock-persistence-insinuate)
-  (setq org-agenda-custom-commands
-        '(("e" "Study - Today"
-           ((org-ql-block '(and (level 2)
-                                (todo "FOUNDATION" "REFINEMENT")
-                                (not (tags "paused")))
-                          ((org-ql-block-header "ACTIVE - every week")))
-            (org-ql-block '(and (level 2)
-                                (todo "REVIEW")
-                                (not (tags "paused"))
-                                (my/study-review-due-p))
-                          ((org-ql-block-header "REVIEW DUE")))
-            (org-ql-block '(and (level 2)
-                                (todo "QUEUE")
-                                (not (tags "paused")))
-                          ((org-ql-block-header "QUEUE - next")))))))
+        '(("ONCYCLE" . (:foreground "lime green" :weight bold))
+          ("PAUSED" . (:foreground "gray"))
+          ("COMPLETED" . (:foreground "RoyalBlue"))))
   (define-key org-user-menu-map (kbd "s") my/study-map))
 
 (with-eval-after-load 'which-key
   (which-key-add-key-based-replacements
     "C-c o s"   "Study"
-    "C-c o s t" "Today view"
-    "C-c o s a" "Update accuracy"
-    "C-c o s r" "Mark review"
-    "C-c o s p" "Toggle paused"
-    "C-c o s d" "Derive all"))
-
-(use-package org-ql
-  :straight t
-  :after org)
+    "C-c o s t" "Rotation view"
+    "C-c o s c" "Clock summary"))
 
 (provide 'study)

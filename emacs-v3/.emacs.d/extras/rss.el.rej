@@ -1,0 +1,10 @@
+--- rss.el
++++ rss.el
+@@ -22,6 +22,6 @@
+ 
+ (use-package request-deferred
+   :straight t
+-  :after request)
++  :demand t)
+ 
+ ;; ── elfeed core ──────────────────────────────────────────────────────

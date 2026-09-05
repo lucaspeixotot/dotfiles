@@ -324,7 +324,7 @@ Optional argument CANDIDATE is the selected item."
   (org-directory "~/org/")
   (org-agenda-files '("~/org/inbox.org"
                       "~/org/tasks.org"
-                      "~/org/study.org"))
+                      "~/study/org/"))
   (org-default-notes-file "~/org/inbox.org")
   (org-refile-targets '(("~/org/tasks.org" :maxlevel . 3)
                         ("~/org/inbox.org" :maxlevel . 3)))
@@ -348,10 +348,10 @@ Optional argument CANDIDATE is the selected item."
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((latex . t)))
-  (setq org-hide-emphasis-markers t)
-  (font-lock-add-keywords 'org-mode
-                          '(("^ *\\([-]\\) "
-                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+  ;; (setq org-hide-emphasis-markers t)
+  ;; (font-lock-add-keywords 'org-mode
+  ;;                         '(("^ *\\([-]\\) "
+  ;;                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
   )
 
 (use-package org-bullets
