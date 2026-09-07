@@ -34,6 +34,13 @@ Scans CLOCK lines and takes the max end time (skips open/running clocks)."
   "Return 2 if the current subject is tagged :fast:, else 1."
   (if (member "fast" (org-get-tags nil t)) 2 1))
 
+(defun my/study-tags-string (tags exclude)
+  "Return TAGS (excluding EXCLUDE) formatted as \" :a:b:\", or \"\" if empty."
+  (let ((tags (delete exclude tags)))
+    (if tags
+        (concat "  :" (mapconcat #'identity tags ":") ":")
+      "")))
+
 (defun my/study-file-p (buffer)
   "Return non-nil if BUFFER visits an Org file under `my/study-dir'."
   (when (buffer-live-p buffer)
@@ -60,7 +67,7 @@ Uses the current buffer when it visits an Org file under
 (defun my/study-collect-group (group source)
   "Return ONCYCLE level-1 subjects in SOURCE tagged GROUP.
 Sort by weighted staleness (descending); never-studied first; ties
-keep file order.  Each element: (DAYS NAME MARKER WEIGHT)."
+keep file order.  Each element: (DAYS NAME MARKER WEIGHT TAGS)."
   (let ((entries nil)
         (idx 0))
     (with-current-buffer source
@@ -70,7 +77,8 @@ keep file order.  Each element: (DAYS NAME MARKER WEIGHT)."
           (push (list (my/study-subject-days)
                       (org-get-heading t t t t)
                       (copy-marker (point) t)
-                      (my/study-subject-weight))
+                      (my/study-subject-weight)
+                      (org-get-tags nil t))
                 entries))
         (format "LEVEL=1+%s/ONCYCLE" group) 'file)))
     (setq entries (nreverse entries))
@@ -99,19 +107,21 @@ keep file order.  Each element: (DAYS NAME MARKER WEIGHT)."
          (num (if (string= group "P0") "0" "1"))
          (today (car items))
          (queue (cdr items)))
-    (my/study--insert (format "Priority %s — Today" num) nil 'org-agenda-structure)
+    (my/study--insert (format "Priority %s — Next" num) nil 'org-agenda-structure)
     (if today
-        (my/study--insert (format "  [%s]  %s"
+        (my/study--insert (format "  [%s]  %s%s"
                                   (if (< (car today) 0) "new" (format "%dd" (car today)))
-                                  (nth 1 today))
+                                  (nth 1 today)
+                                  (my/study-tags-string (nth 4 today) group))
                           (nth 2 today))
       (my/study--insert "  —" nil 'org-agenda-dimmed-todo-face))
     (my/study--insert (format "Priority %s — Queue" num) nil 'org-agenda-structure)
     (if queue
         (dolist (it queue)
-          (my/study--insert (format "  [%s]  %s"
+          (my/study--insert (format "  [%s]  %s%s"
                                     (if (< (car it) 0) "new" (format "%dd" (car it)))
-                                    (nth 1 it))
+                                    (nth 1 it)
+                                    (my/study-tags-string (nth 4 it) group))
                             (nth 2 it)))
       (my/study--insert "  —" nil 'org-agenda-dimmed-todo-face))
     (insert "\n")))

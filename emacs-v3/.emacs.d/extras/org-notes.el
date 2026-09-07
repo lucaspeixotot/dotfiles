@@ -655,3 +655,12 @@ current Denote note."
   (setq org-plantuml-jar-path (expand-file-name (or  (getenv "PLANTUML_JAR") "plantuml.jar")))
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
   (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t))))
+
+(use-package textui
+  :straight (textui :type git :host github :repo "yibie/textui")
+  :demand t)
+
+(use-package org-table-widget
+  :straight (org-table-widget :type git :host github :repo "yibie/org-table-widget")
+  :config
+  (add-hook 'org-mode-hook #'org-table-widget-mode))

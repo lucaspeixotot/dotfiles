@@ -426,15 +426,24 @@ For a location, jump to it."
 
 ;;; Emacs better movements
 (load (expand-file-name "extras/movements.el" user-emacs-directory))
+(load (expand-file-name "extras/modal.el" user-emacs-directory))
+
 
 ;;; Dev settings
 (load (expand-file-name "extras/dev.el" user-emacs-directory))
 
 ;;; Languages specific settings
 (load (expand-file-name "extras/ai.el" user-emacs-directory))
+(load (expand-file-name "extras/gptel-presets.el" user-emacs-directory))
 
 ;;; Remote config (tramp)
 (load (expand-file-name "extras/remote.el" user-emacs-directory))
+
+;;; Org mode, notes, and study
+(load (expand-file-name "extras/org-notes.el" user-emacs-directory))
+(load (expand-file-name "extras/study.el" user-emacs-directory))
+(load (expand-file-name "extras/anki.el" user-emacs-directory))
+(load (expand-file-name "extras/spell.el" user-emacs-directory))
 
 ;;; Misc settings
 (load-file (expand-file-name "extras/misc.el" user-emacs-directory))
@@ -448,12 +457,6 @@ For a location, jump to it."
 (load (expand-file-name "langs/clojure.el" user-emacs-directory))
 (load (expand-file-name "langs/md.el" user-emacs-directory))
 (load (expand-file-name "langs/pdf.el" user-emacs-directory))
-
-;;; Org mode, notes, and study
-(load (expand-file-name "extras/org-notes.el" user-emacs-directory))
-(load (expand-file-name "extras/study.el" user-emacs-directory))
-(load (expand-file-name "extras/anki.el" user-emacs-directory))
-(load (expand-file-name "extras/spell.el" user-emacs-directory))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;

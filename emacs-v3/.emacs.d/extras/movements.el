@@ -10,81 +10,81 @@
 ;;;  $$       |$$ | $$ | $$ |$$    $$ |$$       |/     $$/       $$       |   $$$/      $$  $$/
 ;;;  $$$$$$$$/ $$/  $$/  $$/  $$$$$$$/  $$$$$$$/ $$$$$$$/         $$$$$$$/     $/        $$$$/
 
-(use-package easy-kill
-  :straight t
-  :bind (([remap kill-ring-save] . #'easy-kill)
-         ([remap mark-sexp]      . #'easy-mark)
-         ("M-S-w" . kill-ring-save)
-         ("M-S-SPC" . #'easy-mark)
-         :map easy-kill-base-map
-         ("+" . nil) ("=" . nil)
-         ("," . easy-kill-expand-region)
-         ("." . easy-kill-contract-region))
-  :config
-  (setq easy-kill-alist
-        '((119 word " ")
-          (115 sexp "\n")
-          (101 line "\n")
-          (108 list "\n")
-          (100 defun "\n\n")
-          (41 sentence "\n")
-          (104 paragraph "\n")
-          (62 page "\n")
-          (102 filename "\n")
-          (68 defun-name " ")
-          (98 buffer-file-name)))
-  (defun easy-kill-expand-region ()
-    "Expand kill according to expand-region."
-    (interactive)
-    (let* ((thing (easy-kill-get nil))
-           (bounds (easy-kill--bounds)))
-      (save-mark-and-excursion
-        (set-mark (cdr bounds))
-        (goto-char (car bounds))
-        (er/expand-region 1)
-        (deactivate-mark)
-        (easy-kill-adjust-candidate thing (point) (mark)))))
-  (defun easy-kill-contract-region ()
-    "Expand kill according to expand-region."
-    (interactive)
-    (let* ((thing (easy-kill-get nil))
-           (bounds (easy-kill--bounds)))
-      (save-mark-and-excursion
-        (set-mark (cdr bounds))
-        (goto-char (car bounds))
-        (er/contract-region 1)
-        (deactivate-mark)
-        (easy-kill-adjust-candidate thing (point) (mark))))))
+;; (use-package easy-kill
+;;   :straight t
+;;   :bind (([remap kill-ring-save] . #'easy-kill)
+;;          ([remap mark-sexp]      . #'easy-mark)
+;;          ("M-S-w" . kill-ring-save)
+;;          ("M-S-SPC" . #'easy-mark)
+;;          :map easy-kill-base-map
+;;          ("+" . nil) ("=" . nil)
+;;          ("," . easy-kill-expand-region)
+;;          ("." . easy-kill-contract-region))
+;;   :config
+;;   (setq easy-kill-alist
+;;         '((119 word " ")
+;;           (115 sexp "\n")
+;;           (101 line "\n")
+;;           (108 list "\n")
+;;           (100 defun "\n\n")
+;;           (41 sentence "\n")
+;;           (104 paragraph "\n")
+;;           (62 page "\n")
+;;           (102 filename "\n")
+;;           (68 defun-name " ")
+;;           (98 buffer-file-name)))
+;;   (defun easy-kill-expand-region ()
+;;     "Expand kill according to expand-region."
+;;     (interactive)
+;;     (let* ((thing (easy-kill-get nil))
+;;            (bounds (easy-kill--bounds)))
+;;       (save-mark-and-excursion
+;;         (set-mark (cdr bounds))
+;;         (goto-char (car bounds))
+;;         (er/expand-region 1)
+;;         (deactivate-mark)
+;;         (easy-kill-adjust-candidate thing (point) (mark)))))
+;;   (defun easy-kill-contract-region ()
+;;     "Expand kill according to expand-region."
+;;     (interactive)
+;;     (let* ((thing (easy-kill-get nil))
+;;            (bounds (easy-kill--bounds)))
+;;       (save-mark-and-excursion
+;;         (set-mark (cdr bounds))
+;;         (goto-char (car bounds))
+;;         (er/contract-region 1)
+;;         (deactivate-mark)
+;;         (easy-kill-adjust-candidate thing (point) (mark))))))
 
-(use-package easy-kill
-  :after easy-kill
-  :config
-  (defun easy-kill-thing-alt (&optional thing n inhibit-handler)
-    ;; ... selects backward instead of forward
-    )
-  (defun easy-kill-thing-backward (n) ...)
-  (defun easy-kill-thing-backward-1 (thing &optional n) ...)
-  (defun easy-kill-map ()
-    "Build the keymap according to `easy-kill-alist'."
-    (let ((map (make-sparse-keymap)))
-      (set-keymap-parent map easy-kill-base-map)
-      (when easy-kill-unhighlight-key
-        (with-demoted-errors "easy-kill-unhighlight-key: %S"
-          (define-key map easy-kill-unhighlight-key #'easy-kill-unhighlight)))
-      (define-key map "[" (lambda () (interactive)
-                            (cl-letf* (((symbol-function 'easy-kill-thing)
-                                        #'easy-kill-thing-alt))
-                              (call-interactively #'easy-kill-thing-alt))))
-      (define-key map "]" #'easy-kill-thing)
-      (dolist (c easy-kill-alist)
-        (when (<= 97 (car c) 122)
-          (define-key map (char-to-string (- (car c) 32))
-                      (lambda () (interactive)
-                        (cl-letf* (((symbol-function 'easy-kill-thing)
-                                    #'easy-kill-thing-alt))
-                          (call-interactively #'easy-kill-thing-alt)))))
-        (define-key map (char-to-string (car c)) #'easy-kill-thing))
-      map)))
+;; (use-package easy-kill
+;;   :after easy-kill
+;;   :config
+;;   (defun easy-kill-thing-alt (&optional thing n inhibit-handler)
+;;     ;; ... selects backward instead of forward
+;;     )
+;;   (defun easy-kill-thing-backward (n) ...)
+;;   (defun easy-kill-thing-backward-1 (thing &optional n) ...)
+;;   (defun easy-kill-map ()
+;;     "Build the keymap according to `easy-kill-alist'."
+;;     (let ((map (make-sparse-keymap)))
+;;       (set-keymap-parent map easy-kill-base-map)
+;;       (when easy-kill-unhighlight-key
+;;         (with-demoted-errors "easy-kill-unhighlight-key: %S"
+;;           (define-key map easy-kill-unhighlight-key #'easy-kill-unhighlight)))
+;;       (define-key map "[" (lambda () (interactive)
+;;                             (cl-letf* (((symbol-function 'easy-kill-thing)
+;;                                         #'easy-kill-thing-alt))
+;;                               (call-interactively #'easy-kill-thing-alt))))
+;;       (define-key map "]" #'easy-kill-thing)
+;;       (dolist (c easy-kill-alist)
+;;         (when (<= 97 (car c) 122)
+;;           (define-key map (char-to-string (- (car c) 32))
+;;                       (lambda () (interactive)
+;;                         (cl-letf* (((symbol-function 'easy-kill-thing)
+;;                                     #'easy-kill-thing-alt))
+;;                           (call-interactively #'easy-kill-thing-alt)))))
+;;         (define-key map (char-to-string (car c)) #'easy-kill-thing))
+;;       map)))
 
 (use-package macrursors
   :straight (macrursors :host github :repo "karthink/macrursors"
@@ -699,20 +699,22 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
          ("C-S-<down>" . windmove-swap-states-down)
          ("C-S-<up>" . windmove-swap-states-up)
          ("C-S-<left>" . windmove-swap-states-left)
-         :map other-window-repeat-map
-         ("l" . windmove-right)
-         ("k" . windmove-up)
-         ("h" . windmove-left)
-         ("j" . windmove-down))
+         ;; :map other-window-repeat-map
+         ;; ("l" . windmove-right)
+         ;; ("k" . windmove-up)
+         ;; ("h" . windmove-left)
+         ;; ("j" . windmove-down)
+         )
   :init
   (setq windmove-wrap-around t)
-  (dolist (cmd '(windmove-left windmove-right
-                  windmove-up windmove-down))
-    (put cmd 'repeat-map 'other-window-repeat-map))
+  ;; (dolist (cmd '(windmove-left windmove-right
+  ;;                 windmove-up windmove-down))
+  ;;   (put cmd 'repeat-map 'other-window-repeat-map))
 
-  (dolist (cmd '(windmove-swap-states-left windmove-swap-states-right
-                windmove-swap-states-up windmove-swap-states-down))
-  (put cmd 'repeat-map 'other-window-repeat-map)))
+  ;; (dolist (cmd '(windmove-swap-states-left windmove-swap-states-right
+  ;;               windmove-swap-states-up windmove-swap-states-down))
+  ;; (put cmd 'repeat-map 'other-window-repeat-map))
+  )
 
 ;;; Better M-v/C-v
 (defun better-scroll-up-half (&optional arg)

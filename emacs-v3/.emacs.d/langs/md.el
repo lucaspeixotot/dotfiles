@@ -16,3 +16,8 @@
               ("g" . grip-mode))
   :config
   (setq grip-update-after-change t)) ; Live updates as you type
+
+
+(use-package md-mode
+  :straight (:type git :host github :repo "yibie/md-mode")
+  :mode ("\\.md\\'" . md-mode))

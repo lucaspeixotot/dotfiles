@@ -66,7 +66,6 @@
   ;; (via gptel-menu or the @name cookie). Skip if missing.
   (dolist (agent-name '("concursos-tutor"
                         "concursos-resumo"
-                        "concursos-cardify"
                         "concursos-skillmaker"
                         "english-refine"))
     (when-let* ((agent (assoc-default agent-name gptel-agent--agents nil nil)))

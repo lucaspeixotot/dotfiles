@@ -36,6 +36,38 @@ name not in the list creates a new deck on push."
         (goto-char (point-max))
         (insert "\n* " deck "\n:PROPERTIES:\n:ANKI_DECK: " deck "\n:END:\n")))))
 
+;;; Cardify (region -> notes) ---------------------------------------------
+
+(defun my/anki-note-level ()
+  "Return the outline level for note headings (one below the ANKI_DECK heading)."
+  (or (save-excursion
+        (goto-char (point-min))
+        (when (re-search-forward ":ANKI_DECK:" nil t)
+          (org-back-to-heading)
+          (1+ (org-outline-level))))
+      2))
+
+(defun my/anki-cardify-region (beg end)
+  "Convert the raw list in the active region into anki-editor notes via AI.
+BEG and END are the user-selected region bounds."
+  (interactive "r")
+  (unless (use-region-p)
+    (user-error "Select the raw list first (active region), then run this command"))
+  (require 'gptel-rewrite)
+  (unless (alist-get 'concursos-cardify gptel-directives)
+    (user-error "Directive `concursos-cardify' is not loaded"))
+  (let* ((level (my/anki-note-level))
+         (gptel--rewrite-directive (alist-get 'concursos-cardify gptel-directives))
+         (msg (format (concat "Each heading delimits one input item; IGNORE the heading "
+                              "text (it is just a generic label). Derive the card front and "
+                              "back entirely from the body content under the heading. "
+                              "Everything nested under a heading belongs to it (do not split "
+                              "it into separate cards). Do not process a heading that has an "
+                              "ANKI_DECK property. Convert each heading into ONE Anki card, "
+                              "as an org heading at level %d (%s). Output only the notes.")
+                      level (make-string level ?*))))
+    (gptel--suffix-rewrite msg)))
+
 ;;; Normalize generated cards ---------------------------------------------
 
 (defun my/anki-note-field-kind ()
@@ -84,6 +116,7 @@ Idempotent: does nothing when the structure is already correct."
 (defvar my/anki-map
   (let ((map (make-sparse-keymap)))
     ;; (define-key map (kbd "f") #'my/anki-deck-file)
+    (define-key map (kbd "c") #'my/anki-cardify-region)
     (define-key map (kbd "p") #'my/anki-push-new)
     map))
 
@@ -94,6 +127,7 @@ Idempotent: does nothing when the structure is already correct."
   (which-key-add-key-based-replacements
     "C-c o k"   "Anki cards"
     ;; "C-c o k f" "Deck file"
+    "C-c o k c" "Cardify region"
     "C-c o k p" "Push new notes"))
 
 (provide 'anki)
