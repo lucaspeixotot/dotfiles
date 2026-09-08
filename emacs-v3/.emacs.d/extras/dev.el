@@ -264,7 +264,7 @@
   :straight t
   ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
   ;; Press C-c p ? to for help.
-  ;; :bind ("C-c p" . cape-prefix-map) ;; Alternative key: M-<tab>, M-p, M-+
+  :bind ("M-<tab>" . cape-prefix-map) ;; Alternative key: M-<tab>, `M-prior', M-+
   ;; Alternatively bind Cape commands individually.
   ;; :bind (("C-c p d" . cape-dabbrev)
   ;;        ("C-c p h" . cape-history)
@@ -279,8 +279,7 @@
          (completion-at-point-functions . cape-file)
          (completion-at-point-functions . cape-keyword)
          (completion-at-point-functions . cape-history)
-         (completion-at-point-functions . cape-elisp-block)
-         (completion-at-point-functions . cape-elisp-symbol)))
+         ))
 
 (use-package completion-preview
   :straight nil
