@@ -428,7 +428,6 @@ For a location, jump to it."
 (load (expand-file-name "extras/movements.el" user-emacs-directory))
 (load (expand-file-name "extras/modal.el" user-emacs-directory))
 
-
 ;;; Dev settings
 (load (expand-file-name "extras/dev.el" user-emacs-directory))
 

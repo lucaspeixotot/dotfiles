@@ -90,7 +90,7 @@
 
 (use-package key-chord
   :straight t
-  :after meow
+  :demand t
   :config
   (key-chord-define-global "fd" 'meow-insert-exit)
   (setq key-chord-typing-detection nil)

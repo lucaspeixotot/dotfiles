@@ -72,30 +72,34 @@
       (apply #'gptel-make-preset (intern agent-name) agent)))
   )
 
+;; Straight
+(use-package gptel-preset-collection
+  :straight (:host github :repo "karthink/gptel-preset-collection")
+  :after gptel)
 
 (use-package mcp
   :straight t
   :config
   (setq mcp-hub-servers
         `(("mcp-atlassian" . (:command "uvx"
-                              :args ("mcp-atlassian")
-                              :env (:JIRA_URL "https://hpe.atlassian.net/"
-                                    :JIRA_USERNAME ,(getenv "JIRA_USERNAME")
-                                    :JIRA_API_TOKEN ,(getenv "JIRA_API_TOKEN")
-                                    :CONFLUENCE_URL "https://hpe.atlassian.net/wiki"
-                                    :CONFLUENCE_USERNAME ,(getenv "CONFLUENCE_USERNAME")
-                                    :CONFLUENCE_API_TOKEN ,(getenv "CONFLUENCE_API_TOKEN"))))
+                                       :args ("mcp-atlassian")
+                                       :env (:JIRA_URL "https://hpe.atlassian.net/"
+                                                       :JIRA_USERNAME ,(getenv "JIRA_USERNAME")
+                                                       :JIRA_API_TOKEN ,(getenv "JIRA_API_TOKEN")
+                                                       :CONFLUENCE_URL "https://hpe.atlassian.net/wiki"
+                                                       :CONFLUENCE_USERNAME ,(getenv "CONFLUENCE_USERNAME")
+                                                       :CONFLUENCE_API_TOKEN ,(getenv "CONFLUENCE_API_TOKEN"))))
           ("github" . (:command "docker"
-                       :args ("run"
-                              "-i"
-                              "--rm"
-                              "-e"
-                              "GITHUB_PERSONAL_ACCESS_TOKEN"
-                              "-e"
-                              "GITHUB_HOST"
-                              "ghcr.io/github/github-mcp-server")
-                       :env (:GITHUB_PERSONAL_ACCESS_TOKEN ,(getenv "GITHUB_PERSONAL_ACCESS_TOKEN")
-                             :GITHUB_HOST , (or (getenv "GITHUB_HOST") "https://github.com"))))))
+                                :args ("run"
+                                       "-i"
+                                       "--rm"
+                                       "-e"
+                                       "GITHUB_PERSONAL_ACCESS_TOKEN"
+                                       "-e"
+                                       "GITHUB_HOST"
+                                       "ghcr.io/github/github-mcp-server")
+                                :env (:GITHUB_PERSONAL_ACCESS_TOKEN ,(getenv "GITHUB_PERSONAL_ACCESS_TOKEN")
+                                                                    :GITHUB_HOST , (or (getenv "GITHUB_HOST") "https://github.com"))))))
   (require 'gptel-integrations))
 
 ;; Straight
