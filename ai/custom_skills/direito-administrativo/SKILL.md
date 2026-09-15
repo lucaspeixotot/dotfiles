@@ -98,16 +98,24 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
 
 ## 6. Estrutura sugerida do resumo (para o agente de resumo)
 
-1. **Atos administrativos** (elementos, atributos, classificação, extinção).
-2. **Organização administrativa** (direta × indireta; desconcentração ×
-   descentralização).
-3. **Poderes da administração** (incluindo poder de polícia e abuso de poder).
-4. **Responsabilidade civil do Estado**.
-5. **Licitações e contratos** (Lei 14.133/2021).
-6. **Bens públicos**.
-7. **Agentes públicos**.
-8. **Improbidade administrativa**.
-9. **Controle da administração**.
+- **Pergunta organizadora:** como a Administração se organiza, com que
+  prerrogativas age e contrata, e como responde e se submete a controle pelos
+  seus atos?
+- **Fluxo principal:** organização administrativa (direta × indireta;
+  desconcentração × descentralização) → agentes públicos → poderes
+  (vinculado/discricionário; hierárquico/disciplinar/regulamentar/de polícia) →
+  atos administrativos (elementos → atributos → extinção) → licitações e
+  contratos (Lei 14.133/2021) → bens públicos → responsabilidade civil do
+  Estado (risco administrativo + regresso) → improbidade administrativa →
+  controle (interno × externo × judicial).
+- **Eixos conceituais:** administração direta × indireta; desconcentração ×
+  descentralização; ato vinculado × discricionário; revogação × anulação ×
+  convalidação; responsabilidade objetiva do Estado × subjetiva (direito de
+  regresso); controle interno × externo × judicial.
+- **Pares "não confunda":** dispensa × inexigibilidade; excesso × desvio de
+  poder; desconcentração × descentralização; revogação × anulação; improbidade
+  (dolo, rol taxativo do art. 11) × ilícito civil/administrativo; presunção
+  (relativa) × imperatividade × autoexecutoriedade (nem todo ato as tem).
 
 ## 7. Fontes oficiais (sempre na versão mais recente)
 

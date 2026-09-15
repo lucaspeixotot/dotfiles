@@ -108,3 +108,6 @@
   :after gptel
   :bind
   (("C-c a i" . gptel-inline)))
+
+(use-package agent-shell
+  :straight t)

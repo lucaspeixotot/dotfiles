@@ -90,14 +90,21 @@ Em exatas, não há "lei revogada", mas há convenções que mudam o resultado:
 - Sempre declare a convenção/notação usada ao apresentar uma fórmula.
 - Se a banca/edital especificar outra convenção, siga a deles e avise.
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Estrutura sugerida do resumo (espinha narrativa)
 
-1. **Estatística descritiva** (medidas de posição, dispersão, forma).
-2. **Probabilidade** (axiomas, condicional, Bayes).
-3. **Variáveis aleatórias e distribuições**.
-4. **Amostragem**.
-5. **Inferência** (intervalos e testes de hipóteses).
-6. **Regressão e correlação**.
+- **Pergunta organizadora:** como descrever um conjunto de dados, quantificar a
+  incerteza e generalizar da amostra para a população (inferir) com erro
+  controlado?
+- **Fluxo principal:** descrição (posição → dispersão → forma) → probabilidade
+  (condicional, total, Bayes) → variáveis aleatórias e distribuições (discreta
+  → contínua) → amostragem → estimação (pontual → por intervalo) → testes de
+  hipóteses → regressão e correlação.
+- **Eixos conceituais:** descrição × inferência; população × amostra; estimação
+  pontual × intervalar; distribuição discreta × contínua.
+- **Pares "não confunda":** média × mediana × moda; variância × desvio-padrão;
+  denominador n × n−1; erro tipo I × tipo II; correlação × causalidade;
+  independência × correlação; R² × coeficiente de correlação; TCL × consistência
+  do estimador.
 
 ## 7. Fontes de referência (boas práticas)
 

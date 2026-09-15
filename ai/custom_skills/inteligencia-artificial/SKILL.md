@@ -95,20 +95,23 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
   (tramitando, aprovada, em vigor).
 - Desconfie de textos sobre "Marco Legal de IA" sem conferir a fase atual.
 
-**Checagem mínima de atualidade (obrigatória):**
-- IA regulatória muda rápido: anote a DATA da consulta e o estado da norma
-  (tramitando, aprovada, em vigor).
-- Desconfie de textos sobre "Marco Legal de IA" sem conferir a fase atual.
-
 ## 6. Estrutura sugerida do resumo (para o agente de resumo)
 
-1. **Conceitos e histórico** (forte/fraca, simbólica/conexionista).
-2. **Aprendizado de máquina** (tipos, métricas, viés/variância).
-3. **Redes neurais e deep learning**.
-4. **PLN e visão computacional**.
-5. **IA generativa e LLMs**.
-6. **Ética e regulação** (Brasil e LGPD).
-7. **Aplicações na administração tributária**.
+- **Pergunta organizadora:** como máquinas aprendem a partir de dados e o que
+  isso muda para a administração tributária, sob que limites éticos e
+  regulatórios?
+- **Fluxo principal:** conceitos e histórico (forte × fraca, simbólica ×
+  conexionista) → aprendizado de máquina (supervisionado × não supervisionado
+  × reforço; treino/validação/teste; métricas; viés × variância) → redes
+  neurais e deep learning (CNN, RNN/LSTM, transformers) → PLN e visão
+  computacional (percepção) → IA generativa, LLMs e agentes → ética e
+  regulação → aplicações na administração tributária.
+- **Eixos conceituais:** IA forte × fraca; hierarquia ML ⊂ IA e deep learning
+  ⊂ ML; paradigmas de aprendizado (supervisionado × não supervisionado ×
+  reforço); percepção × ação.
+- **Pares "não confunda":** discriminativo × generativo; overfitting ×
+  underfitting; precisão × recall × acurácia; LLM × PLN × IA generativa; ML ×
+  mineração de dados; alucinação × erro de código.
 
 ## 7. Fontes oficiais (sempre na versão mais recente)
 

@@ -108,13 +108,26 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte
 
 ## 6. Estrutura sugerida do resumo (para o agente de resumo)
 
-1. **ICMS** (fato gerador, não cumulatividade, crédito, ST, diferimento, DIFAL,
-   alíquotas, cesta básica).
-2. **IPVA** (fato gerador, base de cálculo, alíquotas, isenções).
-3. **ITCD/ITCMD** (fato gerador, base de cálculo, alíquotas, isenções).
-4. **Processo Administrativo Tributário** (fases, prazos, recursos, instâncias,
-   prescrição).
-5. **Programa Contribuinte Arretado** (requisitos, categorias, benefícios).
+- **Pergunta organizadora:** como Alagoas tributa o consumo (ICMS), a
+  propriedade de veículos (IPVA) e a transmissão de bens (ITCD), e como o
+  contribuinte se defende no processo administrativo e acessa programas de
+  conformidade?
+- **Fluxo principal:** ICMS (fato gerador → não cumulatividade/crédito-débito →
+  substituição tributária e antecipação → diferimento → DIFAL → alíquotas e
+  cesta básica) → IPVA → ITCD/ITCMD → processo administrativo tributário
+  (instâncias, prazos, recursos, prescrição) → programa Contribuinte Arretado
+  (requisitos, categorias, benefícios).
+- **Eixos conceituais:** ICMS × IPVA × ITCD (tributos estaduais distintos);
+  dentro do ICMS: crédito × débito (não cumulatividade) e substituição
+  tributária × antecipação; desoneração: diferimento × isenção × não incidência
+  × suspensão; PAT: fases → instâncias (CJ/GJ → TATE) → recursos; Contribuinte
+  Arretado: categorias A/B.
+- **Pares "não confunda":** ICMS × IPVA × ITCD; substituição tributária ×
+  antecipação sem substituição; diferimento × isenção × não incidência ×
+  suspensão; alíquota residual do ICMS-AL 20,5% × "geral"; armas/munições
+  (29% × 12% — prevalece 12%) e transporte aéreo (12% interno × 4%
+  interestadual); ITCD-AL alíquota fixa × progressiva; CJ/GJ × TATE;
+  Contribuinte Arretado × isenção automática.
 
 ## 7. Fontes oficiais (sempre na versão mais recente)
 

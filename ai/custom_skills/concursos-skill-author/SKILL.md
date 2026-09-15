@@ -42,7 +42,7 @@ description: >  (gatilho: disciplina + "carregar quando o aluno pedir resumo ou 
 ## 3. Estilo por banca (Cebraspe × FGV)
 ## 4. Pegadinhas clássicas ("não confunda")
 ## 5. Normas/padrões a verificar (prioridade: vigência/versão)
-## 6. Estrutura sugerida do resumo (override do padrão do agente resumo)
+## 6. Estrutura sugerida do resumo (espinha narrativa — obrigatório)
 ## 7. Fontes oficiais (sempre na versão mais recente)
 #+end_src
 
@@ -53,6 +53,77 @@ Regras do template:
   inclua o estado (ex.: =legislacao-tributaria-estadual-alagoas=).
 - Manter lean e durável: playbook, não dump de conteúdo.
 - Nada de lei colada: a seção 5 manda VERIFICAR, nunca afirma o teor.
+- Seção 6 NÃO pode ser lista plana de tópicos: deve entregar a espinha
+  narrativa da disciplina (pergunta organizadora + fluxo principal + eixos
+  conceituais + pares "não confunda"). Ver seção 2.1.
+- A skill deve seguir o padrão Agent Skills (ver seção 2.3): SKILL.md enxuto +
+  =references/= e =assets/= para o detalhe.
+
+## 2.1 A seção 6 (espinha narrativa da disciplina)
+
+A seção 6 é o que o agente de resumo usa para estruturar o texto. Ela NÃO pode
+ser uma lista plana de tópicos. Deve conter, no mínimo:
+
+1. **Pergunta organizadora** — a questão central que a disciplina responde
+   (ex.: Direito Tributário = "como nasce, se constitui e se extingue a
+   obrigação de pagar tributo?").
+2. **Fluxo(s) principal(is)** — o encadeamento causal/temporal dos blocos
+   (ex.: competência → obrigação → lançamento → crédito → prescrição/decadência).
+   Exponha o fluxo ANTES dos tópicos, para o aluno ver o mapa.
+3. **Eixos conceituais** — os pares estruturadores que organizam o texto
+   (ex.: Auditoria = "documento × escrituração"; "regularidade = financeira +
+   conformidade").
+4. **Pares "não confunda"** — as oposições que devem aparecer AO LONGO do
+   texto (e não só numa lista final).
+
+A seção 6 é DERIVADA das seções 2–5 (incidência, banca, pegadinhas, normas):
+não invente fluxo que não decorra delas.
+
+## 2.2 Exemplos trabalhados (por tipo de disciplina)
+
+Os exemplos COMPLETOS ficam em =references/exemplos-secao-6.md= — carregue esse
+arquivo sempre que for escrever uma seção 6 (progressive disclosure: o detalhe
+não fica no SKILL.md). Resumo mínimo para referência rápida:
+
+- **Jurídica (Direito Tributário):** "como nasce, constitui e extingue a
+  obrigação de pagar tributo?" → competência → obrigação → lançamento →
+  crédito → prescrição/decadência → garantias.
+- **Exatas (Matemática Financeira):** "como levar valores no tempo e comparar
+  alternativas?" → juros → taxas → descontos → séries → amortização →
+  equivalência → VPL/TIR.
+- **TI (Desenvolvimento de Sistemas):** "como um software é concebido,
+  construído, testado, entregue e mantido?" → requisitos → projeto →
+  arquitetura → banco → implementação → testes → DevOps → gestão.
+
+## 2.3 Padrão Agent Skills (obrigatório para TODAS as skills)
+
+As skills de disciplina NÃO precisam condensar tudo no =SKILL.md=. Siga o
+formato Agent Skills (https://agentskills.io/specification):
+
+```
+<nome-da-skill>/
+├── SKILL.md          # obrigatório: frontmatter (name + description) + instruções
+├── references/       # opcional: documentação carregada SOB DEMANDA
+├── assets/           # opcional: templates, tabelas, quadros-resumo
+└── ...
+```
+
+Regras práticas:
+
+- **SKILL.md enxuto** (< 500 linhas): o essencial para decidir e estruturar
+  (incidência, banca, pegadinhas, normas a verificar, espinha narrativa).
+- **Material detalhado vai para =references/=** (ex.: quadros-resumo de
+  incidência, tabelas de transição, glossário de "não confunda", listas de
+  dispositivos por tópico). Referencie por caminho RELATIVO a partir do
+  SKILL.md (ex.: "ver =references/quadro-transicao.md=").
+- **=assets/= para templates e recursos estáticos** (ex.: modelo de resumo,
+  tabela de alíquotas), não para instrução de comportamento.
+- **Progressive disclosure:** o agente carrega o SKILL.md ao ativar a skill e
+  só lê =references/=/=assets/= quando a tarefa exigir. Mantenha cada arquivo
+  de =references/= focado (1 assunto), para leitura barata.
+- A meta-skill já segue esse padrão (ver =references/exemplos-secao-6.md=). As
+  skills de disciplina criadas/revisadas a partir de agora devem seguir o mesmo
+  formato.
 
 ## 3. Variação da "regra de ouro" por tipo de disciplina
 
@@ -92,6 +163,17 @@ Regras do template:
 6. Reporte ao usuário o que foi criado, o que foi verificado (com datas) e
    eventuais ressalvas de fontes divergentes.
 
+### Modo de revisão estrutural (seção 6)
+
+Quando o pedido for APENAS reescrever a seção 6 de uma skill existente:
+
+- Derive a espinha narrativa das seções 2–5 da própria skill (incidência,
+  banca, pegadinhas, normas) — não re-pesquise a norma do zero.
+- Faça checagem LEVE de vigência apenas das normas já listadas na seção 5
+  (WebSearch pontual); se algo estiver defasado, registre ressalva no relatório.
+- NÃO expanda o escopo: neste modo, não reescreva a seção 5 nem faça pesquisa
+  de incidência nova.
+
 ## 5. Checagens de qualidade antes de finalizar
 
 - [ ] description presente e com gatilho claro.
@@ -99,12 +181,18 @@ Regras do template:
 - [ ] Pegadinhas específicas da disciplina, não genéricas.
 - [ ] Seção 5 aponta normas/versões a VERIFICAR, sem colar o teor.
 - [ ] Regra de ouro de atualidade condizente com o tipo (jurídica/exatas/TI).
-- [ ] Estrutura sugerida do resumo adaptada à disciplina.
+- [ ] Seção 6 tem pergunta organizadora + fluxo principal + eixos conceituais
+      + pares "não confunda" — NÃO é lista plana de tópicos.
+- [ ] Padrão Agent Skills respeitado: SKILL.md enxuto (< 500 linhas); detalhe
+      em =references/= e =assets/=; caminhos relativos corretos.
 - [ ] Fontes oficiais e data de consulta.
 - [ ] Se o nome mudou (ex.: adicionar estado), renomear diretório e atualizar o
   =name:= sem deixar duplicidade.
 
 ## 6. Exemplo canônico
 
-A skill =direito-tributario= (em =~/custom_skills/direito-tributario/SKILL.md=)
-é o modelo de referência. Leia-a antes de criar uma nova, para manter o padrão.
+Os exemplos de seção 6 ficam em =references/exemplos-secao-6.md= (um por tipo
+de disciplina). Use-os como modelo de forma. A skill =direito-tributario= (em
+=~/custom_skills/direito-tributario/SKILL.md=) serve de referência adicional
+de como uma skill jurídica completa fica — mas o modelo de seção 6 é o arquivo
+de =references/=, não uma skill externa.

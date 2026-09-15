@@ -109,15 +109,22 @@ Não afirme o teor sem verificar a VERSÃO VIGENTE e a DATA da fonte:
 
 ## 6. Estrutura sugerida do resumo (para o agente de resumo)
 
-1. **Redes** (OSI/TCP-IP, protocolos).
-2. **Computação em nuvem e virtualização**.
-3. **Sistemas operacionais e data centers**.
-4. **Gestão de serviços de TI (ITIL) e governança (COBIT)**.
-5. **Segurança da informação** (pilares, classificação).
-6. **Criptografia e assinatura digital**.
-7. **Controles de acesso e gestão de identidades**.
-8. **Gestão de riscos, continuidade e incidentes**.
-9. **Normas e leis** (ISO 27001/27002, NIST, LGPD).
+- **Pergunta organizadora:** como a infraestrutura de TIC é organizada e como
+  proteger a informação (confidencialidade, integridade, disponibilidade)
+  contra ameaças, garantindo continuidade e conformidade?
+- **Fluxo principal:** redes (OSI × TCP/IP, protocolos) → computação em nuvem
+  e virtualização → sistemas operacionais e data centers → gestão de serviços
+  (ITIL) e governança (COBIT) → segurança da informação (pilares;
+  vulnerabilidade × ameaça × risco × impacto) → criptografia e assinatura
+  digital → controles de acesso e gestão de identidades → riscos, continuidade
+  e incidentes → normas e leis (ISO 27001/27002, NIST, LGPD).
+- **Eixos conceituais:** modelos de serviço de nuvem (IaaS × PaaS × SaaS);
+  pilares da segurança (confidencialidade × integridade × disponibilidade);
+  gestão de serviços (ITIL) × governança (COBIT); criptografia (simétrica ×
+  assimétrica; hash × cifragem).
+- **Pares "não confunda":** autenticação × autorização; incidente × problema;
+  RTO × RPO; vulnerabilidade × ameaça × risco × impacto; DRP × BCP × BIA;
+  anonimização × pseudonimização; OSI × TCP/IP.
 
 ## 7. Fontes oficiais (sempre na versão mais recente)
 

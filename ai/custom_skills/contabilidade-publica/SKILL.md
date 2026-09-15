@@ -91,15 +91,24 @@ Não afirme o teor sem verificar a EDIÇÃO VIGENTE e a DATA da fonte:
 - Anote a DATA da consulta e a edição da norma.
 - Desconfie de planos de contas antigos: a estrutura do PCASP é atualizada.
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Estrutura sugerida do resumo (espinha narrativa)
 
-1. **Fundamentos e regimes contábeis** (orçamentário × patrimonial).
-2. **PCASP** (classes e natureza da informação).
-3. **Variações patrimoniais** (VPA × VPD).
-4. **Demonstrações contábeis aplicadas ao setor público (DCASP)**.
-5. **Procedimentos contábeis patrimoniais** (depreciação, provisões, estoques).
-6. **Dívida ativa e créditos a receber**.
-7. **Resultados** (orçamentário, financeiro, patrimonial).
+- **Pergunta organizadora:** como um mesmo fato administrativo é capturado,
+  classificado e evidenciado sob as óticas orçamentária, patrimonial e de
+  controle, e como cada resultado se apura?
+- **Fluxo principal:** regimes contábeis (orçamentário × patrimonial ×
+  competência) → PCASP (classes e natureza da informação) → variações
+  patrimoniais (VPA × VPD) → procedimentos contábeis patrimoniais
+  (reconhecimento, mensuração, depreciação, provisões, estoques) →
+  créditos/dívida ativa → DCASP (demonstrações) → resultados (orçamentário ×
+  financeiro × patrimonial).
+- **Eixos conceituais:** óticas da informação (orçamentária × patrimonial × de
+  controle); VPA × VPD; receita/despesa orçamentária × patrimonial; os três
+  resultados (orçamentário, financeiro, patrimonial).
+- **Pares "não confunda":** regime orçamentário × patrimonial; receita
+  orçamentária × receita patrimonial × VPA; despesa orçamentária × despesa
+  patrimonial × VPD; Balanço Orçamentário × Financeiro × Patrimonial; VPA ×
+  VPD; créditos a receber × dívida ativa.
 
 ## 7. Fontes oficiais (sempre na versão mais recente)
 

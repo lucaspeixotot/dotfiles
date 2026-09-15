@@ -87,14 +87,19 @@ adotar outra, siga a dela (seções 5 e 7).
 - Sempre declare a convenção usada.
 - Se a banca/edital especificar outra, siga a deles e avise.
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Estrutura sugerida do resumo (espinha narrativa)
 
-1. **Juros simples e compostos**.
-2. **Taxas** (nominal, efetiva, equivalente, real × aparente).
-3. **Descontos** (racional × comercial).
-4. **Séries de pagamentos** (antecipadas/postecipadas).
-5. **Sistemas de amortização** (Price × SAC).
-6. **Equivalência de capitais e análise de investimentos** (VPL/TIR).
+- **Pergunta organizadora:** como levar valores no tempo de forma equivalente e
+  comparar alternativas de financiamento/investimento?
+- **Fluxo principal:** juros (simples → composto) → taxas (nominal/efetiva/
+  equivalente/real) → descontos → séries de pagamentos → sistemas de
+  amortização → equivalência de capitais → VPL/TIR.
+- **Eixos conceituais:** capitalização simples × composta; taxa nominal ×
+  efetiva × real; desconto racional (por dentro) × comercial (por fora);
+  prestação × juros × amortização; Price × SAC.
+- **Pares "não confunda":** taxa nominal × efetiva × equivalente × real ×
+  aparente; taxa proporcional × equivalente; desconto racional × comercial;
+  antecipada × postecipada; Price × SAC; VPL × TIR.
 
 ## 7. Fontes de referência (boas práticas)
 

@@ -61,6 +61,9 @@ dispositivo, confirme a redação VIGENTE HOJE e a data da fonte (seções 5 e 7
   arrecadação tende ao local de consumo (destino), não ao de produção.
 - **Não cumulatividade plena ≠ cumulatividade**: o novo sistema busca não
   cumulatividade plena, com crédito amplo.
+- **No SISTEMA ATUAL, o ISS é cumulativo (por regra)**: a CF/1988 não prevê não
+  cumulatividade para o ISS — diferentemente de ICMS e IPI, que a têm
+  expressamente. Banca troca "ISS cumulativo" × "ISS não cumulativo".
 - **Comitê Gestor do IBS ≠ Conselho Federativo**: o nome vigente é Comitê
   Gestor do IBS (art. 156-B, CF). "Conselho Federativo" era das versões
   anteriores (PEC 45/2019).
@@ -106,18 +109,28 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
 - Como o tema muda rápido, desconfie de qualquer texto com mais de alguns meses
   sem conferir se houve edição, regulamentação ou alteração posterior.
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Estrutura sugerida do resumo (espinha narrativa)
 
-1. **Panorama da reforma** (EC 132/2023: o que mudou no STN; IBS + CBS +
-   Imposto Seletivo).
-2. **IBS** (fato gerador, base de cálculo, contribuintes, destino, não
-   cumulatividade).
-3. **CBS** (União; distinções do IBS).
-4. **Imposto Seletivo** (extrafiscalidade, incidência).
-5. **Comitê Gestor do IBS** (natureza, composição, competências).
-6. **Regimes diferenciados, favorecidos e cashback**.
-7. **Mecanismos operacionais** (split payment, apuração assistida).
-8. **Transição** (convivência com ICMS/ISS, prazos).
+- **Pergunta organizadora:** como o novo sistema de tributação sobre o consumo
+  (IBS + CBS + Imposto Seletivo) substitui o modelo atual (ICMS/ISS/PIS/COFINS),
+  e como ele é administrado, operacionalizado e introduzido ao longo do tempo?
+
+- **Fluxo principal** (exponha ANTES dos detalhes):
+  arquitetura constitucional (EC 132/2023) → os três tributos (IBS, CBS,
+  Imposto Seletivo) → administração (Comitê Gestor do IBS) → regimes
+  (diferenciado/favorecido/específico + cashback) → mecanismos operacionais
+  (split payment, apuração assistida) → transição (convivência com ICMS/ISS).
+
+- **Eixos conceituais** (organizam o texto, não são lista final):
+  IBS (compartilhado Estados+DF+Municípios) × CBS (União); princípio do destino
+  × origem; não cumulatividade plena × cumulatividade; regime diferenciado
+  (reduz alíquota) × específico (muda apuração/base); alíquota de referência ×
+  alíquota efetiva.
+
+- **Pares "não confunda"** (devem aparecer AO LONGO do texto):
+  IBS × CBS; Comitê Gestor × Conselho Federativo; destino × origem; cashback ×
+  imunidade/isenção; transição × vigência imediata; as duas "travas" (ADCT ×
+  LC 214/2025); diferenciado × específico.
 
 ## 7. Fontes oficiais (sempre na versão mais recente)
 

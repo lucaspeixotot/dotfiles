@@ -103,14 +103,22 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
 
 ## 6. Estrutura sugerida do resumo (para o agente de resumo)
 
-1. **Atividade financeira e funções do Estado**.
-2. **Receita pública** (classificação e estágios).
-3. **Despesa pública** (classificação e estágios).
-4. **Orçamento público e princípios**.
-5. **PPA, LDO e LOA**.
-6. **Ciclo orçamentário e créditos adicionais**.
-7. **Dívida pública**.
-8. **Responsabilidade fiscal (LRF)**.
+- **Pergunta organizadora:** como o Estado obtém, aloca e executa os recursos
+  públicos, e como se submete a limites e responsabilidade fiscal?
+- **Fluxo principal:** atividade financeira e funções do Estado → receita
+  pública (classificação → estágios: previsão → lançamento → arrecadação →
+  recolhimento) → despesa pública (classificação → estágios: fixação → empenho
+  → liquidação → pagamento) → orçamento público e princípios → PPA/LDO/LOA →
+  ciclo orçamentário → créditos adicionais → dívida pública → responsabilidade
+  fiscal (LRF).
+- **Eixos conceituais:** receita × despesa; receita orçamentária ×
+  extraorçamentária; receita originária × derivada; despesa (empenho ×
+  liquidação × pagamento); orçamento e seus princípios (unidade, universalidade,
+  não afetação, exclusividade); crédito suplementar × especial × extraordinário.
+- **Pares "não confunda":** empenho × liquidação × pagamento; PPA × LDO × LOA;
+  crédito suplementar × especial × extraordinário; receita orçamentária ×
+  extraorçamentária; DRU 20% × 30% (vigente: 30% até 2032); teto de gastos
+  (EC 95/2016) × Regime Fiscal Sustentável (LC 200/2023).
 
 ## 7. Fontes oficiais (sempre na versão mais recente)
 

@@ -85,14 +85,23 @@ Para teoria, use bibliografia consagrada; para contexto, use dados recentes
 - Para dados, anote a DATA e a fonte; não use números desatualizados como se
   fossem atuais.
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Estrutura sugerida do resumo (espinha narrativa)
 
-1. **Microeconomia** (oferta/demanda, elasticidade, estruturas de mercado).
-2. **Macroeconomia** (contas nacionais, inflação, políticas).
-3. **Moeda e sistema financeiro**.
-4. **Economia internacional** (câmbio, balanço de pagamentos).
-5. **Economia do setor público** (bens públicos, externalidades, tributação).
-6. **Desenvolvimento econômico**.
+- **Pergunta organizadora:** como os agentes decidem na margem (micro), como a
+  economia agrega e flutua (macro), como o Estado intervém e como se mede o
+  desenvolvimento?
+- **Fluxo principal:** micro (oferta/demanda → elasticidade → estruturas de
+  mercado) → macro (contas nacionais → inflação/desemprego → políticas fiscal/
+  monetária/cambial) → moeda e sistema financeiro → economia internacional
+  (câmbio → balanço de pagamentos) → economia do setor público → desenvolvimento
+  econômico.
+- **Eixos conceituais:** micro × macro; nominal × real; deslocamento × movimento
+  ao longo da curva; teoria (estável) × conjuntura (atual); eficiência ×
+  equidade.
+- **Pares "não confunda":** PIB nominal × real; deslocamento × movimento ao
+  longo da curva; elasticidade × inclinação; política fiscal × monetária ×
+  cambial; valorização × desvalorização cambial; crescimento × desenvolvimento;
+  bens públicos × bens comuns × bens privados; substitutos × complementares.
 
 ## 7. Fontes oficiais (sempre na versão mais recente para dados)
 

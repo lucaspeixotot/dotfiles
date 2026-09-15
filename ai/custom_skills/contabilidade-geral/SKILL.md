@@ -91,16 +91,23 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
 - Desconfie de tratamentos antigos: o **CPC 51 (IFRS 18)** substituirá o CPC 26
   a partir de 2027 (novos subtotais na DRE).
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Estrutura sugerida do resumo (espinha narrativa)
 
-1. **Princípios e estrutura conceitual**.
-2. **Escrituração e partidas dobradas**.
-3. **Balanço Patrimonial** (ativo, passivo, PL).
-4. **Demonstrações do resultado e demais** (DRE, DRA, DFC, DLPA/DMPL, DVA).
-5. **Regime de competência** (receitas, despesas, custos).
-6. **Depreciação/amortização/exaustão**.
-7. **Provisões e contingências** (CPC 25).
-8. **Estoques e operações com mercadorias** (quando no edital).
+- **Pergunta organizadora:** como um fato contábil é reconhecido, mensurado e
+  evidenciado no patrimônio e no resultado, até se refletir nas demonstrações
+  contábeis?
+- **Fluxo principal:** princípios/postulados → escrituração (partidas
+  dobradas) → estrutura patrimonial (ativo/passivo/PL) → reconhecimento do
+  resultado (competência) → mensuração de ativos (depreciação/amortização/
+  exaustão; estoques) → provisões e contingências → demonstrações contábeis.
+- **Eixos conceituais:** patrimônio (ativo × passivo × PL); resultado (receita
+  × despesa × custo × perda); reconhecimento × mensuração × divulgação;
+  competência × caixa.
+- **Pares "não confunda":** débito × crédito (não é sinônimo de
+  aumentar/diminuir); competência × caixa; depreciação × amortização ×
+  exaustão; provisão × passivo contingente × reserva; ativo contingente ×
+  ativo real; despesa × custo × perda; PEPS × UEPS × custo médio; impostos
+  recuperáveis × não recuperáveis.
 
 ## 7. Fontes oficiais (sempre na versão mais recente)
 

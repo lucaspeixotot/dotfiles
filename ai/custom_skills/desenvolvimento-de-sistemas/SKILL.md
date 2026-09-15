@@ -88,14 +88,19 @@ Para normativos (governo digital, LGPD), verifique o texto vigente (seções 5 e
 
 ## 6. Estrutura sugerida do resumo (para o agente de resumo)
 
-1. **Ciclo de vida e metodologias** (cascata, ágeis, Scrum, Kanban).
-2. **Engenharia de requisitos**.
-3. **Análise e projeto** (UML, orientação a objetos).
-4. **Arquitetura e APIs** (monolítica, microsserviços, REST/SOAP).
-5. **Bancos de dados**.
-6. **Testes**.
-7. **DevOps e CI/CD**.
-8. **Gestão de projetos** (PMBOK).
+- **Pergunta organizadora:** como um software é concebido, construído, testado,
+  entregue e mantido, e como se organiza o trabalho para isso?
+- **Fluxo principal:** requisitos → análise e projeto (UML, orientação a
+  objetos) → arquitetura (monolítica × microsserviços, APIs REST/SOAP) →
+  banco de dados → implementação → testes → DevOps/CI-CD → gestão de projetos
+  (PMBOK), atravessado pela escolha de metodologia (cascata × ágil).
+- **Eixos conceituais:** metodologias (cascata × ágil; Scrum × Kanban);
+  análise estruturada × orientada a objetos; arquitetura monolítica ×
+  microsserviços; testes (unitário × integração × sistema × aceitação;
+  caixa-preta × caixa-branca).
+- **Pares "não confunda":** requisito funcional × não funcional; classe ×
+  objeto; agregação × composição; verificação × validação; Scrum Master ×
+  Product Owner; REST × SOAP.
 
 ## 7. Fontes oficiais (sempre na versão mais recente)
 
