@@ -52,19 +52,19 @@
      '("g" . meow-cancel-selection)
      '("G" . meow-grab)
      '("h" . meow-left)
-     ;; '("H" . meow-left-expand)
-     '("H" . windmove-swap-states-left)
+     '("H" . meow-left-expand)
+     ;; '("H" . windmove-swap-states-left)
      '("i" . meow-insert)
      '("I" . meow-open-above)
      '("j" . meow-next)
-     ;; '("J" . meow-next-expand)
-     '("J" . windmove-swap-states-down)
+     '("J" . meow-next-expand)
+     ;; '("J" . windmove-swap-states-down)
      '("k" . meow-prev)
-     ;; '("K" . meow-prev-expand)
-     '("K" . windmove-swap-states-up)
+     '("K" . meow-prev-expand)
+     ;; '("K" . windmove-swap-states-up)
      '("l" . meow-right)
-     ;; '("L" . meow-right-expand)
-     '("L" . windmove-swap-states-right)
+     '("L" . meow-right-expand)
+     ;; '("L" . windmove-swap-states-right)
      '("m" . meow-join)
      '("n" . meow-search)
      '("o" . meow-block)
@@ -75,9 +75,12 @@
      '("r" . meow-replace)
      '("R" . meow-swap-grab)
      '("s" . meow-kill)
+     '("S" . embrace-commander)
      '("t" . meow-till)
-     '("u" . meow-undo)
-     '("U" . meow-undo-in-selection)
+     ;; '("u" . meow-undo)
+     ;; '("U" . meow-undo-in-selection)
+     '("u" . better-scroll-down-half)
+     '("U" . better-scroll-up-half)
      '("v" . meow-visit)
      '("w" . meow-mark-word)
      '("W" . meow-mark-symbol)
@@ -104,10 +107,8 @@
 (use-package repeat-fu
   :straight t
   :commands (repeat-fu-mode repeat-fu-execute)
-
   :config
   (setq repeat-fu-preset 'meow)
-
   :hook
   ((meow-mode)
    .

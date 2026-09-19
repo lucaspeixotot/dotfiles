@@ -204,7 +204,7 @@
   :commands (avy-goto-word-1 avy-goto-char-2 avy-goto-char-timer)
   :bind (("M-j"     . my/avy-goto-char-timer)
          ("M-l"     . avy-goto-line)
-         ("M-h"     . avy-goto-char-in-line)
+         ;; ("M-h"     . avy-goto-char-in-line)
          ("M-s y"   . avy-copy-line)
          ("M-s M-y" . avy-copy-region)
          ("M-s M-k" . avy-kill-whole-line)
@@ -805,13 +805,31 @@ When `switch-to-buffer-obey-display-actions' is non-nil,
     ("q" nil "quit" :color blue))
   )
 
-(use-package substitute
-  :straight t
-  :bind-keymap
-  ("C-c s" . substitute-prefix-map))
-
-
-(use-package frog-jump-buffer
-  :straight t
-  :bind
-  ("M-0" . 'frog-jump-buffer))
+(use-package emacs
+  :straight nil
+  :bind (("C-c SPC" . my/easy-page))
+  :config
+  (defvar-keymap my-pager-map
+    :doc "Keymap with paging commands"
+    "SPC" 'scroll-up-command
+    "l" 'recenter-top-bottom
+    "M-u" 'better-scroll-down-half
+    "M-d" 'better-scroll-up-half
+    "d" 'better-scroll-up-half
+    "u" 'better-scroll-down-half
+    "M-o" 'switchy-window
+    "S-SPC" 'scroll-down-command)
+  (let ((scrolling (propertize  "SCRL" 'face '(:inherit highlight)))
+        ml-buffer)
+    (defalias 'my/easy-page
+      (lambda ()
+        (interactive)
+        (when (eq (window-buffer (selected-window))
+                  (current-buffer))
+          (setq ml-buffer (current-buffer))
+          (add-to-list 'mode-line-format scrolling)
+          (set-transient-map
+           my-pager-map t
+           (lambda () (with-current-buffer ml-buffer
+                   (setq mode-line-format
+                         (delete scrolling mode-line-format))))))))))
