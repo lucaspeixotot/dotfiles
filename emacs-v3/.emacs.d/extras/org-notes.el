@@ -254,14 +254,14 @@
     ;; - `denote-sequence-new-child'
     ;; - `denote-sequence-new-child-of-current'
     ;; - `denote-sequence-new-sibling-of-current'
-    ("s" . denote-sequence)
+    ("s" . denote-sequence-new-sibling-of-current)
     ("f" . denote-sequence-find)
     ("l" . denote-sequence-link)
     ("d" . denote-sequence-dired)
     ("r" . denote-sequence-reparent)
     ("R" . denote-sequence-reparent-recursive)
     ("p" . denote-sequence-rename-as-parent)
-    ("c" . denote-sequence-convert))
+    ("c" . denote-sequence-new-child-of-current))
   :custom
   (denote-sequence-scheme 'alphanumeric)
   )
@@ -406,6 +406,7 @@ argument, query for word to search."
     (when (and buffer-file-name
                (denote-file-is-note-p buffer-file-name))
       (olivetti-mode 1)))
+  (setq olivetti-body-width 132)
   :hook
   (find-file . my/enable-olivetti-for-denote))
 

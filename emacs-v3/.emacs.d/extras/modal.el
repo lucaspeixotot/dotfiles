@@ -52,15 +52,19 @@
      '("g" . meow-cancel-selection)
      '("G" . meow-grab)
      '("h" . meow-left)
-     '("H" . meow-left-expand)
+     ;; '("H" . meow-left-expand)
+     '("H" . windmove-swap-states-left)
      '("i" . meow-insert)
      '("I" . meow-open-above)
      '("j" . meow-next)
-     '("J" . meow-next-expand)
+     ;; '("J" . meow-next-expand)
+     '("J" . windmove-swap-states-down)
      '("k" . meow-prev)
-     '("K" . meow-prev-expand)
+     ;; '("K" . meow-prev-expand)
+     '("K" . windmove-swap-states-up)
      '("l" . meow-right)
-     '("L" . meow-right-expand)
+     ;; '("L" . meow-right-expand)
+     '("L" . windmove-swap-states-right)
      '("m" . meow-join)
      '("n" . meow-search)
      '("o" . meow-block)
@@ -95,5 +99,22 @@
   (key-chord-define-global "fd" 'meow-insert-exit)
   (setq key-chord-typing-detection nil)
   (key-chord-mode 1))
+
+
+(use-package repeat-fu
+  :straight t
+  :commands (repeat-fu-mode repeat-fu-execute)
+
+  :config
+  (setq repeat-fu-preset 'meow)
+
+  :hook
+  ((meow-mode)
+   .
+   (lambda ()
+     (when (and (not (minibufferp)) (not (derived-mode-p 'special-mode)))
+       (repeat-fu-mode)
+       (define-key meow-normal-state-keymap (kbd "C-0") 'repeat-fu-execute)
+       (define-key meow-insert-state-keymap (kbd "C-0") 'repeat-fu-execute)))))
 
 (provide 'modal)
