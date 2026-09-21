@@ -92,6 +92,15 @@
      '("'" . repeat)
      '("<escape>" . ignore)))
   (meow-setup)
+  (add-hook 'ghostel-mode-hook
+          (lambda ()
+            (meow-mode -1)))
+  (add-hook 'magit-mode-hook
+          (lambda ()
+            (meow-mode -1)))
+  (add-hook 'eca-chat-mode-hook
+            (lambda ()
+              (meow-mode -1)))
   (meow-global-mode 1)
   )
 
