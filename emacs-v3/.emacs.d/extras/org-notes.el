@@ -44,8 +44,8 @@
    ("n" . denote)
    ("o" . denote-open-or-create)
    ("d" . denote-dired)
-   ("r" . denote-rename-file)
-   ("R" . denote-rename-file-using-front-matter))
+   ("R" . denote-rename-file)
+   ("r" . denote-rename-file-using-front-matter))
 
   (:prefix-map my-query-denote-map
    :prefix "C-c n q"

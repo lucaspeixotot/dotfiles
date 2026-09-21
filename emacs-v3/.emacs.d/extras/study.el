@@ -150,10 +150,16 @@ keep file order.  Each element: (DAYS NAME MARKER WEIGHT TAGS)."
 
 ;;; Keymap under C-c o s
 
+(defun my/study-insert-card-marker ()
+  "Insert the CARD marker that triggers tutor card mode (=====CARD=====)."
+  (interactive)
+  (insert "=====CARD=====\n"))
+
 (defvar my/study-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "t") #'my/study-rotation)
     (define-key map (kbd "c") #'org-clock-report)
+    (define-key map (kbd "C") #'my/study-insert-card-marker)
     map)
   "Keymap for study tracking commands, bound under `C-c o s'.")
 
@@ -177,6 +183,7 @@ keep file order.  Each element: (DAYS NAME MARKER WEIGHT TAGS)."
   (which-key-add-key-based-replacements
     "C-c o s"   "Study"
     "C-c o s t" "Rotation view"
-    "C-c o s c" "Clock summary"))
+    "C-c o s c" "Clock summary"
+    "C-c o s C" "Card marker"))
 
 (provide 'study)

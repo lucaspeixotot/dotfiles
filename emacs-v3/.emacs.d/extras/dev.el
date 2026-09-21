@@ -234,7 +234,6 @@
     (add-to-list 'savehist-additional-variables 'corfu-history)))
 
 
-
 ;; A few more useful configurations...
 (use-package emacs
   :straight nil
@@ -298,7 +297,8 @@
   (setq completion-preview-commands '(self-insert-command
                                       insert-char
                                       analyze-text-conversion
-                                      completion-preview-insert-word))
+                                      completion-preview-insert-word
+                                      completion-at-point))
   (setq completion-preview-minimum-symbol-length 2)
   (setq completion-preview-idle-delay 0.2)
   (setq completion-preview-ignore-case t)
@@ -306,18 +306,17 @@
 
   (global-completion-preview-mode 1))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Folds
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package outline-indent
-  :commands outline-indent-minor-mode
-  :custom
-  (outline-indent-ellipsis " ▼")
-  )
+                                (use-package outline-indent
+                                  :commands outline-indent-minor-mode
+                                  :custom
+                                  (outline-indent-ellipsis " ▼")
+                                  )
 
 (use-package treesit-fold
   :commands (treesit-fold-close

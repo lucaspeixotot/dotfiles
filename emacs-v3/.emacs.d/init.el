@@ -227,7 +227,7 @@ For a location, jump to it."
         (jump-to-register register arg)
       (user-error (insert-register register arg))))
   (define-key global-map (kbd "M-m") 'store-register-dwim)
-  (define-key global-map (kbd "M-'") 'use-register-dwim)
+  (define-key global-map (kbd "M-M") 'use-register-dwim)
 
   (global-visual-wrap-prefix-mode 1)
 
