@@ -406,7 +406,7 @@ argument, query for word to search."
     (when (and buffer-file-name
                (denote-file-is-note-p buffer-file-name))
       (olivetti-mode 1)))
-  (setq olivetti-body-width 132)
+  (setq-default olivetti-body-width 132)
   :hook
   (find-file . my/enable-olivetti-for-denote))
 
