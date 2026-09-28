@@ -88,7 +88,9 @@
                                                        :JIRA_API_TOKEN ,(getenv "JIRA_API_TOKEN")
                                                        :CONFLUENCE_URL "https://hpe.atlassian.net/wiki"
                                                        :CONFLUENCE_USERNAME ,(getenv "CONFLUENCE_USERNAME")
-                                                       :CONFLUENCE_API_TOKEN ,(getenv "CONFLUENCE_API_TOKEN"))))
+                                                       :CONFLUENCE_API_TOKEN ,(getenv "CONFLUENCE_API_TOKEN")
+                                                       :SSL_CERT_FILE "/etc/ssl/certs/ca-certificates.crt"
+                                                       :REQUEST_CA_BUNDLE "/etc/ssl/certs/ca-certificates.crt")))
           ("github" . (:command "docker"
                                 :args ("run"
                                        "-i"
