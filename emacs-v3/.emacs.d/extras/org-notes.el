@@ -308,7 +308,7 @@ Optional argument CANDIDATE is the selected item."
   )
 
 (use-package org
-  :straight nil
+  :straight (:type built-in)
   :init
   (define-prefix-command 'org-user-menu-map)
   :bind-keymap
@@ -348,6 +348,24 @@ Optional argument CANDIDATE is the selected item."
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((latex . t)))
+  (defun my/org-emphasis-markers-hide ()
+    "Hide Org emphasis markers (Meow non-insert state)."
+    (setq-local org-hide-emphasis-markers t)
+    (font-lock-flush))
+
+  (defun my/org-emphasis-markers-show ()
+    "Show Org emphasis markers (Meow insert state)."
+    (setq-local org-hide-emphasis-markers nil)
+    (font-lock-flush))
+
+  (defun my/org-meow-emphasis-markers-setup ()
+    "Tie Org emphasis-marker visibility to Meow's insert state."
+    ;; Org buffers start in Meow normal state.
+    (setq-local org-hide-emphasis-markers t)
+    (add-hook 'meow-insert-enter-hook #'my/org-emphasis-markers-show nil t)
+    (add-hook 'meow-insert-exit-hook  #'my/org-emphasis-markers-hide nil t))
+
+  (add-hook 'org-mode-hook #'my/org-meow-emphasis-markers-setup)
   ;; (setq org-hide-emphasis-markers t)
   ;; (font-lock-add-keywords 'org-mode
   ;;                         '(("^ *\\([-]\\) "

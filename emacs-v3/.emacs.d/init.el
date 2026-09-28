@@ -35,6 +35,7 @@
 
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
+(straight-use-package '(org :type built-in))
 
 ;; Use gcmh to dynamically manage GC: high threshold while typing,
 ;; low threshold when idle. Replaces manual gc-cons-threshold dance.
