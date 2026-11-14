@@ -41,7 +41,7 @@
   (gptel-make-deepseek "PersonalDeepseek" ;Any name you want
     :stream t                             ;for streaming responses
     :key (getenv "DEEPSEEK_API_KEY_EMACS")) ;can be a function that returns the key
-  (gptel-make-gh-copilot "HPECopilot")
+  (gptel-make-gh-copilot "Copilot")
   )
 
 (use-package gptel-agent

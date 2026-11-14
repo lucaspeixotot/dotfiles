@@ -64,6 +64,34 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
+;;; File tree
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Treemacs: project file tree sidebar (integrates with project.el natively).
+;;; Minimal setup; no icon fonts required. For graphical icons later, add:
+;;;   (use-package treemacs-nerd-icons :after treemacs
+;;;     :config (treemacs-load-theme "nerd-icons"))
+(use-package treemacs
+  :defer t
+  :bind (("C-x C-n" . treemacs)
+         ("C-c 0"   . treemacs-select-window))
+  :custom
+  (treemacs-width 32)
+  (treemacs-follow-after-init t)
+  (treemacs-is-never-other-window t)
+  :config
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (setq treemacs-position 'right)
+  (when (executable-find "git")
+    (treemacs-git-mode 'simple)))
+
+(use-package treemacs-magit
+  :after (treemacs magit))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
 ;;; Misc packages
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -687,3 +715,11 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
     "n" #'flycheck-next-error
     "p" #'flycheck-previous-error
     "l" #'flycheck-list-errors))
+
+
+(use-package jira
+  :straight (:host github :repo "unmonoqueteclea/jira.el")
+  :config
+  (setq jira-base-url "https://hpe.atlassian.net")
+  (setq jira-username (getenv "JIRA_USERNAME"))
+  (setq jira-token (getenv "JIRA_API_TOKEN")))

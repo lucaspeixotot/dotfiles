@@ -333,13 +333,16 @@ Optional argument CANDIDATE is the selected item."
   (org-capture-templates
    `(("i" "Inbox task" entry
       (file+headline ,(expand-file-name "inbox.org" org-directory) "Inbox")
-      "* TODO %?\n  DATE: %U\n")
+      "* TODO %?\n  DATE: %U\n"
+      :supertag t)
      ("t" "Active task" entry
       (file+headline ,(expand-file-name "tasks.org" org-directory) "Tasks")
-      "* TODO %?\n  DATE: %U\n")
+      "* TODO %?\n  DATE: %U\n"
+      :supertag t)
      ("l" "Task linked to current location" entry
       (file+headline ,(expand-file-name "inbox.org" org-directory) "Inbox")
-      "* TODO %?\n  DATE: %U\n  RELATED LOCATION: %a\n")))
+      "* TODO %?\n  DATE: %U\n  RELATED LOCATION: %a\n"
+      :supertag t)))
   :config
   (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-'") nil))
@@ -683,3 +686,28 @@ current Denote note."
   :straight (org-table-widget :type git :host github :repo "yibie/org-table-widget")
   :config
   (add-hook 'org-mode-hook #'org-table-widget-mode))
+
+(use-package supertag
+  :straight (supertag :type git :host github :repo "yibie/supertag")
+  :after textui
+  :init
+  ;; Must be set BEFORE supertag loads:
+  (setq supertag-sync-directories '("~/org/" "~/denote-notes/" "~/study/org/"))
+  (setq supertag-file-id-source 'denote)
+  (which-key-add-key-based-replacements "C-c n t" "Supertag")
+  :bind
+  (:prefix-map my-supertag-map
+   :prefix "C-c n t"
+   ("s" . supertag-view-stream)
+   ("f" . supertag-view-stream-find)
+   ("v" . supertag-view-node)
+   ("t" . supertag-add-tag)
+   ("n" . supertag-find-node)
+   ("l" . supertag-add-link)
+   ("p" . supertag-promote)
+   ("d" . supertag-discovery)
+   ("m" . supertag-menu)
+   ("q" . supertag-add-query-block))
+  :config
+  ;; Optional: org-capture templates with `:supertag t' get an :ID: on finalize.
+  (setq supertag-org-capture-auto-enable t))

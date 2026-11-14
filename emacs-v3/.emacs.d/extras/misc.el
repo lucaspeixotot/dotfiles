@@ -46,8 +46,8 @@
 (use-package keycast
   :straight t
   :demand t
-  :config
-  (keycast-tab-bar-mode +1)
+  ;; :config
+  ;; (keycast-tab-bar-mode +1)
   )
 
 (use-package time-zones
@@ -90,3 +90,26 @@
   (setq tmr-sound-file "/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga"
         tmr-notification-urgency 'normal
         tmr-description-list 'tmr-description-history))
+
+
+(let ((excali-directory (expand-file-name "~/.emacs.d/extras/local/excali-mode")))
+  (when (and (>= emacs-major-version 32)
+             (fboundp 'canvas-refresh)
+             (image-type-available-p 'canvas)
+             (file-exists-p
+              (expand-file-name (concat "excali-module" module-file-suffix)
+                                excali-directory)))
+    (add-to-list 'load-path excali-directory)
+
+    (use-package excali
+      :straight nil
+      :demand t
+      :init
+      (setq excali-backend 'canvas
+      excali-pixel-scale 1)
+      :commands (excali-open excali-new))
+
+    ;; Text source files, NOT .excalidraw scene files.
+    (autoload 'excali-dsl-mode "excali-dsl" nil t)
+    (add-to-list 'auto-mode-alist
+                 '("\\.excalidsl\\'" . excali-dsl-mode))))

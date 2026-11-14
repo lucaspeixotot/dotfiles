@@ -441,9 +441,14 @@ For a location, jump to it."
 
 ;;; Org mode, notes, and study
 (load (expand-file-name "extras/org-notes.el" user-emacs-directory))
+(load (expand-file-name "extras/slides.el" user-emacs-directory))
 (load (expand-file-name "extras/study.el" user-emacs-directory))
 (load (expand-file-name "extras/anki.el" user-emacs-directory))
 (load (expand-file-name "extras/spell.el" user-emacs-directory))
+
+;;; WSL-specific integrations (Windows browser, clipboard images)
+(when (getenv "WSL_DISTRO_NAME")
+  (load (expand-file-name "extras/wsl.el" user-emacs-directory)))
 
 ;;; Misc settings
 (load-file (expand-file-name "extras/misc.el" user-emacs-directory))

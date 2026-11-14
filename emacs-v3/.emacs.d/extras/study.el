@@ -171,12 +171,16 @@ keep file order.  Each element: (DAYS NAME MARKER WEIGHT TAGS)."
     (make-directory my/study-dir t))
   (add-to-list 'org-agenda-files my/study-dir)
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "DONE(d)")
+        '((sequence "TODO(t)" "INPROGRESS(i!)" "ONHOLD(h@/!)" "|" "DONE(d!)")
           (sequence "ONCYCLE(o!)" "PAUSED(p!)" "COMPLETED(c!)")))
   (setq org-todo-keyword-faces
-        '(("ONCYCLE" . (:foreground "lime green" :weight bold))
+        '(("INPROGRESS" . (:foreground "orange" :weight bold))
+          ("ONHOLD" . (:foreground "gray"))
+          ("ONCYCLE" . (:foreground "lime green" :weight bold))
           ("PAUSED" . (:foreground "gray"))
           ("COMPLETED" . (:foreground "RoyalBlue"))))
+  (setq org-log-into-drawer t)
+  (setq org-agenda-log-mode-items '(closed clock state))
   (define-key org-user-menu-map (kbd "s") my/study-map))
 
 (with-eval-after-load 'which-key
