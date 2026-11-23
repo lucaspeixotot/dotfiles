@@ -19,6 +19,22 @@
   (setq eca-extra-args '("--verbose"))
 )
 
+;; Chats / sessions / projects on top of ECA (personal package).
+(use-package eca-desk
+  :straight (eca-desk :host github :repo "lucaspeixotot/eca-desk" :branch "main")
+  :after eca
+  :bind (("C-c a d c" . eca-desk-chat)
+         ("C-c a d o" . eca-desk-open)
+         ("C-c a d p" . eca-desk-new-project)
+         ("C-c a d s" . eca-desk-new-session)
+         ("C-c a d r" . eca-desk-reference-chat)
+         ("C-c a d R" . eca-desk-add-repo)
+         ("C-c a d f" . eca-desk-add-local-folder)
+         ("C-c a d e" . eca-desk-export-chat))
+  :custom
+  (eca-desk-git-ssh-hosts '(("personal" . "personal-github.com")
+                            ("hpe" . "hpe-github.com"))))
+
 (use-package gptel
   :straight (gptel :host github :repo "karthink/gptel" :branch "master")
   :bind (
@@ -117,8 +133,29 @@
   (("C-c a i" . gptel-inline)))
 
 (use-package agent-shell
-  :straight t)
+  :straight t
+  :custom
+  (agent-shell-inhibit-system-sleep nil))
 
+(use-package persp-mode :straight t :defer t)
+(use-package posframe :straight t :defer t)
+
+(use-package agent-shell-hq
+  :straight (:host github :repo "sreenivasvrao/agent-shell-hq")
+  :commands (agent-shell-hq-toggle agent-shell-hq-peek)
+  :custom
+  ;; Width of the sidebar listing agent-shell buffers (columns)
+  (agent-shell-hq-toggle-sidebar-width 50)
+  ;; Where the peek posframe is anchored: top, bottom, left, right
+  (agent-shell-hq-peek-position 'right)
+  ;; Width of the peek posframe (columns)
+  (agent-shell-hq-peek-width 52)
+  ;; Maximum height of the peek posframe (rows)
+  (agent-shell-hq-peek-height 60)
+  ;; Extra frame parameters for the peek posframe, e.g. background color
+  (agent-shell-hq-peek-parameters nil)
+  :bind (("C-c a h" . agent-shell-hq-toggle)
+         ("C-c a p" . agent-shell-hq-peek)))
 
 (let ((dsh-emacs-dir (expand-file-name "~/.emacs.d/extras/local/dsh-emacs")))
   (when (file-directory-p dsh-emacs-dir)
