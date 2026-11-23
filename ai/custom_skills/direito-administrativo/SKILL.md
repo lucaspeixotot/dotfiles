@@ -1,27 +1,30 @@
 ---
 name: direito-administrativo
 description: >
-  Playbook de DIREITO ADMINISTRATIVO para concursos fiscais (RFB/SEFAZ) e de
-  controle (TCU/TCE, CGU/CGE). Carregar quando o aluno pedir resumo ou tirar
-  dúvidas sobre: atos administrativos, organização administrativa, poderes da
+  DIREITO ADMINISTRATIVO playbook for fiscal exams (RFB/SEFAZ) and control
+  (TCU/TCE, CGU/CGE). Load when the student asks for a summary or has doubts
+  about: atos administrativos, organização administrativa, poderes da
   administração, responsabilidade civil do Estado, licitações e contratos,
-  bens públicos, agentes públicos, improbidade e controle. Define incidência,
-  estilo das bancas, pegadinhas e normas a verificar.
+  bens públicos, agentes públicos, improbidade e controle. Defines exam
+  incidence, board style, pitfalls, and norms to verify.
 ---
 
-# Direito Administrativo — playbook de estudo (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Direito Administrativo — study playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Regra de ouro — atualidade da fonte:** fonte oficial NÃO basta. A área teve
-mudanças relevantes recentes (Lei de Licitações, Improbidade, LINDB). Antes de
-afirmar o teor, confirme a redação VIGENTE HOJE e a data da fonte (seções 5 e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-## 2. Incidência em prova (o que priorizar)
+**Golden rule — source currency:** an official source is NOT enough. The area had
+relevant recent changes (Lei de Licitações, Improbidade, LINDB). Before stating
+the content, confirm the CURRENT wording TODAY and the date of the source
+(sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize)
 
 - **Atos administrativos**: elementos/requisitos, atributos (presunção,
   imperatividade, autoexecutoriedade, tipicidade), classificação, extinção,
@@ -41,7 +44,7 @@ afirmar o teor, confirme a redação VIGENTE HOJE e a data da fonte (seções 5 
 - **Improbidade administrativa** (Lei 8.429/1992 alterada pela Lei 14.230/2021).
 - **Controle da administração**: interno × externo × judicial; autocontrole.
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE**: cobra literalidade da lei e inverte o gabarito trocando
   termos (ex.: "dispensa" × "inexigibilidade"; "revogação" × "anulação";
@@ -50,7 +53,7 @@ afirmar o teor, confirme a redação VIGENTE HOJE e a data da fonte (seções 5 
 - **FGV**: valoriza interpretação, casos práticos e o entendimento doutrinário/
   jurisprudencial atual.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **Revogação × anulação × convalidação**: revogação é por conveniência/
   oportunidade (ato válido); anulação é por ilegalidade (ato inválido);
@@ -73,9 +76,9 @@ afirmar o teor, confirme a redação VIGENTE HOJE e a data da fonte (seções 5 
 - **Atributos dos atos**: nem todo ato tem autoexecutoriedade ou imperatividade;
   presunção é relativa.
 
-## 5. Normas e jurisprudência a verificar (prioridade: vigência e atualidade)
+## 5. Norms and case law to verify (priority: validity and currency)
 
-Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
+Do not state the content without verifying the CURRENT wording TODAY and the DATE of the source:
 
 - **Constituição Federal**, arts. 37 a 41.
 - **Lei 14.133/2021** (Licitações e Contratos) — norma geral vigente; Lei
@@ -90,13 +93,12 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
   1.055), improbidade (Tema 899), licitações (STJ Info 877) — verifique vigência
   e eventual superação.
 
-**Checagem mínima de atualidade (obrigatória):**
-- Prefira texto compilado/atualizado, com data de consolidação recente.
-- Anote a DATA da consulta e a data do julgado/norma.
-- Atenção redobrada a normas com transição (licitações) e alterações recentes
-  (improbidade).
+**Minimum currency check (mandatory):**
+- Prefer compiled/updated text, with a recent consolidation date.
+- Note the DATE of the consultation and the date of the ruling/norm.
+- Extra attention to norms with transition (licitações) and recent changes (improbidade).
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Suggested summary structure (for the summary agent)
 
 - **Pergunta organizadora:** como a Administração se organiza, com que
   prerrogativas age e contrata, e como responde e se submete a controle pelos
@@ -117,13 +119,13 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
   (dolo, rol taxativo do art. 11) × ilícito civil/administrativo; presunção
   (relativa) × imperatividade × autoexecutoriedade (nem todo ato as tem).
 
-## 7. Fontes oficiais (sempre na versão mais recente)
+## 7. Official sources (always the most recent version)
 
 - Planalto: texto vigente das leis (planalto.gov.br) — confira a data.
 - STF: jurisprudência e súmulas com data (portal.stf.jus.br).
 - STJ: jurisprudência e súmulas com data (stj.jus.br).
 - Portais oficiais (compras governamentais) para normativos de licitação.
 
-**Regra de ouro:** fonte oficial NÃO é sinônimo de fonte atual. Verifique a DATA
-e o estado (vigente, alterado, revogado, em transição). Se a fonte for antiga,
-procure uma mais recente antes de usar.
+**Golden rule:** an official source is NOT synonymous with a current source. Verify the DATE
+and the state (current, amended, repealed, in transition). If the source is old, look for a
+more recent one before using it.

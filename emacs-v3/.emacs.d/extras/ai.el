@@ -40,7 +40,8 @@
   (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n")
   (gptel-make-deepseek "PersonalDeepseek" ;Any name you want
     :stream t                             ;for streaming responses
-    :key (getenv "DEEPSEEK_API_KEY_EMACS")) ;can be a function that returns the key
+    :key (getenv "DEEPSEEK_API_KEY_EMACS") ;can be a function that returns the key
+    :request-params '(:thinking (:type "disabled"))) ;disable thinking mode: avoids "reasoning_content" 400 on multi-turn/tool calls
   (gptel-make-gh-copilot "Copilot")
   )
 
@@ -67,6 +68,10 @@
   (dolist (agent-name '("concursos-tutor"
                         "concursos-resumo"
                         "concursos-skillmaker"
+                        "concursos-questoes"
+                        "concursos-cardify"
+                        "concursos-card-explain"
+                        "elisp-tutor"
                         "english-refine"))
     (when-let* ((agent (assoc-default agent-name gptel-agent--agents nil nil)))
       (apply #'gptel-make-preset (intern agent-name) agent)))
@@ -113,3 +118,11 @@
 
 (use-package agent-shell
   :straight t)
+
+
+(let ((dsh-emacs-dir (expand-file-name "~/.emacs.d/extras/local/dsh-emacs")))
+  (when (file-directory-p dsh-emacs-dir)
+    (add-to-list 'load-path dsh-emacs-dir)
+    (require 'dsh-emacs)
+    (setq dsh-emacs-base-url "http://127.0.0.1:3080"
+          dsh-emacs-server-auto-start nil)))

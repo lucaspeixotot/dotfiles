@@ -1,29 +1,30 @@
 ---
 name: estatistica-probabilidade
 description: >
-  Playbook de ESTATÍSTICA E PROBABILIDADE para concursos fiscais (RFB/SEFAZ) e
-  de controle (TCU/TCE, CGU/CGE). Carregar quando o aluno pedir resumo ou tirar
-  dúvidas sobre: estatística descritiva (medidas de posição, dispersão e
-  forma), probabilidade, variáveis aleatórias e distribuições, amostragem,
-  inferência (intervalos de confiança, testes de hipóteses), regressão e
-  correlação. Define incidência, estilo das bancas, pegadinhas e convenções a
-  verificar.
+  ESTATÍSTICA E PROBABILIDADE playbook for fiscal exams (RFB/SEFAZ) and
+  control (TCU/TCE, CGU/CGE). Load when the student asks for a summary or has
+  doubts about: estatística descritiva (medidas de posição, dispersão e forma),
+  probabilidade, variáveis aleatórias e distribuições, amostragem, inferência
+  (intervalos de confiança, testes de hipóteses), regressão e correlação.
+  Defines exam incidence, board style, pitfalls, and conventions to verify.
 ---
 
-# Estatística e Probabilidade — playbook de estudo (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Estatística e Probabilidade — study playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Regra de ouro — atualidade da fonte:** em exatas, o risco maior não é norma
-revogada, mas convenção e notação (amostral × populacional, definição de
-quartis, curtose, etc.). Antes de afirmar uma fórmula, explicite a CONVENÇÃO
-usada e, se a banca adota outra, sinalize (seções 5 e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-## 2. Incidência em prova (o que priorizar — por peso)
+**Golden rule — source currency:** in exact sciences, the greater risk is not a
+repealed norm, but convention and notation (amostral × populacional, quartile
+definition, kurtosis, etc.). Before stating a formula, make explicit the
+CONVENTION used and, if the board adopts another, flag it (sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize — by weight)
 
 1. **Probabilidade** (condicional, total, Bayes, combinatória) — bloco mais pesado.
 2. **Testes de hipóteses** (erros I/II, p-valor, poder, qui-quadrado, testes de
@@ -42,7 +43,7 @@ usada e, se a banca adota outra, sinalize (seções 5 e 7).
 10. **Séries temporais e modelos logit/probit** — tema de edital RFB (não
     universal para TCE/TCU/CGU).
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE**: cobra cálculo e interpretação; inverte o gabarito trocando
   "média" × "mediana", "variância" × "desvio-padrão", "populacional" ×
@@ -51,7 +52,7 @@ usada e, se a banca adota outra, sinalize (seções 5 e 7).
 - **FGV** (RFB/TCU): valoriza interpretação, cálculos e leitura de tabelas/
   gráficos; usa o coeficiente percentílico de curtose.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **Variância/desvio populacional × amostral**: denominador n × n−1.
 - **Média × mediana × moda**: comportamentos distintos com outliers e
@@ -69,9 +70,9 @@ usada e, se a banca adota outra, sinalize (seções 5 e 7).
   amostral; a consistência é propriedade do estimador (a variância amostral com
   n−1 é não viesada/consistente). Não confunda.
 
-## 5. Convenções e fórmulas a verificar (prioridade: consistência)
+## 5. Conventions and formulas to verify (priority: consistency)
 
-Em exatas, não há "lei revogada", mas há convenções que mudam o resultado:
+In exact sciences, there is no "repealed law", but there are conventions that change the result:
 
 - **Populacional × amostral**: deixe explícito o denominador (n ou n−1) e siga
   a convenção do edital/banca.
@@ -86,11 +87,11 @@ Em exatas, não há "lei revogada", mas há convenções que mudam o resultado:
 - **Tabelas**: distribuição normal padrão, t de Student, qui-quadrado — use os
   valores da tabela fornecida na prova, se houver.
 
-**Checagem mínima (obrigatória):**
-- Sempre declare a convenção/notação usada ao apresentar uma fórmula.
-- Se a banca/edital especificar outra convenção, siga a deles e avise.
+**Minimum check (mandatory):**
+- Always declare the convention/notation used when presenting a formula.
+- If the board/edital specifies another convention, follow theirs and flag it.
 
-## 6. Estrutura sugerida do resumo (espinha narrativa)
+## 6. Suggested summary structure (narrative spine)
 
 - **Pergunta organizadora:** como descrever um conjunto de dados, quantificar a
   incerteza e generalizar da amostra para a população (inferir) com erro
@@ -106,17 +107,16 @@ Em exatas, não há "lei revogada", mas há convenções que mudam o resultado:
   independência × correlação; R² × coeficiente de correlação; TCL × consistência
   do estimador.
 
-## 7. Fontes de referência (boas práticas)
+## 7. Reference sources (best practices)
 
-Para exatas, use fontes acadêmicas/técnicas consagradas e, quando o edital
-indicar, bibliografia específica. Referências usuais:
+For exact sciences, use established academic/technical sources and, when the
+edital indicates, specific bibliography. Usual references:
 - Bussab & Morettin — "Estatística Básica" (9ª ed., 2017).
 - Magalhães & Lima — "Noções de Probabilidade e Estatística" (7ª ed., 2015).
 - Montgomery & Runger — "Estatística Aplicada e Probabilidade para Engenheiros".
 
-Não há "texto oficial" único — por isso a seção 5 (convenção) é o que mais
-importa.
+There is no single "official text" — that is why section 5 (convention) matters most.
 
-**Regra de ouro:** em exatas, o erro vem de convenção/notação, não de fonte
-desatualizada. Explicite sempre a convenção usada e siga a da banca quando
-houver.
+**Golden rule:** in exact sciences, error comes from convention/notation, not from an
+outdated source. Always make explicit the convention used and follow the board's when
+there is one.

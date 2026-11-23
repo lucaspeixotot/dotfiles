@@ -1,29 +1,31 @@
 ---
 name: inteligencia-artificial
 description: >
-  Playbook de INTELIGÊNCIA ARTIFICIAL para concursos fiscais (RFB/SEFAZ) e de
-  controle (TCU/TCE, CGU/CGE). Carregar quando o aluno pedir resumo ou tirar
-  dúvidas sobre: conceitos e histórico de IA, aprendizado de máquina, redes
-  neurais, deep learning, processamento de linguagem natural, visão
-  computacional, IA generativa, ética e regulação de IA, e aplicações na
-  administração tributária. Define incidência, estilo das bancas, pegadinhas e
-  normas a verificar.
+  INTELIGÊNCIA ARTIFICIAL playbook for fiscal exams (RFB/SEFAZ) and control
+  (TCU/TCE, CGU/CGE). Load when the student asks for a summary or has doubts
+  about: conceitos e histórico de IA, aprendizado de máquina, redes neurais,
+  deep learning, processamento de linguagem natural, visão computacional, IA
+  generativa, ética e regulação de IA, e aplicações na administração
+  tributária. Defines exam incidence, board style, pitfalls, and norms to
+  verify.
 ---
 
-# Inteligência Artificial — playbook de estudo (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Inteligência Artificial — study playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Regra de ouro — atualidade da fonte:** em IA, o risco maior é terminologia e
-o estado da regulação (muda rápido no Brasil e no mundo). Use conceitos
-consagrados e, para regulação/ética, confirme o normativo VIGENTE HOJE e a data
-da fonte (seções 5 e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-## 2. Incidência em prova (o que priorizar)
+**Golden rule — source currency:** in AI, the greater risk is terminology and the
+state of regulation (changes fast in Brazil and worldwide). Use established
+concepts and, for regulation/ethics, confirm the norm CURRENT TODAY and the date
+of the source (sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize)
 
 - **Conceitos e histórico**: IA forte × fraca (geral × estreita), símbolista ×
   conexionista, aprendizado de máquina como subárea.
@@ -43,7 +45,7 @@ da fonte (seções 5 e 7).
 - **Aplicações na administração tributária**: classificação de contribuintes,
   detecção de fraude, análise de risco, atendimento automatizado.
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE**: cobra definições e hierarquia de conceitos; inverte o
   gabarito trocando "forte" × "fraca", "supervisionado" × "não supervisionado",
@@ -51,7 +53,7 @@ da fonte (seções 5 e 7).
   a palavra trocada.
 - **FGV**: valoriza interpretação, casos de aplicação e ética/regulação.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **IA forte × fraca**: geral (consciência) × específica (tarefa restrita).
 - **Aprendizado de máquina × IA × deep learning**: hierarquia (ML ⊂ IA; deep
@@ -72,9 +74,9 @@ da fonte (seções 5 e 7).
 - **Alucinação**: LLM pode gerar conteúdo plausível mas falso; não confundir com
   erro de código.
 
-## 5. Normas e regulação a verificar (prioridade: vigência e atualidade)
+## 5. Norms and regulation to verify (priority: validity and currency)
 
-Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
+Do not state the content without verifying the CURRENT wording TODAY and the DATE of the source:
 
 - **Marco Legal de IA**: **PL 2338/2023** (aprovado no Senado, na Câmara;
   **NÃO sancionado** até meados de 2026 — confirme antes de afirmar que é lei).
@@ -90,12 +92,12 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
   risco; o PL brasileiro prevê **3 níveis** (excessivo, alto, demais) — não
   confundir.
 
-**Checagem mínima de atualidade (obrigatória):**
-- IA regulatória muda rápido: anote a DATA da consulta e o estado da norma
-  (tramitando, aprovada, em vigor).
-- Desconfie de textos sobre "Marco Legal de IA" sem conferir a fase atual.
+**Minimum currency check (mandatory):**
+- Regulatory AI changes fast: note the DATE of the consultation and the state of the norm
+  (in progress, approved, in force).
+- Distrust texts about the "Marco Legal de IA" without checking the current phase.
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Suggested summary structure (for the summary agent)
 
 - **Pergunta organizadora:** como máquinas aprendem a partir de dados e o que
   isso muda para a administração tributária, sob que limites éticos e
@@ -113,12 +115,12 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
   underfitting; precisão × recall × acurácia; LLM × PLN × IA generativa; ML ×
   mineração de dados; alucinação × erro de código.
 
-## 7. Fontes oficiais (sempre na versão mais recente)
+## 7. Official sources (always the most recent version)
 
 - Planalto/Congresso: texto do Marco Legal de IA e tramitação (planalto.gov.br,
   camara.leg.br, senado.leg.br).
 - ANPD: orientações sobre IA e LGPD (gov.br/anpd).
 - Bibliografia consagrada para conceitos (ex.: Russell & Norvig; Goodfellow).
 
-**Regra de ouro:** fonte oficial NÃO é sinônimo de fonte atual. Para regulação,
-use a versão vigente e datada. Para conceitos, use terminologia consagrada.
+**Golden rule:** an official source is NOT synonymous with a current source. For regulation,
+use the current, dated version. For concepts, use established terminology.

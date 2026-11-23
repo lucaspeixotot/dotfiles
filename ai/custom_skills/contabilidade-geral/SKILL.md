@@ -1,28 +1,30 @@
 ---
 name: contabilidade-geral
 description: >
-  Playbook de CONTABILIDADE GERAL para concursos fiscais (RFB/SEFAZ) e de
-  controle (TCU/TCE, CGU/CGE). Carregar quando o aluno pedir resumo ou tirar
-  dúvidas sobre: princípios contábeis, escrituração (método das partidas
-  dobradas), plano de contas, demonstrações contábeis, ativo/passivo/PL,
-  receitas/despesas, depreciação/amortização/exaustão, provisões e CPCs.
-  Define incidência, estilo das bancas, pegadinhas e normas a verificar.
+  CONTABILIDADE GERAL playbook for fiscal exams (RFB/SEFAZ) and control
+  (TCU/TCE, CGU/CGE). Load when the student asks for a summary or has doubts
+  about: princípios contábeis, escrituração (método das partidas dobradas),
+  plano de contas, demonstrações contábeis, ativo/passivo/PL, receitas/despesas,
+  depreciação/amortização/exaustão, provisões e CPCs. Defines exam incidence,
+  board style, pitfalls, and norms to verify.
 ---
 
-# Contabilidade Geral — playbook de estudo (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Contabilidade Geral — study playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Regra de ouro — atualidade da fonte:** fonte oficial NÃO basta. Normas
-contábeis (CPCs, NBC TGs) são atualizadas periodicamente e a lei societária
-muda. Antes de afirmar um tratamento contábil, confirme a norma VIGENTE HOJE e
-a data da fonte (seções 5 e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-## 2. Incidência em prova (o que priorizar)
+**Golden rule — source currency:** an official source is NOT enough. Accounting
+standards (CPCs, NBC TGs) are updated periodically and corporate law changes.
+Before stating an accounting treatment, confirm the norm CURRENT TODAY and the
+date of the source (sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize)
 
 - **Princípios e postulados**: entidade, continuidade, oportunidade, registro
   pelo valor original, atualização monetária, competência, prudência.
@@ -40,7 +42,7 @@ a data da fonte (seções 5 e 7).
 - **Operações com mercadorias**: CMV, inventário, faturamento, impostos
   recuperáveis × não recuperáveis.
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE**: cobra lançamento, classificação e o efeito de cada fato
   no patrimônio/resultado; inverte o gabarito trocando "ativo" × "passivo",
@@ -49,7 +51,7 @@ a data da fonte (seções 5 e 7).
 - **FGV**: valoriza interpretação, cálculos e a aplicação dos CPCs a situações
   práticas.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **Débito × crédito**: não confundir com "aumentar/diminuir" — depende da
   natureza da conta (ativo/passivo/PL/resultado).
@@ -66,9 +68,9 @@ a data da fonte (seções 5 e 7).
   recuperáveis afetam o custo.
 - **Despesa × custo × perda**: natureza e impacto diferentes no resultado.
 
-## 5. Normas e jurisprudência a verificar (prioridade: vigência e atualidade)
+## 5. Norms and case law to verify (priority: validity and currency)
 
-Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
+Do not state the content without verifying the CURRENT wording TODAY and the DATE of the source:
 
 - **Lei 6.404/1976 (Lei das S/A)** — sem alteração contábil relevante em
   2025-2026 (a Lei 15.177/2025 é só de governança/conselhos).
@@ -85,13 +87,13 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
 - **Normas do CFC** (NBCs) — versão consolidada vigente.
 - Quando relevante, posição da **CVM** sobre o tema.
 
-**Checagem mínima de atualidade (obrigatória):**
-- Prefira o texto consolidado/vigente do CPC/NBC.
-- Anote a DATA da consulta e a edição da norma.
-- Desconfie de tratamentos antigos: o **CPC 51 (IFRS 18)** substituirá o CPC 26
-  a partir de 2027 (novos subtotais na DRE).
+**Minimum currency check (mandatory):**
+- Prefer the consolidated/current text of the CPC/NBC.
+- Note the DATE of the consultation and the edition of the norm.
+- Distrust old treatments: **CPC 51 (IFRS 18)** will replace CPC 26 from 2027
+  (new subtotals in the DRE).
 
-## 6. Estrutura sugerida do resumo (espinha narrativa)
+## 6. Suggested summary structure (narrative spine)
 
 - **Pergunta organizadora:** como um fato contábil é reconhecido, mensurado e
   evidenciado no patrimônio e no resultado, até se refletir nas demonstrações
@@ -109,7 +111,7 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
   ativo real; despesa × custo × perda; PEPS × UEPS × custo médio; impostos
   recuperáveis × não recuperáveis.
 
-## 7. Fontes oficiais (sempre na versão mais recente)
+## 7. Official sources (always the most recent version)
 
 - CPC — Comitê de Pronunciamentos Contábeis (cpc.org.br): pronunciamentos
   vigentes.
@@ -117,6 +119,5 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
 - Planalto: Lei 6.404/1976 atualizada (planalto.gov.br).
 - CVM: deliberações e orientações, quando aplicável.
 
-**Regra de ouro:** fonte oficial NÃO é sinônimo de fonte atual. Verifique a DATA
-e a edição vigente. Se a fonte for antiga, procure uma mais recente antes de
-usar.
+**Golden rule:** an official source is NOT synonymous with a current source. Verify the DATE
+and the current edition. If the source is old, look for a more recent one before using it.

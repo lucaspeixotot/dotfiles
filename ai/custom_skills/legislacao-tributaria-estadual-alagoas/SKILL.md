@@ -1,30 +1,32 @@
 ---
 name: legislacao-tributaria-estadual-alagoas
 description: >
-  Playbook de LEGISLAÇÃO TRIBUTÁRIA ESTADUAL DE ALAGOAS (SEFAZ-AL) para
-  concursos fiscais (RFB/SEFAZ) e de controle (TCU/TCE, CGU/CGE). Carregar
-  quando o aluno pedir resumo ou tirar dúvidas sobre: ICMS, IPVA, ITCD,
-  processo administrativo tributário (PAT) e o programa Contribuinte Arretado.
-  Define incidência, estilo das bancas, pegadinhas e normas a verificar.
+  LEGISLAÇÃO TRIBUTÁRIA ESTADUAL DE ALAGOAS (SEFAZ-AL) playbook for fiscal
+  exams (RFB/SEFAZ) and control (TCU/TCE, CGU/CGE). Load when the student asks
+  for a summary or has doubts about: ICMS, IPVA, ITCD, processo administrativo
+  tributário (PAT) e o programa Contribuinte Arretado. Defines exam incidence,
+  board style, pitfalls, and norms to verify.
 ---
 
-# Legislação Tributária Estadual de Alagoas (SEFAZ-AL) — playbook de estudo (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Legislação Tributária Estadual de Alagoas (SEFAZ-AL) — study playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Padrão SEFAZ-AL:** as referências abaixo são de ALAGOAS (alvo atual). Se a
-prova for de outro estado, confirme as leis daquele estado (seções 5 e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-**Regra de ouro — atualidade da fonte:** fonte oficial NÃO basta. A legislação
-estadual muda por decreto/lei com frequência (alíquotas, isenções, programas).
-Antes de afirmar qualquer dispositivo, confirme a redação VIGENTE HOJE e a data
-da fonte (seções 5 e 7).
+**SEFAZ-AL pattern:** the references below are for ALAGOAS (current target). If the
+exam is for another state, confirm that state's laws (sections 5 and 7).
 
-## 2. Incidência em prova (o que priorizar — bases legais de AL)
+**Golden rule — source currency:** an official source is NOT enough. State
+legislation changes by decree/law frequently (rates, exemptions, programs).
+Before stating any provision, confirm the CURRENT wording TODAY and the date of
+the source (sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize — AL legal bases)
 
 - **ICMS** (Lei 5.900/1996; RICMS/AL Decreto 35.245/1991): fato gerador, não
   cumulatividade, crédito/débito, substituição tributária, diferimento,
@@ -39,7 +41,7 @@ da fonte (seções 5 e 7).
 - **Obrigações acessórias estaduais** (escrituração fiscal digital, documentos
   fiscais eletrônicos), quando cobradas.
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE**: cobra literalidade da lei/regulamento estadual e inverte
   o gabarito trocando termos (ex.: "diferimento" × "suspensão" × "isenção";
@@ -48,7 +50,7 @@ da fonte (seções 5 e 7).
 - **FGV**: valoriza interpretação e situações aplicadas ao processo
   administrativo e à não cumulatividade.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **ICMS ≠ IPVA ≠ ITCD**: tributos estaduais distintos; não troque fato gerador,
   base de cálculo e alíquotas.
@@ -79,10 +81,10 @@ da fonte (seções 5 e 7).
 - **Contribuinte Arretado**: benefício condicionado a requisitos/classificação —
   não é isenção automática nem extinção de obrigação.
 
-## 5. Normas e jurisprudência a verificar (prioridade: vigência e atualidade)
+## 5. Norms and case law to verify (priority: validity and currency)
 
-Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte
-(ALAGOAS, salvo outra prova):
+Do not state the content without verifying the CURRENT wording TODAY and the DATE of the source
+(ALAGOAS, unless another exam):
 
 - **Constituição Federal**, arts. 146 e 155 (normas gerais e competências).
 - **LC 87/1996 (Lei Kandir)** — normas gerais do ICMS; confira alterações
@@ -100,13 +102,12 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte
 - **Lei AL 8.085/2018 (Contribuinte Arretado)** + **IN SEF 55/2025 e 24/2026**.
 - **LC 227/2026** — progressividade do ITCMD (AL ainda não adaptou).
 
-**Checagem mínima de atualidade (obrigatória):**
-- Sempre confirme o ESTADO da prova e use a legislação daquele estado.
-- Prefira texto compilado/atualizado (SEFAZ-AL / Assembleia-AL), com data recente.
-- Desconfie de versões antigas do RICMS: decretos alteram dispositivos com
-  frequência.
+**Minimum currency check (mandatory):**
+- Always confirm the STATE of the exam and use that state's legislation.
+- Prefer compiled/updated text (SEFAZ-AL / Assembleia-AL), with a recent date.
+- Distrust old versions of the RICMS: decrees change provisions frequently.
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Suggested summary structure (for the summary agent)
 
 - **Pergunta organizadora:** como Alagoas tributa o consumo (ICMS), a
   propriedade de veículos (IPVA) e a transmissão de bens (ITCD), e como o
@@ -129,13 +130,13 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte
   interestadual); ITCD-AL alíquota fixa × progressiva; CJ/GJ × TATE;
   Contribuinte Arretado × isenção automática.
 
-## 7. Fontes oficiais (sempre na versão mais recente)
+## 7. Official sources (always the most recent version)
 
 - SEFAZ-AL: RICMS (Decreto 35.245/1991) e legislação estadual vigentes.
 - Assembleia Legislativa de AL (sapl.al.al.leg.br): texto das leis estaduais.
 - Planalto: LC 87/1996 e normas gerais, texto vigente (planalto.gov.br).
 - CONFAZ: convênios ICMS, quando aplicável.
 
-**Regra de ouro:** fonte oficial NÃO é sinônimo de fonte atual. Verifique a DATA
-e o estado (vigente, alterado, revogado). Se a fonte for antiga, procure uma
-mais recente antes de usar.
+**Golden rule:** an official source is NOT synonymous with a current source. Verify the DATE
+and the state (current, amended, repealed). If the source is old, look for a more recent one
+before using it.

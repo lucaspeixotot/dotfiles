@@ -1,30 +1,32 @@
 ---
 name: infraestrutura-tic-seguranca
 description: >
-  Playbook de INFRAESTRUTURA DE TIC E SEGURANÇA DA INFORMAÇÃO para concursos
-  fiscais (RFB/SEFAZ) e de controle (TCU/TCE, CGU/CGE). Carregar quando o aluno
-  pedir resumo ou tirar dúvidas sobre: redes, computação em nuvem, virtualização,
+  INFRAESTRUTURA DE TIC E SEGURANÇA DA INFORMAÇÃO playbook for fiscal exams
+  (RFB/SEFAZ) and control (TCU/TCE, CGU/CGE). Load when the student asks for a
+  summary or has doubts about: redes, computação em nuvem, virtualização,
   sistemas operacionais, data centers, gestão de serviços de TI (ITIL/COBIT),
   governança de TI, segurança da informação (confidencialidade/integridade/
   disponibilidade), criptografia, controles de acesso, gestão de riscos,
-  incidentes, continuidade, LGPD e ISO 27001/27002. Define incidência, estilo
-  das bancas, pegadinhas e normas a verificar.
+  incidentes, continuidade, LGPD e ISO 27001/27002. Defines exam incidence,
+  board style, pitfalls, and norms to verify.
 ---
 
-# Infraestrutura de TIC e Segurança da Informação — playbook (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Infraestrutura de TIC e Segurança da Informação — playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Regra de ouro — atualidade da fonte:** em TI, o risco é terminologia e versões
-de padrões/frameworks (ITIL, COBIT, ISO, NIST). Para normativos (LGPD, segurança
-pública, governo digital), confirme o texto VIGENTE HOJE e a data da fonte
-(seções 5 e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-## 2. Incidência em prova (o que priorizar)
+**Golden rule — source currency:** in IT, the risk is terminology and versions
+of standards/frameworks (ITIL, COBIT, ISO, NIST). For regulations (LGPD, public
+security, digital government), confirm the text CURRENT TODAY and the date of
+the source (sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize)
 
 - **Redes**: modelo OSI × TCP/IP, camadas, protocolos (TCP/UDP, IP, HTTP/HTTPS,
   DNS, DHCP), endereçamento, VPN, firewalls, roteamento.
@@ -46,7 +48,7 @@ pública, governo digital), confirme o texto VIGENTE HOJE e a data da fonte
 - **Gestão de incidentes**: detecção, resposta, notificação.
 - **Normas e leis**: ISO 27001/27002, NIST, LGPD (Lei 13.709/2018).
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE**: cobra definições e a distinção entre conceitos; inverte o
   gabarito trocando "IaaS" × "PaaS" × "SaaS", "simétrica" × "assimétrica",
@@ -54,7 +56,7 @@ pública, governo digital), confirme o texto VIGENTE HOJE e a data da fonte
   Leia o item procurando a palavra trocada.
 - **FGV**: valoriza interpretação, casos práticos e governança/normas.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **IaaS × PaaS × SaaS**: o que o provedor gerencia muda em cada modelo.
 - **Nuvem pública × privada × híbrida × comunitária**: propriedade e
@@ -81,9 +83,9 @@ pública, governo digital), confirme o texto VIGENTE HOJE e a data da fonte
   autenticidade/não repúdio, **NÃO confidencialidade**.
 - **OSI (7 camadas) × TCP/IP (4 camadas)**: não troque os nomes das camadas.
 
-## 5. Normas e padrões a verificar (prioridade: vigência e versão)
+## 5. Norms and standards to verify (priority: validity and version)
 
-Não afirme o teor sem verificar a VERSÃO VIGENTE e a DATA da fonte:
+Do not state the content without verifying the CURRENT VERSION and the DATE of the source:
 
 - **ITIL**: vigente é o **ITIL 5** (lançado 29/01/2026 pela PeopleCert) — amplia
   de ITSM para Digital Product and Service Management (DPSM), IA nativa. As 34
@@ -103,11 +105,11 @@ Não afirme o teor sem verificar a VERSÃO VIGENTE e a DATA da fonte:
   (gestão de SI, alterada pela **nº 9/2026**); **IN GSI/PR nº 5/2021** (nuvem).
   A **ANCiber ainda NÃO é lei** (anteprojeto) — não afirmar que foi criada.
 
-**Checagem mínima de atualidade (obrigatória):**
-- Para frameworks versionados, anote a EDIÇÃO e confirme a vigente.
-- Para leis/normativos, confirme a redação vigente e a DATA.
+**Minimum currency check (mandatory):**
+- For versioned frameworks, note the EDITION and confirm the current one.
+- For laws/regulations, confirm the current wording and the DATE.
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Suggested summary structure (for the summary agent)
 
 - **Pergunta organizadora:** como a infraestrutura de TIC é organizada e como
   proteger a informação (confidencialidade, integridade, disponibilidade)
@@ -126,13 +128,13 @@ Não afirme o teor sem verificar a VERSÃO VIGENTE e a DATA da fonte:
   RTO × RPO; vulnerabilidade × ameaça × risco × impacto; DRP × BCP × BIA;
   anonimização × pseudonimização; OSI × TCP/IP.
 
-## 7. Fontes oficiais (sempre na versão mais recente)
+## 7. Official sources (always the most recent version)
 
 - ISO/IEC: 27001 e 27002 na versão vigente.
 - NIST: CSF e SP 800-53 na versão atual.
 - PeopleCert: ITIL 5 (e ITIL 4 em coexistência); ISACA: COBIT 2019.
 - Planalto/ANPD: LGPD e normativos (gov.br/anpd).
 
-**Regra de ouro:** fonte oficial NÃO é sinônimo de fonte atual. Para frameworks
-e normas, use a versão/edição vigente e datada. Para conceitos, use terminologia
-consagrada.
+**Golden rule:** an official source is NOT synonymous with a current source. For frameworks
+and norms, use the current, dated version/edition. For concepts, use established
+terminology.

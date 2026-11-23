@@ -1,28 +1,30 @@
 ---
 name: direito-constitucional
 description: >
-  Playbook de DIREITO CONSTITUCIONAL para concursos fiscais (RFB/SEFAZ) e de
-  controle (TCU/TCE, CGU/CGE). Carregar quando o aluno pedir resumo ou tirar
-  dúvidas sobre: direitos e garantias fundamentais, organização do Estado,
-  repartição de competências, administração pública, fiscalização contábil e
-  financeira, Sistema Tributário Nacional e ordem econômica/financeira. Define
-  incidência, estilo das bancas, pegadinhas e normas a verificar.
+  DIREITO CONSTITUCIONAL playbook for fiscal exams (RFB/SEFAZ) and control
+  (TCU/TCE, CGU/CGE). Load when the student asks for a summary or has doubts
+  about: direitos e garantias fundamentais, organização do Estado, repartição
+  de competências, administração pública, fiscalização contábil e financeira,
+  Sistema Tributário Nacional e ordem econômica/financeira. Defines exam
+  incidence, board style, pitfalls, and norms to verify.
 ---
 
-# Direito Constitucional — playbook de estudo (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Direito Constitucional — study playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Regra de ouro — atualidade da fonte:** fonte oficial NÃO basta. Emendas
-constitucionais e o entendimento do STF mudam o sentido de dispositivos (ex.:
-reforma tributária, mutação constitucional, modulação). Antes de afirmar o
-teor, confirme a redação VIGENTE HOJE e a data da fonte (seções 5 e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-## 2. Incidência em prova (o que priorizar — filtro fiscal/controle)
+**Golden rule — source currency:** an official source is NOT enough. Constitutional
+amendments and STF understanding change the meaning of provisions (e.g., tax
+reform, constitutional mutation, modulation). Before stating the content,
+confirm the CURRENT wording TODAY and the date of the source (sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize — fiscal/control filter)
 
 - **Direitos e garantias fundamentais** (art. 5º): princípios, remédios
   constitucionais (HC, MS, MI, HD, ADPF), eficácia das normas.
@@ -39,7 +41,7 @@ teor, confirme a redação VIGENTE HOJE e a data da fonte (seções 5 e 7).
 - **Poderes e organização** (Legislativo, Executivo, Judiciário), quando o
   edital exigir o núcleo comum.
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE**: cobra literalidade do texto constitucional e inverte o
   gabarito trocando um termo (ex.: "privativa" × "concorrente"; "exclusiva" ×
@@ -47,7 +49,7 @@ teor, confirme a redação VIGENTE HOJE e a data da fonte (seções 5 e 7).
   palavra trocada.
 - **FGV**: valoriza interpretação, aplicação a casos e entendimento do STF.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **Competências**: privativa × concorrente × comum × exclusiva — os verbos e
   os entes mudam; é o campeão de pegadinha.
@@ -68,9 +70,9 @@ teor, confirme a redação VIGENTE HOJE e a data da fonte (seções 5 e 7).
 - **Acumulação de professor (EC 138/2025)**: professor pode acumular com
   **qualquer** outro cargo (não mais só técnico/científico).
 
-## 5. Normas e jurisprudência a verificar (prioridade: vigência e atualidade)
+## 5. Norms and case law to verify (priority: validity and currency)
 
-Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
+Do not state the content without verifying the CURRENT wording TODAY and the DATE of the source:
 
 - **Constituição Federal** — texto consolidado com as ECs (planalto.gov.br),
   especialmente arts. 5º, 37–41, 70–75, 145–156, 165–169, 170–192.
@@ -90,13 +92,13 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
   - **Tema 1.108 (Reintegra)**: anterioridade geral não se aplica à redução de
     benefício fiscal.
 
-**Checagem mínima de atualidade (obrigatória):**
-- Prefira o texto constitucional compilado/atualizado.
-- Anote a DATA da consulta e, quando relevante, a data do julgado.
-- Desconfie de entendimentos antigos sem conferir se houve superação —
-  especialmente em temas com repercussão geral recente.
+**Minimum currency check (mandatory):**
+- Prefer the compiled/updated constitutional text.
+- Note the DATE of the consultation and, when relevant, the date of the ruling.
+- Distrust old understandings without checking whether they were overruled —
+  especially in topics with recent general repercussion.
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Suggested summary structure (for the summary agent)
 
 1. **Direitos e garantias fundamentais** (art. 5º + remédios).
 2. **Organização do Estado e competências**.
@@ -105,12 +107,12 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
 5. **Sistema Tributário Nacional** (arts. 145–156).
 6. **Orçamento** (PPA/LDO/LOA) e ordem econômica/financeira.
 
-## 7. Fontes oficiais (sempre na versão mais recente)
+## 7. Official sources (always the most recent version)
 
 - Planalto: texto constitucional consolidado (planalto.gov.br) — confira a data.
 - STF: súmulas vinculantes e jurisprudência com data (portal.stf.jus.br).
 - Senado: tramitação de PECs, quando relevante.
 
-**Regra de ouro:** fonte oficial NÃO é sinônimo de fonte atual. Verifique a DATA
-e o estado (vigente, alterado, superado). Se a fonte for antiga, procure uma
-mais recente antes de usar.
+**Golden rule:** an official source is NOT synonymous with a current source. Verify the DATE
+and the state (current, amended, overruled). If the source is old, look for a more
+recent one before using it.

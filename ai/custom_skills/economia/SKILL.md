@@ -1,30 +1,31 @@
 ---
 name: economia
 description: >
-  Playbook de ECONOMIA para concursos fiscais (RFB/SEFAZ) e de controle
-  (TCU/TCE, CGU/CGE). Carregar quando o aluno pedir resumo ou tirar dúvidas
-  sobre: microeconomia (oferta/demanda, elasticidade, estruturas de mercado),
+  ECONOMIA playbook for fiscal exams (RFB/SEFAZ) and control (TCU/TCE,
+  CGU/CGE). Load when the student asks for a summary or has doubts about:
+  microeconomia (oferta/demanda, elasticidade, estruturas de mercado),
   macroeconomia (contas nacionais, inflação, política fiscal/monetária/cambial,
   câmbio e balanço de pagamentos), economia do setor público (bens públicos,
-  externalidades, tributos e eficiência) e desenvolvimento econômico. Define
-  incidência, estilo das bancas, pegadinhas e conceitos a verificar.
+  externalidades, tributos e eficiência) e desenvolvimento econômico. Defines
+  exam incidence, board style, pitfalls, and concepts to verify.
 ---
 
-# Economia — playbook de estudo (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Economia — study playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Regra de ouro — atualidade da fonte:** conceitos econômicos básicos são
-estáveis, mas dados de contexto (inflação, política monetária, arcabouço
-fiscal) mudam. Distinga o que é TEORIA (estável) do que é COYUNTURA (atual).
-Para teoria, use bibliografia consagrada; para contexto, use dados recentes
-(seções 5 e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-## 2. Incidência em prova (o que priorizar)
+**Golden rule — source currency:** basic economic concepts are stable, but
+context data (inflation, monetary policy, fiscal framework) change. Distinguish
+what is THEORY (stable) from what is CONJUNCTURE (current). For theory, use
+established bibliography; for context, use recent data (sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize)
 
 - **Microeconomia**: lei da oferta/demanda, equilíbrio, deslocamentos,
   elasticidade (preço, renda, cruzada), excedente, estruturas de mercado
@@ -39,7 +40,7 @@ Para teoria, use bibliografia consagrada; para contexto, use dados recentes
 - **Desenvolvimento econômico**: indicadores (IDH), crescimento ×
   desenvolvimento.
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE**: cobra definição e relação entre variáveis; inverte o
   gabarito trocando "nominal" × "real", "valorização" × "desvalorização",
@@ -47,7 +48,7 @@ Para teoria, use bibliografia consagrada; para contexto, use dados recentes
   a palavra trocada.
 - **FGV**: valoriza interpretação, gráficos e aplicação a cenários.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **PIB nominal × real**: real desconta inflação (deflator).
 - **Deslocamento × movimento ao longo da curva**: mudança na demanda/oferta ×
@@ -65,7 +66,7 @@ Para teoria, use bibliografia consagrada; para contexto, use dados recentes
 - **Crescimento × desenvolvimento**: crescimento é quantitativo (PIB);
   desenvolvimento inclui bem-estar/qualidade.
 
-## 5. Conceitos e contexto a verificar (prioridade: teoria × conjuntura)
+## 5. Concepts and context to verify (priority: theory × current context)
 
 - **Teoria micro/macro**: use bibliografia consagrada (ex.: Mankiw; Varian) e
   conceitos padronizados — estáveis.
@@ -80,12 +81,11 @@ Para teoria, use bibliografia consagrada; para contexto, use dados recentes
   (IBGE, BCB, IPEA, Ministério da Fazenda). Referência set/2026: IPCA 12m ~4,4%,
   Selic 14% a.a., câmbio ~R$ 5,10/US$, desemprego ~5,4–5,6%.
 
-**Checagem mínima (obrigatória):**
-- Separe claramente teoria (estável) de dados/contexto (atual).
-- Para dados, anote a DATA e a fonte; não use números desatualizados como se
-  fossem atuais.
+**Minimum check (mandatory):**
+- Clearly separate theory (stable) from data/context (current).
+- For data, note the DATE and the source; do not use outdated numbers as if current.
 
-## 6. Estrutura sugerida do resumo (espinha narrativa)
+## 6. Suggested summary structure (narrative spine)
 
 - **Pergunta organizadora:** como os agentes decidem na margem (micro), como a
   economia agrega e flutua (macro), como o Estado intervém e como se mede o
@@ -103,13 +103,13 @@ Para teoria, use bibliografia consagrada; para contexto, use dados recentes
   cambial; valorização × desvalorização cambial; crescimento × desenvolvimento;
   bens públicos × bens comuns × bens privados; substitutos × complementares.
 
-## 7. Fontes oficiais (sempre na versão mais recente para dados)
+## 7. Official sources (always the most recent version for data)
 
 - IBGE (ibge.gov.br): contas nacionais, inflação (IPCA), desemprego.
 - Banco Central do Brasil (bcb.gov.br): Selic, câmbio, política monetária.
 - IPEA / Ministério da Fazenda: política fiscal e indicadores.
 - Bibliografia consagrada para a teoria (Mankiw, Varian, etc.).
 
-**Regra de ouro:** fonte oficial NÃO é sinônimo de fonte atual. Para dados de
-conjuntura, use sempre a informação mais recente e datada. Para teoria, use
-conceito estável de bibliografia consagrada.
+**Golden rule:** an official source is NOT synonymous with a current source. For context
+data, always use the most recent, dated information. For theory, use stable concepts
+from established bibliography.

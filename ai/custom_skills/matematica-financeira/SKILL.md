@@ -1,29 +1,31 @@
 ---
 name: matematica-financeira
 description: >
-  Playbook de MATEMÁTICA FINANCEIRA para concursos fiscais (RFB/SEFAZ) e de
-  controle (TCU/TCE, CGU/CGE). Carregar quando o aluno pedir resumo ou tirar
-  dúvidas sobre: juros simples e compostos, taxas (nominal, efetiva,
-  equivalente, real, aparente), descontos (racional, comercial), séries de
-  pagamentos (antecipadas/postecipadas), sistemas de amortização (Price, SAC),
-  equivalência de capitais e valor presente líquido/TIR. Define incidência,
-  estilo das bancas, pegadinhas e convenções a verificar.
+  MATEMÁTICA FINANCEIRA playbook for fiscal exams (RFB/SEFAZ) and control
+  (TCU/TCE, CGU/CGE). Load when the student asks for a summary or has doubts
+  about: juros simples e compostos, taxas (nominal, efetiva, equivalente, real,
+  aparente), descontos (racional, comercial), séries de pagamentos
+  (antecipadas/postecipadas), sistemas de amortização (Price, SAC), equivalência
+  de capitais e valor presente líquido/TIR. Defines exam incidence, board
+  style, pitfalls, and conventions to verify.
 ---
 
-# Matemática Financeira — playbook de estudo (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Matemática Financeira — study playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Regra de ouro — atualidade da fonte:** em exatas, o risco maior não é norma
-revogada, mas convenção (desconto comercial × racional, convenção exponencial ×
-linear, taxas). Antes de resolver, explicite a CONVENÇÃO usada e, se a banca
-adotar outra, siga a dela (seções 5 e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-## 2. Incidência em prova (o que priorizar)
+**Golden rule — source currency:** in exact sciences, the greater risk is not a
+repealed norm, but convention (desconto comercial × racional, exponential ×
+linear convention, rates). Before solving, make explicit the CONVENTION used
+and, if the board adopts another, follow theirs (sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize)
 
 - **Juros simples × compostos**: fórmulas, diferença, convenção exponencial ×
   linear.
@@ -43,7 +45,7 @@ adotar outra, siga a dela (seções 5 e 7).
   e decisão; **análise de investimento em ambiente inflacionário** (taxa real ×
   aparente).
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE** (TCU/TCE, parte das SEFAZ): cobra cálculo e a distinção
   conceitual; inverte o gabarito trocando "simples" × "composto", "nominal" ×
@@ -54,7 +56,7 @@ adotar outra, siga a dela (seções 5 e 7).
   Lógico-Matemático** (porcentagem e juros básicos) — peso bem menor.
 - **SEFAZ**: bancas variadas (FGV, FCC, Cebraspe) e disciplina plena.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **Taxa nominal × efetiva**: a nominal tem período de capitalização diferente
   do período da taxa; converter para a efetiva correspondente.
@@ -73,7 +75,7 @@ adotar outra, siga a dela (seções 5 e 7).
 - **VPL × TIR**: critérios de decisão distintos; TIR tem problemas (fluxos não
   convencionais).
 
-## 5. Convenções e fórmulas a verificar (prioridade: consistência)
+## 5. Conventions and formulas to verify (priority: consistency)
 
 - **Convenção exponencial × linear** (juros compostos em períodos fracionários):
   siga a da banca/questão.
@@ -83,11 +85,11 @@ adotar outra, siga a dela (seções 5 e 7).
 - **Arredondamento e número de casas**: siga a instrução da prova.
 - **Tabelas financeiras**: use os fatores fornecidos na prova, se houver.
 
-**Checagem mínima (obrigatória):**
-- Sempre declare a convenção usada.
-- Se a banca/edital especificar outra, siga a deles e avise.
+**Minimum check (mandatory):**
+- Always declare the convention used.
+- If the board/edital specifies another, follow theirs and flag it.
 
-## 6. Estrutura sugerida do resumo (espinha narrativa)
+## 6. Suggested summary structure (narrative spine)
 
 - **Pergunta organizadora:** como levar valores no tempo de forma equivalente e
   comparar alternativas de financiamento/investimento?
@@ -101,11 +103,11 @@ adotar outra, siga a dela (seções 5 e 7).
   aparente; taxa proporcional × equivalente; desconto racional × comercial;
   antecipada × postecipada; Price × SAC; VPL × TIR.
 
-## 7. Fontes de referência (boas práticas)
+## 7. Reference sources (best practices)
 
-Use bibliografia consagrada (ex.: Assaf Neto; Hazzan & Pompeo; Mathias &
-Gomes) e, quando o edital indicar, a fonte específica. Editais normalmente NÃO
-fixam bibliografia — por isso a seção 5 (convenção) é o que mais importa.
+Use established bibliography (e.g., Assaf Neto; Hazzan & Pompeo; Mathias &
+Gomes) and, when the edital indicates, the specific source. Editais normally do
+NOT set a bibliography — that is why section 5 (convention) matters most.
 
-**Regra de ouro:** em exatas, o erro vem de convenção, não de fonte
-desatualizada. Explicite sempre a convenção e siga a da banca.
+**Golden rule:** in exact sciences, error comes from convention, not from an outdated
+source. Always make explicit the convention and follow the board's.

@@ -1,29 +1,30 @@
 ---
 name: financas-publicas
 description: >
-  Playbook de FINANÇAS PÚBLICAS / AFO / DIREITO FINANCEIRO para concursos
-  fiscais (RFB/SEFAZ) e de controle (TCU/TCE, CGU/CGE). Carregar quando o aluno
-  pedir resumo ou tirar dúvidas sobre: atividade financeira do Estado, despesa
-  pública, receita pública, orçamento público (PPA/LDO/LOA), ciclo orçamentário,
+  FINANÇAS PÚBLICAS / AFO / DIREITO FINANCEIRO playbook for fiscal exams
+  (RFB/SEFAZ) and control (TCU/TCE, CGU/CGE). Load when the student asks for a
+  summary or has doubts about: atividade financeira do Estado, despesa pública,
+  receita pública, orçamento público (PPA/LDO/LOA), ciclo orçamentário,
   princípios orçamentários, créditos adicionais, dívida pública e
-  responsabilidade fiscal (LRF). Define incidência, estilo das bancas,
-  pegadinhas e normas a verificar.
+  responsabilidade fiscal (LRF). Defines exam incidence, board style, pitfalls,
+  and norms to verify.
 ---
 
-# Finanças Públicas (AFO/Direito Financeiro) — playbook de estudo (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Finanças Públicas (AFO/Direito Financeiro) — study playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Regra de ouro — atualidade da fonte:** fonte oficial NÃO basta. As normas
-orçamentárias mudam (LCs, LDO anual, teto de gastos, novo arcabouço fiscal).
-Antes de afirmar o teor, confirme a redação VIGENTE HOJE e a data da fonte
-(seções 5 e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-## 2. Incidência em prova (o que priorizar)
+**Golden rule — source currency:** an official source is NOT enough. Budget norms
+change (LCs, annual LDO, spending cap, new fiscal framework). Before stating the
+content, confirm the CURRENT wording TODAY and the date of the source (sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize)
 
 - **Atividade financeira do Estado** e funções do Estado (alocativa,
   distributiva, estabilizadora).
@@ -42,7 +43,7 @@ Antes de afirmar o teor, confirme a redação VIGENTE HOJE e a data da fonte
 - **Responsabilidade fiscal (LRF)**: metas, limites de despesa com pessoal,
   dívida, transparência, restos a pagar, renúncia de receita.
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE**: cobra classificação, estágios e a literalidade da LRF;
   inverte o gabarito trocando "empenho" × "liquidação" × "pagamento",
@@ -51,7 +52,7 @@ Antes de afirmar o teor, confirme a redação VIGENTE HOJE e a data da fonte
   palavra trocada.
 - **FGV**: valoriza interpretação, classificação e aplicação da LRF a casos.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **Empenho × liquidação × pagamento**: estágios da despesa com efeitos e
   pressupostos distintos (a liquidação verifica o direito adquirido pelo
@@ -75,9 +76,9 @@ Antes de afirmar o teor, confirme a redação VIGENTE HOJE e a data da fonte
 - **Teto de gastos (EC 95) × Regime Fiscal Sustentável (LC 200/2023)**: o teto
   foi substituído; não trate a EC 95 como regra vigente.
 
-## 5. Normas e jurisprudência a verificar (prioridade: vigência e atualidade)
+## 5. Norms and case law to verify (priority: validity and currency)
 
-Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
+Do not state the content without verifying the CURRENT wording TODAY and the DATE of the source:
 
 - **Constituição Federal**, arts. 163 a 169 (finanças públicas e orçamento).
 - **Lei 4.320/1964** — normas gerais de direito financeiro (leitura conjunta
@@ -96,12 +97,12 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
   subsídios) e **art. 138 ADCT** (limite a novas vinculações).
 - **LDO e LOA federais vigentes**, quando o assunto exigir exemplo prático.
 
-**Checagem mínima de atualidade (obrigatória):**
-- Prefira o texto compilado/atualizado.
-- Anote a DATA da consulta e a data da norma.
-- Atenção redobrada à LRF e ao arcabouço fiscal: mudam por lei complementar.
+**Minimum currency check (mandatory):**
+- Prefer the compiled/updated text.
+- Note the DATE of the consultation and the date of the norm.
+- Extra attention to the LRF and the fiscal framework: they change by complementary law.
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Suggested summary structure (for the summary agent)
 
 - **Pergunta organizadora:** como o Estado obtém, aloca e executa os recursos
   públicos, e como se submete a limites e responsabilidade fiscal?
@@ -120,12 +121,12 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
   extraorçamentária; DRU 20% × 30% (vigente: 30% até 2032); teto de gastos
   (EC 95/2016) × Regime Fiscal Sustentável (LC 200/2023).
 
-## 7. Fontes oficiais (sempre na versão mais recente)
+## 7. Official sources (always the most recent version)
 
 - Planalto: CF, Lei 4.320/1964 e LRF (LC 101/2000) atualizadas (planalto.gov.br).
 - STN/Tesouro Nacional: manuais e normativos de finanças públicas.
 - Senado/Câmara: tramitação de PECs/PLPs, quando relevante.
 
-**Regra de ouro:** fonte oficial NÃO é sinônimo de fonte atual. Verifique a DATA
-e o estado (vigente, alterado). Se a fonte for antiga, procure uma mais recente
-antes de usar.
+**Golden rule:** an official source is NOT synonymous with a current source. Verify the DATE
+and the state (current, amended). If the source is old, look for a more recent one before
+using it.

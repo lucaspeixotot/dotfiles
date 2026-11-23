@@ -1,10 +1,10 @@
-# Exemplos trabalhados de seção 6 (espinha narrativa)
+# Worked examples of section 6 (narrative spine)
 
-Modelos PREENCHIDOS de seção 6, um por tipo de disciplina. Use como referência
-de forma e densidade: cada skill deve ter o SEU conteúdo específico (nunca
-copiar o exemplo de outra disciplina).
+FILLED-IN section 6 models, one per subject type. Use as a reference for form
+and density: each skill must have ITS OWN specific content (never copy another
+discipline's example).
 
-## Jurídica — Direito Tributário
+## Legal — Direito Tributário
 
 - **Pergunta organizadora:** como nasce, se constitui e se extingue a
   obrigação de pagar tributo, e que garantias protegem o crédito?
@@ -17,7 +17,7 @@ copiar o exemplo de outra disciplina).
 - **Pares "não confunda":** imunidade × isenção × não incidência; prescrição ×
   decadência; competência × capacidade tributária ativa.
 
-## Exatas — Matemática Financeira
+## Exact sciences — Matemática Financeira
 
 - **Pergunta organizadora:** como levar valores no tempo de forma equivalente
   e comparar alternativas de financiamento/investimento?
@@ -30,7 +30,7 @@ copiar o exemplo de outra disciplina).
 - **Pares "não confunda":** taxa nominal × efetiva × equivalente × real ×
   aparente; desconto racional × comercial; Price × SAC.
 
-## TI/Dados — Desenvolvimento de Sistemas
+## IT/Data — Desenvolvimento de Sistemas
 
 - **Pergunta organizadora:** como um software é concebido, construído,
   testado, entregue e mantido, e como se organiza o trabalho?

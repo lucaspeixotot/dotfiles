@@ -1,29 +1,31 @@
 ---
 name: contabilidade-publica
 description: >
-  Playbook de CONTABILIDADE PÚBLICA (CASP) para concursos fiscais (RFB/SEFAZ) e
-  de controle (TCU/TCE, CGU/CGE). Carregar quando o aluno pedir resumo ou tirar
-  dúvidas sobre: MCASP, regime orçamentário × patrimonial, plano de contas
+  CONTABILIDADE PÚBLICA (CASP) playbook for fiscal exams (RFB/SEFAZ) and
+  control (TCU/TCE, CGU/CGE). Load when the student asks for a summary or has
+  doubts about: MCASP, regime orçamentário × patrimonial, plano de contas
   aplicado ao setor público (PCASP), variações patrimoniais, demonstrações
   contábeis aplicadas ao setor público (DCASP), procedimentos contábeis
-  patrimoniais (PCP), dívida ativa, provisões e NBC TSP. Define incidência,
-  estilo das bancas, pegadinhas e normas a verificar.
+  patrimoniais (PCP), dívida ativa, provisões e NBC TSP. Defines exam
+  incidence, board style, pitfalls, and norms to verify.
 ---
 
-# Contabilidade Pública (CASP) — playbook de estudo (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Contabilidade Pública (CASP) — study playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Regra de ouro — atualidade da fonte:** fonte oficial NÃO basta. O MCASP é
-atualizado anualmente (edição nova) e o PCASP/DCASP evoluem. Antes de afirmar
-um tratamento contábil, confirme a EDICÃO VIGENTE e a data da fonte (seções 5
-e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-## 2. Incidência em prova (o que priorizar)
+**Golden rule — source currency:** an official source is NOT enough. The MCASP is
+updated annually (new edition) and the PCASP/DCASP evolve. Before stating an
+accounting treatment, confirm the CURRENT EDITION and the date of the source
+(sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize)
 
 - **Regimes contábeis**: orçamentário (receita/despesa orçamentária) ×
   patrimonial (variações patrimoniais) × de competência.
@@ -40,7 +42,7 @@ e 7).
   patrimonial × resultado orçamentário × resultado financeiro).
 - **NBC TSP** (normas brasileiras de contabilidade do setor público).
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE**: cobra a classificação (natureza da informação), os
   lançamentos e a diferença entre ótica orçamentária × patrimonial; inverte o
@@ -50,7 +52,7 @@ e 7).
 - **FGV**: valoriza interpretação, lançamentos e aplicação do MCASP a situações
   concretas.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **Regime orçamentário × patrimonial**: receita orçamentária (caixa) ×
   variação patrimonial (competência); despesa orçamentária (empenho) × VPD.
@@ -68,9 +70,9 @@ e 7).
 - **Créditos a receber × dívida ativa**: inscrição em dívida ativa muda
   classificação/mensuração, com ajuste para perdas — não confundir com provisão.
 
-## 5. Normas e jurisprudência a verificar (prioridade: vigência e atualidade)
+## 5. Norms and case law to verify (priority: validity and currency)
 
-Não afirme o teor sem verificar a EDIÇÃO VIGENTE e a DATA da fonte:
+Do not state the content without verifying the CURRENT EDITION and the DATE of the source:
 
 - **MCASP** (STN) — edição vigente: **11ª (dez/2024)**, adoção obrigatória desde
   jan/2025. Confira se saiu a 12ª (provável dez/2026).
@@ -86,12 +88,12 @@ Não afirme o teor sem verificar a EDIÇÃO VIGENTE e a DATA da fonte:
 - **LRF (LC 101/2000)** e **LC 200/2023 (Regime Fiscal Sustentável)** — quando
   o assunto tocar resultado/despesa.
 
-**Checagem mínima de atualidade (obrigatória):**
-- Use a EDIÇÃO MAIS RECENTE do MCASP (confira o ano).
-- Anote a DATA da consulta e a edição da norma.
-- Desconfie de planos de contas antigos: a estrutura do PCASP é atualizada.
+**Minimum currency check (mandatory):**
+- Use the MOST RECENT EDITION of the MCASP (check the year).
+- Note the DATE of the consultation and the edition of the norm.
+- Distrust old charts of accounts: the PCASP structure is updated.
 
-## 6. Estrutura sugerida do resumo (espinha narrativa)
+## 6. Suggested summary structure (narrative spine)
 
 - **Pergunta organizadora:** como um mesmo fato administrativo é capturado,
   classificado e evidenciado sob as óticas orçamentária, patrimonial e de
@@ -110,12 +112,12 @@ Não afirme o teor sem verificar a EDIÇÃO VIGENTE e a DATA da fonte:
   patrimonial × VPD; Balanço Orçamentário × Financeiro × Patrimonial; VPA ×
   VPD; créditos a receber × dívida ativa.
 
-## 7. Fontes oficiais (sempre na versão mais recente)
+## 7. Official sources (always the most recent version)
 
 - STN/Tesouro Nacional: MCASP na edição vigente (tesourotransparente.gov.br).
 - CFC: NBC TSP consolidadas.
 - Planalto: Lei 4.320/1964 e LRF atualizadas (planalto.gov.br).
 
-**Regra de ouro:** fonte oficial NÃO é sinônimo de fonte atual. Verifique a
-EDIÇÃO/ano e o estado. Se a fonte for antiga, procure a edição mais recente
-antes de usar.
+**Golden rule:** an official source is NOT synonymous with a current source. Verify the
+EDITION/year and the state. If the source is old, look for the most recent edition
+before using it.

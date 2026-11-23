@@ -1,28 +1,30 @@
 ---
 name: reforma-tributaria
 description: >
-  Playbook de REFORMA TRIBUTÁRIA (consumo) para concursos fiscais (RFB/SEFAZ) e
-  de controle (TCU/TCE, CGU/CGE). Carregar quando o aluno pedir resumo ou tirar
-  dúvidas sobre: EC 132/2023, LC 214/2025, IBS, CBS, Imposto Seletivo, princípio
+  REFORMA TRIBUTÁRIA (consumo) playbook for fiscal exams (RFB/SEFAZ) and
+  control (TCU/TCE, CGU/CGE). Load when the student asks for a summary or has
+  doubts about: EC 132/2023, LC 214/2025, IBS, CBS, Imposto Seletivo, princípio
   do destino, não cumulatividade, Comitê Gestor do IBS, split payment, apuração
   assistida, cashback, regimes diferenciados/favorecidos e regras de transição.
-  Define incidência, estilo das bancas, pegadinhas e normas a verificar.
+  Defines exam incidence, board style, pitfalls, and norms to verify.
 ---
 
-# Reforma Tributária — playbook de estudo (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Reforma Tributária — study playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Regra de ouro — atualidade da fonte:** fonte oficial NÃO basta. Este é o
-tema com MAIOR risco de desatualização do edital: há leis complementares em
-fase de regulamentação e regras de transição longas. Antes de afirmar qualquer
-dispositivo, confirme a redação VIGENTE HOJE e a data da fonte (seções 5 e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-## 2. Incidência em prova (o que priorizar)
+**Golden rule — source currency:** an official source is NOT enough. This is the
+topic with the HIGHEST risk of becoming outdated: there are complementary laws
+being regulated and long transition rules. Before stating any provision,
+confirm the CURRENT wording TODAY and the date of the source (sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize)
 
 - **Arquitetura do novo sistema (consumo)**: IBS (Estados+DF+Municípios),
   CBS (União) e Imposto Seletivo. Onde incidem, fato gerador, base de cálculo,
@@ -43,7 +45,7 @@ dispositivo, confirme a redação VIGENTE HOJE e a data da fonte (seções 5 e 7
 - **Impacto no CTN e na fiscalização**: como o novo sistema dialoga com os
   institutos tributários clássicos.
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE**: cobra a literalidade dos textos (EC 132/2023, LC
   214/2025 e LC 227/2026) e troca um termo por outro para inverter o gabarito (ex.:
@@ -53,7 +55,7 @@ dispositivo, confirme a redação VIGENTE HOJE e a data da fonte (seções 5 e 7
 - **FGV**: valoriza interpretação, finalidade dos institutos e situações
   aplicadas de transição.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **IBS ≠ CBS**: competências e entes distintos (IBS compartilhado; CBS da
   União). Banca troca a titularidade.
@@ -84,9 +86,9 @@ dispositivo, confirme a redação VIGENTE HOJE e a data da fonte (seções 5 e 7
 - **Alíquota de referência**: fixada pelo Senado (rito RFB propõe → TCU
   homologa → Senado fixa por resolução).
 
-## 5. Normas e jurisprudência a verificar (prioridade: vigência e atualidade)
+## 5. Norms and case law to verify (priority: validity and currency)
 
-Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
+Do not state the content without verifying the CURRENT wording TODAY and the DATE of the source:
 
 - **EC 132/2023** — base constitucional: IBS (art. 156-A), CBS (art. 195, V),
   Imposto Seletivo (art. 153, VIII) e Comitê Gestor do IBS (art. 156-B).
@@ -102,14 +104,13 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
 - **Regras de transição**: cronograma vigente (teste 2026 → CBS cheia e IS em
   2027 → IBS pleno 2029 → ICMS/ISS caem 2029–2032 → regime pleno 2033).
 
-**Checagem mínima de atualidade (obrigatória):**
-- Prefira o texto compilado/atualizado no Planalto, com data de consolidação
-  recente.
-- Anote a DATA da consulta e a data da norma.
-- Como o tema muda rápido, desconfie de qualquer texto com mais de alguns meses
-  sem conferir se houve edição, regulamentação ou alteração posterior.
+**Minimum currency check (mandatory):**
+- Prefer the compiled/updated text at Planalto, with a recent consolidation date.
+- Note the DATE of the consultation and the date of the norm.
+- As the topic changes fast, distrust any text older than a few months without
+  checking whether there was a later edition, regulation, or amendment.
 
-## 6. Estrutura sugerida do resumo (espinha narrativa)
+## 6. Suggested summary structure (narrative spine)
 
 - **Pergunta organizadora:** como o novo sistema de tributação sobre o consumo
   (IBS + CBS + Imposto Seletivo) substitui o modelo atual (ICMS/ISS/PIS/COFINS),
@@ -132,7 +133,7 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
   imunidade/isenção; transição × vigência imediata; as duas "travas" (ADCT ×
   LC 214/2025); diferenciado × específico.
 
-## 7. Fontes oficiais (sempre na versão mais recente)
+## 7. Official sources (always the most recent version)
 
 - Planalto: texto vigente e compilado da EC 132/2023 e das leis complementares
   (planalto.gov.br) — confira a data de atualização.
@@ -140,6 +141,6 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
 - Receita Federal: atos normativos sobre IBS/CBS (gov.br/receitafederal).
 - Senado/Câmara: tramitação das LCs, se ainda pendentes.
 
-**Regra de ouro:** fonte oficial NÃO é sinônimo de fonte atual. Verifique a DATA
-e o estado (vigente, em tramitação, alterado). Se a fonte for antiga, procure
-uma mais recente antes de usar.
+**Golden rule:** an official source is NOT synonymous with a current source. Verify the DATE
+and the state (current, in progress, amended). If the source is old, look for a more
+recent one before using it.

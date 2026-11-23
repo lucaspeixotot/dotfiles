@@ -1,198 +1,198 @@
 ---
 name: concursos-skill-author
 description: >
-  Meta-skill: cria e revisa skills de disciplina (playbooks) para concursos
-  fiscais (RFB/SEFAZ) e de controle (TCU/TCE, CGU/CGE). Carregar quando o
-  usuário pedir para criar, atualizar ou revisar uma skill de assunto (SKILL.md)
-  em ~/custom_skills/. Define o template, o processo de criação com pesquisa
-  web embutida e a variação por tipo (jurídica × exatas × TI).
+  Meta-skill: creates and reviews discipline skills (playbooks) for fiscal exams
+  (RFB/SEFAZ) and control (TCU/TCE, CGU/CGE). Load when the user asks to create,
+  update, or review a subject skill (SKILL.md) in ~/custom_skills/. Defines the
+  template, the creation process with embedded web research, and the variation
+  by type (jurídica × exatas × TI).
 ---
 
-# Criadora de skills de disciplina — processo
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-Esta skill ensina COMO criar uma skill de disciplina (um "playbook" de estudo),
-não o conteúdo da disciplina em si. O agente que a carregar fará o trabalho de
-criação + revisão num único fluxo, escrevendo o arquivo final.
+# Discipline skill author — process
 
-## 1. O que é uma skill de disciplina (playbook)
+This skill teaches HOW to create a subject skill (a study "playbook"), not the
+subject content itself. The agent that loads it will do the creation + review
+work in a single flow, writing the final file.
 
-Um =SKILL.md= é o guia de COMO a disciplina é cobrada em prova — NÃO o conteúdo
-da disciplina (o modelo já o domina). Ele existe para:
+## 1. What a subject skill (playbook) is
 
-- Priorizar tópicos de maior incidência.
-- Calibrar a resposta ao estilo da banca (Cebraspe × FGV).
-- Listar pegadinhas clássicas ("não confunda X com Y").
-- Indicar normas/padrões a VERIFICAR (nunca colar o teor da lei — isso
-  desatualiza).
+A =SKILL.md= is the guide to HOW the subject is tested on the exam — NOT the
+subject content (the model already masters it). It exists to:
 
-## 2. Template obrigatório (seções)
+- Prioritize higher-incidence topics.
+- Calibrate the answer to the board style (Cebraspe × FGV).
+- List classic pitfalls ("não confunda X com Y").
+- Indicate norms/standards to VERIFY (never paste the law's content — that goes
+  stale).
+
+## 2. Mandatory template (sections)
 
 #+begin_src
 ---
 name: <slug-da-disciplina>
-description: >  (gatilho: disciplina + "carregar quando o aluno pedir resumo ou tirar dúvidas sobre <tópicos-chave>")
+description: >  (trigger: subject + "load when the student asks for a summary or has doubts about <key-topics>")
 ---
 
-# <Disciplina> — playbook de estudo (fiscal + controle)
+# <Disciplina> — study playbook (fiscal + control)
 
-## 1. O que é esta skill
-   + regra de ouro de atualidade (varia por tipo — ver seção 3)
+## 1. What this skill is
+   + golden rule of source currency (varies by type — see section 3)
 
-## 2. Incidência em prova (o que priorizar)
-## 3. Estilo por banca (Cebraspe × FGV)
-## 4. Pegadinhas clássicas ("não confunda")
-## 5. Normas/padrões a verificar (prioridade: vigência/versão)
-## 6. Estrutura sugerida do resumo (espinha narrativa — obrigatório)
-## 7. Fontes oficiais (sempre na versão mais recente)
+## 2. Exam incidence (what to prioritize)
+## 3. Board style (Cebraspe × FGV)
+## 4. Classic pitfalls ("não confunda")
+## 5. Norms/standards to verify (priority: validity/version)
+## 6. Suggested summary structure (narrative spine — mandatory)
+## 7. Official sources (always the most recent version)
 #+end_src
 
-Regras do template:
-- =description= é OBRIGATÓRIA e é o gatilho: nomeie a disciplina e quando
-  carregar. Sem ela o gptel-agent ignora a skill com warning.
-- =name=: slug sem acento, minúsculo, hífens. Se for específico de um estado,
-  inclua o estado (ex.: =legislacao-tributaria-estadual-alagoas=).
-- Manter lean e durável: playbook, não dump de conteúdo.
-- Nada de lei colada: a seção 5 manda VERIFICAR, nunca afirma o teor.
-- Seção 6 NÃO pode ser lista plana de tópicos: deve entregar a espinha
-  narrativa da disciplina (pergunta organizadora + fluxo principal + eixos
-  conceituais + pares "não confunda"). Ver seção 2.1.
-- A skill deve seguir o padrão Agent Skills (ver seção 2.3): SKILL.md enxuto +
-  =references/= e =assets/= para o detalhe.
+Template rules:
+- =description= is MANDATORY and is the trigger: name the subject and when to
+  load. Without it gptel-agent ignores the skill with a warning.
+- =name=: unaccented, lowercase slug, hyphens. If state-specific, include the
+  state (e.g., =legislacao-tributaria-estadual-alagoas=).
+- Keep it lean and durable: a playbook, not a content dump.
+- No pasted law: section 5 says VERIFY, never states the content.
+- Section 6 CANNOT be a flat topic list: it must deliver the subject's narrative
+  spine (organizing question + main flow + conceptual axes + "não confunda"
+  pairs). See section 2.1.
+- The skill must follow the Agent Skills pattern (see section 2.3): lean SKILL.md
+  + =references/= and =assets/= for the detail.
 
-## 2.1 A seção 6 (espinha narrativa da disciplina)
+## 2.1 Section 6 (the subject's narrative spine)
 
-A seção 6 é o que o agente de resumo usa para estruturar o texto. Ela NÃO pode
-ser uma lista plana de tópicos. Deve conter, no mínimo:
+Section 6 is what the summary agent uses to structure the text. It CANNOT be a
+flat topic list. It must contain, at minimum:
 
-1. **Pergunta organizadora** — a questão central que a disciplina responde
-   (ex.: Direito Tributário = "como nasce, se constitui e se extingue a
+1. **Organizing question** — the central question the subject answers
+   (e.g., Direito Tributário = "como nasce, se constitui e se extingue a
    obrigação de pagar tributo?").
-2. **Fluxo(s) principal(is)** — o encadeamento causal/temporal dos blocos
-   (ex.: competência → obrigação → lançamento → crédito → prescrição/decadência).
-   Exponha o fluxo ANTES dos tópicos, para o aluno ver o mapa.
-3. **Eixos conceituais** — os pares estruturadores que organizam o texto
-   (ex.: Auditoria = "documento × escrituração"; "regularidade = financeira +
+2. **Main flow(s)** — the causal/temporal chaining of the blocks
+   (e.g., competência → obrigação → lançamento → crédito → prescrição/decadência).
+   Expose the flow BEFORE the topics, so the student sees the map.
+3. **Conceptual axes** — the structuring pairs that organize the text
+   (e.g., Auditoria = "documento × escrituração"; "regularidade = financeira +
    conformidade").
-4. **Pares "não confunda"** — as oposições que devem aparecer AO LONGO do
-   texto (e não só numa lista final).
+4. **"não confunda" pairs** — the oppositions that must appear THROUGHOUT the
+   text (not only in a final list).
 
-A seção 6 é DERIVADA das seções 2–5 (incidência, banca, pegadinhas, normas):
-não invente fluxo que não decorra delas.
+Section 6 is DERIVED from sections 2–5 (incidence, board, pitfalls, norms):
+do not invent a flow that does not follow from them.
 
-## 2.2 Exemplos trabalhados (por tipo de disciplina)
+## 2.2 Worked examples (by subject type)
 
-Os exemplos COMPLETOS ficam em =references/exemplos-secao-6.md= — carregue esse
-arquivo sempre que for escrever uma seção 6 (progressive disclosure: o detalhe
-não fica no SKILL.md). Resumo mínimo para referência rápida:
+The COMPLETE examples are in =references/exemplos-secao-6.md= — load that file
+whenever you write a section 6 (progressive disclosure: the detail does not stay
+in the SKILL.md). Minimum summary for quick reference:
 
-- **Jurídica (Direito Tributário):** "como nasce, constitui e extingue a
+- **Legal (Direito Tributário):** "como nasce, constitui e extingue a
   obrigação de pagar tributo?" → competência → obrigação → lançamento →
   crédito → prescrição/decadência → garantias.
-- **Exatas (Matemática Financeira):** "como levar valores no tempo e comparar
-  alternativas?" → juros → taxas → descontos → séries → amortização →
+- **Exact sciences (Matemática Financeira):** "como levar valores no tempo e
+  comparar alternativas?" → juros → taxas → descontos → séries → amortização →
   equivalência → VPL/TIR.
-- **TI (Desenvolvimento de Sistemas):** "como um software é concebido,
+- **IT (Desenvolvimento de Sistemas):** "como um software é concebido,
   construído, testado, entregue e mantido?" → requisitos → projeto →
   arquitetura → banco → implementação → testes → DevOps → gestão.
 
-## 2.3 Padrão Agent Skills (obrigatório para TODAS as skills)
+## 2.3 Agent Skills pattern (mandatory for ALL skills)
 
-As skills de disciplina NÃO precisam condensar tudo no =SKILL.md=. Siga o
-formato Agent Skills (https://agentskills.io/specification):
+Subject skills do NOT need to condense everything into =SKILL.md=. Follow the
+Agent Skills format (https://agentskills.io/specification):
 
 ```
 <nome-da-skill>/
-├── SKILL.md          # obrigatório: frontmatter (name + description) + instruções
-├── references/       # opcional: documentação carregada SOB DEMANDA
-├── assets/           # opcional: templates, tabelas, quadros-resumo
+├── SKILL.md          # mandatory: frontmatter (name + description) + instructions
+├── references/       # optional: documentation loaded ON DEMAND
+├── assets/           # optional: templates, tables, summary boards
 └── ...
 ```
 
-Regras práticas:
+Practical rules:
 
-- **SKILL.md enxuto** (< 500 linhas): o essencial para decidir e estruturar
-  (incidência, banca, pegadinhas, normas a verificar, espinha narrativa).
-- **Material detalhado vai para =references/=** (ex.: quadros-resumo de
-  incidência, tabelas de transição, glossário de "não confunda", listas de
-  dispositivos por tópico). Referencie por caminho RELATIVO a partir do
-  SKILL.md (ex.: "ver =references/quadro-transicao.md=").
-- **=assets/= para templates e recursos estáticos** (ex.: modelo de resumo,
-  tabela de alíquotas), não para instrução de comportamento.
-- **Progressive disclosure:** o agente carrega o SKILL.md ao ativar a skill e
-  só lê =references/=/=assets/= quando a tarefa exigir. Mantenha cada arquivo
-  de =references/= focado (1 assunto), para leitura barata.
-- A meta-skill já segue esse padrão (ver =references/exemplos-secao-6.md=). As
-  skills de disciplina criadas/revisadas a partir de agora devem seguir o mesmo
-  formato.
+- **Lean SKILL.md** (< 500 lines): the essential to decide and structure
+  (incidence, board, pitfalls, norms to verify, narrative spine).
+- **Detailed material goes to =references/=** (e.g., incidence summary boards,
+  transition tables, "não confunda" glossary, provision lists per topic).
+  Reference by RELATIVE path from SKILL.md (e.g., "see =references/quadro-transicao.md=").
+- **=assets/= for templates and static resources** (e.g., summary model, rate
+  table), not for behavior instructions.
+- **Progressive disclosure:** the agent loads SKILL.md when activating the skill
+  and only reads =references/=/=assets/= when the task requires. Keep each
+  =references/= file focused (1 subject), for cheap reading.
+- This meta-skill already follows that pattern (see =references/exemplos-secao-6.md=).
+  Subject skills created/revised from now on must follow the same format.
 
-## 3. Variação da "regra de ouro" por tipo de disciplina
+## 3. Variation of the "golden rule" by subject type
 
-- **Jurídica (Direito, Auditoria, Finanças Públicas):**
-  "Fonte oficial NÃO basta — boa fonte desatualizada pode afirmar como vigente
-  algo já revogado/superado. Confirme a redação VIGENTE HOJE e a data da fonte.
-  Verifique súmulas/julgados: se foi superado (overruling), cancelado ou
-  modulado; jurisprudência recente pode ter virado o entendimento."
+- **Legal (Direito, Auditoria, Finanças Públicas):**
+  "An official source is NOT enough — a good outdated source may state as current
+  something already repealed/overruled. Confirm the CURRENT wording TODAY and the
+  date of the source. Verify súmulas/julgados: whether it was overruled, canceled
+  or modulated; recent case law may have flipped the understanding."
 
-- **Exatas (Estatística, Matemática Financeira, Economia):**
-  "O risco maior não é norma revogada, mas convenção/notação (amostral ×
-  populacional; desconto por dentro × por fora; nominal × efetiva). Explicite a
-  convenção usada e siga a da banca. Para Economia, separe TEORIA (estável) de
-  CONJUNTURA (dados atuais)."
+- **Exact sciences (Estatística, Matemática Financeira, Economia):**
+  "The greater risk is not a repealed norm, but convention/notation (amostral ×
+  populacional; desconto por dentro × por fora; nominal × efetiva). Make explicit
+  the convention used and follow the board's. For Economia, separate TEORIA
+  (stable) from CONJUNTURA (current data)."
 
-- **TI/Dados (Ciência de Dados, IA, Desenvolvimento, Infra):**
-  "O risco é terminologia e versões de padrões/frameworks (ITIL, COBIT, ISO,
-  NIST, Scrum, PMBOK, bibliotecas). Use terminologia consagrada; confirme a
-  versão vigente quando a questão depender dela. Para normativos (LGPD, governo
-  digital), confirme o texto vigente."
+- **IT/Data (Ciência de Dados, IA, Desenvolvimento, Infra):**
+  "The risk is terminology and versions of standards/frameworks (ITIL, COBIT, ISO,
+  NIST, Scrum, PMBOK, libraries). Use established terminology; confirm the current
+  version when the question depends on it. For regulations (LGPD, governo digital),
+  confirm the current text."
 
-## 4. Processo de criação + revisão (fluxo único)
+## 4. Creation + review process (single flow)
 
-1. Receba o assunto e confirme com o usuário: (a) qual a disciplina/tema, (b)
-   prova/banca/longo-prazo, (c) se há estado específico (ex.: SEFAZ AL).
-2. **Pesquise ANTES de escrever** (WebSearch/WebFetch):
-   - Incidência em prova (tópicos mais cobrados).
-   - Estilo e pegadinhas da banca (trocas de termo clássicas).
-   - Normas/versões VIGENTES na data atual (lei, súmula, jurisprudência; ou
-     versão de framework/padrão).
-   - O que um material de estudo costuma afirmar de forma DESATUALIZADA.
-3. Escreva o =SKILL.md= já com a pesquisa incorporada (não criar-e-revisar em
-   duas passadas separadas).
-4. Crie o diretório =~/custom_skills/<slug>/= e o arquivo =SKILL.md=.
-5. Rode =gptel-agent-update= (ou peça ao usuário) e valide que a skill aparece
-   em =gptel-agent--skills= e no =<available_skills>= dos agentes.
-6. Reporte ao usuário o que foi criado, o que foi verificado (com datas) e
-   eventuais ressalvas de fontes divergentes.
+1. Receive the subject and confirm with the user: (a) which subject/topic, (b)
+   exam/board/long-term, (c) whether there is a specific state (e.g., SEFAZ AL).
+2. **Research BEFORE writing** (WebSearch/WebFetch):
+   - Exam incidence (most-tested topics).
+   - Board style and pitfalls (classic term swaps).
+   - Norms/versions CURRENT on today's date (law, súmula, case law; or
+     framework/standard version).
+   - What study material usually states in an OUTDATED way.
+3. Write the =SKILL.md= already with the research incorporated (do not
+   create-and-review in two separate passes).
+4. Create the =~/custom_skills/<slug>/= directory and the =SKILL.md= file.
+5. Run =gptel-agent-update= (or ask the user) and validate that the skill appears
+   in =gptel-agent--skills= and in the agents' =<available_skills>=.
+6. Report to the user what was created, what was verified (with dates), and any
+   caveats about divergent sources.
 
-### Modo de revisão estrutural (seção 6)
+### Structural review mode (section 6)
 
-Quando o pedido for APENAS reescrever a seção 6 de uma skill existente:
+When the request is ONLY to rewrite section 6 of an existing skill:
 
-- Derive a espinha narrativa das seções 2–5 da própria skill (incidência,
-  banca, pegadinhas, normas) — não re-pesquise a norma do zero.
-- Faça checagem LEVE de vigência apenas das normas já listadas na seção 5
-  (WebSearch pontual); se algo estiver defasado, registre ressalva no relatório.
-- NÃO expanda o escopo: neste modo, não reescreva a seção 5 nem faça pesquisa
-  de incidência nova.
+- Derive the narrative spine from sections 2–5 of the skill itself (incidence,
+  board, pitfalls, norms) — do not re-research the norm from scratch.
+- Do a LIGHT validity check only of the norms already listed in section 5
+  (spot WebSearch); if something is outdated, record a caveat in the report.
+- Do NOT expand scope: in this mode, do not rewrite section 5 nor do new
+  incidence research.
 
-## 5. Checagens de qualidade antes de finalizar
+## 5. Quality checks before finishing
 
-- [ ] description presente e com gatilho claro.
-- [ ] Incidência ordenada por peso (quando houver dados).
-- [ ] Pegadinhas específicas da disciplina, não genéricas.
-- [ ] Seção 5 aponta normas/versões a VERIFICAR, sem colar o teor.
-- [ ] Regra de ouro de atualidade condizente com o tipo (jurídica/exatas/TI).
-- [ ] Seção 6 tem pergunta organizadora + fluxo principal + eixos conceituais
-      + pares "não confunda" — NÃO é lista plana de tópicos.
-- [ ] Padrão Agent Skills respeitado: SKILL.md enxuto (< 500 linhas); detalhe
-      em =references/= e =assets/=; caminhos relativos corretos.
-- [ ] Fontes oficiais e data de consulta.
-- [ ] Se o nome mudou (ex.: adicionar estado), renomear diretório e atualizar o
-  =name:= sem deixar duplicidade.
+- [ ] description present and with a clear trigger.
+- [ ] Incidence ordered by weight (when data exists).
+- [ ] Pitfalls specific to the subject, not generic.
+- [ ] Section 5 points to norms/versions to VERIFY, without pasting the content.
+- [ ] Golden rule of source currency matching the type (legal/exact/IT).
+- [ ] Section 6 has organizing question + main flow + conceptual axes
+      + "não confunda" pairs — NOT a flat topic list.
+- [ ] Agent Skills pattern respected: lean SKILL.md (< 500 lines); detail in
+      =references/= and =assets/=; correct relative paths.
+- [ ] Official sources and consultation date.
+- [ ] If the name changed (e.g., adding a state), rename the directory and update
+  =name:= without leaving a duplicate.
 
-## 6. Exemplo canônico
+## 6. Canonical example
 
-Os exemplos de seção 6 ficam em =references/exemplos-secao-6.md= (um por tipo
-de disciplina). Use-os como modelo de forma. A skill =direito-tributario= (em
-=~/custom_skills/direito-tributario/SKILL.md=) serve de referência adicional
-de como uma skill jurídica completa fica — mas o modelo de seção 6 é o arquivo
-de =references/=, não uma skill externa.
+The section 6 examples are in =references/exemplos-secao-6.md= (one per subject
+type). Use them as a model of form. The =direito-tributario= skill (at
+=~/custom_skills/direito-tributario/SKILL.md=) serves as an additional reference
+for how a complete legal skill looks — but the section 6 model is the
+=references/= file, not an external skill.

@@ -1,30 +1,32 @@
 ---
 name: ciencia-de-dados
 description: >
-  Playbook de CIÊNCIA DE DADOS para concursos fiscais (RFB/SEFAZ) e de controle
-  (TCU/TCE, CGU/CGE). Carregar quando o aluno pedir resumo ou tirar dúvidas
-  sobre: dados estruturados/não estruturados, bancos relacionais e SQL,
+  CIÊNCIA DE DADOS playbook for fiscal exams (RFB/SEFAZ) and control
+  (TCU/TCE, CGU/CGE). Load when the student asks for a summary or has doubts
+  about: dados estruturados/não estruturados, bancos relacionais e SQL,
   modelagem de dados, ETL/ELT, mineração de dados, detecção de anomalias,
   modelagem preditiva, aprendizado de máquina, Business Intelligence e
-  visualização de dados aplicados à fiscalização tributária. Define incidência,
-  estilo das bancas, pegadinhas e padrões a verificar.
+  visualização de dados aplicados à fiscalização tributária. Defines exam
+  incidence, board style, pitfalls, and standards to verify.
 ---
 
-# Ciência de Dados — playbook de estudo (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Ciência de Dados — study playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Regra de ouro — atualidade da fonte:** em TI/dados, o risco não é lei
-revogada, mas terminologia e versões de padrões/ferramentas (SQL, bibliotecas,
-modelos). Use definições consagradas e, quando a questão depender de versão,
-confirme o contexto. Para aplicação à fiscalização, verifique os documentos
-fiscais eletrônicos vigentes (seções 5 e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-## 2. Incidência em prova (o que priorizar)
+**Golden rule — source currency:** in IT/data, the risk is not repealed law, but
+terminology and versions of standards/tools (SQL, libraries, models). Use
+established definitions and, when the question depends on a version, confirm the
+context. For fiscal application, verify the current electronic fiscal documents
+(sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize)
 
 - **Dados estruturados × semiestruturados × não estruturados**.
 - **Bancos relacionais e SQL**: SELECT (JOIN, GROUP BY, HAVING, subconsultas),
@@ -49,7 +51,7 @@ fiscais eletrônicos vigentes (seções 5 e 7).
   (NF-e, EFD ICMS/IPI, SPED, CT-e, MDF-e), omissão de receita, divergências,
   créditos indevidos.
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE**: cobra definições e a relação entre conceitos; inverte o
   gabarito trocando "estruturado" × "não estruturado", "supervisionado" × "não
@@ -57,7 +59,7 @@ fiscais eletrônicos vigentes (seções 5 e 7).
   Leia o item procurando a palavra trocada.
 - **FGV**: valoriza interpretação, casos aplicados e leitura de SQL/gráficos.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **Supervisionado × não supervisionado**: rotulados × não rotulados.
 - **Classificação × regressão**: saída categórica × numérica.
@@ -80,7 +82,7 @@ fiscais eletrônicos vigentes (seções 5 e 7).
 - **Cruzamento fiscal**: cada documento eletrônico tem função específica
   (NF-e, EFD, CT-e, MDF-e) — não confunda.
 
-## 5. Padrões e normas a verificar (prioridade: contexto e versão)
+## 5. Standards and norms to verify (priority: context and version)
 
 - **SQL**: siga o dialeto/banco indicado na questão (quando houver); senão, use
   SQL padrão e avise se o dialeto importa.
@@ -96,11 +98,11 @@ fiscais eletrônicos vigentes (seções 5 e 7).
   **regulamentos da ANPD** (transferência internacional — Res. 19/2024;
   dosimetria — Res. 4/2023; incidentes — Res. 15/2024) e a interseção LGPD × IA.
 
-**Checagem mínima (obrigatória):**
-- Separe conceito estável de detalhe dependente de versão/ferramenta.
-- Para normativos fiscais e LGPD, anote a DATA e confirme a vigência.
+**Minimum check (mandatory):**
+- Separate stable concept from version/tool-dependent detail.
+- For fiscal regulations and LGPD, note the DATE and confirm validity.
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Suggested summary structure (for the summary agent)
 
 1. **Dados e modelagem** (tipos, bancos relacionais, SQL, normalização,
    dimensional).
@@ -112,7 +114,7 @@ fiscais eletrônicos vigentes (seções 5 e 7).
 7. **BI e visualização**.
 8. **Aplicação à fiscalização tributária** (cruzamento de dados fiscais).
 
-## 7. Fontes oficiais (sempre na versão mais recente)
+## 7. Official sources (always the most recent version)
 
 - Receita Federal/SEFAZ: leiautes e normativos do SPED e documentos fiscais
   eletrônicos.
@@ -120,6 +122,6 @@ fiscais eletrônicos vigentes (seções 5 e 7).
   & Fawcett).
 - Documentação oficial de bancos/ferramentas, quando aplicável.
 
-**Regra de ouro:** fonte oficial NÃO é sinônimo de fonte atual. Para normativos
-fiscais e LGPD, use a versão vigente e datada. Para conceitos, use terminologia
-consagrada.
+**Golden rule:** an official source is NOT synonymous with a current source. For fiscal
+regulations and LGPD, use the current, dated version. For concepts, use established
+terminology.

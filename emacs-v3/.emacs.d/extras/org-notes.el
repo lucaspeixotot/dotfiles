@@ -307,6 +307,14 @@ Optional argument CANDIDATE is the selected item."
   ("\\.[eE][pP][uU][bB]\\'" . nov-mode)
   )
 
+(defun my/org-paste-image-and-preview ()
+  "Paste an image from the clipboard and display inline images."
+  (interactive)
+  (unless (derived-mode-p 'org-mode)
+    (user-error "Not in an Org buffer"))
+  (call-interactively #'yank-media)
+  (org-link-preview-refresh))
+
 (use-package org
   :straight (:type built-in)
   :init
@@ -318,9 +326,11 @@ Optional argument CANDIDATE is the selected item."
         ("a" . org-agenda)
         ("c" . org-capture)
         ("l" . org-toggle-link-display)
-   )
+        ("y" . my/org-paste-image-and-preview))
   :custom
   (org-startup-truncated nil)
+  (org-yank-image-save-method "./images")
+  (org-startup-with-inline-images t)
   (org-directory "~/org/")
   (org-agenda-files '("~/org/inbox.org"
                       "~/org/tasks.org"
@@ -545,17 +555,6 @@ argument, query for word to search."
    ("C-c n h [" . org-remark-view-prev)
    ("C-c n h r" . org-remark-remove)
    ("C-c n h d" . org-remark-delete))
-  )
-
-(use-package org-download
-  :straight t
-  :bind
-  (:map org-user-menu-map
-        ("d c" . org-download-clipboard)
-        ("d y" . org-download-yank))
-  :custom
-  (org-download-image-dir "./images")
-  (org-download-annotate-function (lambda (_) ""))
   )
 
 (use-package toc-org

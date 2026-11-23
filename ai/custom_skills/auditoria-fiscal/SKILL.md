@@ -1,28 +1,30 @@
 ---
 name: auditoria-fiscal
 description: >
-  Playbook de AUDITORIA (governamental e fiscal) para concursos fiscais
-  (RFB/SEFAZ) e de controle (TCU/TCE, CGU/CGE). Carregar quando o aluno pedir
-  resumo ou tirar dúvidas sobre: normas de auditoria (NBC TA/NBASP/ISSAI),
-  planejamento, evidências, materialidade, riscos, controles internos,
-  amostragem, relatórios, auditoria governamental, auditoria fiscal/tributária,
-  cruzamento de dados e documentos fiscais eletrônicos. Define incidência,
-  estilo das bancas, pegadinhas e normas a verificar.
+  AUDITORIA (governamental e fiscal) playbook for fiscal exams (RFB/SEFAZ) and
+  control (TCU/TCE, CGU/CGE). Load when the student asks for a summary or has
+  doubts about: normas de auditoria (NBC TA/NBASP/ISSAI), planejamento,
+  evidências, materialidade, riscos, controles internos, amostragem, relatórios,
+  auditoria governamental, auditoria fiscal/tributária, cruzamento de dados e
+  documentos fiscais eletrônicos. Defines exam incidence, board style, pitfalls,
+  and norms to verify.
 ---
 
-# Auditoria — playbook de estudo (fiscal + controle)
+NOTE: instructions are in English for token efficiency; exam content below stays in Portuguese because the exam and the output are in Portuguese. Always answer the student in the user's language (Portuguese).
 
-## 1. O que é esta skill
+# Auditoria — study playbook (fiscal + control)
 
-Guia de COMO a disciplina é cobrada — não o conteúdo (o modelo já o domina).
-Use-o para priorizar tópicos, calibrar a resposta à banca e evitar os erros
-clássicos.
+## 1. What this skill is
 
-**Regra de ouro — atualidade da fonte:** fonte oficial NÃO basta. Normas de
-auditoria (NBC TA, NBASP/ISSAI) são revisadas periodicamente. Antes de afirmar
-um procedimento, confirme a norma VIGENTE HOJE e a data da fonte (seções 5 e 7).
+Guide to HOW the subject is tested — not the content (the model already masters it).
+Use it to prioritize topics, calibrate the answer to the board, and avoid the
+classic mistakes.
 
-## 2. Incidência em prova (o que priorizar)
+**Golden rule — source currency:** an official source is NOT enough. Auditing
+standards (NBC TA, NBASP/ISSAI) are revised periodically. Before stating a
+procedure, confirm the norm CURRENT TODAY and the date of the source (sections 5 and 7).
+
+## 2. Exam incidence (what to prioritize)
 
 - **Conceitos e classificação**: auditoria interna × externa; governamental ×
   independente; auditoria contábil × operacional × de conformidade.
@@ -43,7 +45,7 @@ um procedimento, confirme a norma VIGENTE HOJE e a data da fonte (seções 5 e 7
 - **Auditoria governamental**: finalidade, objeto, relatórios de fiscalização
   (TCU), achados de auditoria.
 
-## 3. Estilo por banca
+## 3. Board style
 
 - **CEBRASPE/CESPE**: cobra definições e a literalidade das normas; inverte o
   gabarito trocando "interna" × "externa", "opinião adversa" × "abstenção",
@@ -51,7 +53,7 @@ um procedimento, confirme a norma VIGENTE HOJE e a data da fonte (seções 5 e 7
   item procurando a palavra trocada.
 - **FGV**: valoriza interpretação, aplicação a casos e o julgamento do auditor.
 
-## 4. Pegadinhas clássicas ("não confunda")
+## 4. Classic pitfalls ("não confunda")
 
 - **Tipos de opinião**: com ressalva × adversa × abstenção — condições
   distintas (materialidade e extensão dos efeitos).
@@ -73,9 +75,9 @@ um procedimento, confirme a norma VIGENTE HOJE e a data da fonte (seções 5 e 7
   divergente; NF-e cancelada escriturada como ativa. Fluxo: DT-e → autorregularização
   → auto de infração.
 
-## 5. Normas e jurisprudência a verificar (prioridade: vigência e atualidade)
+## 5. Norms and case law to verify (priority: validity and currency)
 
-Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
+Do not state the content without verifying the CURRENT wording TODAY and the DATE of the source:
 
 - **NBC TA** (CFC) — versão consolidada vigente. Destaques: **NBC TA 220 (R3)**
   e **NBC PA 01/02 (ISQM 1/2)** = "gestão de qualidade" (não mais "controle de
@@ -90,12 +92,12 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
 - **Legislação fiscal eletrônica** (SPED, NF-e, EFD ICMS/IPI, CT-e, MDF-e) —
   verifique normativos vigentes da Receita/SEFAZ.
 
-**Checagem mínima de atualidade (obrigatória):**
-- Prefira a versão consolidada vigente das normas.
-- Anote a DATA da consulta e a edição da norma.
-- Desconfie de normas antigas: NBC TA e NBASP passam por revisões.
+**Minimum currency check (mandatory):**
+- Prefer the current consolidated version of the norms.
+- Note the DATE of the consultation and the edition of the norm.
+- Distrust old norms: NBC TA and NBASP undergo revisions.
 
-## 6. Estrutura sugerida do resumo (para o agente de resumo)
+## 6. Suggested summary structure (for the summary agent)
 
 1. **Conceitos, classificação e normas aplicáveis**.
 2. **Planejamento e materialidade**.
@@ -106,12 +108,11 @@ Não afirme o teor sem verificar a REDAÇÃO VIGENTE HOJE e a DATA da fonte:
 7. **Relatórios e tipos de opinião**.
 8. **Auditoria fiscal/tributária e cruzamento de dados** (SPED/NF-e/EFD).
 
-## 7. Fontes oficiais (sempre na versão mais recente)
+## 7. Official sources (always the most recent version)
 
 - CFC: NBC TA consolidadas.
 - TCU/INTOSAI: NBASP/ISSAI vigentes (portal.tcu.gov.br).
 - Receita Federal/SEFAZ: normativos do SPED e documentos fiscais eletrônicos.
 
-**Regra de ouro:** fonte oficial NÃO é sinônimo de fonte atual. Verifique a DATA
-e a edição vigente. Se a fonte for antiga, procure uma mais recente antes de
-usar.
+**Golden rule:** an official source is NOT synonymous with a current source. Verify the DATE
+and the current edition. If the source is old, look for a more recent one before using it.
